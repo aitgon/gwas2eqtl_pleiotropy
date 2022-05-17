@@ -1,0 +1,9 @@
+matplotlib
+odfpy
+pandas
+requests
+seaborn
+snakemake
+sqlalchemy
+statannot
+statsmodels

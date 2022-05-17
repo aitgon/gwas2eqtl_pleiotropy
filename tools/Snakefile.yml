@@ -1,0 +1,137 @@
+rule targets:
+    input:
+        "out/plt_hist_gwas_etissue_egene.py/egene_hist.png",
+        "out/plt_hist_gwas_etissue_egene.py/etissue_hist.png",
+        "out/plt_hist_gwas_etissue_egene.py/gwas_hist.png",
+        "out/cmpt_count_per_bin.py/bin_rsid_count.tsv",
+        "out/cmpt_count_per_bin.py/bin_etissue_count.tsv",
+        "out/cmpt_count_per_bin.py/bin_gwas_count.tsv",
+        "out/cmpt_count_per_bin.py/bin_egene_count.tsv",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr3_start141300000.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr11_start61780000.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr16_start28500000.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr3_start141300000.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr11_start61780000.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr16_start28500000.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr3_start141300000.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr11_start61780000.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr16_start28500000.png",
+        "out/plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
+        "out/htmp_tissue_enrich.py/Anthropometric.png",
+        "out/htmp_tissue_enrich.py/Autoimmune__inflammatory.png",
+        "out/htmp_tissue_enrich.py/Blood_pressure.png",
+        "out/htmp_tissue_enrich.py/Cancer.png",
+        "out/htmp_tissue_enrich.py/Immune_system.png",
+        "out/htmp_tissue_enrich.py/NA.png",
+        "out/cmpt_pleiotropic_regions.py/pleio_100000.bed",
+        "out/cmpt_pleiotropic_regions.py/regions_100000_length_hist.bed",
+
+rule htmp_tissue_enrich:
+    input:
+        "out/cmpt_tissue_enrich.py/tissue_enrich.tsv",
+    output:
+        "out/htmp_tissue_enrich.py/Anthropometric.png",
+        "out/htmp_tissue_enrich.py/Autoimmune__inflammatory.png",
+        "out/htmp_tissue_enrich.py/Blood_pressure.png",
+        "out/htmp_tissue_enrich.py/Cancer.png",
+        "out/htmp_tissue_enrich.py/Immune_system.png",
+        "out/htmp_tissue_enrich.py/NA.png",
+    shell:
+        "python scripts/htmp_tissue_enrich.py"
+
+rule cmpt_tissue_enrich:
+    input:
+        "out/filter_h4.py/coloc_h4.tsv"
+    output:
+        "out/cmpt_tissue_enrich.py/tissue_enrich.tsv",
+    shell:
+        "python scripts/cmpt_tissue_enrich.py"
+
+rule plt_bxplt_gwas_egene_etissue:
+    input:
+        "out/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
+        "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
+        "out/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
+    output:
+        "out/plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
+    shell:
+        "python scripts/plt_bxplt_gwas_egene_etissue.py"
+
+rule plt_scttr_count_per_rsid_gwas:
+    input:
+        "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
+    output:
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr3_start141300000.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr11_start61780000.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr16_start28500000.png",
+    shell:
+        "python scripts/plt_scttr_count_per_rsid_gwas.py"
+
+rule plt_scttr_count_per_rsid_etissue:
+    input:
+        "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
+    output:
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr3_start141300000.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr11_start61780000.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr16_start28500000.png",
+    shell:
+        "python scripts/plt_scttr_count_per_rsid_etissue.py"
+
+rule plt_scttr_count_per_rsid_egene:
+    input:
+        "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
+    output:
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr3_start141300000.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr11_start61780000.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr16_start28500000.png",
+    shell:
+        "python scripts/plt_scttr_count_per_rsid_egene.py"
+
+rule plt_hist_gwas_etissue_egene:
+    input:
+        "out/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
+        "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
+        "out/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
+    output:
+        "out/plt_hist_gwas_etissue_egene.py/egene_hist.png",
+        "out/plt_hist_gwas_etissue_egene.py/etissue_hist.png",
+        "out/plt_hist_gwas_etissue_egene.py/gwas_hist.png",
+    shell:
+        "python scripts/plt_hist_gwas_etissue_egene.py"
+
+rule cmpt_pleiotropic_regions:
+    input:
+        "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
+    output:
+        "out/cmpt_pleiotropic_regions.py/pleio_100000.bed",
+    shell:
+        "python scripts/cmpt_pleiotropic_regions.py"
+
+rule count_per_rsid:
+    input:
+        "out/filter_h4.py/coloc_h4.tsv"
+    output:
+        "out/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
+        "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
+        "out/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
+    shell:
+        "python scripts/cmpt_count_per_rsid.py"
+
+rule count_per_bin:
+    input:
+        "out/filter_h4.py/coloc_h4.tsv"
+    output:
+        "out/cmpt_count_per_bin.py/bin_rsid_count.tsv",
+        "out/cmpt_count_per_bin.py/bin_etissue_count.tsv",
+        "out/cmpt_count_per_bin.py/bin_gwas_count.tsv",
+        "out/cmpt_count_per_bin.py/bin_egene_count.tsv",
+    shell:
+        "python scripts/cmpt_count_per_bin.py"
+
+rule filter_h4:
+    input:
+        "out/coloc_all/coloc_all_20220329.tsv"
+    output:
+        "out/filter_h4.py/coloc_h4.tsv"
+    shell:
+        "python scripts/filter_h4.py"

@@ -1,0 +1,10 @@
+out
+*.sif
+.Rhistory
+.idea
+__pycache__
+gwas2eqtl_tools.egg-info
+.snakemake/
+.Rproj.user
+.RData
+*.Rproj
