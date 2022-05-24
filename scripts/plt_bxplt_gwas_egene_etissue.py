@@ -1,13 +1,11 @@
 #%%
-import pathlib
-
+from eqtl2gwas_pleiotropy.PathManager import PathManager
 from statannot import add_stat_annotation
 
-from eqtl2gwas_pleiotropy.PathManager import PathManager
-
+import matplotlib.pyplot as plt
 import os
 import pandas
-import matplotlib.pyplot as plt
+import pathlib
 import seaborn as sns
 
 #%% Output
@@ -21,7 +19,6 @@ indir_path = os.path.join(PathManager.get_project_path(), "out", "cmpt_count_per
 egene_count_tsv_path = os.path.join(indir_path, "count_per_rsid_egene.tsv")
 etissue_count_tsv_path = os.path.join(indir_path, "count_per_rsid_etissue.tsv")
 gwas_count_tsv_path = os.path.join(indir_path, "count_per_rsid_gwas.tsv")
-
 
 #%%
 gwas_count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
