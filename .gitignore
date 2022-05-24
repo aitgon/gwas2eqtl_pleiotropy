@@ -8,3 +8,4 @@ gwas2eqtl_tools.egg-info
 .Rproj.user
 .RData
 *.Rproj
+eqtl2gwas_pleiotropy.egg-info

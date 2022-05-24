@@ -1,5 +1,3 @@
-import matplotlib
-
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
 
@@ -48,6 +46,6 @@ for chrom, start, end in pleiotropic_regions_5:
     plt.xlabel("Position Chr{} [Mbp]".format(chrom), fontsize=label_fontsize)
     plt.ylabel("eQTL Gene Count", fontsize=label_fontsize)
     plt.ylim(ylim)
-    png_path = os.path.join(outdir_path, "count_per_rsid_egene_chr{}_start{}_end{}_categories5.png.png".format(chrom, start, end))
+    png_path = os.path.join(outdir_path, "count_per_rsid_egene_chr{}_start{}_end{}_categories5.png".format(chrom, start, end))
     plt.savefig(png_path)
     plt.close()

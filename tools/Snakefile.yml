@@ -7,15 +7,18 @@ rule targets:
         "out/cmpt_count_per_bin.py/bin_etissue_count.tsv",
         "out/cmpt_count_per_bin.py/bin_gwas_count.tsv",
         "out/cmpt_count_per_bin.py/bin_egene_count.tsv",
-        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr3_start141300000.png",
-        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr11_start61780000.png",
-        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr16_start28500000.png",
-        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr3_start141300000.png",
-        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr11_start61780000.png",
-        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr16_start28500000.png",
-        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr3_start141300000.png",
-        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr11_start61780000.png",
-        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr16_start28500000.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr2_start27508073_end27519736_categories5.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr3_start141375367_end141428572_categories5.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr11_start61783884_end61855668_categories5.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr16_start28743363_end28908020_categories5.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr2_start27508073_end27519736_categories5.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr3_start141375367_end141428572_categories5.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr11_start61783884_end61855668_categories5.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr16_start28743363_end28908020_categories5.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr2_start27508073_end27519736_categories5.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr3_start141375367_end141428572_categories5.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr11_start61783884_end61855668_categories5.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr16_start28743363_end28908020_categories5.png",
         "out/plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
         "out/htmp_tissue_enrich.py/Anthropometric.png",
         "out/htmp_tissue_enrich.py/Autoimmune__inflammatory.png",
@@ -24,7 +27,7 @@ rule targets:
         "out/htmp_tissue_enrich.py/Immune_system.png",
         "out/htmp_tissue_enrich.py/NA.png",
         "out/cmpt_pleiotropic_regions.py/pleio_100000.bed",
-        "out/cmpt_pleiotropic_regions.py/regions_100000_length_hist.bed",
+        "out/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png",
 
 rule htmp_tissue_enrich:
     input:
@@ -61,9 +64,10 @@ rule plt_scttr_count_per_rsid_gwas:
     input:
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
     output:
-        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr3_start141300000.png",
-        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr11_start61780000.png",
-        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_egene_chr16_start28500000.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr2_start27508073_end27519736_categories5.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr3_start141375367_end141428572_categories5.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr11_start61783884_end61855668_categories5.png",
+        "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr16_start28743363_end28908020_categories5.png",
     shell:
         "python scripts/plt_scttr_count_per_rsid_gwas.py"
 
@@ -71,9 +75,10 @@ rule plt_scttr_count_per_rsid_etissue:
     input:
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
     output:
-        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr3_start141300000.png",
-        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr11_start61780000.png",
-        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_egene_chr16_start28500000.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr2_start27508073_end27519736_categories5.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr3_start141375367_end141428572_categories5.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr11_start61783884_end61855668_categories5.png",
+        "out/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr16_start28743363_end28908020_categories5.png",
     shell:
         "python scripts/plt_scttr_count_per_rsid_etissue.py"
 
@@ -81,9 +86,10 @@ rule plt_scttr_count_per_rsid_egene:
     input:
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
     output:
-        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr3_start141300000.png",
-        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr11_start61780000.png",
-        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr16_start28500000.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr2_start27508073_end27519736_categories5.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr3_start141375367_end141428572_categories5.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr11_start61783884_end61855668_categories5.png",
+        "out/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr16_start28743363_end28908020_categories5.png",
     shell:
         "python scripts/plt_scttr_count_per_rsid_egene.py"
 
@@ -104,6 +110,7 @@ rule cmpt_pleiotropic_regions:
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
     output:
         "out/cmpt_pleiotropic_regions.py/pleio_100000.bed",
+        "out/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png",
     shell:
         "python scripts/cmpt_pleiotropic_regions.py"
 
