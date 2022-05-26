@@ -19,25 +19,16 @@ if not os.path.isfile(coloc_raw_tsv_path):
 outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-coloc_h4_tsv_path = os.path.join(PathManager.get_project_path(), "out", 'filter_h4.py/coloc_h4.tsv')
+coloc_h4_tsv_path = os.path.join(PathManager.get_outdir_path(), 'filter_h4.py", "coloc_h4.tsv')
 
-#%% Download eQTL annotations
-eqtl_info_df = EBIeQTLinfo().df
-eqtl_info_df.rename({'identifier': "eqtl_identifier", 'tissue_label': 'etissue_subcategory'}, axis=1, inplace=True)
-
-#%% Download OpenGWAS annotations
-open_gwas_df = OpenGWASinfo().df
-open_gwas_df.rename({'subcategory': 'gwas_subcategory'}, axis=1, inplace=True)
-open_gwas_df = open_gwas_df[['gwas_identifier', 'gwas_subcategory']].drop_duplicates()
-# remove subcat with nan
-open_gwas_df = open_gwas_df.loc[~open_gwas_df["gwas_subcategory"].isna(), ]
+#%% Input1
+h4_annot_tsv_path = os.path.join(PathManager.get_outdir_path(), "annotate_h4.py", "h4_annotated.tsv")
+if not os.path.isfile(h4_annot_tsv_path):
+    print("input file does not exit")
+    sys.exit(1)
 
 #%%
-coloc_df = pandas.read_csv(coloc_h4_tsv_path, sep="\t")
-
-#%%
-coloc_df = coloc_df.merge(open_gwas_df, on='gwas_identifier')
-coloc_df = coloc_df.merge(eqtl_info_df[['eqtl_identifier', 'etissue_subcategory']].drop_duplicates(), on='eqtl_identifier')
+coloc_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
 
 #%% etissue pleiotropy
 pleio_etissue_df = coloc_df[['chrom', 'pos', 'rsid', 'etissue_subcategory']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'etissue_subcategory': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
