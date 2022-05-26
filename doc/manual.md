@@ -1,3 +1,10 @@
+Prepare input data
+
+~~~
+mkdir -p out/coloc_all
+cp coloc_all.tsv out/coloc_all/
+~~~
+
 # Snakemake
 
 ~~~

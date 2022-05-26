@@ -1,8 +1,8 @@
 rule targets:
     input:
-        "out/plt_hist_gwas_etissue_egene.py/egene_hist.png",
-        "out/plt_hist_gwas_etissue_egene.py/etissue_hist.png",
-        "out/plt_hist_gwas_etissue_egene.py/gwas_hist.png",
+        "out/plt_hist_gwas_etissue_egene.py/hist_egene.png",
+        "out/plt_hist_gwas_etissue_egene.py/hist_etissue.png",
+        "out/plt_hist_gwas_etissue_egene.py/hist_gwas.png",
         "out/cmpt_count_per_bin.py/bin_rsid_count.tsv",
         "out/cmpt_count_per_bin.py/bin_etissue_count.tsv",
         "out/cmpt_count_per_bin.py/bin_gwas_count.tsv",
@@ -99,9 +99,9 @@ rule plt_hist_gwas_etissue_egene:
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
         "out/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
     output:
-        "out/plt_hist_gwas_etissue_egene.py/egene_hist.png",
-        "out/plt_hist_gwas_etissue_egene.py/etissue_hist.png",
-        "out/plt_hist_gwas_etissue_egene.py/gwas_hist.png",
+        "out/plt_hist_gwas_etissue_egene.py/hist_egene.png",
+        "out/plt_hist_gwas_etissue_egene.py/hist_etissue.png",
+        "out/plt_hist_gwas_etissue_egene.py/hist_gwas.png",
     shell:
         "python scripts/plt_hist_gwas_etissue_egene.py"
 
