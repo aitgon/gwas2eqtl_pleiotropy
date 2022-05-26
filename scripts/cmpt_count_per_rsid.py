@@ -37,6 +37,13 @@ pleio_etissue_df = pleio_etissue_df.sort_values(by=['etissue_subcategory_count',
 tsv_path = os.path.join(outdir_path, "count_per_rsid_etissue.tsv")
 pleio_etissue_df.to_csv(tsv_path, sep="\t", index=False)
 
+#%% egene pleiotropy
+pleio_egene_df = coloc_df[['chrom', 'pos', 'rsid', 'egene', 'egene_symbol']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'egene': ['size', (lambda x: (",".join(sorted(x))))], 'egene_symbol': (lambda x: (",".join(sorted([str(i) for i in x]))))}).reset_index()
+pleio_egene_df.columns = ['chrom', 'pos', 'rsid', 'egene_count', 'egene_lst', 'egene_symbol_lst']
+pleio_egene_df = pleio_egene_df.sort_values(by=['egene_count', 'egene_lst', 'egene_symbol_lst', 'rsid'], ascending=[False, True, True, True])
+tsv_path = os.path.join(outdir_path, "count_per_rsid_egene.tsv")
+pleio_egene_df.to_csv(tsv_path, sep="\t", index=False)
+
 #%% gwas pleiotropy
 pleio_gwas_df = coloc_df[['chrom', 'pos', 'rsid', 'gwas_subcategory']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'gwas_subcategory': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
 pleio_gwas_df.columns = ['chrom', 'pos', 'rsid', 'gwas_subcategory_count', 'gwas_subcategory_lst']
@@ -44,9 +51,31 @@ pleio_gwas_df = pleio_gwas_df.sort_values(by=['gwas_subcategory_count', 'gwas_su
 tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas.tsv")
 pleio_gwas_df.to_csv(tsv_path, sep="\t", index=False)
 
-#%% egene pleiotropy
-pleio_egene_df = coloc_df[['chrom', 'pos', 'rsid', 'egene', 'egene_symbol']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'egene': ['size', (lambda x: (",".join(sorted(x))))], 'egene_symbol': (lambda x: (",".join(sorted([str(i) for i in x]))))}).reset_index()
-pleio_egene_df.columns = ['chrom', 'pos', 'rsid', 'egene_count', 'egene_lst', 'egene_symbol_lst']
-pleio_egene_df = pleio_egene_df.sort_values(by=['egene_count', 'egene_lst', 'egene_symbol_lst', 'rsid'], ascending=[False, True, True, True])
-tsv_path = os.path.join(outdir_path, "count_per_rsid_egene.tsv")
-pleio_egene_df.to_csv(tsv_path, sep="\t", index=False)
+#%########################################### bed files, flanking=0
+# bed files of variants splitted by gwas categories
+flank=0
+variant_bed_df = pleio_gwas_df.copy()
+variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
+variant_bed_df['start'] = variant_bed_df['pos'] - 1 - flank
+variant_bed_df['end'] = variant_bed_df['pos'] + 50
+variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_subcategory_count', 'gwas_subcategory_lst']]
+
+for count_pleio in range(1, 6):
+    variant_pleio_i_bed_path = os.path.join(outdir_path, "variant_pleio_{}_flank_{}.bed".format(count_pleio, flank))
+    variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_subcategory_count'] == count_pleio, ]
+    variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
+
+#%########################################### bed files, flanking=100
+flank=50
+# bed files of variants splitted by gwas categories
+variant_bed_df = pleio_gwas_df.copy()
+variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
+variant_bed_df['start'] = variant_bed_df['pos'] - 1 - flank
+variant_bed_df['end'] = variant_bed_df['pos'] + flank
+variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_subcategory_count', 'gwas_subcategory_lst']]
+
+for count_pleio in range(1, 6):
+    variant_pleio_i_bed_path = os.path.join(outdir_path, "variant_pleio_{}_flank_{}.bed".format(count_pleio, flank))
+    variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_subcategory_count'] == count_pleio, ]
+    variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
+
