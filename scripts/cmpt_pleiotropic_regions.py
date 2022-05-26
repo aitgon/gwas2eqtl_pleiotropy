@@ -88,9 +88,16 @@ for i, row in df.iterrows():
     region_pleio_prev = row['region_pleio']
 pleio_bed_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_subcategory_count', 'gwas_subcategory_lst'])
 pleio_bed_df['start'] = pleio_bed_df['start'] - 1
+pleio_bed_df['chrom'] = 'chr' + pleio_bed_df['chrom'].astype('str')
 
-pleio_bed_path = os.path.join(outdir_path, "pleio_{}.bed".format(region_bin))
+pleio_bed_path = os.path.join(outdir_path, "region_window_{}.bed".format(region_bin))
 pleio_bed_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
+
+#%########################################### bed files
+for count_pleio in range(1, 6):
+    region_pleio_i_bed_path = os.path.join(outdir_path, "region_window_{}_pleio_{}.bed".format(region_bin, count_pleio))
+    region_pleio_i_df = pleio_bed_df.loc[pleio_bed_df['gwas_subcategory_count'] == count_pleio, ]
+    region_pleio_i_df.to_csv(region_pleio_i_bed_path, sep="\t", index=False, header=False)
 
 #%##############
 # histogram
