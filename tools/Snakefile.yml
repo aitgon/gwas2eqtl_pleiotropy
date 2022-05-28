@@ -24,7 +24,7 @@ rule targets:
         "out/htmp_tissue_enrich.py/Cancer.png",
         "out/htmp_tissue_enrich.py/Immune_system.png",
         "out/htmp_tissue_enrich.py/NA.png",
-        "out/cmpt_pleiotropic_regions.py/pleio_100000.bed",
+        "out/cmpt_pleiotropic_regions.py/region_window_100000.bed",
         "out/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png",
         "out/plt_hist_egene_per_variant.py/hist_density_True_distr_egene_per_rsid_p5.png",
         "out/plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_subcategory_per_egene_p5.png",
@@ -137,7 +137,7 @@ rule cmpt_pleiotropic_regions:
     input:
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
     output:
-        "out/cmpt_pleiotropic_regions.py/pleio_100000.bed",
+        "out/cmpt_pleiotropic_regions.py/region_window_100000.bed",
         "out/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png",
     shell:
         "python scripts/cmpt_pleiotropic_regions.py"
