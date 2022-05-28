@@ -1,6 +1,10 @@
+import shlex
+import subprocess
+
 from eqtl2gwas_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
 from eqtl2gwas_pleiotropy.OpenGWASinfo import OpenGWASinfo
 from eqtl2gwas_pleiotropy.PathManager import PathManager
+from eqtl2gwas_pleiotropy.URL import URL
 from eqtl2gwas_pleiotropy.constants import coloc_raw_tsv_path
 
 import os
@@ -53,11 +57,11 @@ pleio_gwas_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%########################################### bed files, flanking=0
 # bed files of variants splitted by gwas categories
-flank=0
+flank = 0
 variant_bed_df = pleio_gwas_df.copy()
 variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
 variant_bed_df['start'] = variant_bed_df['pos'] - 1 - flank
-variant_bed_df['end'] = variant_bed_df['pos'] + 50
+variant_bed_df['end'] = variant_bed_df['pos'] + flank
 variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_subcategory_count', 'gwas_subcategory_lst']]
 
 for count_pleio in range(1, 6):
@@ -65,8 +69,23 @@ for count_pleio in range(1, 6):
     variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_subcategory_count'] == count_pleio, ]
     variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
 
+    # liftover to hg19
+    hg38ToHg19_chain_path = 'https://hgdownload.soe.ucsc.edu/goldenPath/hg38/liftOver/hg38ToHg19.over.chain.gz'
+
+    # %% Chain
+    variant_hg19_pleio_i_bed_path = os.path.join(outdir_path, "variant_hg19_pleio_{}_flank_{}.bed".format(count_pleio, flank))
+    urlobj = URL(url=hg38ToHg19_chain_path)
+    hg19tohg38_path = urlobj.download()
+
+    crossmap_cmd = "CrossMap.py bed {chain} {inbed} {outbed}".format(
+        chain=hg19tohg38_path, inbed=variant_pleio_i_bed_path,
+        outbed=variant_hg19_pleio_i_bed_path)
+    # %%
+    crossmap_cmd_lst = shlex.split(crossmap_cmd)
+    subprocess.run(crossmap_cmd_lst)
+
 #%########################################### bed files, flanking=100
-flank=50
+flank = 50
 # bed files of variants splitted by gwas categories
 variant_bed_df = pleio_gwas_df.copy()
 variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
