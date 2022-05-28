@@ -163,6 +163,14 @@ rule count_per_bin:
     shell:
         "python scripts/cmpt_count_per_bin.py"
 
+rule h4_annotated:
+    input:
+        "out/filter_h4.py/coloc_h4.tsv"
+    output:
+        "out/annotate_h4.py/h4_annotated.tsv",
+    shell:
+        "python scripts/annotate_h4.py"
+
 rule filter_h4:
     input:
         "out/coloc_all/coloc_all_20220329.tsv"
