@@ -4,6 +4,7 @@ channels:
 dependencies:
   - bcftools
   - tabix
+  - bioconda::bedtools
   - pip
   - pip:
     - -r requirements.txt

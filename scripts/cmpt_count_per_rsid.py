@@ -67,6 +67,7 @@ variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_subcateg
 for count_pleio in range(1, 6):
     variant_pleio_i_bed_path = os.path.join(outdir_path, "variant_pleio_{}_flank_{}.bed".format(count_pleio, flank))
     variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_subcategory_count'] == count_pleio, ]
+    variant_pleio_i_bed_df = variant_pleio_i_bed_df.sort_values(by=['chrom', 'start', 'end'])
     variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
 
     # liftover to hg19
@@ -96,5 +97,6 @@ variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_subcateg
 for count_pleio in range(1, 6):
     variant_pleio_i_bed_path = os.path.join(outdir_path, "variant_pleio_{}_flank_{}.bed".format(count_pleio, flank))
     variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_subcategory_count'] == count_pleio, ]
+    variant_pleio_i_bed_df = variant_pleio_i_bed_df.sort_values(by=['chrom', 'start', 'end'])
     variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
 
