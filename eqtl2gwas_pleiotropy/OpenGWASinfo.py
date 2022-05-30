@@ -1,6 +1,5 @@
 from eqtl2gwas_pleiotropy.Logger import Logger
 from eqtl2gwas_pleiotropy.PathManager import PathManager
-from eqtl2gwas_pleiotropy.constants import opengwas_metadata_url
 from pandas import ExcelWriter
 
 import os
@@ -12,7 +11,7 @@ import requests
 class OpenGWASinfo:
 
     # api-endpoint
-    # opengwas_metadata_url = "http://gwas-api.mrcieu.ac.uk/gwasinfo"
+    opengwas_metadata_url = "http://gwas-api.mrcieu.ac.uk/gwasinfo"
     opengwas_ods_path = os.path.join(
         PathManager.get_download_path(), opengwas_metadata_url.replace('http://', ''), 'opengwas.ods')
     opengwas_tsv_path = os.path.join(
@@ -46,7 +45,7 @@ class OpenGWASinfo:
             Logger.info("Downloading OpenGWAS information: " + cls.opengwas_ods_path)
             pathlib.Path(os.path.dirname(cls.opengwas_ods_path)).mkdir(parents=True, exist_ok=True)
             # sending get request and saving the response as response object
-            r = requests.get(url=opengwas_metadata_url)
+            r = requests.get(url=OpenGWASinfo.opengwas_metadata_url)
 
             # extracting data in json format
             json_dic = r.json()
