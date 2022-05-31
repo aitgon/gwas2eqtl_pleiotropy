@@ -1,54 +1,66 @@
 from eqtl2gwas_pleiotropy.PathManager import PathManager
-
-import os
-import pandas
-import pathlib
-import sys
-import matplotlib.pyplot as plt
-
-from eqtl2gwas_pleiotropy.ReMapCRM import ReMapCRM
 from eqtl2gwas_pleiotropy.URL import URL
-from eqtl2gwas_pleiotropy.constants import label_fontsize
+from pybedtools import BedTool
+
+import matplotlib.pyplot as plt
+import os
+import pathlib
+
 
 #%%
+from eqtl2gwas_pleiotropy.constants import label_fontsize
+
 plt.rcParams["figure.figsize"] = (8, 6)
 ylabel = "Prob. Density"
 
 #%% Input
-variant_pleio_flank_0_bed_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "variant_pleio_{}_flank_0.bed")
-# if not os.path.isfile(variant_pleio_flank_0_bed_path):
-#     print("input file does not exit")
-#     sys.exit(1)
+variant_pleio_flank_0_bed_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "variant_pleio_{}_flank_{}.bed")
 
 #%% Output
 if not '__file__' in locals():
-    outdir_path = os.path.join(PathManager.get_outdir_path(), "intersect_variant_remap_crm.py")
+    outdir_path = os.path.join(PathManager.get_outdir_path(), "plt_hist_remap_crm.py")
 else:
     outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-out_tsv_path = os.path.join(outdir_path, "todo.tsv")
+url_str = "http://remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"
+remap_crm_path = URL(url_str, data_public_dir="/home/gonzalez/Software/public").download()
 
 #%%
-# count_per_rsid_gwas_df = pandas.read_csv(variant_pleio_flank_0_bed_path, sep="\t")
+ylim = [0, 0.07]
+xlim = [0, 1000]
+bins = 50
+flank = 0  # 0 or 50
+remap_crm_bed_obj = BedTool(remap_crm_path)
 
-#%%
-# import requests
-# # Define the remote file to retrieve
-# remote_url = 'https://www.google.com/robots.txt'
-# # Define the local filename to save data
-# local_file = 'local_copy.txt'
-# # Make http request for remote file data
-# data = requests.get(remote_url)
-# # Save file data to local copy
-# with open(local_file, 'wb')as file:
-# file.write(data.content)
+#%% pleio 1
+# pleio_i = 1
+# pleio1_bed_obj = BedTool(variant_pleio_flank_0_bed_path.format(pleio_i, flank))
+# intersected_pleio1_path = pleio1_bed_obj.intersect(pleio1_bed_obj, wb=True)
+# intersected_pleio1_df = intersected_pleio1_path.to_dataframe(names=range(intersected_pleio1_path.to_dataframe().shape[1]))
+# intersected_pleio1_df['tf_count'] = intersected_pleio1_df[3].str.split(',').apply(len)
 
-remap_crm_path = URL("http://remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz", data_public_dir="/home/gonzalez/Software/public").download()
+pleioprev_count_lst = \
+remap_crm_bed_obj.intersect(BedTool(variant_pleio_flank_0_bed_path.format(1, flank)), wb=True).to_dataframe(
+    names=range(0, 16))[3].str.split(',').apply(len)
 
-#%%
-# ReMapCRM().download()
-remap_crm_path = "/home/gonzalez/Software2/public/remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"
+for pleio_i in range(2, 6):
+    pleioi_count_lst = remap_crm_bed_obj.intersect(BedTool(variant_pleio_flank_0_bed_path.format(pleio_i, flank)), wb=True).to_dataframe(names=range(0, 16))[3].str.split(',').apply(len)
+    plt.ylim(ylim)
+    plt.xlim(xlim)
+    plt.hist(pleioprev_count_lst, alpha=0.5, label='pleio {}'.format(1), density=True, bins=bins)
+    plt.hist(pleioi_count_lst, alpha=0.5, label='pleio {}'.format(pleio_i), density=True, bins=bins)
+    plt.grid(axis='y')
+    plt.legend(loc='upper right', fontsize=label_fontsize)
+    png_path = os.path.join(outdir_path, "remap_crm_pleio{}_flank_{}_hist.png".format(pleio_i, flank))
+    plt.savefig(png_path)
+    plt.clf()
+    plt.close()
+
+# plt.hist(count_gwas_per_egene_lst, alpha=0.5, density=density, label='{} pleio {}'.format(sel_cols[0], p_count),
+#          bins=range(22))  # density=False would make counts
+# plt.hist(distr_back_egene_to_gwas_lst, alpha=0.5, density=density, label='{} all'.format(sel_cols[0]),
+#          bins=range(22))  # density=False would make counts
 
 #%%
 # m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])

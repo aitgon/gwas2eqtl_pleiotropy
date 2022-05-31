@@ -2,6 +2,7 @@ crossmap
 matplotlib
 odfpy
 pandas
+pybedtools
 requests
 seaborn
 snakemake
