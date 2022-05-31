@@ -55,26 +55,34 @@ segregated_df = m_df[[sel_cols[0], 'gwas_subcategory_count']].sort_values(by='gw
 segregated_df = segregated_df.drop_duplicates(sel_cols[0], keep='first')
 
 #%%
+label_fontsize = 30
+tick_fontsize = 24
+xlabel = "# eGenes"
+ylabel = "Probability density"
+
 distr_back_egene_to_gwas_lst = m_df[sel_cols].drop_duplicates().groupby([sel_cols[0]]).count()[sel_cols[1]].to_list()  # background
 for density in [False, True]:
     for p_count in range(1, 6):
-        title = "Distrib. eGene per variant - {} Categories".format(p_count)
+        title = "eGenes per variant - Pleiotropy {}.".format(p_count)
         this_variable_p_df = segregated_df.loc[segregated_df['gwas_subcategory_count'] == p_count, ]
         selected_df = m_df.merge(this_variable_p_df, on=sel_cols[0])[sel_cols].drop_duplicates()
         count_gwas_per_egene_lst = selected_df.groupby([sel_cols[0]]).count()[sel_cols[1]].to_list()
         bins = range(max(distr_back_egene_to_gwas_lst)+1)
         plt.title(title, fontsize=label_fontsize)
-        plt.xlabel("# {}".format(sel_cols[1]), fontsize=label_fontsize)
+        plt.xlabel(xlabel, fontsize=label_fontsize)
         if density:
             plt.ylim([0, 1])
-            plt.ylabel("Probability {}".format(sel_cols[0]), fontsize=label_fontsize)
+            plt.ylabel(ylabel, fontsize=label_fontsize)
         else:
             plt.ylabel("# {}".format(sel_cols[0]), fontsize=label_fontsize)
-        plt.hist(count_gwas_per_egene_lst, alpha=0.5, density=density, label='{} pleio {}'.format(sel_cols[0], p_count), bins=range(22))  # density=False would make counts
-        plt.hist(distr_back_egene_to_gwas_lst, alpha=0.5, density=density, label='{} all'.format(sel_cols[0]), bins=range(22))  # density=False would make counts
+        plt.hist(count_gwas_per_egene_lst, alpha=0.5, density=density, label='Variants: Pleio. {}'.format(p_count), bins=range(22))  # density=False would make counts
+        plt.hist(distr_back_egene_to_gwas_lst, alpha=0.5, density=density, label='All variants'.format(), bins=range(22))  # density=False would make counts
         plt.grid(axis='y')
         plt.legend(loc='upper right', fontsize=label_fontsize)
         png_path = os.path.join(outdir_path, 'hist_density_{}_distr_{}_per_{}_p{}.png'.format(density, sel_cols[1], sel_cols[0], p_count))
-        plt.savefig(png_path)
+        if density:
+            plt.savefig(png_path, dpi=600)
+        else:
+            plt.savefig(png_path)
         plt.clf()
         plt.close()
