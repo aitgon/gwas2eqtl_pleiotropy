@@ -68,41 +68,61 @@ start = math.nan
 end = math.nan
 gwas_subcategory_count = 0
 gwas_subcategory_lst = math.nan
+category_lst = []
 
 for i, row in df.iterrows():
+    # beginning of region, set start, start category list, store category
     if row['region_pleio'] and not region_pleio_prev:
         start = row['pos']
         gwas_subcategory_count = row['gwas_subcategory_count']
         gwas_subcategory_lst = row['gwas_subcategory_lst']
+        category_lst = row['gwas_subcategory_lst'].split(",")
+    # end of region, set end, store category
     elif not row['region_pleio'] and region_pleio_prev:
         end = pos_prev
+    # middle of region, store categories
     if row['region_pleio'] and row['gwas_subcategory_count'] > gwas_subcategory_count:
         gwas_subcategory_count = row['gwas_subcategory_count']
         gwas_subcategory_lst = row['gwas_subcategory_lst']
+        category_lst = category_lst + row['gwas_subcategory_lst'].split(",")
+    # reset start and end, store region
     if not math.isnan(start) and not math.isnan(end):
-        region_lst.append([row['chrom'], start, end, gwas_subcategory_count, gwas_subcategory_lst])
+        # region_lst.append([row['chrom'], start, end, gwas_subcategory_count, gwas_subcategory_lst, category_lst])
+        # import pdb; pdb.set_trace()
+        category_lst = sorted([*set(category_lst)])
+        category_str = ','.join(category_lst)
+        region_lst.append([row['chrom'], start, end, len(category_lst), category_str])
         start = math.nan
         end = math.nan
         gwas_subcategory_count = 0
     pos_prev = row['pos']
     region_pleio_prev = row['region_pleio']
-pleio_bed_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_subcategory_count', 'gwas_subcategory_lst'])
-pleio_bed_df['start'] = pleio_bed_df['start'] - 1
-pleio_bed_df['chrom'] = 'chr' + pleio_bed_df['chrom'].astype('str')
 
+# tsv
+# import pdb; pdb.set_trace()
+# pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_category_count', 'gwas_category_lst']).to_csv("df2.tsv", sep="\t", index=False)
+# pleio_bed_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_subcategory_count', 'gwas_subcategory_lst'])
+regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
+pleio_tsv_path = os.path.join(outdir_path, "region_window_{}.tsv".format(region_bin))
+regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
+
+# bed
+regions_pleio_df['start'] = regions_pleio_df['start'] - 1
+regions_pleio_df['chrom'] = 'chr' + regions_pleio_df['chrom'].astype('str')
 pleio_bed_path = os.path.join(outdir_path, "region_window_{}.bed".format(region_bin))
-pleio_bed_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
+regions_pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
 
 #%########################################### bed files
 for count_pleio in range(1, 6):
     region_pleio_i_bed_path = os.path.join(outdir_path, "region_window_{}_pleio_{}.bed".format(region_bin, count_pleio))
-    region_pleio_i_df = pleio_bed_df.loc[pleio_bed_df['gwas_subcategory_count'] == count_pleio, ]
+    region_pleio_i_df = regions_pleio_df.loc[regions_pleio_df['gwas_category_count'] == count_pleio,]
     region_pleio_i_df.to_csv(region_pleio_i_bed_path, sep="\t", index=False, header=False)
+
 
 #%##############
 # histogram
 plt.rcParams["figure.figsize"] = (8, 6)
-region_lenght_ser = (pleio_bed_df['end'] - pleio_bed_df['start'])
+region_lenght_ser = (regions_pleio_df['end'] - regions_pleio_df['start'])
 
 ylabel = "# Regions"
 title = "Length Distribution of Pleiotropic Regions"
