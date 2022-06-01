@@ -9,3 +9,4 @@ snakemake
 sqlalchemy
 statannot
 statsmodels
+termcolor

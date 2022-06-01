@@ -20,7 +20,6 @@ outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__fil
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 h4_annotated_tsv_path = os.path.join(outdir_path, 'h4_annotated.tsv')
-# import pdb; pdb.set_trace()
 #%% Download eQTL annotations
 eqtl_info_df = EBIeQTLinfo().df
 eqtl_info_df.rename({'identifier': "eqtl_identifier", 'tissue_label': 'etissue_subcategory'}, axis=1, inplace=True)

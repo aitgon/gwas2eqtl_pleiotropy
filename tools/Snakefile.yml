@@ -156,11 +156,13 @@ rule cmpt_pleiotropic_regions:
 
 rule count_per_rsid:
     input:
-        "out/filter_h4.py/coloc_h4.tsv"
+        "out/annotate_h4.py/h4_annotated.tsv",
     output:
         "out/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
         "out/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
+        "out/cmpt_count_per_rsid.py/variant_pleio_5_flank_0.bed",
+        "out/cmpt_count_per_rsid.py/variant_pleio_5_flank_50.bed",
     shell:
         "python scripts/cmpt_count_per_rsid.py"
 

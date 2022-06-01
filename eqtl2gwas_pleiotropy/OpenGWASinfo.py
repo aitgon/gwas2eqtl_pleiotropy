@@ -33,6 +33,7 @@ class OpenGWASinfo:
             # self._df = pandas.read_csv(self.opengwas_ods_path, sep="\t")
             if not os.path.isfile(self.opengwas_ods_path):
                 self.download()
+            # import pdb; pdb.set_trace()
             self._df = pandas.read_excel(self.opengwas_ods_path, engine="odf")
             self._df = self._df.loc[self._df["population"] == "European"]
 
