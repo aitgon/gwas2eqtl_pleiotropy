@@ -5,7 +5,7 @@ import pandas
 import pathlib
 import sys
 import matplotlib.pyplot as plt
-from eqtl2gwas_pleiotropy.constants import label_fontsize
+from eqtl2gwas_pleiotropy.constants import label_fontsize, dpi
 
 plt.rcParams["figure.figsize"] = (8, 6)
 ylabel = "Prob. Density"
@@ -57,8 +57,6 @@ segregated_df = m_df[[sel_cols[0], 'gwas_subcategory_count']].sort_values(by='gw
 segregated_df = segregated_df.drop_duplicates(sel_cols[0], keep='first')
 
 #%%
-label_fontsize = 30
-tick_fontsize = 24
 xlabel = "# GWAS traits"
 ylabel = "Probability density"
 
@@ -83,7 +81,7 @@ for density in [False, True]:
         plt.legend(loc='upper right', fontsize=label_fontsize)
         png_path = os.path.join(outdir_path, 'hist_density_{}_distr_{}_per_{}_p{}.png'.format(density, sel_cols[1], sel_cols[0], p_count))
         if density:
-            plt.savefig(png_path, dpi=600)
+            plt.savefig(png_path, dpi=dpi)
         else:
             plt.savefig(png_path)
         plt.clf()

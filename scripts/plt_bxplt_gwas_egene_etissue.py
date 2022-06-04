@@ -8,6 +8,10 @@ import pandas
 import pathlib
 import seaborn as sns
 
+from eqtl2gwas_pleiotropy.constants import label_fontsize
+
+plt.rcParams["figure.figsize"] = (8, 6)
+
 #%% Output
 if not '__file__' in locals():
     __file__ = "plt_bxplt_gwas_egene_etissue.py"
@@ -37,8 +41,11 @@ test_results = add_stat_annotation(ax, data=merged_df, x="gwas_subcategory_count
                                    box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5)],
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
-fig = ax.get_figure()
+plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.ylabel("eTissue count", fontsize=label_fontsize)
+plt.tight_layout()
 png_path = os.path.join(outdir_path, "boxplot_gwas_egene.png")
+fig = ax.get_figure()
 fig.savefig(png_path)
 plt.clf()
 plt.close()
@@ -50,6 +57,9 @@ test_results = add_stat_annotation(ax, data=merged_df, x="gwas_subcategory_count
                                    box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5)],
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
+plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.ylabel("eGene count", fontsize=label_fontsize)
+plt.tight_layout()
 fig = ax.get_figure()
 png_path = os.path.join(outdir_path, "boxplot_gwas_etissue.png")
 fig.savefig(png_path)

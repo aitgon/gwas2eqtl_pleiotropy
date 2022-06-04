@@ -1,10 +1,12 @@
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
-from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, scatter_dot_size
+from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, scatter_dot_size, dpi
 
 import os
 import pandas
 import pathlib
+
+plt.rcParams["figure.figsize"] = (8, 6)
 
 #%% input dir cmpt_count_per_rsid
 basename_str = "count_per_rsid_etissue.tsv"
@@ -47,9 +49,12 @@ for rowi, row in pleiotropic_regions_df.iterrows():
     plt.xticks(fontsize=tick_fontsize)
     plt.yticks(fontsize=tick_fontsize)
     plt.title(title, fontsize=label_fontsize)
-    plt.xlabel("Position Chr{} [Mbp]".format(chrom), fontsize=label_fontsize)
-    plt.ylabel("eTissue Count", fontsize=label_fontsize)
+    plt.xlabel("Chr{} position [Mbp]".format(chrom), fontsize=label_fontsize)
+    plt.ylabel("eTissue ct.", fontsize=label_fontsize)
     plt.ylim(ylim)
+    plt.tight_layout()
     png_path = os.path.join(outdir_path, "count_per_rsid_chr{}_start{}_end{}_categories{}.png".format(chrom, start, end, gwas_category_count))
-    plt.savefig(png_path)
+    if gwas_category_count >= 5:
+        plt.savefig(png_path, dpi=dpi)
+    plt.clf()
     plt.close()

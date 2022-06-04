@@ -19,6 +19,7 @@ h4_cutoff = 0.8  # coloc cutoff
 region_bin = 100000  # region bin to define as pleiotropic
 
 # Pyplot constants
-label_fontsize = 20
-tick_fontsize = 10
+label_fontsize = 30
+tick_fontsize = 24
 scatter_dot_size = 50
+dpi = 150  # for publication 600, for ongoing 150
