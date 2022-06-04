@@ -99,9 +99,6 @@ for i, row in df.iterrows():
     region_pleio_prev = row['region_pleio']
 
 # tsv
-# import pdb; pdb.set_trace()
-# pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_category_count', 'gwas_category_lst']).to_csv("df2.tsv", sep="\t", index=False)
-# pleio_bed_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_subcategory_count', 'gwas_subcategory_lst'])
 regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
 pleio_tsv_path = os.path.join(outdir_path, "region_window_{}.tsv".format(region_bin))
 regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)

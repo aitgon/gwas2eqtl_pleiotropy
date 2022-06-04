@@ -18,22 +18,6 @@ h4_cutoff = 0.8  # coloc cutoff
 
 region_bin = 100000  # region bin to define as pleiotropic
 
-# Pleiotropic regions with 5 categories
-pleiotropic_regions_5 = [
-    [2, 27508073, 27519736],
-    [3, 141375367, 141428572],
-    [11, 61783884, 61855668],
-    [16, 28743363, 28908020],
-]
-
-# Pleiotropic regions with 4 categories
-pleiotropic_regions_4 = [
-    [5, 132254564, 132485305],
-    [6, 31629923, 32460012],
-    [16, 28478025, 28620700],
-    [19, 48700572, 48714803],
-]
-
 # Pyplot constants
 label_fontsize = 20
 tick_fontsize = 10
