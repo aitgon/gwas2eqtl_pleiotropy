@@ -1,4 +1,5 @@
 """This script will compute a tissue enrichment in a given GWAS"""
+import multiprocessing
 import os
 import pathlib
 import shlex
@@ -9,33 +10,43 @@ import pandas
 
 from scipy.stats import binomtest
 from statsmodels.stats.multitest import multipletests
+
+from eqtl2gwas_pleiotropy.Logger import Logger
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from eqtl2gwas_pleiotropy.URL import URL
 from eqtl2gwas_pleiotropy.constants import coloc_h4_tsv_path
 
 #%% download gencode annotation
-url = "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz"
+url = "http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz"
 gencode_gtf_path = URL(url).download()
 
 #%% download chrom sizes
-url = "https://raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"
+url = "http://raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"
 chrom_sizes_path = URL(url).download()
 
-#%%
-bed_path = "/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/cmpt_count_per_rsid.py/variant_pleio_4_flank_0.bed"
-ologram_tsv_path = "ologram.tsv"
-ologram_cmd_str = "/home/gonzalez/Software/miniconda/envs/pygtftk/bin/gtftk ologram -i {gencode_gtf_path} -p {bed_path} -c {chrom_sizes_path} -u 1000 -d 1000 -D --tsv-file-path {ologram_tsv_path} -k 8"
-# import pdb; pdb.set_trace()
-ologram_cmd_str = ologram_cmd_str.format(**{'gencode_gtf_path': gencode_gtf_path, 'bed_path': bed_path, 'chrom_sizes_path': chrom_sizes_path, 'ologram_tsv_path': ologram_tsv_path})
-print(ologram_cmd_str)
-result = subprocess.run(shlex.split(ologram_cmd_str))
+#%% outdir path
+if not '__file__' in locals():
+    __file__ = "cmpt_genomic_location.py"
+outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
+pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-# #%% Parameters
-# if not '__file__' in locals():
-#     __file__ = "cmpt_genomic_location.py"
-# outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
-# pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
-#
+#%% input dir cmpt_count_per_rsid
+indir_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py")
+
+#%%
+for count_pleio in range(1, 6):
+    bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_0.bed".format(count_pleio))
+    # ologram_tsv_path = "ologram.tsv"
+    ologram_out_dir_path = os.path.join(outdir_path, os.path.basename(bed_path))
+    pathlib.Path(ologram_out_dir_path).mkdir(parents=True, exist_ok=True)
+    cpu_count = multiprocessing.cpu_count()
+    promoter_upstream = 500
+    promoter_downstream = 250
+    ologram_cmd_str = f"/home/gonzalez/Software/miniconda/envs/pygtftk/bin/gtftk ologram -i {gencode_gtf_path} -p {bed_path} -c {chrom_sizes_path} -u {promoter_upstream} -d {promoter_downstream} -D -o {ologram_out_dir_path} -k {cpu_count}"
+    ologram_cmd_str = ologram_cmd_str.format(**{'gencode_gtf_path': gencode_gtf_path, 'bed_path': bed_path, 'chrom_sizes_path': chrom_sizes_path, 'ologram_out_dir_path': ologram_out_dir_path, 'cpu_count': cpu_count, 'promoter_upstream': promoter_upstream, 'promoter_downstream': promoter_downstream})
+    Logger.info(ologram_cmd_str)
+    result = subprocess.run(shlex.split(ologram_cmd_str))
+
 # #%%
 # df_raw = pandas.read_csv(coloc_h4_tsv_path, sep="\t")
 #
