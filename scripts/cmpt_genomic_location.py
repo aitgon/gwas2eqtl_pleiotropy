@@ -14,11 +14,11 @@ from eqtl2gwas_pleiotropy.URL import URL
 from eqtl2gwas_pleiotropy.constants import coloc_h4_tsv_path
 
 #%% download gencode annotation
-url = "https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz"
+url = "http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz"
 gencode_gtf_path = URL(url).download()
 
 #%% download chrom sizes
-url = "https://raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"
+url = "http://raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"
 chrom_sizes_path = URL(url).download()
 
 #%%
