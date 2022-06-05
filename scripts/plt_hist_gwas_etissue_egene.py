@@ -1,4 +1,6 @@
 #%%
+import pdb
+
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 
 import matplotlib.pyplot as plt
@@ -7,7 +9,7 @@ import os
 import pandas
 import pathlib
 
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize
+from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 
 plt.rcParams["figure.figsize"] = (8, 6)
 
@@ -27,68 +29,73 @@ etissue_count_tsv_path = os.path.join(indir_path, "count_per_rsid_etissue.tsv")
 egene_count_tsv_path = os.path.join(indir_path, "count_per_rsid_egene.tsv")
 
 #%%
-ylabel = "Prob. Density"
-title = "Colocalized variants{}"
-ylim=[1e-10, 1]
+ylabel = "Probability density"
+title = "Variants{}"
+ylim=[1e-10, 10]
 edgecolor='k'
-
 linewidth = 2
-
 hist_kwargs = {'density': 1, 'edgecolor': edgecolor, 'linewidth': linewidth}
 
-#%%
-egene_count_df = pandas.read_csv(egene_count_tsv_path, sep="\t", header=0)
-bins = (numpy.array(range(8)))/2*10
-# print(bins)
-ax = egene_count_df['egene_count'].hist(**hist_kwargs, bins=bins)
-ax.set_xlabel("# eQTL genes", fontsize=label_fontsize)
-ax.set_ylabel(ylabel, fontsize=label_fontsize)
-ax.set_yscale('log')
-ax.set_ylim(ylim)
-plt.xticks(fontsize=tick_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-plt.title(title.format(" and eQTL genes"), fontsize=label_fontsize)
-fig = ax.get_figure()
-png_path = os.path.join(outdir_path, "hist_egene.png")
-fig.savefig(png_path)
-plt.clf()
-plt.close()
-
-#%%
-
-etissue_count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
-bins = (numpy.array(range(11)))*10
-# print(bins)
-ax = etissue_count_df['etissue_subcategory_count'].hist(**hist_kwargs, bins=bins)
-ax.set_xlabel("# eQTL samples", fontsize=label_fontsize)
-ax.set_ylabel(ylabel, fontsize=label_fontsize)
-ax.set_yscale('log')
-ax.set_ylim(ylim)
-plt.xticks(fontsize=tick_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-plt.title(title.format(" and eQTL tissues"), fontsize=label_fontsize)
-fig = ax.get_figure()
-png_path = os.path.join(outdir_path, "hist_etissue.png")
-fig.savefig(png_path)
-plt.clf()
-plt.close()
-
-#%%
-gwas_count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
+#%% gwas
+count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
 bins = numpy.array(range(6))
-ax = gwas_count_df['gwas_subcategory_count'].hist(**hist_kwargs, bins=bins)
+data_ser = count_df['gwas_subcategory_count']
+plt.hist(data_ser, **hist_kwargs, bins=bins)
 
-ax.set_yscale('log')
-ax.set_xlabel("# GWAS Categories", fontsize=label_fontsize)
-ax.set_ylabel(ylabel, fontsize=label_fontsize)
-# ax.set_xlim([0, 6])
-ax.set_ylim(ylim)
-plt.xticks(fontsize=tick_fontsize)
-plt.yticks(fontsize=tick_fontsize)
+plt.grid(True)
 plt.title(title.format(" and GWAS categories"), fontsize=label_fontsize)
+plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.ylim(ylim)
+plt.yscale('log')
+plt.yticks(fontsize=tick_fontsize)
 
-fig = ax.get_figure()
+plt.tight_layout()
 png_path = os.path.join(outdir_path, "hist_gwas.png")
-fig.savefig(png_path)
+plt.savefig(png_path, dpi=dpi)
+plt.clf()
+plt.close()
+
+#%% egene
+count_df = pandas.read_csv(egene_count_tsv_path, sep="\t", header=0)
+data_ser = count_df['egene_count']
+plt.hist(data_ser, **hist_kwargs)
+
+plt.grid(True)
+plt.title(title.format(" and eGenes"), fontsize=label_fontsize)
+plt.xlabel("eGene count", fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.ylim(ylim)
+plt.yscale('log')
+plt.yticks(fontsize=tick_fontsize)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "hist_egene.png")
+plt.savefig(png_path, dpi=dpi)
+plt.clf()
+plt.close()
+
+#%% etissue
+count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
+data_ser = count_df['etissue_subcategory_count']
+plt.hist(data_ser, **hist_kwargs)
+
+plt.grid(True)
+plt.title(title.format(" and eTissues"), fontsize=label_fontsize)
+plt.xlabel("eTissue count", fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.ylim(ylim)
+plt.yscale('log')
+plt.yticks(fontsize=tick_fontsize)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "hist_etissue.png")
+plt.savefig(png_path, dpi=dpi)
 plt.clf()
 plt.close()
