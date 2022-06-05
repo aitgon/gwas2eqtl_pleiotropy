@@ -45,13 +45,15 @@ for rowi, row in pleiotropic_regions_df.iterrows():
 
     #%%
     plt.scatter(count_per_rsid_gwas_region_df['pos'] / 1000000, count_per_rsid_gwas_region_df[count_col_name], c='blue', s=scatter_dot_size)
+
     plt.grid(True)
-    plt.xticks(fontsize=tick_fontsize)
+    plt.xticks(fontsize=tick_fontsize, rotation=45)
     plt.yticks(fontsize=tick_fontsize)
     plt.title(title, fontsize=label_fontsize)
     plt.xlabel("Chr{} position [Mbp]".format(chrom), fontsize=label_fontsize)
-    plt.ylabel("eTissue ct.", fontsize=label_fontsize)
+    plt.ylabel("eTissue count", fontsize=label_fontsize)
     plt.ylim(ylim)
+
     plt.tight_layout()
     png_path = os.path.join(outdir_path, "count_per_rsid_chr{}_start{}_end{}_categories{}.png".format(chrom, start, end, gwas_category_count))
     if gwas_category_count >= 5:
