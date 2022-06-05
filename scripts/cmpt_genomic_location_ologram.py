@@ -4,17 +4,11 @@ import os
 import pathlib
 import shlex
 import subprocess
-import sys
-
-import pandas
-
-from scipy.stats import binomtest
-from statsmodels.stats.multitest import multipletests
 
 from eqtl2gwas_pleiotropy.Logger import Logger
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from eqtl2gwas_pleiotropy.URL import URL
-from eqtl2gwas_pleiotropy.constants import coloc_h4_tsv_path
+
 
 #%% download gencode annotation
 url = "http://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_40/gencode.v40.annotation.gtf.gz"
@@ -26,7 +20,7 @@ chrom_sizes_path = URL(url).download()
 
 #%% outdir path
 if not '__file__' in locals():
-    __file__ = "cmpt_genomic_location.py"
+    __file__ = "cmpt_genomic_location_ologram.py"
 outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
