@@ -41,10 +41,13 @@ test_results = add_stat_annotation(ax, data=merged_df, x="gwas_subcategory_count
                                    box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5)],
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.yticks(fontsize=tick_fontsize)
+
+plt.title("GWAS category and eGene count", fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel("eTissue count", fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+
 plt.tight_layout()
 png_path = os.path.join(outdir_path, "boxplot_gwas_egene.png")
 fig = ax.get_figure()
@@ -60,6 +63,7 @@ test_results = add_stat_annotation(ax, data=merged_df, x="gwas_subcategory_count
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
 
+plt.title("GWAS category and eTissue count", fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel("eGene count", fontsize=label_fontsize)

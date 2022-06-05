@@ -1,5 +1,5 @@
 from eqtl2gwas_pleiotropy.PathManager import PathManager
-from eqtl2gwas_pleiotropy.constants import region_bin
+from eqtl2gwas_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from matplotlib import pyplot as plt
 
 import math
@@ -121,29 +121,30 @@ for count_pleio in range(1, 6):
 plt.rcParams["figure.figsize"] = (8, 6)
 region_lenght_ser = (regions_pleio_df['end'] - regions_pleio_df['start'])
 
-ylabel = "# Regions"
-title = "Length Distribution of Pleiotropic Regions"
+ylabel = "Count"
+title = "Lengths of pleiotropic regions"
 ylim=[1e-10, 1]
 edgecolor='k'
-label_fontsize = 20
-tick_fontsize = 10
 linewidth = 2
 
 hist_kwargs = {'density': False, 'edgecolor': edgecolor, 'linewidth': linewidth}
 
 #%%
-bins = numpy.array(range(11))*100000
-ax = region_lenght_ser.hist(**hist_kwargs, bins=bins)
+# bins = numpy.array(range(11))*100000
+# import pdb; pdb.set_trace()
+plt.hist(region_lenght_ser/1000000, **hist_kwargs)
 
-ax.set_xlabel("Region Length [bp]", fontsize=label_fontsize)
-ax.set_ylabel(ylabel, fontsize=label_fontsize)
-ax.set_yscale('log')
+plt.grid(axis='y')
 plt.title(title, fontsize=label_fontsize)
+plt.xlabel("Region length [Mbp]", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
-fig = ax.get_figure()
+plt.tight_layout()
+# fig = ax.get_figure()
 png_path = os.path.join(outdir_path, "regions_{}_length_hist.png".format(region_bin))
-fig.savefig(png_path)
+plt.savefig(png_path)
 plt.clf()
 plt.close()
