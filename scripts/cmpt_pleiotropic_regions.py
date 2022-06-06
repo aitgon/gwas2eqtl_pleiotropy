@@ -20,7 +20,7 @@ count_per_rsid_gwas_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt
 df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
 #%% Do it forward
-df.sort_values(by=['chrom', 'pos'], inplace=True, ascending=[True, True])
+df.sort_values(by=['chrom', 'pos'], inplace=True, agascending=[True, True])
 more_than_1 = 0
 chrom_pleio_latest = 0
 pos_pleio_latest = -99999

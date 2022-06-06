@@ -39,4 +39,5 @@ coloc_h4_df = coloc_h4_df.merge(open_gwas_df, on='gwas_identifier')
 coloc_h4_df = coloc_h4_df.merge(eqtl_info_df[['eqtl_identifier', 'etissue_subcategory']].drop_duplicates(), on='eqtl_identifier')
 
 #%%
+coloc_h4_df.sort_values(by=coloc_h4_df.columns.tolist(), inplace=True)
 coloc_h4_df.to_csv(h4_annotated_tsv_path, sep="\t", index=False)
