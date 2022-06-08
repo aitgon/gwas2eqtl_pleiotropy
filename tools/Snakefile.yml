@@ -31,10 +31,11 @@ rule targets:
         "out/plt_hist_gwas_per_egene.py/hist_density_True_distr_gwas_trait_name_per_egene_p5.png",
         "out/plt_hist_remap_crm.py/remap_crm_pleio5_flank_0_hist.png",
         "out/plt_hist_remap_crm.py/remap_crm_pleio5_flank_50_hist.png",
-        "out/plt_overlap_crm_remap.py/remap_crm_bar_plot_ratio_variants.png",
+        #"out/plt_overlap_crm_remap.py/remap_crm_bar_plot_ratio_variants.png",
 
 rule plt_overlap_crm_remap:
     input:
+        "out/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_1_flank_0.bed",
         "out/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_5_flank_0.bed",
     output:
         "out/plt_overlap_crm_remap.py/remap_crm_bar_plot_ratio_variants.png",
@@ -43,8 +44,10 @@ rule plt_overlap_crm_remap:
 
 rule cmpt_overlap_crm_remap:
     input:
+        "out/cmpt_count_per_rsid.py/variant_pleio_1_flank_0.bed",
         "out/cmpt_count_per_rsid.py/variant_pleio_5_flank_0.bed",
     output:
+        "out/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_1_flank_0.bed",
         "out/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_5_flank_0.bed",
     shell:
         "python scripts/cmpt_overlap_crm_remap.py"

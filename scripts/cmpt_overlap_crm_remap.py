@@ -28,11 +28,12 @@ indir_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py
 for count_pleio in range(1, 6):
     bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_0.bed".format(count_pleio))
     intersect_bed_path = os.path.join(outdir_path, "remap_crm_" + os.path.basename(bed_path))
-    bedtool_intersect = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -wb"
-    bedtool_intersect = bedtool_intersect.format(**{'bed_path': bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
-    Logger.info(bedtool_intersect)
+    cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -wb"
+    cmd = cmd_stf.format(**{'bed_path': bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
+    Logger.info(cmd)
+    # import pdb; pdb.set_trace()
     with open(intersect_bed_path, 'w') as fout:
-        result = subprocess.run(shlex.split(bedtool_intersect), stdout=fout)
+        result = subprocess.run(shlex.split(cmd), stdout=fout)
 
 #%% barplot with proportion of variants in CRMs
 x_lst = []
