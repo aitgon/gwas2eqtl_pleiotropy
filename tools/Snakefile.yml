@@ -31,7 +31,17 @@ rule targets:
         "out/plt_hist_gwas_per_egene.py/hist_density_True_distr_gwas_trait_name_per_egene_p5.png",
         "out/plt_hist_remap_crm.py/remap_crm_pleio5_flank_0_hist.png",
         "out/plt_hist_remap_crm.py/remap_crm_pleio5_flank_50_hist.png",
+        "out/plt_bar_nonredundant_variant_category_percentage.py/non_redundant_variant_category_pleio2.png",
         #"out/plt_overlap_crm_remap.py/remap_crm_bar_plot_ratio_variants.png",
+
+rule plt_bar_nonredundant_variant_category_percentage:
+    input:
+        "out/annotate_h4.py/h4_annotated.tsv",
+        "out/cmpt_pleiotropic_regions.py/region_window_100000.bed",
+    output:
+        "out/plt_bar_nonredundant_variant_category_percentage.py/non_redundant_variant_category_pleio2.png",
+    shell:
+        "python scripts/plt_bar_nonredundant_variant_category_percentage.py"
 
 rule plt_overlap_crm_remap:
     input:
