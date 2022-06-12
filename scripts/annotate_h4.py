@@ -38,6 +38,15 @@ coloc_h4_df = pandas.read_csv(coloc_h4_tsv_path, sep="\t")
 coloc_h4_df = coloc_h4_df.merge(open_gwas_df, on='gwas_identifier')
 coloc_h4_df = coloc_h4_df.merge(eqtl_info_df[['eqtl_identifier', 'etissue_subcategory']].drop_duplicates(), on='eqtl_identifier')
 
-#%%
+#%% TSV
 coloc_h4_df.sort_values(by=coloc_h4_df.columns.tolist(), inplace=True)
 coloc_h4_df.to_csv(h4_annotated_tsv_path, sep="\t", index=False)
+
+#%% BED
+coloc_h4_bed_df = coloc_h4_df.rename({'chrom': '#chrom', 'pos': 'end'}, axis=1)
+coloc_h4_bed_df['#chrom'] = 'chr' + coloc_h4_bed_df['#chrom'].astype('str')
+# coloc_h4_bed_df['start'] = coloc_h4_bed_df['end'] - 1
+coloc_h4_bed_df.insert(1, 'start', coloc_h4_bed_df['end'] - 1)
+h4_annotated_bed_path = os.path.join(outdir_path, 'h4_annotated.bed')
+coloc_h4_bed_df.sort_values(by=coloc_h4_bed_df.columns.tolist(), inplace=True)
+coloc_h4_bed_df.to_csv(h4_annotated_bed_path, sep="\t", index=False)
