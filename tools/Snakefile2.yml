@@ -184,18 +184,6 @@
 #    shell:
 #        "python scripts/cmpt_pleiotropic_regions.py"
 #
-#rule count_per_rsid:
-#    input:
-#        "out2/annotate_h4.py/h4_annotated.tsv",
-#    output:
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
-#        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_0.bed",
-#        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_50.bed",
-#    shell:
-#        "python scripts/cmpt_count_per_rsid.py"
-#
 #rule count_per_bin:
 #    input:
 #        "out2/filter_h4.py/coloc_h4.tsv"
@@ -212,6 +200,18 @@ rule all:
         ods = "out/manual_annotation/annotate_h4.py/h4_annotated.ods",
         bed = "out/manual_annotation/annotate_h4.py/h4_annotated.bed",
 
+rule count_per_rsid:
+    input:
+        "out2/annotate_h4.py/h4_annotated.tsv",
+    output:
+        "out2/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
+        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
+        "out2/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
+        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_0.bed",
+        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_50.bed",
+    shell:
+        "python scripts/cmpt_count_per_rsid.py"
+
 rule h4_annotated:
     input:
         coloc = "out/manual_annotation/filter_h4.py/coloc_h4.tsv",
@@ -220,12 +220,12 @@ rule h4_annotated:
         ods = "out/manual_annotation/annotate_h4.py/h4_annotated.ods",
         bed = "out/manual_annotation/annotate_h4.py/h4_annotated.bed",
     shell:
-        "python scripts/annotate_h4.py {input.coloc} {input.annot} {output.ods} {input.bed}"
+        "python scripts/annotate_h4.py {input.coloc} {input.annot} {output.ods} {output.bed}"
 
 rule filter_h4:
     input:
-        "out/manual_annotation/coloc_all/coloc_ncontrol40000_ncase40000_n200000.tsv"
+        tsv="out/manual_annotation/coloc_all/coloc.tsv"
     output:
-        "out/manual_annotation/filter_h4.py/coloc_h4.tsv"
+        tsv="out/manual_annotation/filter_h4.py/coloc_h4.tsv"
     shell:
         "python scripts/filter_h4.py {input.tsv} {output.tsv}"
