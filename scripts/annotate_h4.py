@@ -24,9 +24,10 @@ help_cmd_str = "todo"
 try:
     coloc_h4_tsv_path = sys.argv[1]
     manual_annot_ods_path = sys.argv[2]
-    h4_annotated_ods_path = sys.argv[3]
-    h4_annotated_bed_path = sys.argv[4]
-    if len(sys.argv) > 5:
+    h4_annotated_tsv_path = sys.argv[3]
+    h4_annotated_ods_path = sys.argv[4]
+    h4_annotated_bed_path = sys.argv[5]
+    if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -68,7 +69,7 @@ coloc_h4_df = coloc_h4_df[columns]
 
 #%% TSV
 coloc_h4_df.sort_values(by=coloc_h4_df.columns.tolist(), inplace=True)
-# coloc_h4_df.to_csv(h4_annotated_tsv_path, sep="\t", index=False)
+coloc_h4_df.to_csv(h4_annotated_tsv_path, sep="\t", index=False)
 with pandas.ExcelWriter(h4_annotated_ods_path) as fout:
     coloc_h4_df.to_excel(fout, index=False)
 

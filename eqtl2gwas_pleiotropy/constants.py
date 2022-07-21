@@ -2,8 +2,8 @@ import os
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 
 # Raw colocalization data
+coloc_raw_tsv_path = os.path.join(PathManager.get_outdir_path(), "coloc_all/genome/5e-08/1000000/coloc.tsv")
 coloc_all_path = os.path.join(PathManager.get_project_path(), "out", "coloc_all")
-coloc_raw_tsv_path = os.path.join(coloc_all_path, "coloc_all_20220329.tsv")
 
 public_coloc_all_tsv_path = os.path.join(coloc_all_path, "coloc_all_20220329.tsv")
 coloc_h4_tsv_path = os.path.join(PathManager.get_project_path(), "out", "filter_h4.py/coloc_h4.tsv")

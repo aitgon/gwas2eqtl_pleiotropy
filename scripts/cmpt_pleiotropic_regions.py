@@ -1,3 +1,5 @@
+import sys
+
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from eqtl2gwas_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from matplotlib import pyplot as plt
@@ -9,18 +11,35 @@ import pandas
 import pathlib
 
 
-#%% Outdir
-if not '__file__' in locals():
-    __file__ = "cmpt_pleiotropic_regions.py"
-outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
+# #%% Outdir
+# if not '__file__' in locals():
+#     __file__ = "cmpt_pleiotropic_regions.py"
+# outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
+# pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
+
+#%%
+help_cmd_str = "todo"
+try:
+    count_per_rsid_gwas_tsv_path = sys.argv[1]
+    pleio_tsv_path = sys.argv[2]
+    png_path = sys.argv[3]
+    if len(sys.argv) > 4:
+        print("""Two many arguments!
+        {}""".format(help_cmd_str))
+        sys.exit(1)
+except IndexError:
+    print("""Argument missing!
+    {}""".format(help_cmd_str))
+    sys.exit(1)
+outdir_path = os.path.dirname(pleio_tsv_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-count_per_rsid_gwas_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "count_per_rsid_gwas.tsv")
+# count_per_rsid_gwas_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "count_per_rsid_gwas.tsv")
 df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
 #%% Do it forward
-df.sort_values(by=['chrom', 'pos'], inplace=True, agascending=[True, True])
+df.sort_values(by=['chrom', 'pos'], inplace=True, ascending=[True, True])
 more_than_1 = 0
 chrom_pleio_latest = 0
 pos_pleio_latest = -99999
@@ -30,7 +49,8 @@ df['region_pleio_fwd'] = False
 for i, row in df.iterrows():
     chrom = row['chrom']
     pos = row['pos']
-    if row['gwas_subcategory_count'] > 1:
+    # import pdb; pdb.set_trace()
+    if row['gwas_category_count'] > 1:
         chrom_pleio_latest = chrom
         pos_pleio_latest = pos
     if chrom == chrom_pleio_latest and (pos - pos_pleio_latest) <= region_bin:
@@ -49,7 +69,7 @@ for i, row in df.iterrows():
     chrom = row['chrom']
     pos = row['pos']
     df.loc[i, 'region_pleio'] = False
-    if row['gwas_subcategory_count'] > 1:  # update pos_pleio_latest
+    if row['gwas_category_count'] > 1:  # update pos_pleio_latest
         chrom_pleio_latest = chrom
         pos_pleio_latest = pos
     if chrom == chrom_pleio_latest and (pos_pleio_latest - pos) <= region_bin:
@@ -74,17 +94,17 @@ for i, row in df.iterrows():
     # beginning of region, set start, start category list, store category
     if row['region_pleio'] and not region_pleio_prev:
         start = row['pos']
-        gwas_subcategory_count = row['gwas_subcategory_count']
-        gwas_subcategory_lst = row['gwas_subcategory_lst']
-        category_lst = row['gwas_subcategory_lst'].split(",")
+        gwas_subcategory_count = row['gwas_category_count']
+        gwas_subcategory_lst = row['gwas_category_lst']
+        category_lst = row['gwas_category_lst'].split(",")
     # end of region, set end, store category
     elif not row['region_pleio'] and region_pleio_prev:
         end = pos_prev
     # middle of region, store categories
-    if row['region_pleio'] and row['gwas_subcategory_count'] > gwas_subcategory_count:
-        gwas_subcategory_count = row['gwas_subcategory_count']
-        gwas_subcategory_lst = row['gwas_subcategory_lst']
-        category_lst = category_lst + row['gwas_subcategory_lst'].split(",")
+    if row['region_pleio'] and row['gwas_category_count'] > gwas_subcategory_count:
+        gwas_subcategory_count = row['gwas_category_count']
+        gwas_subcategory_lst = row['gwas_category_lst']
+        category_lst = category_lst + row['gwas_category_lst'].split(",")
     # reset start and end, store region
     if not math.isnan(start) and not math.isnan(end):
         # region_lst.append([row['chrom'], start, end, gwas_subcategory_count, gwas_subcategory_lst, category_lst])
@@ -100,7 +120,7 @@ for i, row in df.iterrows():
 
 # tsv
 regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
-pleio_tsv_path = os.path.join(outdir_path, "region_window_{}.tsv".format(region_bin))
+# pleio_tsv_path = os.path.join(outdir_path, "region_window_{}.tsv".format(region_bin))
 regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
 # bed
@@ -144,7 +164,7 @@ plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 # fig = ax.get_figure()
-png_path = os.path.join(outdir_path, "regions_{}_length_hist.png".format(region_bin))
+# png_path = os.path.join(outdir_path, "regions_{}_length_hist.png".format(region_bin))
 plt.savefig(png_path)
 plt.clf()
 plt.close()

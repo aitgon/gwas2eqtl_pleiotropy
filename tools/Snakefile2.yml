@@ -1,231 +1,47 @@
-#rule targets:
-#    input:
-#        "out2/plt_hist_gwas_etissue_egene.py/hist_egene.png",
-#        "out2/plt_hist_gwas_etissue_egene.py/hist_etissue.png",
-#        "out2/plt_hist_gwas_etissue_egene.py/hist_gwas.png",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#        "out2/cmpt_count_per_bin.py/bin_gwas_count.tsv",
-#        "out2/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr2_start27508073_end27519736_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr3_start141375367_end141428572_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr11_start61783884_end61855668_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr16_start28743363_end28908020_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr2_start27508073_end27519736_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr3_start141375367_end141428572_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr11_start61783884_end61855668_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr16_start28743363_end28908020_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr2_start27508073_end27519736_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr3_start141375367_end141428572_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr11_start61783884_end61855668_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr16_start28743363_end28908020_categories5.png",
-#        "out2/plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
-#        "out2/htmp_tissue_enrich.py/Anthropometric.png",
-#        "out2/htmp_tissue_enrich.py/Autoimmune__inflammatory.png",
-#        "out2/htmp_tissue_enrich.py/Blood_pressure.png",
-#        "out2/htmp_tissue_enrich.py/Cancer.png",
-#        "out2/htmp_tissue_enrich.py/Immune_system.png",
-#        "out2/htmp_tissue_enrich.py/NA.png",
-#        "out2/cmpt_pleiotropic_regions.py/region_window_100000.bed",
-#        "out2/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png",
-#        "out2/plt_hist_egene_per_variant.py/hist_density_True_distr_egene_per_rsid_p5.png",
-#        "out2/plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_subcategory_per_egene_p5.png",
-#        "out2/plt_hist_gwas_per_egene.py/hist_density_True_distr_gwas_trait_name_per_egene_p5.png",
-#        "out2/plt_hist_remap_crm.py/remap_crm_pleio5_flank_0_hist.png",
-#        "out2/plt_hist_remap_crm.py/remap_crm_pleio5_flank_50_hist.png",
-#        "out2/plt_bar_nonredundant_variant_category_percentage.py/non_redundant_variant_category_pleio2.png",
-#        #"out2/plt_overlap_crm_remap.py/remap_crm_bar_plot_ratio_variants.png",
-#
-#rule plt_bar_nonredundant_variant_category_percentage:
-#    input:
-#        "out2/annotate_h4.py/h4_annotated.tsv",
-#        "out2/cmpt_pleiotropic_regions.py/region_window_100000.bed",
-#    output:
-#        "out2/plt_bar_nonredundant_variant_category_percentage.py/non_redundant_variant_category_pleio2.png",
-#    shell:
-#        "python scripts/plt_bar_nonredundant_variant_category_percentage.py"
-#
-#rule plt_overlap_crm_remap:
-#    input:
-#        "out2/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_1_flank_0.bed",
-#        "out2/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_5_flank_0.bed",
-#    output:
-#        "out2/plt_overlap_crm_remap.py/remap_crm_bar_plot_ratio_variants.png",
-#    shell:
-#        "python scripts/plt_overlap_crm_remap.py"
-#
-#rule cmpt_overlap_crm_remap:
-#    input:
-#        "out2/cmpt_count_per_rsid.py/variant_pleio_1_flank_0.bed",
-#        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_0.bed",
-#    output:
-#        "out2/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_1_flank_0.bed",
-#        "out2/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_5_flank_0.bed",
-#    shell:
-#        "python scripts/cmpt_overlap_crm_remap.py"
-#
-#rule plt_hist_remap_crm:
-#    input:
-#        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_0.bed",
-#        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_50.bed",
-#    output:
-#        "out2/plt_hist_remap_crm.py/remap_crm_pleio5_flank_0_hist.png",
-#        "out2/plt_hist_remap_crm.py/remap_crm_pleio5_flank_50_hist.png",
-#    shell:
-#        "python scripts/plt_hist_remap_crm.py"
-#
-#rule plt_hist_gwas_per_egene:
-#    input:
-#        "out2/annotate_h4.py/h4_annotated.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#    output:
-#        "out2/plt_hist_gwas_per_egene.py/hist_density_True_distr_gwas_trait_name_per_egene_p5.png",
-#    shell:
-#        "python scripts/plt_hist_gwas_per_egene.py"
-#
-#rule plt_hist_etissue_per_egene:
-#    input:
-#        "out2/annotate_h4.py/h4_annotated.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#    output:
-#        "out2/plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_subcategory_per_egene_p5.png",
-#    shell:
-#        "python scripts/plt_hist_etissue_per_egene.py"
-#
-#rule plt_hist_egene_per_variant:
-#    input:
-#        "out2/annotate_h4.py/h4_annotated.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#    output:
-#        "out2/plt_hist_egene_per_variant.py/hist_density_True_distr_egene_per_rsid_p5.png",
-#    shell:
-#        "python scripts/plt_hist_egene_per_variant.py"
-#
-#rule htmp_tissue_enrich:
-#    input:
-#        "out2/cmpt_tissue_enrich.py/tissue_enrich.tsv",
-#    output:
-#        "out2/htmp_tissue_enrich.py/Anthropometric.png",
-#        "out2/htmp_tissue_enrich.py/Autoimmune__inflammatory.png",
-#        "out2/htmp_tissue_enrich.py/Blood_pressure.png",
-#        "out2/htmp_tissue_enrich.py/Cancer.png",
-#        "out2/htmp_tissue_enrich.py/Immune_system.png",
-#        "out2/htmp_tissue_enrich.py/NA.png",
-#    shell:
-#        "python scripts/htmp_tissue_enrich.py"
-#
-#rule cmpt_tissue_enrich:
-#    input:
-#        "out2/filter_h4.py/coloc_h4.tsv"
-#    output:
-#        "out2/cmpt_tissue_enrich.py/tissue_enrich.tsv",
-#    shell:
-#        "python scripts/cmpt_tissue_enrich.py"
-#
-#rule plt_bxplt_gwas_egene_etissue:
-#    input:
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
-#    output:
-#        "out2/plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
-#    shell:
-#        "python scripts/plt_bxplt_gwas_egene_etissue.py"
-#
-#rule plt_scttr_count_per_rsid_gwas:
-#    input:
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#    output:
-#        "out2/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr2_start27508073_end27519736_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr3_start141375367_end141428572_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr11_start61783884_end61855668_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr16_start28743363_end28908020_categories5.png",
-#    shell:
-#        "python scripts/plt_scttr_count_per_rsid_gwas.py"
-#
-#rule plt_scttr_count_per_rsid_etissue:
-#    input:
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#    output:
-#        "out2/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr2_start27508073_end27519736_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr3_start141375367_end141428572_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr11_start61783884_end61855668_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_etissue.py/count_per_rsid_etissue_chr16_start28743363_end28908020_categories5.png",
-#    shell:
-#        "python scripts/plt_scttr_count_per_rsid_etissue.py"
-#
-#rule plt_scttr_count_per_rsid_egene:
-#    input:
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#    output:
-#        "out2/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr2_start27508073_end27519736_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr3_start141375367_end141428572_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr11_start61783884_end61855668_categories5.png",
-#        "out2/plt_scttr_count_per_rsid_egene.py/count_per_rsid_egene_chr16_start28743363_end28908020_categories5.png",
-#    shell:
-#        "python scripts/plt_scttr_count_per_rsid_egene.py"
-#
-#rule plt_hist_gwas_etissue_egene:
-#    input:
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
-#    output:
-#        "out2/plt_hist_gwas_etissue_egene.py/hist_egene.png",
-#        "out2/plt_hist_gwas_etissue_egene.py/hist_etissue.png",
-#        "out2/plt_hist_gwas_etissue_egene.py/hist_gwas.png",
-#    shell:
-#        "python scripts/plt_hist_gwas_etissue_egene.py"
-#
-#rule cmpt_pleiotropic_regions:
-#    input:
-#        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-#    output:
-#        "out2/cmpt_pleiotropic_regions.py/region_window_100000.bed",
-#        "out2/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png",
-#    shell:
-#        "python scripts/cmpt_pleiotropic_regions.py"
-#
-#rule count_per_bin:
-#    input:
-#        "out2/filter_h4.py/coloc_h4.tsv"
-#    output:
-#        "out2/cmpt_count_per_bin.py/bin_rsid_count.tsv",
-#        "out2/cmpt_count_per_bin.py/bin_etissue_count.tsv",
-#        "out2/cmpt_count_per_bin.py/bin_gwas_count.tsv",
-#        "out2/cmpt_count_per_bin.py/bin_egene_count.tsv",
-#    shell:
-#        "python scripts/cmpt_count_per_bin.py"
+annotation_ods = config['annotation_ods']
+outdir = config['outdir']
+raw_coloc_tsv = config['raw_coloc_tsv']
 
 rule all:
     input:
-        ods = "out/manual_annotation/annotate_h4.py/h4_annotated.ods",
-        bed = "out/manual_annotation/annotate_h4.py/h4_annotated.bed",
+        gwas=os.path.join(outdir, "cmpt_count_per_rsid/count_per_rsid_gwas.tsv"),
+        tsv=os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        png=os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),
+
+rule cmpt_pleiotropic_regions:
+    input:
+        gwas=os.path.join(outdir, "cmpt_count_per_rsid/count_per_rsid_gwas.tsv"),
+    output:
+        tsv=os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        png=os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),
+    shell:
+        "python scripts/cmpt_pleiotropic_regions.py {input.gwas} {output.tsv} {output.png}"
 
 rule count_per_rsid:
     input:
-        "out2/annotate_h4.py/h4_annotated.tsv",
+        tsv=os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
     output:
-        "out2/cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv",
-        "out2/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
-        "out2/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
-        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_0.bed",
-        "out2/cmpt_count_per_rsid.py/variant_pleio_5_flank_50.bed",
+        gwas=os.path.join(outdir, "cmpt_count_per_rsid/count_per_rsid_gwas.tsv"),
+    params:
+        rule_outdir=os.path.join(outdir, "cmpt_count_per_rsid")
     shell:
-        "python scripts/cmpt_count_per_rsid.py"
+        "python scripts/cmpt_count_per_rsid.py {input.tsv} {params.rule_outdir}"
 
 rule h4_annotated:
     input:
-        coloc = "out/manual_annotation/filter_h4.py/coloc_h4.tsv",
-        annot = "out/manual_annotation/coloc_all/manual_annotation.ods",
+        coloc="out/manual_annotation/filter_h4.py/coloc_h4.tsv",
+        annot=annotation_ods,
     output:
-        ods = "out/manual_annotation/annotate_h4.py/h4_annotated.ods",
-        bed = "out/manual_annotation/annotate_h4.py/h4_annotated.bed",
+        tsv=os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        ods=os.path.join(outdir, "annotate_h4.py/h4_annotated.ods"),
+        bed=os.path.join(outdir, "annotate_h4.py/h4_annotated.bed"),
     shell:
-        "python scripts/annotate_h4.py {input.coloc} {input.annot} {output.ods} {output.bed}"
+        "python scripts/annotate_h4.py {input.coloc} {input.annot} {output.tsv} {output.ods} {output.bed}"
 
 rule filter_h4:
     input:
-        tsv="out/manual_annotation/coloc_all/coloc.tsv"
+        tsv=raw_coloc_tsv
     output:
-        tsv="out/manual_annotation/filter_h4.py/coloc_h4.tsv"
+        tsv=os.path.join(outdir, "filter_h4.py/coloc_h4.tsv")
     shell:
         "python scripts/filter_h4.py {input.tsv} {output.tsv}"

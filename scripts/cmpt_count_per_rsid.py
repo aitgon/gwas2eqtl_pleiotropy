@@ -28,12 +28,12 @@ import sys
 #%%
 help_cmd_str = "todo"
 try:
-    coloc_h4_tsv_path = sys.argv[1]
-    h4_annot_tsv_path = sys.argv[2]
-    outdir_path = sys.argv[3]
+    # coloc_h4_tsv_path = sys.argv[1]
+    annotated_tsv_path = sys.argv[1]
+    outdir_path = sys.argv[2]
     # h4_annotated_ods_path = sys.argv[3]
     # h4_annotated_bed_path = sys.argv[4]
-    if len(sys.argv) > 4:
+    if len(sys.argv) > 3:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -50,7 +50,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 #     sys.exit(1)
 
 #%%
-coloc_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
+coloc_df = pandas.read_csv(annotated_tsv_path, sep="\t")
 
 #%% etissue pleiotropy
 pleio_etissue_df = coloc_df[['chrom', 'pos', 'rsid', 'etissue_subcategory']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'etissue_subcategory': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()

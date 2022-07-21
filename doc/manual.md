@@ -1,14 +1,16 @@
 Prepare input data
 
 ~~~
-mkdir -p out/coloc_all
-cp coloc_all.tsv out/coloc_all/
+mkdir -p Repositories/eqtl2gwas_pleiotropy/out/coloc_all/genome/5e-08/1000000
+cp eqtl2gwas/out/merged/genome/5e-08/1000000/coloc.tsv Repositories/eqtl2gwas_pleiotropy/out/coloc_all/genome/5e-08/1000000
 ~~~
+
+Update the "coloc_raw_tsv_path" variable int the "eqtl2gwas_pleiotropy/constants.py" file
 
 # Snakemake
 
 ~~~
-snakemake --cores all -p -d ${PWD} -s tools/Snakefile.yml
+snakemake --cores all -p -d ${PWD} -s tools/Snakefile2.yml --config outdir=out/gwas413/genome/5e-08/1000000 raw_coloc_tsv=/home/gonzalez/Repositories/eqtl2gwas/out/merged/genome/5e-08/1000000/coloc.tsv annotation_ods='/home/gonzalez/Repositories/eqtl2gwas/config/manual_annotation.ods'
 ~~~
 
 # Command by commande 
@@ -16,7 +18,7 @@ snakemake --cores all -p -d ${PWD} -s tools/Snakefile.yml
 Create h08 file
 
 ~~~
-python scripts/filterh4.py
+python scripts/filter_h4.py
 ~~~
 
 Compute rsid, egene, etissue and gwas counts
