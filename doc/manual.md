@@ -1,16 +1,9 @@
-Prepare input data
-
-~~~
-mkdir -p Repositories/eqtl2gwas_pleiotropy/out/coloc_all/genome/5e-08/1000000
-cp eqtl2gwas/out/merged/genome/5e-08/1000000/coloc.tsv Repositories/eqtl2gwas_pleiotropy/out/coloc_all/genome/5e-08/1000000
-~~~
-
-Update the "coloc_raw_tsv_path" variable int the "eqtl2gwas_pleiotropy/constants.py" file
+Copy input data to the config folder; eg out/config/genome/5e-08/1000000
 
 # Snakemake
 
 ~~~
-snakemake --cores all -p -d ${PWD} -s tools/Snakefile2.yml --config outdir=out/gwas413/genome/5e-08/1000000 raw_coloc_tsv=/home/gonzalez/Repositories/eqtl2gwas/out/merged/genome/5e-08/1000000/coloc.tsv annotation_ods='/home/gonzalez/Repositories/eqtl2gwas/config/manual_annotation.ods'
+snakemake --cores all -p -d ${PWD} -s tools/Snakefile2.yml --config outdir=out/gwas413/genome/5e-08/1000000 raw_coloc_tsv=out/config/genome/5e-08/1000000/coloc413.tsv annotation_ods=out/config/genome/5e-08/1000000/gwas413.ods --rerun-incomplete
 ~~~
 
 # Command by commande 

@@ -24,7 +24,6 @@ class EBIeQTLinfo:
         """Loads file as DF with metadata compatible header"""
 
         if self._df is None:
-            Logger.info("Downloading EBIeQTL information")
 
             self.eqtl_tsv_path = URL(eqtl_metadata_url).download()
             self._df = pandas.read_csv(self.eqtl_tsv_path, sep="\t")

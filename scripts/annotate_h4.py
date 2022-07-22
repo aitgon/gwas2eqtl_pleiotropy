@@ -1,4 +1,5 @@
 from eqtl2gwas_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
+from eqtl2gwas_pleiotropy.Logger import Logger
 from eqtl2gwas_pleiotropy.OpenGWASinfo import OpenGWASinfo
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from eqtl2gwas_pleiotropy.constants import coloc_h4_tsv_path
@@ -70,6 +71,7 @@ coloc_h4_df = coloc_h4_df[columns]
 #%% TSV
 coloc_h4_df.sort_values(by=coloc_h4_df.columns.tolist(), inplace=True)
 coloc_h4_df.to_csv(h4_annotated_tsv_path, sep="\t", index=False)
+Logger.info("Writing {}".format(h4_annotated_tsv_path))
 with pandas.ExcelWriter(h4_annotated_ods_path) as fout:
     coloc_h4_df.to_excel(fout, index=False)
 
