@@ -65,7 +65,7 @@ test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", 
 plt.title("GWAS category and eGene count", fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel("eTissue count", fontsize=label_fontsize)
+plt.ylabel("eGene count", fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
@@ -86,7 +86,7 @@ test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", 
 plt.title("GWAS category and eTissue count", fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel("eGene count", fontsize=label_fontsize)
+plt.ylabel("eTissue count", fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
