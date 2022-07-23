@@ -4,7 +4,7 @@ raw_coloc_tsv = config['raw_coloc_tsv']
 
 rule all:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),
         os.path.join(outdir, "plt_hist_gwas_etissue_egene.py/hist_egene.png"),
@@ -45,7 +45,7 @@ rule plt_scttr_count_per_rsid_gwas:
 
 rule cmpt_pleiotropic_regions:
     input:
-        gwas=os.path.join(outdir, "cmpt_count_per_rsid/count_per_rsid_gwas.tsv"),
+        gwas=os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         tsv=os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         png=os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),

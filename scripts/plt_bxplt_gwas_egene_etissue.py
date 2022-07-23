@@ -18,7 +18,6 @@ plt.rcParams["figure.figsize"] = (8, 6)
 help_cmd_str = "todo"
 try:
     gwas_count_tsv_path = sys.argv[1]
-    gwas_count_tsv_path = sys.argv[2]
     egene_count_tsv_path = sys.argv[2]
     etissue_count_tsv_path = sys.argv[3]
     boxplot_gwas_egene_png_path = sys.argv[4]
@@ -56,10 +55,10 @@ merged_df = merged_df.merge(etissue_count_df, on=['chrom', 'pos', 'rsid'])
 
 #%%
 sns.set_theme(style="whitegrid")
-order = [1, 2, 3, 4, 5]
+order = [1, 2, 3, 4, 5, 6]
 ax = sns.boxplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order)
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
-                                   box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5)],
+                                   box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5), (1, 6)],
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
 
@@ -78,9 +77,9 @@ plt.close()
 
 #%%
 sns.set_theme(style="whitegrid")
-ax = sns.boxplot(x="gwas_category_count", y="etissue_subcategory_count", data=merged_df, order=order)
+ax = sns.boxplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order)
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
-                                   box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5)],
+                                   box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5), (1, 6)],
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
 

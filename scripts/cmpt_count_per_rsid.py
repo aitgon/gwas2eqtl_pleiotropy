@@ -53,9 +53,9 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 coloc_df = pandas.read_csv(annotated_tsv_path, sep="\t")
 
 #%% etissue pleiotropy
-pleio_etissue_df = coloc_df[['chrom', 'pos', 'rsid', 'etissue_subcategory']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'etissue_subcategory': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
-pleio_etissue_df.columns = ['chrom', 'pos', 'rsid', 'etissue_subcategory_count', 'etissue_subcategory_lst']
-pleio_etissue_df = pleio_etissue_df.sort_values(by=['etissue_subcategory_count', 'etissue_subcategory_lst', 'rsid'], ascending=[False, True, True])
+pleio_etissue_df = coloc_df[['chrom', 'pos', 'rsid', 'etissue_label']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'etissue_label': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
+pleio_etissue_df.columns = ['chrom', 'pos', 'rsid', 'etissue_label_count', 'etissue_subcategory_lst']
+pleio_etissue_df = pleio_etissue_df.sort_values(by=['etissue_label_count', 'etissue_subcategory_lst', 'rsid'], ascending=[False, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_etissue.tsv")
 pleio_etissue_df.to_csv(tsv_path, sep="\t", index=False)
 

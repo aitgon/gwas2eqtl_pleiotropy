@@ -42,7 +42,7 @@ pathlib.Path(os.path.dirname(h4_annotated_bed_path)).mkdir(parents=True, exist_o
 # h4_annotated_tsv_path = os.path.join(outdir_path, 'h4_annotated.tsv')
 #%% Download eQTL annotations
 eqtl_info_df = EBIeQTLinfo().df
-eqtl_info_df.rename({'identifier': "eqtl_identifier", 'tissue_label': 'etissue_subcategory'}, axis=1, inplace=True)
+eqtl_info_df.rename({'identifier': "eqtl_identifier", 'tissue_label': 'etissue_label'}, axis=1, inplace=True)
 
 # #%% Download OpenGWAS annotations
 # open_gwas_df = OpenGWASinfo().df
@@ -59,13 +59,13 @@ coloc_h4_df = pandas.read_csv(coloc_h4_tsv_path, sep="\t")
 # import pdb; pdb.set_trace()
 #%%
 coloc_h4_df = coloc_h4_df.merge(gwas_annot_df[["gwas_identifier", "gwas_trait", 'gwas_category_mrcieu', 'gwas_category_eqtl2gwas']], on='gwas_identifier')
-coloc_h4_df = coloc_h4_df.merge(eqtl_info_df[['eqtl_identifier', 'etissue_subcategory']].drop_duplicates(), on='eqtl_identifier')
+coloc_h4_df = coloc_h4_df.merge(eqtl_info_df[['eqtl_identifier', 'etissue_label']].drop_duplicates(), on='eqtl_identifier')
 
 #%%
 columns = ['chrom', 'pos', 'rsid', 'ref', 'alt', 'egene', 'egene_symbol',
            'eqtl_beta', 'eqtl_pvalue', 'eqtl_identifier', 'gwas_beta',
            'gwas_pvalue', 'gwas_identifier', 'gwas_trait', 'gwas_category_eqtl2gwas',
-           'pp_h4', 'PP.H4.abf', 'coloc_window', 'nsnps', 'PP.H3.abf', 'PP.H2.abf', 'PP.H1.abf', 'PP.H0.abf', 'gwas_category_mrcieu', 'etissue_subcategory']
+           'pp_h4', 'PP.H4.abf', 'coloc_window', 'nsnps', 'PP.H3.abf', 'PP.H2.abf', 'PP.H1.abf', 'PP.H0.abf', 'gwas_category_mrcieu', 'etissue_label']
 coloc_h4_df = coloc_h4_df[columns]
 
 #%% TSV

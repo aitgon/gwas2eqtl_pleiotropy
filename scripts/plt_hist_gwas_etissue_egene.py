@@ -104,7 +104,7 @@ plt.close()
 
 #%% etissue
 count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
-data_ser = count_df['etissue_subcategory_count']
+data_ser = count_df['etissue_label_count']
 plt.hist(data_ser, **hist_kwargs)
 
 plt.grid(True)

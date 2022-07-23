@@ -42,7 +42,7 @@ region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 title = "Count Per SNP: eTissues"
-count_col_name = "etissue_subcategory_count"
+count_col_name = "etissue_label_count"
 ylim = [0, 35]
 c = 'blue'
 
