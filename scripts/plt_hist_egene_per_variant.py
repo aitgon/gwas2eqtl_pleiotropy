@@ -11,23 +11,40 @@ from eqtl2gwas_pleiotropy.constants import label_fontsize, dpi
 plt.rcParams["figure.figsize"] = (8, 6)
 ylabel = "Prob. Density"
 
+#%%
+help_cmd_str = "todo"
+try:
+    h4_annot_tsv_path = sys.argv[1]
+    count_per_rsid_gwas_tsv_path = sys.argv[2]
+    hist_density_True_distr_egene_per_rsid_p2_png_path = sys.argv[3]
+    if len(sys.argv) > 4:
+        print("""Two many arguments!
+        {}""".format(help_cmd_str))
+        sys.exit(1)
+except IndexError:
+    print("""Argument missing!
+    {}""".format(help_cmd_str))
+    sys.exit(1)
+
 #%% Input1
-h4_annot_tsv_path = os.path.join(PathManager.get_outdir_path(), "annotate_h4.py", "h4_annotated.tsv")
+# h4_annot_tsv_path = os.path.join(PathManager.get_outdir_path(), "annotate_h4.py", "h4_annotated.tsv")
 if not os.path.isfile(h4_annot_tsv_path):
     print("input file does not exit")
     sys.exit(1)
 
 #%% Input2
-count_per_rsid_gwas_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "count_per_rsid_gwas.tsv")
+# count_per_rsid_gwas_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "count_per_rsid_gwas.tsv")
 if not os.path.isfile(count_per_rsid_gwas_tsv_path):
     print("input file does not exit")
     sys.exit(1)
 
-#%% Output
-if not '__file__' in locals():
-    outdir_path = os.path.join(PathManager.get_outdir_path(), "plt_hist_egenes_per_gwas.py")
-else:
-    outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
+# #%% Output
+# if not '__file__' in locals():
+#     outdir_path = os.path.join(PathManager.get_outdir_path(), "plt_hist_egenes_per_gwas.py")
+# else:
+#     outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
+
+outdir_path = os.path.dirname(hist_density_True_distr_egene_per_rsid_p2_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 out_tsv_path = os.path.join(outdir_path, "todo.tsv")
@@ -37,6 +54,7 @@ h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
 
 #%%
 count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
+gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max()
 
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
@@ -52,7 +70,7 @@ ylabel = "Prob. Density"
 density = False
 
 #%% segregate gwas
-segregated_df = m_df[[sel_cols[0], 'gwas_subcategory_count']].sort_values(by='gwas_subcategory_count', ascending=False)
+segregated_df = m_df[[sel_cols[0], 'gwas_category_count']].sort_values(by='gwas_category_count', ascending=False)
 segregated_df = segregated_df.drop_duplicates(sel_cols[0], keep='first')
 
 #%%
@@ -61,9 +79,9 @@ ylabel = "Probability density"
 
 distr_back_egene_to_gwas_lst = m_df[sel_cols].drop_duplicates().groupby([sel_cols[0]]).count()[sel_cols[1]].to_list()  # background
 for density in [False, True]:
-    for p_count in range(1, 6):
+    for p_count in range(1, gwas_category_count_max_int+1):
         title = "eGenes per variant - Pleiotropy {}.".format(p_count)
-        this_variable_p_df = segregated_df.loc[segregated_df['gwas_subcategory_count'] == p_count, ]
+        this_variable_p_df = segregated_df.loc[segregated_df['gwas_category_count'] == p_count, ]
         selected_df = m_df.merge(this_variable_p_df, on=sel_cols[0])[sel_cols].drop_duplicates()
         count_gwas_per_egene_lst = selected_df.groupby([sel_cols[0]]).count()[sel_cols[1]].to_list()
         bins = range(max(distr_back_egene_to_gwas_lst)+1)
