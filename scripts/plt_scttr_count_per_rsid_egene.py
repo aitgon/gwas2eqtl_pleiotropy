@@ -1,3 +1,5 @@
+import sys
+
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
 from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, scatter_dot_size, dpi
@@ -8,20 +10,35 @@ import pathlib
 
 plt.rcParams["figure.figsize"] = (8, 6)
 
+#%%
+help_cmd_str = "todo"
+try:
+    region_window_100000_tsv_path = sys.argv[1]
+    count_per_rsid_egene_tsv_path = sys.argv[2]
+    outdir_path = sys.argv[3]
+    if len(sys.argv) > 4:
+        print("""Two many arguments!
+        {}""".format(help_cmd_str))
+        sys.exit(1)
+except IndexError:
+    print("""Argument missing!
+    {}""".format(help_cmd_str))
+    sys.exit(1)
+
 #%% input dir cmpt_count_per_rsid
 basename_str = "count_per_rsid_egene.tsv"
-indir_path = os.path.join(PathManager.get_project_path(), "out", "cmpt_count_per_rsid.py")
-tsv_path = os.path.join(indir_path, basename_str)
-count_per_rsid_df = pandas.read_csv(tsv_path, sep="\t")
+# indir_path = os.path.join(PathManager.get_project_path(), "out", "cmpt_count_per_rsid.py")
+# tsv_path = os.path.join(indir_path, basename_str)
+count_per_rsid_df = pandas.read_csv(count_per_rsid_egene_tsv_path, sep="\t")
 
 #%% input regions
-region_window_100000_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_pleiotropic_regions.py", "region_window_100000.tsv")
+# region_window_100000_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_pleiotropic_regions.py", "region_window_100000.tsv")
 region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t")
 
-#%% Output
-if not '__file__' in locals():
-    __file__ = "plt_scttr_count_per_rsid_egene.py"
-outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
+# #%% Output
+# if not '__file__' in locals():
+#     __file__ = "plt_scttr_count_per_rsid_egene.py"
+# outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 title = "Count Per SNP: eGenes"
@@ -32,7 +49,7 @@ c = 'blue'
 count_per_rsid_df['pos'] = count_per_rsid_df['pos'].astype('int')
 
 #%% Loop over regions
-pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= 5, ['chrom', 'start', 'end', 'gwas_category_count']]
+pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= 6, ['chrom', 'start', 'end', 'gwas_category_count']]
 for rowi, row in pleiotropic_regions_df.iterrows():
     chrom = row['chrom']
     start = row['start']
