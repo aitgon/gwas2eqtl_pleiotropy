@@ -63,7 +63,7 @@ m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 ###############################################################################
 
 # %%
-sel_cols = ['egene', 'etissue_label']  # tissue per egene
+sel_cols = ['egene', 'etissue_category']  # tissue per egene
 # sel_cols = ['gwas_trait_name', 'egene']
 ylabel = "Prob. Density"
 density = False

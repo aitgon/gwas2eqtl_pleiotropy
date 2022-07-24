@@ -1,4 +1,6 @@
-annotation_ods = config['annotation_ods']
+gwas_cat_ods = config['gwas_cat_ods']
+etissue_cat_ods = config['etissue_cat_ods']
+
 outdir = config['outdir']
 raw_coloc_tsv = config['raw_coloc_tsv']
 
@@ -12,19 +14,19 @@ rule all:
         os.path.join(outdir, "plt_hist_gwas_etissue_egene.py/hist_gwas.png"),
         os.path.join(outdir, "plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_egene.png"),
         os.path.join(outdir, "plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png"),
-        os.path.join(outdir, "plt_scttr_count_per_rsid_gwas.py/count_per_rsid_chr15_start90861475_end90995690_categories6.png"),
-        os.path.join(outdir, "plt_scttr_count_per_rsid_egene.py/count_per_rsid_chr15_start90861475_end90995690_categories6.png"),
-        os.path.join(outdir, "plt_scttr_count_per_rsid_etissue.py/count_per_rsid_chr15_start90861475_end90995690_categories6.png"),
         os.path.join(outdir, "plt_hist_egene_per_variant.py/hist_density_True_distr_egene_per_rsid_p2.png"),
         os.path.join(outdir, "plt_hist_gwas_per_egene.py/hist_density_True_distr_gwas_trait_per_egene_p2.png"),
-        os.path.join(outdir, "plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_label_per_egene_p2.png"),
+        os.path.join(outdir, "plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_category_per_egene_p2.png"),
+        os.path.join(outdir, "plt_scttr_count_per_rsid_gwas.py/log.txt"),
+        os.path.join(outdir, "plt_scttr_count_per_rsid_egene.py/log.txt"),
+        os.path.join(outdir, "plt_scttr_count_per_rsid_etissue.py/log.txt"),
 
 rule plt_hist_etissue_per_egene:
     input:
         os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
-        os.path.join(outdir, "plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_label_per_egene_p2.png"),
+        os.path.join(outdir, "plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_category_per_egene_p2.png"),
     shell:
         "python scripts/plt_hist_etissue_per_egene.py {input[0]} {input[1]} {output[0]}"
 
@@ -50,28 +52,28 @@ rule plt_scttr_count_per_rsid_etissue:
     input:
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
-    output:
-        os.path.join(outdir, "plt_scttr_count_per_rsid_etissue.py/count_per_rsid_chr15_start90861475_end90995690_categories6.png"),
+    params: os.path.join(outdir, "plt_scttr_count_per_rsid_etissue.py"),
+    log: os.path.join(outdir, "plt_scttr_count_per_rsid_etissue.py/log.txt"),
     shell:
-        "python scripts/plt_scttr_count_per_rsid_etissue.py {input[0]} {input[1]} $(dirname {output[0]})"
+        "python scripts/plt_scttr_count_per_rsid_etissue.py {input[0]} {input[1]} {params} >{log}"
 
 rule plt_scttr_count_per_rsid_egene:
     input:
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
-    output:
-        os.path.join(outdir, "plt_scttr_count_per_rsid_egene.py/count_per_rsid_chr15_start90861475_end90995690_categories6.png"),
+    params: os.path.join(outdir, "plt_scttr_count_per_rsid_egene.py"),
+    log: os.path.join(outdir, "plt_scttr_count_per_rsid_egene.py/log.txt"),
     shell:
-        "python scripts/plt_scttr_count_per_rsid_egene.py {input[0]} {input[1]} $(dirname {output[0]})"
+        "python scripts/plt_scttr_count_per_rsid_egene.py {input[0]} {input[1]} {params} >{log}"
 
 rule plt_scttr_count_per_rsid_gwas:
     input:
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-    output:
-        os.path.join(outdir, "plt_scttr_count_per_rsid_gwas.py/count_per_rsid_chr15_start90861475_end90995690_categories6.png"),
+    params: os.path.join(outdir, "plt_scttr_count_per_rsid_gwas.py"),
+    log: os.path.join(outdir, "plt_scttr_count_per_rsid_gwas.py/log.txt"),
     shell:
-        "python scripts/plt_scttr_count_per_rsid_gwas.py {input[0]} {input[1]} $(dirname {output[0]})"
+        "python scripts/plt_scttr_count_per_rsid_gwas.py {input[0]} {input[1]} {params} >{log}"
 
 rule cmpt_pleiotropic_regions:
     input:
@@ -118,13 +120,14 @@ rule count_per_rsid:
 rule h4_annotated:
     input:
         tsv=os.path.join(outdir, "filter_h4.py/coloc_h4.tsv"),
-        annot=annotation_ods,
+        gwas_cat_ods=gwas_cat_ods,
+        etissue_cat_ods=etissue_cat_ods,
     output:
         tsv=os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
         ods=os.path.join(outdir, "annotate_h4.py/h4_annotated.ods"),
         bed=os.path.join(outdir, "annotate_h4.py/h4_annotated.bed"),
     shell:
-        "python scripts/annotate_h4.py {input.tsv} {input.annot} {output.tsv} {output.ods} {output.bed}"
+        "python scripts/annotate_h4.py {input.tsv} {input.gwas_cat_ods} {input.etissue_cat_ods} {output.tsv} {output.ods} {output.bed}"
 
 rule filter_h4:
     input:
