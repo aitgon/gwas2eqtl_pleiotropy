@@ -52,13 +52,19 @@ etissue_count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
 #%%
 merged_df = gwas_count_df.merge(egene_count_df, on=['chrom', 'pos', 'rsid'])
 merged_df = merged_df.merge(etissue_count_df, on=['chrom', 'pos', 'rsid'])
+gwas_category_count_max = merged_df['gwas_category_count'].max()
 
 #%%
 sns.set_theme(style="whitegrid")
-order = [1, 2, 3, 4, 5, 6]
+order = [*range(1, gwas_category_count_max)]
+
+box_pairs = [(1, i) for i in range(2, gwas_category_count_max+1) if (merged_df['gwas_category_count']==i).sum()>1]
+
+print(box_pairs)
+#%%
 ax = sns.boxplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order)
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
-                                   box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5), (1, 6)],
+                                   box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
 
@@ -76,10 +82,9 @@ plt.clf()
 plt.close()
 
 #%%
-sns.set_theme(style="whitegrid")
 ax = sns.boxplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order)
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
-                                   box_pairs=[(1, 2), (1, 3), (1, 4), (1, 5), (1, 6)],
+                                   box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
 
