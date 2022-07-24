@@ -21,6 +21,17 @@ rule all:
         os.path.join(outdir, "plt_scttr_count_per_rsid_gwas.py/log.txt"),
         os.path.join(outdir, "plt_scttr_count_per_rsid_egene.py/log.txt"),
         os.path.join(outdir, "plt_scttr_count_per_rsid_etissue.py/log.txt"),
+        os.path.join(outdir, "plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_category_per_egene_p2.png"),
+
+rule cmpt_vep_consequence:
+    input:
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_category_per_egene_p2.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/cmpt_vep_consequence.py {input[0]} {params.upper_var_gwas_cat_count} {output[0]}"
 
 rule plt_hist_etissue_per_egene:
     input:
@@ -28,8 +39,10 @@ rule plt_hist_etissue_per_egene:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_category_per_egene_p2.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
     shell:
-        "python scripts/plt_hist_etissue_per_egene.py {input[0]} {input[1]} {output[0]}"
+        "python scripts/plt_hist_etissue_per_egene.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]}"
 
 rule plt_hist_gwas_per_egene:
     input:
@@ -37,8 +50,10 @@ rule plt_hist_gwas_per_egene:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "plt_hist_gwas_per_egene.py/hist_density_True_distr_gwas_trait_per_egene_p2.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
     shell:
-        "python scripts/plt_hist_gwas_per_egene.py {input[0]} {input[1]} {output[0]}"
+        "python scripts/plt_hist_gwas_per_egene.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]}"
 
 rule plt_hist_egene_per_variant:
     input:

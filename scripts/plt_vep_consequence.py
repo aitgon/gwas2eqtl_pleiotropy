@@ -1,72 +1,42 @@
 import os
-
 import pandas
+import seaborn
+from matplotlib import pyplot as plt
 
 #%%
 count_per_rsid_gwas_tsv_path = "out/gwas413/genome/5e-08/1000000/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"
 vep0_path = "out/gwas413/genome/5e-08/1000000/cmpt_vep_consequence.py/vep_pleio{}.tsv"
+upper_var_gwas_cat_count = 5
+
 
 #%%
 df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
-cmd_lst = []
-for pleio in df['gwas_category_count'].unique():
+df.loc[df['gwas_category_count'] >= upper_var_gwas_cat_count, 'gwas_category_count'] = upper_var_gwas_cat_count
+cat_df = pandas.DataFrame({'percentage': None, 'consequence': None, 'gwas_category_count': None}, index=[])
+
+for pleio in range(1, upper_var_gwas_cat_count+1):
     vep_path = vep0_path.format(pleio)
     vdf = pandas.read_csv(vep_path, sep="\t", comment='#', header=None)
     vdf = vdf.loc[vdf[0].drop_duplicates(keep='first').index]
     vdf = vdf[[0, 6]]
     vdf[6] = vdf[6].str.split(',', expand=True)[0]
-    print(vdf[[0,6]])
-    import pdb; pdb.set_trace()
+    variant_count = vdf.shape[0]
+    consequence_lst = vdf.groupby(6).count().index.tolist()
+    percentage_lst = round(vdf.groupby(6).count() / variant_count * 100)[0].tolist()
+    conseq_perc_df = pandas.DataFrame({'consequence': consequence_lst, 'percentage': percentage_lst}, index=[*range(len(consequence_lst))])
+    conseq_perc_df['gwas_category_count'] = pleio
+    cat_df = pandas.concat([cat_df, conseq_perc_df], axis=0)
 
-#%%
-df1 = pandas.read_csv(pleio1_path, sep="\t")
-df2 = pandas.read_csv(pleio2_path, sep="\t")
-df3 = pandas.read_csv(pleio3_path, sep="\t")
-df4 = pandas.read_csv(pleio4_path, sep="\t")
+cat_wide_df = pandas.pivot_table(cat_df, values='percentage', index='consequence', columns='gwas_category_count', fill_value=0)
+cat_df = cat_df.loc[cat_df['consequence'].isin(cat_wide_df.loc[cat_wide_df.sum(axis=1) >= 10].index)]
+order = ['intergenic_variant', 'upstream_gene_variant', 'intron_variant', 'missense_variant', '3_prime_UTR_variant', 'downstream_gene_variant']
 
-#%%
-df1['Consequence'] = df1['Consequence'].str.split(',', expand=True)[0]
-df2['Consequence'] = df2['Consequence'].str.split(',', expand=True)[0]
-df3['Consequence'] = df3['Consequence'].str.split(',', expand=True)[0]
-df4['Consequence'] = df4['Consequence'].str.split(',', expand=True)[0]
+cat_df.loc[cat_df['gwas_category_count'] == upper_var_gwas_cat_count, 'gwas_category_count'] = "≥5"
+seaborn.catplot(x="consequence", y="percentage", hue="gwas_category_count", kind="bar", data=cat_df, order=order, legend=False)
+plt.xticks(fontsize=12, rotation=45)
+plt.grid(axis='y')
+plt.legend(loc='upper right')
 
-#%%
-dfu1 = df1[['#Uploaded_variation', 'Consequence']].drop_duplicates()
-dfu2 = df2[['#Uploaded_variation', 'Consequence']].drop_duplicates()
-dfu3 = df3[['#Uploaded_variation', 'Consequence']].drop_duplicates()
-dfu4 = df4[['#Uploaded_variation', 'Consequence']].drop_duplicates()
-
-#%%
-stat_df=dfu1.groupby('Consequence').count()
-stat_df.columns = ["Count"]
-
-#%%
-out_df = pandas.DataFrame({'Consequence': stat1_df.index, 'Category nb.': [1]*stat1_df.shape[0], 'Perc': round(stat1_df['Count']/stat1_df['Count'].sum()*100)})
-
-#%%
-
-stat_df=dfu2.groupby('Consequence').count()
-stat_df.columns = ["Count"]
-stat_long_df = pandas.DataFrame({'Consequence': stat1_df.index, 'Category nb.': [2]*stat1_df.shape[0], 'Perc': round(stat1_df['Count']/stat1_df['Count'].sum()*100)})
-
-#%%
-stat3_df=dfu3.groupby('Consequence').count()
-stat3_df.columns = ["Count"]
-stat3_df['Perc3'] = round(stat3_df['Count']/stat3_df['Count'].sum()*100)
-
-#%%
-stat4_df=dfu4.groupby('Consequence').count()
-stat4_df.columns = ["Count"]
-stat4_df['Perc4'] = round(stat4_df['Count']/stat4_df['Count'].sum()*100)
-
-#%%
-m_df = pandas.merge(stat1_df['Perc1'], stat2_df['Perc2'], left_index=True, right_index=True, how='outer')
-m_df = pandas.merge(m_df, stat3_df['Perc3'], left_index=True, right_index=True, how='outer')
-m_df = pandas.merge(m_df, stat4_df['Perc4'], left_index=True, right_index=True, how='outer')
-
-#%%
-m_df.fillna(0, inplace=True)
-m_df = m_df.loc[m_df.sum(axis=1)>10]
-m_df = m_df.sort_index()
-
-#%%
+plt.tight_layout()
+plt.savefig('t.png')
+plt.close()

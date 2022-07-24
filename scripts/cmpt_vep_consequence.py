@@ -17,8 +17,9 @@ import subprocess
 help_cmd_str = "todo"
 try:
     count_per_rsid_gwas_tsv_path = sys.argv[1]
-    cmd_path = sys.argv[2]
-    if len(sys.argv) > 3:
+    upper_var_gwas_cat_count = int(sys.argv[2])
+    cmd_path = sys.argv[3]
+    if len(sys.argv) > 4:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -31,19 +32,19 @@ outdir_path = os.path.dirname(cmd_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-# count_per_rsid_gwas_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "count_per_rsid_gwas.tsv")
 df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
 #%%
 cmd_lst = []
-for pleio in df['gwas_category_count'].unique():
+for pleio in range(1, upper_var_gwas_cat_count+1):
     rsid_path = os.path.join(outdir_path, "rsid_pleio{}.txt".format(pleio))
-    df.loc[df['gwas_category_count']==pleio, 'rsid'].to_csv(rsid_path, header=False, index=False)
+    if pleio == upper_var_gwas_cat_count:
+        df.loc[df['gwas_category_count'] >= pleio, 'rsid'].to_csv(rsid_path, header=False, index=False)
+    else:
+        df.loc[df['gwas_category_count'] == pleio, 'rsid'].to_csv(rsid_path, header=False, index=False)
     vep_path = os.path.join(outdir_path, "vep_pleio{}.tsv".format(pleio))
     cmd_str = "vep -i " + rsid_path + " --cache --output_file " + vep_path
     cmd_lst.append(cmd_str)
-    # cmd_str_path = os.path.join(outdir_path, "_pleio{}.tsv".format(pleio))
-    # stdout = subprocess.run(cmd_str, shell=True, capture_output=True)
 
 with open(cmd_path, "w") as fout:
     for item in cmd_lst:
