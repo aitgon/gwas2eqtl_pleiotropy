@@ -86,24 +86,24 @@ pos_prev = 0
 region_pleio_prev = False
 start = math.nan
 end = math.nan
-gwas_subcategory_count = 0
-gwas_subcategory_lst = math.nan
+gwas_category_count = 0
+gwas_category_lst = math.nan
 category_lst = []
 
 for i, row in df.iterrows():
     # beginning of region, set start, start category list, store category
     if row['region_pleio'] and not region_pleio_prev:
         start = row['pos']
-        gwas_subcategory_count = row['gwas_category_count']
-        gwas_subcategory_lst = row['gwas_category_lst']
+        gwas_category_count = row['gwas_category_count']
+        gwas_category_lst = row['gwas_category_lst']
         category_lst = row['gwas_category_lst'].split(",")
     # end of region, set end, store category
     elif not row['region_pleio'] and region_pleio_prev:
         end = pos_prev
     # middle of region, store categories
-    if row['region_pleio'] and row['gwas_category_count'] > gwas_subcategory_count:
-        gwas_subcategory_count = row['gwas_category_count']
-        gwas_subcategory_lst = row['gwas_category_lst']
+    if row['region_pleio'] and row['gwas_category_count'] > gwas_category_count:
+        gwas_category_count = row['gwas_category_count']
+        gwas_category_lst = row['gwas_category_lst']
         category_lst = category_lst + row['gwas_category_lst'].split(",")
     # reset start and end, store region
     if not math.isnan(start) and not math.isnan(end):

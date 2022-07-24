@@ -3,7 +3,7 @@ Copy input data to the config folder; eg out/config/genome/5e-08/1000000
 # Snakemake
 
 ~~~
-snakemake --cores all -p -d ${PWD} -s tools/Snakefile2.yml --config outdir=out/gwas413/genome/5e-08/1000000 raw_coloc_tsv=out/config/genome/5e-08/1000000/coloc413.tsv annotation_ods=out/config/genome/5e-08/1000000/gwas413.ods --rerun-incomplete
+snakemake --cores all -p -d ${PWD} -s tools/Snakefile2.yml --config outdir=out/gwas413/genome/5e-08/1000000 raw_coloc_tsv=out/config/genome/5e-08/1000000/coloc413.tsv annotation_ods=config/gwas413.ods --rerun-incomplete
 ~~~
 
 # Command by commande 
