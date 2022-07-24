@@ -15,8 +15,9 @@ help_cmd_str = "todo"
 try:
     h4_annot_tsv_path = sys.argv[1]
     count_per_rsid_gwas_tsv_path = sys.argv[2]
-    hist_density_True_distr_egene_per_rsid_p2_png_path = sys.argv[3]
-    if len(sys.argv) > 4:
+    upper_var_gwas_cat_count = int(sys.argv[3])
+    hist_density_True_distr_egene_per_rsid_p2_png_path = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -26,27 +27,17 @@ except IndexError:
     sys.exit(1)
 
 #%% Input1
-# h4_annot_tsv_path = os.path.join(PathManager.get_outdir_path(), "annotate_h4.py", "h4_annotated.tsv")
 if not os.path.isfile(h4_annot_tsv_path):
     print("input file does not exit")
     sys.exit(1)
 
 #%% Input2
-# count_per_rsid_gwas_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "count_per_rsid_gwas.tsv")
 if not os.path.isfile(count_per_rsid_gwas_tsv_path):
     print("input file does not exit")
     sys.exit(1)
 
-#%% Output
-# if not '__file__' in locals():
-#     outdir_path = os.path.join(PathManager.get_outdir_path(), "plt_hist_egenes_per_gwas.py")
-# else:
-#     outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
-
 outdir_path = os.path.dirname(hist_density_True_distr_egene_per_rsid_p2_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
-
-out_tsv_path = os.path.join(outdir_path, "todo.tsv")
 
 #%%
 h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
@@ -58,47 +49,42 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
-###############################################################################
-# Hypothesis 1: How many gwas per egene
-###############################################################################
-
 # %%
+density = True
+legend_label_ref = "GWAS cat. nb. 1"
 sel_cols = ['egene', 'etissue_category']  # tissue per egene
-# sel_cols = ['gwas_trait_name', 'egene']
-ylabel = "Prob. Density"
-density = False
+title = "eTissues per eGene"
+xlabel = "# eTissues"
+ylabel = "Probability Density"
+ylim = [0, 0.6]
 
-#%% segregate gwas
-segregated_df = m_df[[sel_cols[0], 'gwas_category_count']].sort_values(by='gwas_category_count', ascending=False)
-segregated_df = segregated_df.drop_duplicates(sel_cols[0], keep='first')
+#%% set upper_var_gwas_cat_count
+m_df = m_df[sel_cols + ['gwas_category_count']]
+m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
 
 #%%
-xlabel = "# eTissues"
-ylabel = "Probability density"
+pleio1_df = m_df.loc[m_df['gwas_category_count'] == 1, sel_cols].drop_duplicates()
+count_1_lst = pleio1_df.groupby(sel_cols[0]).count()[sel_cols[1]].tolist()
 
-distr_back_egene_to_gwas_lst = m_df[sel_cols].drop_duplicates().groupby([sel_cols[0]]).count()[sel_cols[1]].to_list()  # background
-for density in [False, True]:
-    for p_count in range(1, gwas_category_count_max_int+1):
-        title = "eTissues per eGene - Pleiotropy {}".format(p_count)
-        this_variable_p_df = segregated_df.loc[segregated_df['gwas_category_count'] == p_count, ]
-        selected_df = m_df.merge(this_variable_p_df, on=sel_cols[0])[sel_cols].drop_duplicates()
-        count_gwas_per_egene_lst = selected_df.groupby([sel_cols[0]]).count()[sel_cols[1]].to_list()
-        bins = range(max(distr_back_egene_to_gwas_lst)+1)
-        plt.title(title, fontsize=label_fontsize)
-        plt.xlabel(xlabel, fontsize=label_fontsize)
-        if density:
-            plt.ylim([0, 0.65])
-            plt.ylabel(ylabel, fontsize=label_fontsize)
-        else:
-            plt.ylabel("# {}".format(sel_cols[0]), fontsize=label_fontsize)
-        plt.hist(count_gwas_per_egene_lst, alpha=0.5, density=density, label='eGenes: Pleio {}'.format(p_count), bins=range(22))  # density=False would make counts
-        plt.hist(distr_back_egene_to_gwas_lst, alpha=0.5, density=density, label='All eGenes'.format(sel_cols[0]), bins=range(22))  # density=False would make counts
-        plt.grid(axis='y')
-        plt.legend(loc='upper right', fontsize=label_fontsize)
-        png_path = os.path.join(outdir_path, 'hist_density_{}_distr_{}_per_{}_p{}.png'.format(density, sel_cols[1], sel_cols[0], p_count))
-        if density:
-            plt.savefig(png_path, dpi=dpi)
-        else:
-            plt.savefig(png_path)
-        plt.clf()
-        plt.close()
+for p_count in range(2, upper_var_gwas_cat_count+1):
+
+    pleio_df = m_df.loc[m_df['gwas_category_count'] == p_count, sel_cols].drop_duplicates()
+    legend_label_pleio = "GWAS cat. nb. {}".format(p_count)
+
+    count_i_lst = pleio_df.groupby(sel_cols[0]).count()[sel_cols[1]].tolist()
+    bins = range(max(count_1_lst)+1)
+    plt.hist(count_i_lst, alpha=0.5, density=density, label=legend_label_pleio, bins=range(22))  # density=False would make counts
+    plt.hist(count_1_lst, alpha=0.5, density=density, label=legend_label_ref, bins=range(22))  # density=False would make counts
+
+    plt.grid(axis='y')
+    plt.legend(loc='upper right', fontsize=label_fontsize)
+    plt.title(title, fontsize=label_fontsize)
+    plt.xlabel(xlabel, fontsize=label_fontsize)
+    plt.ylabel(ylabel, fontsize=label_fontsize)
+    plt.ylim(ylim)
+
+    png_path = os.path.join(outdir_path, 'hist_density_{}_distr_{}_per_{}_p{}.png'.format(density, sel_cols[1], sel_cols[0], p_count))
+    plt.savefig(png_path, dpi=dpi)
+    plt.clf()
+    plt.close()
+
