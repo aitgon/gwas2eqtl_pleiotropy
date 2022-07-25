@@ -60,7 +60,7 @@ xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 
 #%%
-ax = sns.boxplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order)
+ax = sns.boxplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order, palette="rocket_r")
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
@@ -80,7 +80,7 @@ plt.clf()
 plt.close()
 
 #%%
-ax = sns.boxplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order)
+ax = sns.boxplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order, palette="rocket_r")
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
