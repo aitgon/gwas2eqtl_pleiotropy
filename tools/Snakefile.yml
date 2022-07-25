@@ -17,7 +17,7 @@ rule targets:
         "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr3_start141375367_end141428572_categories5.png",
         "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr11_start61783884_end61855668_categories5.png",
         "out/plt_scttr_count_per_rsid_gwas.py/count_per_rsid_gwas_chr16_start28743363_end28908020_categories5.png",
-        "out/plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
+        "out/plt_vlnplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
         "out/htmp_tissue_enrich.py/Anthropometric.png",
         "out/htmp_tissue_enrich.py/Autoimmune__inflammatory.png",
         "out/htmp_tissue_enrich.py/Blood_pressure.png",
@@ -26,9 +26,9 @@ rule targets:
         "out/htmp_tissue_enrich.py/NA.png",
         "out/cmpt_pleiotropic_regions.py/region_window_100000.bed",
         "out/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png",
-        "out/plt_hist_egene_per_variant.py/hist_density_True_distr_egene_per_rsid_p5.png",
-        "out/plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_subcategory_per_egene_p5.png",
-        "out/plt_hist_gwas_per_egene.py/hist_density_True_distr_gwas_trait_name_per_egene_p5.png",
+        "out/plt_violin_egene_per_variant.py/hist_density_True_distr_egene_per_rsid_p5.png",
+        "out/plt_violin_etissue_per_variant_egene.py/hist_density_True_distr_etissue_subcategory_per_egene_p5.png",
+        "out/plt_violin_gwas_per_egene.py/hist_density_True_distr_gwas_trait_name_per_egene_p5.png",
         "out/plt_hist_remap_crm.py/remap_crm_pleio5_flank_0_hist.png",
         "out/plt_hist_remap_crm.py/remap_crm_pleio5_flank_50_hist.png",
         "out/plt_bar_nonredundant_variant_category_percentage.py/non_redundant_variant_category_pleio2.png",
@@ -77,27 +77,27 @@ rule plt_hist_gwas_per_egene:
         "out/annotate_h4.py/h4_annotated.tsv",
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
     output:
-        "out/plt_hist_gwas_per_egene.py/hist_density_True_distr_gwas_trait_name_per_egene_p5.png",
+        "out/plt_violin_gwas_per_egene.py/hist_density_True_distr_gwas_trait_name_per_egene_p5.png",
     shell:
-        "python scripts/plt_hist_gwas_per_egene.py"
+        "python scripts/plt_violin_gwas_per_egene.py"
 
 rule plt_hist_etissue_per_egene:
     input:
         "out/annotate_h4.py/h4_annotated.tsv",
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
     output:
-        "out/plt_hist_etissue_per_egene.py/hist_density_True_distr_etissue_subcategory_per_egene_p5.png",
+        "out/plt_violin_etissue_per_variant_egene.py/hist_density_True_distr_etissue_subcategory_per_egene_p5.png",
     shell:
-        "python scripts/plt_hist_etissue_per_egene.py"
+        "python scripts/plt_violin_etissue_per_variant_egene.py"
 
 rule plt_hist_egene_per_variant:
     input:
         "out/annotate_h4.py/h4_annotated.tsv",
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
     output:
-        "out/plt_hist_egene_per_variant.py/hist_density_True_distr_egene_per_rsid_p5.png",
+        "out/plt_violin_egene_per_variant.py/hist_density_True_distr_egene_per_rsid_p5.png",
     shell:
-        "python scripts/plt_hist_egene_per_variant.py"
+        "python scripts/plt_violin_egene_per_variant.py"
 
 rule htmp_tissue_enrich:
     input:
@@ -126,9 +126,9 @@ rule plt_bxplt_gwas_egene_etissue:
         "out/cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv",
         "out/cmpt_count_per_rsid.py/count_per_rsid_egene.tsv",
     output:
-        "out/plt_bxplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
+        "out/plt_vlnplt_gwas_egene_etissue.py/boxplot_gwas_etissue.png",
     shell:
-        "python scripts/plt_bxplt_gwas_egene_etissue.py"
+        "python scripts/plt_vlnplt_gwas_egene_etissue.py"
 
 rule plt_scttr_count_per_rsid_gwas:
     input:

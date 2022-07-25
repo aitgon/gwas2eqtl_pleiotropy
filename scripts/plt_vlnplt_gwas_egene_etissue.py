@@ -32,12 +32,6 @@ except IndexError:
 pathlib.Path(os.path.dirname(boxplot_gwas_egene_png_path)).mkdir(parents=True, exist_ok=True)
 pathlib.Path(os.path.dirname(boxplot_gwas_etissue_png_path)).mkdir(parents=True, exist_ok=True)
 
-#%% input
-# indir_path = os.path.join(PathManager.get_project_path(), "out", "cmpt_count_per_rsid.py")
-# egene_count_tsv_path = os.path.join(indir_path, "count_per_rsid_egene.tsv")
-# etissue_count_tsv_path = os.path.join(indir_path, "count_per_rsid_etissue.tsv")
-# gwas_count_tsv_path = os.path.join(indir_path, "count_per_rsid_gwas.tsv")
-
 #%%
 gwas_count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
 egene_count_df = pandas.read_csv(egene_count_tsv_path, sep="\t", header=0)
@@ -46,10 +40,8 @@ etissue_count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
 #%%
 merged_df = gwas_count_df.merge(egene_count_df, on=['chrom', 'pos', 'rsid'])
 merged_df = merged_df.merge(etissue_count_df, on=['chrom', 'pos', 'rsid'])
-# gwas_category_count_max = merged_df['gwas_category_count'].max()
 
 #%% prepare comparisons
-# if larger than  upper_var_gwas_cat_count to same group
 merged_df.loc[merged_df['gwas_category_count'] >= upper_var_gwas_cat_count, 'gwas_category_count'] = upper_var_gwas_cat_count
 order = [*range(1, upper_var_gwas_cat_count+1)]
 box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1)]
@@ -60,13 +52,13 @@ xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 
 #%%
-ax = sns.boxplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order, palette="rocket_r")
+ax = sns.violinplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order, palette="rocket_r")
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
 
-plt.title("GWAS category and eGene count", fontsize=label_fontsize)
+plt.title("Colocalized variants", fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel("eGene count", fontsize=label_fontsize)
@@ -80,13 +72,13 @@ plt.clf()
 plt.close()
 
 #%%
-ax = sns.boxplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order, palette="rocket_r")
+ax = sns.violinplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order, palette="rocket_r")
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
 
-plt.title("GWAS category and eTissue count", fontsize=label_fontsize)
+plt.title("Colocalized variants", fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel("eTissue count", fontsize=label_fontsize)
