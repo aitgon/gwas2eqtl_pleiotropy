@@ -52,7 +52,7 @@ m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 # %%
 density = True
-legend_label_ref = "GWAS cat. nb. 1"
+legend_label_ref = "GWAS cat. ct. 1"
 sel_cols = ['rsid', 'egene']  # egene per variant
 title = "eGenes per variant"
 xlabel = "# eGenes"
@@ -70,7 +70,7 @@ count_1_lst = pleio1_df.groupby(sel_cols[0]).count()[sel_cols[1]].tolist()
 for p_count in range(2, upper_var_gwas_cat_count+1):
 
     pleio_df = m_df.loc[m_df['gwas_category_count'] == p_count, sel_cols].drop_duplicates()
-    legend_label_pleio = "GWAS cat. nb. {}".format(p_count)
+    legend_label_pleio = "GWAS cat. ct. {}".format(p_count)
 
     count_i_lst = pleio_df.groupby(sel_cols[0]).count()[sel_cols[1]].tolist()
     bins = range(max(count_1_lst)+1)
