@@ -1,16 +1,13 @@
-#%%
-import sys
-
-from eqtl2gwas_pleiotropy.PathManager import PathManager
 from statannot import add_stat_annotation
+from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 
+import sys
 import matplotlib.pyplot as plt
 import os
 import pandas
 import pathlib
 import seaborn as sns
 
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 
 plt.rcParams["figure.figsize"] = (8, 6)
 
@@ -32,10 +29,6 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-# #%% Output
-# if not '__file__' in locals():
-#     __file__ = "plt_bxplt_gwas_egene_etissue.py"
-# outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
 pathlib.Path(os.path.dirname(boxplot_gwas_egene_png_path)).mkdir(parents=True, exist_ok=True)
 pathlib.Path(os.path.dirname(boxplot_gwas_etissue_png_path)).mkdir(parents=True, exist_ok=True)
 
@@ -102,7 +95,6 @@ ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
 fig = ax.get_figure()
-# png_path = os.path.join(outdir_path, "boxplot_gwas_etissue.png")
-fig.savefig(boxplot_gwas_etissue_png_path, dpi=dpi)
+plt.savefig(boxplot_gwas_etissue_png_path, dpi=dpi)
 plt.clf()
 plt.close()
