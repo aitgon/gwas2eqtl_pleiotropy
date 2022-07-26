@@ -45,8 +45,8 @@ rule plt_bar_nonredundant_variant_category_percentage:
 
 rule plt_overlap_crm_remap:
     input:
-        "out/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_1_flank_0.bed",
-        "out/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_5_flank_0.bed",
+        "out/intrsct_remap_nr_gwas_categories.py/remap_crm_variant_pleio_1_flank_0.bed",
+        "out/intrsct_remap_nr_gwas_categories.py/remap_crm_variant_pleio_5_flank_0.bed",
     output:
         "out/plt_overlap_crm_remap.py/remap_crm_bar_plot_ratio_variants.png",
     shell:
@@ -57,10 +57,10 @@ rule cmpt_overlap_crm_remap:
         "out/cmpt_count_per_rsid.py/variant_pleio_1_flank_0.bed",
         "out/cmpt_count_per_rsid.py/variant_pleio_5_flank_0.bed",
     output:
-        "out/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_1_flank_0.bed",
-        "out/cmpt_overlap_crm_remap.py/remap_crm_variant_pleio_5_flank_0.bed",
+        "out/intrsct_remap_nr_gwas_categories.py/remap_crm_variant_pleio_1_flank_0.bed",
+        "out/intrsct_remap_nr_gwas_categories.py/remap_crm_variant_pleio_5_flank_0.bed",
     shell:
-        "python scripts/cmpt_overlap_crm_remap.py"
+        "python scripts/intrsct_remap_nr_gwas_categories.py"
 
 rule plt_hist_remap_crm:
     input:

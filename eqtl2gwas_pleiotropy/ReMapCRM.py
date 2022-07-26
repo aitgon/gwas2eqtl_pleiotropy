@@ -1,17 +1,18 @@
 from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.PathManager import PathManager
 
 import os
 import pandas
 import pathlib
 import requests
 
+from eqtl2gwas_pleiotropy.constants import public_data_dir
+
 
 class ReMapCRM:
 
     # api-endpoint
     url = "https://remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"
-    remap_crm_path = os.path.join(PathManager.get_download_path(), url.replace('http://', ''))
+    remap_crm_path = os.path.join(public_data_dir, url.replace('http://', ''))
 
     def __init__(self):
 

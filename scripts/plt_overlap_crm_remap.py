@@ -26,7 +26,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 cmpt_count_per_rsid_indir_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py")
 
 #%% input dir cmpt_overlap_crm_remap
-cmpt_overlap_crm_remap_indir_path = os.path.join(PathManager.get_outdir_path(), "cmpt_overlap_crm_remap.py")
+cmpt_overlap_crm_remap_indir_path = os.path.join(PathManager.get_outdir_path(), "intrsct_remap_nr_gwas_categories.py")
 
 #%% barplot with proportion of variants in CRMs
 x_lst = []

@@ -95,8 +95,6 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-fig = ax.get_figure()
-fig.savefig(vlnplt_png_path)
-plt.clf()
+plt.savefig(vlnplt_png_path)
 plt.close()
 

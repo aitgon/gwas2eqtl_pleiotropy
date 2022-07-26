@@ -13,9 +13,9 @@ class OpenGWASinfo:
     # api-endpoint
     opengwas_metadata_url = "http://gwas-api.mrcieu.ac.uk/gwasinfo"
     opengwas_ods_path = os.path.join(
-        PathManager.get_download_path(), opengwas_metadata_url.replace('http://', ''), 'opengwas.ods')
+        PathManager.get_outdir_path(), "download", opengwas_metadata_url.replace('http://', ''), 'opengwas.ods')
     opengwas_tsv_path = os.path.join(
-        PathManager.get_download_path(), opengwas_metadata_url.replace('http://', ''), 'opengwas.tsv')
+        PathManager.get_outdir_path(), "download", opengwas_metadata_url.replace('http://', ''), 'opengwas.tsv')
 
     def __init__(self):
 

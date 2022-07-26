@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 
 # Plot parameters
 plt.rcParams["figure.figsize"] = (8, 6)
-ylabel = "Prob. Density"
 
 #%%
 help_cmd_str = "todo"
@@ -96,7 +95,5 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-fig = ax.get_figure()
-fig.savefig(vlnplt_png_path)
-plt.clf()
+plt.savefig(vlnplt_png_path)
 plt.close()

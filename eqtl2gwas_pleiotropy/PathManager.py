@@ -14,10 +14,6 @@ class PathManager:
 
     tempdir = None
 
-    @classmethod
-    def get_download_path(cls):
-
-        return os.path.join(cls.get_outdir_path(), 'download')
 
     @classmethod
     def get_outdir_path(cls):

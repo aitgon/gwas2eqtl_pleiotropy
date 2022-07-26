@@ -50,7 +50,7 @@ c = 'blue'
 count_per_rsid_df['pos'] = count_per_rsid_df['pos'].astype('int')
 
 #%% Loop over regions
-pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= 6, ['chrom', 'start', 'end', 'gwas_category_count']]
+pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= 7, ['chrom', 'start', 'end', 'gwas_category_count']]
 for rowi, row in pleiotropic_regions_df.iterrows():
     chrom = row['chrom']
     start = row['start']

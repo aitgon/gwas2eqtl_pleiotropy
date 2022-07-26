@@ -24,7 +24,7 @@ else:
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 url_str = "http://remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"
-remap_crm_path = URL(url_str, data_public_dir="/home/gonzalez/Software/public").download()
+remap_crm_path = URL(url_str, download_dir="/home/gonzalez/Software/public").download()
 
 #%%
 ylim = [0, 0.07]

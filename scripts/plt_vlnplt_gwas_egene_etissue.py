@@ -86,7 +86,5 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-fig = ax.get_figure()
-plt.savefig(boxplot_gwas_etissue_png_path, dpi=dpi)
-plt.clf()
+plt.savefig(boxplot_gwas_etissue_png_path)
 plt.close()

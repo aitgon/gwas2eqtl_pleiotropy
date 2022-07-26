@@ -1,18 +1,16 @@
-import seaborn
 from statannot import add_stat_annotation
+from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize
 
-from eqtl2gwas_pleiotropy.constants import label_fontsize, dpi, tick_fontsize
-
+import matplotlib.pyplot as plt
 import os
 import pandas
 import pathlib
+import seaborn
 import sys
-import matplotlib.pyplot as plt
 
 
 # Plot parameters
 plt.rcParams["figure.figsize"] = (8, 6)
-ylabel = "Prob. Density"
 
 #%%
 help_cmd_str = "todo"
@@ -96,7 +94,5 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-fig = ax.get_figure()
-fig.savefig(vlnplt_png_path)
-plt.clf()
+plt.savefig(vlnplt_png_path)
 plt.close()
