@@ -1,5 +1,7 @@
 crossmap
 matplotlib
+mysql-client
+mysql-connector-python
 odfpy
 pandas
 pybedtools
