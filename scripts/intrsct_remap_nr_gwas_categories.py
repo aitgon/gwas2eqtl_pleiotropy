@@ -53,7 +53,10 @@ remap_crm_path = os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2
 flank = 0
 for count_pleio in range(1, upper_var_gwas_cat_count+1):
     bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
-    intersect_bed_path = os.path.join(outdir_path, "remap_crm_" + os.path.basename(bed_path))
+    # import pdb; pdb.set_trace()
+    # intersect_bed_path = os.path.join(outdir_path, "remap_crm_" + os.path.basename(bed_path))
+    intersect_basename = os.path.basename(remap_nr_pleio_1_flank_0_hg38_bed).replace('pleio_1', 'pleio_' + str(count_pleio))
+    intersect_bed_path = os.path.join(os.path.dirname(remap_nr_pleio_1_flank_0_hg38_bed), intersect_basename)
     cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -wb"
     cmd = cmd_stf.format(**{'bed_path': bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
     Logger.info(cmd)
@@ -64,7 +67,9 @@ for count_pleio in range(1, upper_var_gwas_cat_count+1):
 flank = 50
 for count_pleio in range(1, upper_var_gwas_cat_count+1):
     bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
-    intersect_bed_path = os.path.join(outdir_path, "remap_crm_" + os.path.basename(bed_path))
+    # intersect_bed_path = os.path.join(outdir_path, "remap_crm_" + os.path.basename(bed_path))
+    intersect_basemane = os.path.basename(remap_nr_pleio_1_flank_50_hg38_bed).replace('pleio_1', 'pleio_' + str(count_pleio))
+    intersect_bed_path = os.path.join(os.path.dirname(remap_nr_pleio_1_flank_50_hg38_bed), intersect_basemane)
     cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -wb"
     cmd = cmd_stf.format(**{'bed_path': bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
     Logger.info(cmd)

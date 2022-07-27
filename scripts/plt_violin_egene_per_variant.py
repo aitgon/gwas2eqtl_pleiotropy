@@ -54,6 +54,12 @@ m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 # %%
 sel_cols = ['rsid', 'egene']  # egene per variant
 
+#%%
+m2_df = m_df[['chrom', 'pos'] + sel_cols + ['egene_symbol', 'gwas_category_count']].drop_duplicates()
+m2_df.sort_values(['gwas_category_count', 'chrom', 'pos'], inplace=True, ascending=[False, True, True])
+tsv_path = os.path.join(outdir_path, 'variants2egenes.tsv')
+m2_df.to_csv(tsv_path, header=True, index=False, sep='\t')
+
 #%% set upper_var_gwas_cat_count
 m_df = m_df[sel_cols + ['gwas_category_count']]
 m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
