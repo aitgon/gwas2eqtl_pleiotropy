@@ -18,8 +18,6 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 variant_to_region_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_variant_to_region.py", "variant_to_regions.tsv")
 variant_to_region_df = pandas.read_csv(variant_to_region_tsv_path, sep="\t")
 
-# import pdb; pdb.set_trace()
-
 while variant_to_region_df.shape[0] > 0:
     region_pleio_count = variant_to_region_df['gwas_category_count'].max()
     print(region_pleio_count)

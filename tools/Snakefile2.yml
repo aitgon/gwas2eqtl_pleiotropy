@@ -28,6 +28,18 @@ rule all:
         os.path.join(outdir, "plt_bxplt_remaptf_per_rsid.py/bxplt_remaptf_per_rsid_flank_50.png"),
         os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
         os.path.join(outdir, "plt_violin_interactors_per_egene.py/vlnplt.png"),
+        os.path.join(outdir, "plt_violin_egenes_per_region.py/vlnplt.png"),
+
+rule plt_violin_egenes_per_region:
+    input:
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.bed"),
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.bed"),
+    output:
+        os.path.join(outdir, "plt_violin_egenes_per_region.py/vlnplt.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/plt_violin_egenes_per_region.py {input[0]} {input[1]} {output[0]}"
 
 rule plt_violin_interactions_per_egene:
     input:

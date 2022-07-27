@@ -31,7 +31,6 @@ class UCSC:
 
             output_list = list()
 
-            sql = "select chrom,txStart,txEnd,name,strand,name2 from ncbiRefSeq where (name like 'NM_%' or name like 'XM_%')"
             sql = "select chrom,txStart,txEnd,name,strand,name2 from ncbiRefSeq where (name like 'NM_%')"
 
             connection = connect(host=self.host, user=self.user, database=self.database)
