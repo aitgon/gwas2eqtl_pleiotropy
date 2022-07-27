@@ -52,3 +52,41 @@ class UCSC:
         ucsc_refgene_df = pandas.read_csv(ucsc_refgene_tsv_path, sep='\t', header=0, index_col='name')
 
         return ucsc_refgene_df
+
+
+
+    def get_ensg2enst2ensp(self, force=False):
+
+        """Get full refgene tss table
+
+        Force True will download data"""
+
+        # wdir = PathManager.get_outdir_path()
+        ucsc_ensg2enst2ensp_tsv_path = os.path.join(PathManager.get_outdir_path(), "ensg2enst2ensp.tsv")
+
+        if not os.path.isfile(ucsc_ensg2enst2ensp_tsv_path) or force:
+            Logger.debug("Download gene informations from Refseq")
+
+            pathlib.Path(os.path.dirname(ucsc_ensg2enst2ensp_tsv_path)).mkdir(exist_ok=True, parents=True)
+
+            output_list = list()
+
+            # sql = "select chrom,txStart,txEnd,name,strand,name2 from ncbiRefSeq where (name like 'NM_%' or name like 'XM_%')"
+            sql = "select * from ensGtp"
+
+            connection = connect(host=self.host, user=self.user, database=self.database)
+            cursor = connection.cursor()
+            Logger.info("SQL select UCSC...")
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            for row in result:
+                output_list.append(row)
+            cursor.close()
+            connection.close()
+
+            df = pandas.DataFrame.from_records(output_list, columns=['gene', 'transcript', 'protein'])
+            df.to_csv(ucsc_ensg2enst2ensp_tsv_path, index=False, header=True, sep="\t")
+
+        df = pandas.read_csv(ucsc_ensg2enst2ensp_tsv_path, sep='\t', header=0)
+
+        return df

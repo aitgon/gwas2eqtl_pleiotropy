@@ -26,6 +26,20 @@ rule all:
         os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_50_hg38.bed"),
         os.path.join(outdir, "plt_bxplt_remaptf_per_rsid.py/bxplt_remaptf_per_rsid_flank_0.png"),
         os.path.join(outdir, "plt_bxplt_remaptf_per_rsid.py/bxplt_remaptf_per_rsid_flank_50.png"),
+        os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
+        os.path.join(outdir, "plt_violin_interactors_per_egene.py/vlnplt.png"),
+
+rule plt_violin_interactions_per_egene:
+    input:
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
+    output:
+        os.path.join(outdir, "plt_violin_interactors_per_egene.py/vlnplt.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/plt_violin_interactors_per_egene.py {input[0]} {input[1]} {input[2]} {params.upper_var_gwas_cat_count} {output[0]}"
 
 rule plt_bxplt_remaptf_per_rsid:
     input:
@@ -206,6 +220,15 @@ rule wget_remap:
         chain_gz=os.path.join(public_data_dir_path, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
     params:
         url="remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz",
+        public_data_dir_path=public_data_dir_path,
+    shell:
+        """wget -nc -q -r {params.url} -P {params.public_data_dir_path}"""
+
+rule wget_interactome:
+    output:
+        os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
+    params:
+        url="stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz",
         public_data_dir_path=public_data_dir_path,
     shell:
         """wget -nc -q -r {params.url} -P {params.public_data_dir_path}"""
