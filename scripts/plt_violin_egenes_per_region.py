@@ -51,7 +51,7 @@ df['length'] = df['end'] - df['start']
 df.loc[df['length']==0, 'length']=1
 
 #%%
-count_df = df[['chrom', 'start', 'end', 'length', 'gwas_category_count', 'egene']].groupby(['chrom', 'start', 'end', 'length', 'gwas_category_count']).count()
+count_df = df[['chrom', 'start', 'end', 'length', 'gwas_category_count', 'egene']].groupby(['chrom', 'start', 'end', 'length', 'gwas_category_count']).gwas_cat_count()
 # count_df['egene'] = count_df['egene']/count_df.index.get_level_values('length')
 count_df.reset_index(inplace=True)
 count_df.to_csv("t.tsv", sep='\t')

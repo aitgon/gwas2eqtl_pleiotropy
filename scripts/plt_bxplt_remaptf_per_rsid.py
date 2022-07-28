@@ -58,7 +58,7 @@ for pleio in range(1, upper_var_gwas_cat_count+1):
     df['tf'] = df[9].str.split(':', expand=True)[0]
     df = df[[3, 'tf']].drop_duplicates()
     df.columns = ['rsid', 'tf']
-    df = df.groupby('rsid').count().reset_index()
+    df = df.groupby('rsid').gwas_cat_count().reset_index()
     df['gwas_category_count'] = pleio
     cat_df = pandas.concat([cat_df, df], axis=0)
 
@@ -101,7 +101,7 @@ for pleio in range(1, upper_var_gwas_cat_count+1):
     df['tf'] = df[9].str.split(':', expand=True)[0]
     df = df[[3, 'tf']].drop_duplicates()
     df.columns = ['rsid', 'tf']
-    df = df.groupby('rsid').count().reset_index()
+    df = df.groupby('rsid').gwas_cat_count().reset_index()
     df['gwas_category_count'] = pleio
     cat_df = pandas.concat([cat_df, df], axis=0)
 

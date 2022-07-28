@@ -1,10 +1,7 @@
 import os
 import pandas
 import pathlib
-import shlex
-import subprocess
 
-from eqtl2gwas_pleiotropy.Logger import Logger
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 
 

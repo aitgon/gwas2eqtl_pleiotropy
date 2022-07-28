@@ -61,7 +61,7 @@ m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category
 #%%
 m_df = m_df.drop_duplicates()
 # import pdb; pdb.set_trace()
-m_df = m_df.groupby(['rsid', 'egene', 'gwas_category_count']).count()
+m_df = m_df.groupby(['rsid', 'egene', 'gwas_category_count']).gwas_cat_count()
 m_df = m_df.reset_index()
 m_df.columns = ['rsid', 'egene', 'gwas_category_count', 'etissue_category_count']
 

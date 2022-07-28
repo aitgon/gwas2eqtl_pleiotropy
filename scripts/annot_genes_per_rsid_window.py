@@ -67,7 +67,7 @@ df = df[[3, 4, 12]].drop_duplicates()
 df.columns = ['rsid', 'gwas_category_count', 'gene']
 df.loc[df['gwas_category_count'] > upper_var_gwas_cat_count, 'gwas_category_count'] = upper_var_gwas_cat_count
 
-df = df.groupby(['rsid', 'gwas_category_count']).count().reset_index()
+df = df.groupby(['rsid', 'gwas_category_count']).gwas_cat_count().reset_index()
 
 #%%
 order = [*range(1, upper_var_gwas_cat_count+1)]

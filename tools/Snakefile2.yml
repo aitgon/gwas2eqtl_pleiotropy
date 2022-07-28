@@ -21,7 +21,6 @@ rule all:
         os.path.join(outdir, "plt_scttr_count_per_rsid_egene.py/log.txt"),
         os.path.join(outdir, "plt_scttr_count_per_rsid_etissue.py/log.txt"),
         os.path.join(outdir, "plt_violin_etissue_per_variant_egene.py/vlnplt.png"),
-        #os.path.join(outdir, "plt_vep_consequence.py/vep_bar.png"), # wait until installation
         os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_0_hg38.bed"),
         os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_50_hg38.bed"),
         os.path.join(outdir, "plt_bxplt_remaptf_per_rsid.py/bxplt_remaptf_per_rsid_flank_0.png"),
@@ -29,6 +28,7 @@ rule all:
         os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
         os.path.join(outdir, "plt_violin_interactors_per_egene.py/vlnplt.png"),
         os.path.join(outdir, "plt_violin_egenes_per_region.py/vlnplt.png"),
+        os.path.join(outdir, "plt_vep_consequence.py/missense_variant.png"),
 
 rule plt_violin_egenes_per_region:
     input:
@@ -80,24 +80,34 @@ rule intrsct_remap_nr_gwas_categories:
 
 rule plt_vep_consequence:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-        os.path.join(outdir, "cmpt_vep_consequence.py/vep_pleio1.tsv"),
+        os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     output:
-        os.path.join(outdir, "plt_vep_consequence.py/vep_bar.png"),
-    params:
-        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+        os.path.join(outdir, "plt_vep_consequence.py/missense_variant.png"),
     shell:
-        "python scripts/plt_vep_consequence.py {input[0]} {params.upper_var_gwas_cat_count} {input[1]} {output[0]}"
+        "python scripts/plt_vep_consequence.py {input[0]} {output[0]}"
 
-rule cmpt_vep_consequence:
+rule cmpt_vep_consequence_fisher:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
+        os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
     output:
-        os.path.join(outdir, "cmpt_vep_consequence.py/vep_pleio1.tsv"),
+        os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     params:
         upper_var_gwas_cat_count=upper_var_gwas_cat_count
     shell:
-        "python scripts/cmpt_vep_consequence.py {input[0]} {params.upper_var_gwas_cat_count} $(dirname {output[0]})"
+        "python scripts/cmpt_vep_consequence_fisher.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]}"
+
+rule cmpt_vep:
+    input:
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
+        os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/cmpt_vep.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
 
 rule plt_violin_gwas_per_variant_egene_etissue:
     input:

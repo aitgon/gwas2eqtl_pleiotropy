@@ -1,24 +1,22 @@
 import os
+import pathlib
 import sys
-
 import pandas
 import seaborn
-from matplotlib import pyplot as plt
 
-#%%
 from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, dpi
+from matplotlib import pyplot as plt
+from statannotations.Annotator import Annotator
 
-upper_var_gwas_cat_count = 5
-vep1_path = "out/gwas413/genome/5e-08/1000000/cmpt_vep_consequence.py/vep_pleio1.tsv"
+consequence_tsv_path = 'out/gwas413/genome/5e-08/1000000/cmpt_vep_consequence_fisher.py/cons_stat.tsv'
+consequence_png_path = 'out/gwas413/genome/5e-08/1000000/plt_vep_consequence.py/bar.png'
 
 #%%
 help_cmd_str = "todo"
 try:
-    count_per_rsid_gwas_tsv_path = sys.argv[1]
-    upper_var_gwas_cat_count = int(sys.argv[2])
-    vep2_path = sys.argv[3]
-    png_path = sys.argv[4]
-    if len(sys.argv) > 5:
+    consequence_tsv_path = sys.argv[1]
+    consequence_png_path = sys.argv[2]
+    if len(sys.argv) > 3:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -27,50 +25,64 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
+#%%
+outdir_path = os.path.dirname(consequence_png_path)
+pathlib.Path(outdir_path).mkdir(exist_ok=True, parents=True)
 
 #%%
-df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
-df.loc[df['gwas_category_count'] >= upper_var_gwas_cat_count, 'gwas_category_count'] = upper_var_gwas_cat_count
-cat_df = pandas.DataFrame({'percentage': None, 'consequence': None, 'gwas_category_count': None}, index=[])
-# import pdb; pdb.set_trace()
-for pleio in range(1, upper_var_gwas_cat_count+1):
-    vep_path = os.path.join(os.path.dirname(vep1_path), os.path.basename(vep1_path).replace("1", str(pleio)))
-    # vep_path = vep0_path.format(pleio)
-    vdf = pandas.read_csv(vep_path, sep="\t", comment='#', header=None)
-    vdf = vdf.loc[vdf[0].drop_duplicates(keep='first').index]
-    vdf = vdf[[0, 6]]
-    vdf[6] = vdf[6].str.split(',', expand=True)[0]
-    variant_count = vdf.shape[0]
-    consequence_lst = vdf.groupby(6).count().index.tolist()
-    percentage_lst = round(vdf.groupby(6).count() / variant_count * 100)[0].tolist()
-    conseq_perc_df = pandas.DataFrame({'consequence': consequence_lst, 'percentage': percentage_lst}, index=[*range(len(consequence_lst))])
-    conseq_perc_df['gwas_category_count'] = pleio
-    cat_df = pandas.concat([cat_df, conseq_perc_df], axis=0)
+in_df = pandas.read_csv(consequence_tsv_path, sep="\t", header=0)
+in_df['gwas_category_count'] = in_df['gwas_category_count'].astype(int).astype(str)
 
-cat_wide_df = pandas.pivot_table(cat_df, values='percentage', index='consequence', columns='gwas_category_count', fill_value=0)
-cat_df = cat_df.loc[cat_df['consequence'].isin(cat_wide_df.loc[cat_wide_df.sum(axis=1) >= 10].index)]
+#%% set signif symbols
+in_df['signif'] = "ns"
+in_df.loc[in_df['p'] <= 5.00e-02, 'signif'] = '*'
+in_df.loc[in_df['p'] <= 1.00e-02, 'signif'] = '**'
+in_df.loc[in_df['p'] <= 1.00e-03, 'signif'] = '***'
+in_df.loc[in_df['p'] <= 1.00e-04, 'signif'] = '****'
 
-order = ['intergenic_variant', 'upstream_gene_variant', 'intron_variant', 'missense_variant', '3_prime_UTR_variant', 'downstream_gene_variant']
-xticklabels = [x[:-8] for x in order]
-cat_df.loc[cat_df['gwas_category_count'] == upper_var_gwas_cat_count, 'gwas_category_count'] = "≥5"
-ax = seaborn.catplot(x="percentage", y="consequence", hue="gwas_category_count", kind="bar", data=cat_df, order=order, legend=False, palette="rocket_r", orient="h")
+#%%
+consequence = 'missense_variant'
 
-title = "Variant Effect Predictor"
-xlabel = "Variant consequence"
-ylabel = "Variants [%]"
-legend_loc = 'upper right'
-label_fontsize = 16
-tick_fontsize = 12
-ax.set_yticklabels(xticklabels)
+#%%
+for consequence in in_df['consequence'].unique():
 
-plt.grid(axis='x')
-plt.legend(loc=legend_loc, title="GWAS cat. count")
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.yticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
+    #%%
+    plt_df = in_df.loc[in_df['consequence'] == consequence, ['gwas_category_count', 'oddsr', 'p', 'signif']]
 
-plt.tight_layout()
-plt.savefig(png_path, dpi=dpi)
-plt.close()
+    #%%
+    order = sorted(plt_df['gwas_category_count'].unique())
+    seaborn.set_theme(style="whitegrid")
+    xticklabels = order.copy()
+    title = consequence
+    xlabel = "GWAS category count"
+    ylabel = "Odds ratio"
+    ylim = [0, 9]
+    y = "oddsr"
+    x = "gwas_category_count"
+
+    #%%
+    ax = seaborn.barplot(x=x, y=y, data=plt_df, order=order, palette="rocket_r", ci=None)
+
+    #%%
+    formatted_pvalues = plt_df['signif'].tolist()
+
+    #%%
+    pairs = [(x, x) for x in plt_df['gwas_category_count']]
+    annotator = Annotator(ax, pairs, data=plt_df, x=x, y=y, order=order, size=label_fontsize)
+    annotator.set_custom_annotations(formatted_pvalues)
+    annotator.configure(**{'fontsize': 16})
+    annotator.annotate()
+
+
+    plt.title(title, fontsize=label_fontsize)
+    plt.xlabel(xlabel, fontsize=label_fontsize)
+    plt.xticks(fontsize=tick_fontsize, rotation=0)
+    plt.ylabel(ylabel, fontsize=label_fontsize)
+    plt.ylim(ylim)
+    plt.yticks(fontsize=tick_fontsize)
+    ax.set_xticklabels(xticklabels)
+
+    plt.tight_layout()
+    plt_path = os.path.join(outdir_path, consequence + ".png")
+    plt.savefig(plt_path)
+    plt.close()
