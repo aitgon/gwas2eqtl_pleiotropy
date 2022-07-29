@@ -9,6 +9,8 @@ gwas2eqtl_tools.egg-info
 .RData
 *.Rproj
 eqtl2gwas_pleiotropy.egg-info
+*.bbl
+*.blg
 ms/*.aux
 ms/*.bbl
 ms/*.blg
@@ -26,5 +28,5 @@ ms/*.sty
 ms/*.toc
 textgreek.dtx
 textgreek.ins
-ms_00_merge.pdf
+ms00_merge.pdf
 ms/bioRxiv_logo.png

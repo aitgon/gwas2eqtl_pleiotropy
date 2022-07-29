@@ -36,27 +36,13 @@ pathlib.Path(os.path.dirname(hist_rsid_gwas_path)).mkdir(parents=True, exist_ok=
 pathlib.Path(os.path.dirname(hist_rsid_egene_path)).mkdir(parents=True, exist_ok=True)
 pathlib.Path(os.path.dirname(hist_rsid_etissue_path)).mkdir(parents=True, exist_ok=True)
 
-# from matplotlib.pyplot import figure
-
-# figure(figsize=(8, 6), dpi=80)
-# #%% Output
-# if not '__file__' in locals():
-#     __file__ = "plt_hist_gwas_etissue_egene.py"
-# outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
-# pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
-
 #%%
-# indir_path = os.path.join(PathManager.get_project_path(), "out", "cmpt_count_per_rsid.py")
-# gwas_count_tsv_path = os.path.join(indir_path, "count_per_rsid_gwas.tsv")
-# egene_count_tsv_path = os.path.join(indir_path, "count_per_rsid_egene.tsv")
-# etissue_count_tsv_path = os.path.join(indir_path, "count_per_rsid_etissue.tsv")
-
-#%%
-ylabel = "Probability density"
-title = "Variants{}"
+ylabel = "Relative frequency"
+title = "Variant frequency"
 ylim=[1e-10, 10]
 edgecolor='k'
 linewidth = 2
+grid_axis = 'y'
 hist_kwargs = {'density': 1, 'edgecolor': edgecolor, 'linewidth': linewidth}
 
 #%% gwas
@@ -65,7 +51,7 @@ bins = numpy.array(range(6))
 data_ser = count_df['gwas_category_count']
 plt.hist(data_ser, **hist_kwargs, bins=bins)
 
-plt.grid(True)
+plt.grid(axis=grid_axis)
 plt.title(title.format(" and GWAS categories"), fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
@@ -76,7 +62,6 @@ plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-# png_path = os.path.join(outdir_path, "hist_gwas.png")
 plt.savefig(hist_rsid_gwas_path, dpi=dpi)
 plt.clf()
 plt.close()
@@ -86,7 +71,7 @@ count_df = pandas.read_csv(egene_count_tsv_path, sep="\t", header=0)
 data_ser = count_df['egene_count']
 plt.hist(data_ser, **hist_kwargs)
 
-plt.grid(True)
+plt.grid(axis=grid_axis)
 plt.title(title.format(" and eGenes"), fontsize=label_fontsize)
 plt.xlabel("eGene count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
@@ -107,9 +92,9 @@ count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
 data_ser = count_df['etissue_label_count']
 plt.hist(data_ser, **hist_kwargs)
 
-plt.grid(True)
+plt.grid(axis=grid_axis)
 plt.title(title.format(" and eTissues"), fontsize=label_fontsize)
-plt.xlabel("eTissue subcategory count", fontsize=label_fontsize)
+plt.xlabel("eTissue category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)

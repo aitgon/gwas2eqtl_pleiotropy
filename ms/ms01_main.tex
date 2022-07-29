@@ -1,0 +1,128 @@
+\leadauthor{Scientist}
+
+\title{Trait pleiotropy of regulatory variants increases with the variety of bound transcription factors, regulated genes and active tissues}
+\shorttitle{Running title here}
+
+\author[1,\Letter]{Aitor González \orcidlink{0000-0002-8402-1655}}
+\author[2]{Second Doctor \orcidlink {000-0002-0000-0000}}
+\author[1]{Third Professor \orcidlink {000-0003-0000-0000}}
+\affil[1]{Aix Marseille Univ, INSERM, TAGC, 13288 Marseille, France}
+\affil[2]{B Institute, Chalk Road, Blackboardville, USA}
+\date{}
+
+\maketitle
+
+\begin{abstract}
+Genome-wide association studies (GWAS) have shown that pleiotropic genetic variants affecting multiple traits are relatively common in the genome.
+A large majority of these variants fall in non-coding regions and are likely gene regulatory variants
+
+We compute the colocalization of ? GWAS traits and ? eQTLs to pinpoint ? eQTLs associated to at least one GWAS trait.
+We categorized GWAS traits and segregated eQTLs according to belonging to one or more categories.
+Pleiotropy was defined as being associated to more than one category.
+Pleiotropic variants clustered in regions with larger number of pleiotropic variants.
+Pleiotropic variants were associated to more etissues and egenes.
+Interestingly pleiotropic variants bound more transcription factors.
+These colocalization data are available here: ?.
+
+In summary, pleitropy of regulatory variants results from a higher number of bound transcription factors, regulated genes and active tissues.
+
+
+\lipsum[1][1]
+\end{abstract}
+
+\begin{keywords}
+keyword1 | keyword2 | keyword3
+\end{keywords}
+
+\begin{corrauthor}
+aitor.gonzalez\at univ-amu.fr
+\end{corrauthor}
+
+\section*{Introduction}\label{sec:introduction}
+
+\lipsum[2][1]
+
+\section*{Results}\label{s:results}
+
+\subsection*{Which regulatory variants are the most pleiotropic?}
+
+The list of variants involved in 5 or GWAS categories are shown in table \ref{tab:pleitropic_variants}. 
+
+The variant rs1344674 is the only one that is not known in the literature.
+This suggest that our genome-wide approach is able to point at functional variants.
+
+The complete list of variants in any category is in Supplementary Table TODO.
+Among the following variants involved in 4 categories, we made a number of observations.
+
+First we see that variants do not belong to independent regions and cluster together in small regions.
+For instance, variants rs159963, rs301802, rs301806, rs301807, rs301816 and rs301817 are found in a small region of around 23 kb in chromosome 1 in the intron of gene RERE.
+Moreover the GWAS categories are identical in these variants that are close together.
+This observation made us analyzed pleiotropic regions below.
+
+The second observation is that these different GWAS categories are actually related.
+For instance, the categories of the variants in the gene RERE allergic rhinitis, asthma, cardiovascular and hypertension.
+
+\subsection*{What is the frequency and proportion of variants with different phenotype categories, egene count and etissue categories?}
+
+Figure \ref{fig:hist_gwas_egene_etissue}(a) shows that close to 99\% variants are involved in one GWAS category, 10\% are involved in 2 categories and less than 1\% of variants are involved in 5 GWAS categories
+
+Figure \ref{fig:hist_gwas_egene_etissue}(b) shows that around 50\% are associated to 1-5 egenes, 1\% are associated to ...
+
+Figure \ref{fig:hist_gwas_egene_etissue}(c) shows that around 50\% are active in 1-5 etissues, 1\% are associated to ...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{How do phenotype frequencies relate pleiotropy relates to eQTLs and etissues at the loci level?}
+
+In Figure \ref{fig:region_gwas_egenes_tissues}, we can see the number of GWAS categories, eGenes and eTissues for regulatory variants in pleiotropic regions.
+
+
+\subsection*{Where are the pleitropic variants?}
+
+Based on the VEP consequence, we see that pleiotropic variants are increased in the coding regions (Missense) and 3' prime UTRs (Fig. \ref{fig:genome_location}).
+By contrast pleiotropic variants decrease in introns.
+This suggests their effects are stronger.
+
+\subsection*{What is the mechanism of the pleiotropy? ? Are pleiotropic variants associated to more egenes or less genes?}
+
+First we want to know if pleiotropic eQTLs are associated to more egenes.
+The histograms of pleiotropic eQTLs are shifted to the righted compared to less pleiotropic eQTLs (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}a).
+
+
+
+
+\subsection*{What is the mechanism of the pleiotropy? ? Are pleiotropic egenes associated to more GWAS?}
+
+Yes. There is a higher proportion of pleitropic egenes with higher number of GWAS traits (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}b).
+
+\subsection*{What is the mechanism of the pleiotropy? Are pleiotropic egenes associated to more etissues?}
+
+Yes. There is a higher proportion of pleitropic egenes associated with higher number of etissues (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}c).
+
+\subsection*{How many pleiotropic regions are there}
+
+We have found around 350 regions with variants involved in 2 or more categories (Fig. \ref{fig:pleiotropy_region_distribution}).
+Around 250 are 100,000 bp in length, 100 regions are 200,000 bp and the others are longer.
+
+\subsection*{Which genomic regions are the most pleiotropic?}
+
+The list of pleiotropic regions (5 and 4 trait categories) is shown in Table \ref{tab:pleiotropic_regions}. The whole list will be given in a Supplementary file.
+
+
+\subsection*{How to explain that pleiotropic variants are actives in more tissues?}
+
+In figure xx, we have found that pleiotropic variants are active in more tissues.
+To explain this observatio, we hypothesize that genomic regions around pleiotropic variants bind more transcriptions factors.
+Indeed we find a bias towards more transcription factors around pleiotropic variants.
+
+\subsection*{How can other people access these colocalized GWAS/eQTL?}
+
+\begin{itemize}
+  \item Remote and local access with Tabix
+  \item UCSC browser track
+  \item Downloadable SQLite database
+  \item Downloadable raw TSV files
+\end{itemize}
+
+\section*{Bibliography}
+\bibliographystyle{bxv_abbrvnat}
+\bibliography{refs.bib}
