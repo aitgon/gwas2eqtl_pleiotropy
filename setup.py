@@ -8,5 +8,7 @@ setup(
     author_email='aitor.gonzalez@univ-amu.fr',
     description='Description of my package',
     packages=find_packages(),
-    install_requires=['matplotlib', 'odfpy', 'pandas', 'requests', 'seaborn', 'sqlalchemy', 'termcolor'],
+    install_requires=['crossmap', 'matplotlib', 'mysql-client', 'mysql-connector-python', 'odfpy', 'pandas',
+                      'pybedtools', 'requests', 'seaborn', 'snakemake', 'sqlalchemy', 'statannot', 'statsmodels',
+                      'termcolor'],
 )
