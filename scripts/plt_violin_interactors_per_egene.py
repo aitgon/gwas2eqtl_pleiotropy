@@ -64,8 +64,8 @@ m_df = m_df.merge(ensg2enst2ensp_df[['gene', 'protein']], left_on='egene', right
 score_cutoff=700
 inter_df = pandas.read_csv(interactome_tsv_path, sep=" ", compression='gzip')
 inter_df = inter_df.loc[inter_df['combined_score'] >= score_cutoff, ]
-inter_df['protein1']=inter_df['protein1'].str.replace('9606.', '')
-inter_df['protein2']=inter_df['protein2'].str.replace('9606.', '')
+inter_df['protein1']=inter_df['protein1'].str.replace('9606.', '', regex=False)
+inter_df['protein2']=inter_df['protein2'].str.replace('9606.', '', regex=False)
 inter_df = pandas.concat([inter_df, inter_df[['protein2', 'protein1', 'combined_score']]], axis=0).drop_duplicates()
 
 #%%
@@ -87,7 +87,7 @@ m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category
 
 #%%
 m_df = m_df.drop_duplicates()
-m_df = m_df.groupby(['egene', 'gwas_category_count']).gwas_cat_count()
+m_df = m_df.groupby(['egene', 'gwas_category_count']).count()
 m_df = m_df.reset_index()
 m_df.columns = ['egene', 'gwas_category_count', 'interactor_count']
 
