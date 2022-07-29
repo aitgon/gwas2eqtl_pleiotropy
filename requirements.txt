@@ -1,0 +1,14 @@
+crossmap
+matplotlib
+mysql-client
+mysql-connector-python
+odfpy
+pandas
+pybedtools
+requests
+seaborn
+snakemake
+sqlalchemy
+statannot
+statsmodels
+termcolor

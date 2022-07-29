@@ -1,0 +1,8 @@
+chrom	start (hg38)	end (hg38)	Count	GWAS Category
+12	111,395,984	111,645,358	11	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Crohns, Heart, InflammatoryBowel, MyocardialInfarction, Stroke, StrokeIschaemic
+5	132,239,645	132,497,907	8	Allergy, Asthma, Cardiovascular, Crohns, Height, Hypertension, InflammatoryBowel, UlcerativeColitis
+6	31,034,839	32,478,149	8	Cancer, CancerGenitalMale, CancerHaemotological, CancerProstate, Cardiovascular, DigestiveDisease, Height, Hypertension
+15	90,861,475	90,995,690	7	Angina, Cardiovascular, CoronaryArtery, Heart, Hypertension, Schizophrenia, StrokeIschaemic
+5	177,339,176	177,379,635	6	Allergy, Crohns, InflammatoryBowel, Kidney, MultipleSclerosis, UlcerativeColitis
+6	26,267,527	26,463,347	6	BloodClotLeg, CancerBreast, Cardiovascular, Depression, EarDisease, Schizophrenia
+11	76,570,549	76,588,605	6	AllergicRhinitis, Asthma, Crohns, Eczema, InflammatoryBowel, UlcerativeColitis
