@@ -71,10 +71,9 @@ Figure \ref{fig:hist_gwas_egene_etissue}(b) shows that around 50\% are associate
 Figure \ref{fig:hist_gwas_egene_etissue}(c) shows that around 50\% are active in 1-5 etissues, 1\% are associated to ...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{How do phenotype frequencies relate pleiotropy relates to eQTLs and etissues at the loci level?}
+\subsection*{How do phenotype frequencies relates to eQTL and etissue frequency at the loci level?}
 
 In Figure \ref{fig:region_gwas_egenes_tissues}, we can see the number of GWAS categories, eGenes and eTissues for regulatory variants in pleiotropic regions.
-
 
 \subsection*{Where are the pleitropic variants?}
 
@@ -82,15 +81,12 @@ Based on the VEP consequence, we see that pleiotropic variants are increased in 
 By contrast pleiotropic variants decrease in introns.
 This suggests their effects are stronger.
 
-\subsection*{What is the mechanism of the pleiotropy? ? Are pleiotropic variants associated to more egenes or less genes?}
+\subsection*{What is the mechanism of the pleiotropy? Are pleiotropic variants associated to more egenes or less genes?}
 
 First we want to know if pleiotropic eQTLs are associated to more egenes.
 The histograms of pleiotropic eQTLs are shifted to the righted compared to less pleiotropic eQTLs (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}a).
 
-
-
-
-\subsection*{What is the mechanism of the pleiotropy? ? Are pleiotropic egenes associated to more GWAS?}
+\subsection*{What is the mechanism of the pleiotropy? Are pleiotropic egenes associated to more GWAS?}
 
 Yes. There is a higher proportion of pleitropic egenes with higher number of GWAS traits (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}b).
 
@@ -105,14 +101,27 @@ Around 250 are 100,000 bp in length, 100 regions are 200,000 bp and the others a
 
 \subsection*{Which genomic regions are the most pleiotropic?}
 
-The list of pleiotropic regions (5 and 4 trait categories) is shown in Table \ref{tab:pleiotropic_regions}. The whole list will be given in a Supplementary file.
+The list of pleiotropic regions (6 phenotype categories and more) is shown in Table \ref{tab:pleiotropic_regions}. The whole list will be given in a Supplementary file.
 
+\subsection*{How to explain that pleiotropic variants regulate more genes?}
 
-\subsection*{How to explain that pleiotropic variants are actives in more tissues?}
+In figure \ref{fig:freq_gwas_egene_etisue_per_variant}a, we have found that pleiotropic variants regulate more genes.
+This observation could be explained by a non-significant tendency of pleiotropic variants to be in splicing and 3' UTR regions (Figure \ref{fig:vep_consequence}).
 
-In figure xx, we have found that pleiotropic variants are active in more tissues.
-To explain this observatio, we hypothesize that genomic regions around pleiotropic variants bind more transcriptions factors.
-Indeed we find a bias towards more transcription factors around pleiotropic variants.
+\subsection*{How to explain that pleiotropic egene affect more phenotypes?}
+
+In figure \ref{fig:freq_gwas_egene_etisue_per_variant}c, we have found that egenes of pleiotropic variants regulate more phenotype.
+This observation could be explained by a significant enrichment of pleiotropic variants to be missense variants (Figure \ref{fig:vep_consequence}a).
+
+\subsection*{How to explain that pleiotropic variants are active in more tissues?}
+
+In figure \ref{fig:freq_gwas_egene_etisue_per_variant}b, we have found that pleiotropic variants are active in more tissues.
+To explain this observation, we hypothesize that genomic regions around pleiotropic variants bind more transcriptions factors.
+In figure \ref{fig:freq_tf_per_variant}, we find that pleiotropic variants bind more transcription factors in a window with radius 50 nt around the variant.
+
+\subsection*{What is the effect size of pleiotropic eQTLs?}
+
+In figure \ref{fig:beta}, we find that pleiotropic variants have a smaller absolute effect size.
 
 \subsection*{How can other people access these colocalized GWAS/eQTL?}
 
