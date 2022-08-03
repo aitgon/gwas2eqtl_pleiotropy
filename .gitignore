@@ -37,3 +37,4 @@ __pycache__
 .snakemake/
 textgreek.dtx
 textgreek.ins
+*.fig.bak

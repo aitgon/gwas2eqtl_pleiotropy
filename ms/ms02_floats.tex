@@ -190,7 +190,7 @@ table head=\bfseries Chrom. & \bfseries Pos. (hg38) & \bfseries Variant & \bfser
 
 % full size table is table*
 \begin{table*}[]
-\caption{Pleiotropic regions involving more than 4 GWAS categories.}\label{tab:pleiotropic_regions}
+\caption{Pleiotropic regions involving 6 or more GWAS categories.}\label{tab:pleiotropic_regions}
 \centering
 \scriptsize
 \hline
@@ -270,5 +270,23 @@ table head=\bfseries Chrom. & \bfseries Start (hg38) & \bfseries End (hg38) & \b
 \end{subfigure}
 
 \caption{\textbf{TODO.} (\textbf{a}) TODO.} \label{fig:beta}
+%
+\end{figure*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 7: graphical conclusions
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure*}[!]
+\centering
+%
+\begin{subfigure}[]{\textwidth}
+
+\includegraphics[width=\textwidth]{fig/graphical_summary.png}
+\end{subfigure}
+
+\caption{\textbf{Molecular mechanism of pleiotropy.} (We have observed three possible mechanisms resulting in pleiotropy. (Left) Pleiotropic variants have more eGenes. One explanation is that these variants are present in splicing regions. (Center) eGenes of pleiotropic variants are active in more eTissues, which might be explained from variants being bound by more transcription factors. (Right) eGenes/eTissues are associated with more GWAS phenotypes. This might be explained because the variants have more frequently a missense consequence.} \label{fig:beta}
 %
 \end{figure*}
