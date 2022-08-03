@@ -13,6 +13,8 @@ import sys
 
 # Plot parameters
 plt.rcParams["figure.figsize"] = (8, 6)
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
@@ -97,7 +99,6 @@ m_df.groupby('gwas_category_count')['interactor_count'].apply(lambda x: x.descri
 
 #%%
 order = [*range(1, upper_var_gwas_cat_count+1)]
-seaborn.set_theme(style="whitegrid")
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Interactors per eGene"

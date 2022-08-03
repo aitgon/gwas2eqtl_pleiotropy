@@ -2,7 +2,7 @@
 import os
 import pathlib
 import pandas
-import seaborn as sns
+import seaborn
 from statannot import add_stat_annotation
 
 from eqtl2gwas_pleiotropy.Logger import Logger
@@ -10,7 +10,9 @@ from eqtl2gwas_pleiotropy.PathManager import PathManager
 from eqtl2gwas_pleiotropy.URL import URL
 from matplotlib import pyplot as plt
 from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
 
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%% download gencode annotation
 url = "https://remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"
@@ -71,9 +73,9 @@ for count_pleio in range(1, 6):
 crm_out_df['gwas_category_count'] = crm_out_df['gwas_category_count'].astype('int')
 crm_out_df['crm_tf_count'] = crm_out_df['crm_tf_count'].astype('int')
 
-sns.set_theme(style="whitegrid")
+seaborn.set_theme(style="whitegrid")
 order = [1, 2, 3, 4, 5]
-ax = sns.boxplot(x="gwas_category_count", y="crm_tf_count", data=crm_out_df, order=order)
+ax = seaborn.boxplot(x="gwas_category_count", y="crm_tf_count", data=crm_out_df, order=order)
 test_results = add_stat_annotation(ax, data=crm_out_df, x="gwas_category_count", y="crm_tf_count", order=order, box_pairs=[box_pairs], test='Mann-Whitney', text_format='star',loc='inside', verbose=2)
 
 plt.xlabel("GWAS category count", fontsize=label_fontsize)

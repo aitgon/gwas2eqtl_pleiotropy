@@ -39,16 +39,6 @@ indir_path = os.path.dirname(count_per_rsid_gwas_tsv_path)
 
 remap_crm_path = os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz")
 
-
-# def f(flank, count_pleio):
-#     bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
-#     intersect_bed_path = os.path.join(outdir_path, "remap_crm_" + os.path.basename(bed_path))
-#     cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -wb"
-#     cmd = cmd_stf.format(**{'bed_path': bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
-#     Logger.info(cmd)
-#     with open(intersect_bed_path, 'w') as fout:
-#         result = subprocess.run(shlex.split(cmd), stdout=fout)
-
 #%% bedtools intersect
 flank = 0
 for count_pleio in range(1, upper_var_gwas_cat_count+1):

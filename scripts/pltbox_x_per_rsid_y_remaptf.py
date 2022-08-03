@@ -1,16 +1,16 @@
 import os
+import pandas
+import seaborn
 import sys
 
-import numpy
-import seaborn
-import pandas
+from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, boxplot_kwargs, annotator_config_dic
 from matplotlib import pyplot as plt
-from statannot import add_stat_annotation
+from statannotations.Annotator import Annotator
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
 
 #%%
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize
 
-# upper_var_gwas_cat_count = 5
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
@@ -30,20 +30,6 @@ except IndexError:
     sys.exit(1)
 
 i_path_lst = []
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio1.bed")
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio2.bed")
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio3.bed")
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio4.bed")
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio5.bed")
-
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio1_flank_50.bed")
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio2_flank_50.bed")
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio3_flank_50.bed")
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio4_flank_50.bed")
-# i_path_lst.append("/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/pleio5_flank_50.bed")
-#
-# # vlnplt_png_path = "/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/bxplt.png"
-# vlnplt_png_path = "/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/remap/bxplt_flank_50.png"
 
 indir_path = os.path.dirname(remap_nr_pleio_1_flank_0_hg38_bed)
 
@@ -58,27 +44,34 @@ for pleio in range(1, upper_var_gwas_cat_count+1):
     df['tf'] = df[9].str.split(':', expand=True)[0]
     df = df[[3, 'tf']].drop_duplicates()
     df.columns = ['rsid', 'tf']
-    df = df.groupby('rsid').gwas_cat_count().reset_index()
+    df = df.groupby('rsid').count().reset_index()
     df['gwas_category_count'] = pleio
     cat_df = pandas.concat([cat_df, df], axis=0)
 
 #%%
-order = [*range(1, upper_var_gwas_cat_count+1)]
-seaborn.set_theme(style="whitegrid")
+order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "ReMap TFs per var."
 xlabel = "GWAS category count"
 ylabel = "TF count"
 y = "tf"
+x = "gwas_category_count"
 
 #%%
-box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1) ]
-ax = seaborn.violinplot(x="gwas_category_count", y=y, data=cat_df, order=order, palette="rocket_r")
-test_results = add_stat_annotation(ax, data=cat_df, x="gwas_category_count", y=y, order=order,
-                                   box_pairs=box_pairs,
-                                   test='Mann-Whitney', text_format='star',
-                                   loc='inside', verbose=2)
+pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
+cat_df[x] = cat_df[x].astype(int).astype(str)
+ax = seaborn.boxplot(x=x, y=y, data=cat_df, order=order, **boxplot_kwargs)
+annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+# box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1) ]
+# ax = seaborn.violinplot(x="gwas_category_count", y=y, data=cat_df, order=order, palette="rocket_r")
+# test_results = add_stat_annotation(ax, data=cat_df, x="gwas_category_count", y=y, order=order,
+#                                    box_pairs=box_pairs,
+#                                    test='Mann-Whitney', text_format='star',
+#                                    loc='inside', verbose=2)
 
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
@@ -101,17 +94,24 @@ for pleio in range(1, upper_var_gwas_cat_count+1):
     df['tf'] = df[9].str.split(':', expand=True)[0]
     df = df[[3, 'tf']].drop_duplicates()
     df.columns = ['rsid', 'tf']
-    df = df.groupby('rsid').gwas_cat_count().reset_index()
+    df = df.groupby('rsid').count().reset_index()
     df['gwas_category_count'] = pleio
     cat_df = pandas.concat([cat_df, df], axis=0)
 
 #%%
-box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1) ]
-ax = seaborn.violinplot(x="gwas_category_count", y=y, data=cat_df, order=order, palette="rocket_r")
-test_results = add_stat_annotation(ax, data=cat_df, x="gwas_category_count", y=y, order=order,
-                                   box_pairs=box_pairs,
-                                   test='Mann-Whitney', text_format='star',
-                                   loc='inside', verbose=2)
+# box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1) ]
+pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
+cat_df[x] = cat_df[x].astype(int).astype(str)
+ax = seaborn.boxplot(x=x, y=y, data=cat_df, order=order, **boxplot_kwargs)
+annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+# ax = seaborn.violinplot(x="gwas_category_count", y=y, data=cat_df, order=order, palette="rocket_r")
+# test_results = add_stat_annotation(ax, data=cat_df, x="gwas_category_count", y=y, order=order,
+#                                    box_pairs=pairs,
+#                                    test='Mann-Whitney', text_format='star',
+#                                    loc='inside', verbose=2)
 
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)

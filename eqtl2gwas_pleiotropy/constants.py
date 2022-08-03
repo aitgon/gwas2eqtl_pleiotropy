@@ -17,8 +17,18 @@ h4_cutoff = 0.8  # coloc cutoff
 
 region_bin = 100000  # region bin to define as pleiotropic
 
+# seaborn theme
+seaborn_theme_dic = {'style': "darkgrid"}
+
 # Pyplot constants
 label_fontsize = 30
 tick_fontsize = 24
 scatter_dot_size = 50
 dpi = 150  # for publication 600, for ongoing 150
+
+# Boxplot constants
+alpha = 0.5
+boxplot_kwargs = {'linewidth': 3, 'notch': True, 'palette': "rocket_r", 'showfliers': False, 'boxprops': dict(alpha=alpha)}
+
+# statannotations
+annotator_config_dic = {'fontsize': 20}

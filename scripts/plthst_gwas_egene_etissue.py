@@ -1,9 +1,5 @@
 #%%
-import pdb
 import sys
-
-from eqtl2gwas_pleiotropy.PathManager import PathManager
-
 import matplotlib.pyplot as plt
 import numpy
 import os
@@ -44,6 +40,7 @@ edgecolor='k'
 linewidth = 2
 grid_axis = 'y'
 hist_kwargs = {'density': 1, 'edgecolor': edgecolor, 'linewidth': linewidth}
+
 
 #%% gwas
 count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)

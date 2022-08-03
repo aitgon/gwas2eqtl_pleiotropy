@@ -15,6 +15,8 @@ import pandas
 import pathlib
 
 plt.rcParams["figure.figsize"] = (8, 6)
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
@@ -51,7 +53,7 @@ df['length'] = df['end'] - df['start']
 df.loc[df['length']==0, 'length']=1
 
 #%%
-count_df = df[['chrom', 'start', 'end', 'length', 'gwas_category_count', 'egene']].groupby(['chrom', 'start', 'end', 'length', 'gwas_category_count']).gwas_cat_count()
+count_df = df[['chrom', 'start', 'end', 'length', 'gwas_category_count', 'egene']].groupby(['chrom', 'start', 'end', 'length', 'gwas_category_count']).count()
 # count_df['egene'] = count_df['egene']/count_df.index.get_level_values('length')
 count_df.reset_index(inplace=True)
 count_df.to_csv("t.tsv", sep='\t')
@@ -61,7 +63,6 @@ m_df = count_df[['gwas_category_count', 'egene']].drop_duplicates()
 # import pdb; pdb.set_trace()
 #%%
 order = sorted(m_df['gwas_category_count'].unique())
-seaborn.set_theme(style="whitegrid")
 xticklabels = order.copy()
 # xticklabels[-1] = '≥{}'.format(order[-1])
 title = "eGenes per region"

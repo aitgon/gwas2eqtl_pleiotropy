@@ -6,10 +6,12 @@ import matplotlib.pyplot as plt
 import os
 import pandas
 import pathlib
-import seaborn as sns
+import seaborn
 
 
 plt.rcParams["figure.figsize"] = (8, 6)
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
@@ -47,12 +49,11 @@ order = [*range(1, upper_var_gwas_cat_count+1)]
 box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1)]
 
 #%%
-sns.set_theme(style="whitegrid")
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 
 #%%
-ax = sns.violinplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order, palette="rocket_r")
+ax = seaborn.violinplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order, palette="rocket_r")
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
@@ -72,7 +73,7 @@ plt.clf()
 plt.close()
 
 #%%
-ax = sns.violinplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order, palette="rocket_r")
+ax = seaborn.violinplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order, palette="rocket_r")
 test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
@@ -86,5 +87,5 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-plt.savefig(boxplot_gwas_etissue_png_path)
+plt.savefig(boxplot_gwas_etissue_png_path, dpi=dpi)
 plt.close()

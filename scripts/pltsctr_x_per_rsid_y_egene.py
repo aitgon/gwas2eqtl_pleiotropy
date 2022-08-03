@@ -1,5 +1,7 @@
 import sys
 
+import seaborn
+
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
 from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, scatter_dot_size, dpi
@@ -9,6 +11,8 @@ import pandas
 import pathlib
 
 plt.rcParams["figure.figsize"] = (8, 6)
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
@@ -37,7 +41,7 @@ region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t
 
 # #%% Output
 # if not '__file__' in locals():
-#     __file__ = "plt_scttr_count_per_rsid_egene.py"
+#     __file__ = "pltsctr_x_per_rsid_y_egene.py"
 # outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
@@ -61,7 +65,8 @@ for rowi, row in pleiotropic_regions_df.iterrows():
     count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['pos'] <= end, ]
 
     #%%
-    plt.scatter(count_per_rsid_gwas_region_df['pos'] / 1000000, count_per_rsid_gwas_region_df[count_col_name], c='blue', s=scatter_dot_size)
+    # plt.scatter(count_per_rsid_gwas_region_df['pos'] / 1000000, count_per_rsid_gwas_region_df[count_col_name], c='blue', s=scatter_dot_size)
+    seaborn.scatterplot(x=count_per_rsid_gwas_region_df['pos'] / 1000000, y=count_per_rsid_gwas_region_df[count_col_name], s=scatter_dot_size)
 
     plt.grid(True)
     plt.title(title, fontsize=label_fontsize)

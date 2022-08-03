@@ -1,5 +1,6 @@
-from statannot import add_stat_annotation
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize
+from statannotations.Annotator import Annotator
+
+from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi, boxplot_kwargs, annotator_config_dic
 
 import matplotlib.pyplot as plt
 import os
@@ -11,6 +12,8 @@ import sys
 
 # Plot parameters
 plt.rcParams["figure.figsize"] = (8, 6)
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
@@ -66,7 +69,7 @@ m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category
 
 #%%
 m_df = m_df.drop_duplicates()
-m_df = m_df.groupby(['rsid', 'gwas_category_count']).gwas_cat_count()
+m_df = m_df.groupby(['rsid', 'gwas_category_count']).count()
 m_df = m_df.reset_index()
 m_df.columns = ['rsid', 'gwas_category_count', 'egene_count']
 
@@ -75,22 +78,22 @@ describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
 m_df.groupby('gwas_category_count')['egene_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-order = [*range(1, upper_var_gwas_cat_count+1)]
-seaborn.set_theme(style="whitegrid")
+order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "eGenes per variant"
 xlabel = "GWAS category count"
 ylabel = "eGene count"
 y = "egene_count"
+x = "gwas_category_count"
 
 #%%
-box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1) ]
-ax = seaborn.violinplot(x="gwas_category_count", y=y, data=m_df, order=order, palette="rocket_r")
-test_results = add_stat_annotation(ax, data=m_df, x="gwas_category_count", y=y, order=order,
-                                   box_pairs=box_pairs,
-                                   test='Mann-Whitney', text_format='star',
-                                   loc='inside', verbose=2)
+pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
+m_df[x] = m_df[x].astype(str)
+ax = seaborn.boxplot(x=x, y=y, data=m_df, order=order, **boxplot_kwargs)
+annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
 
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
@@ -100,5 +103,5 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-plt.savefig(vlnplt_png_path)
+plt.savefig(vlnplt_png_path, dpi=dpi)
 plt.close()

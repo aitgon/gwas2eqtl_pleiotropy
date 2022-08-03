@@ -1,0 +1,183 @@
+etissue_cat_ods = config['etissue_cat_ods']
+gwas_cat_ods = config['gwas_cat_ods']
+outdir = config['outdir']
+public_data_dir_path = config['public_data_dir']
+raw_coloc_tsv = config['raw_coloc_tsv']
+upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
+
+rule all_plots:
+    input:
+        os.path.join(outdir, "pltbox_x_per_rsid_y_remaptf.py/bxplt_remaptf_per_rsid_flank_0.png"),
+        os.path.join(outdir, "pltbox_x_per_rsid_y_remaptf.py/bxplt_remaptf_per_rsid_flank_50.png"),
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/log.txt"),
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
+        os.path.join(outdir, "plt_vep_consequence.py/missense_variant.png"),
+        os.path.join(outdir, "pltbox_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
+        os.path.join(outdir, "pltbox_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
+        os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
+        os.path.join(outdir, "plt_violin_x_per_egene_y_interactors.py/vlnplt.png"),
+        os.path.join(outdir, "pltbox_x_per_variant_y_egene.py/plt.png"),
+        os.path.join(outdir, "pltbox_x_per_variant_egene_y_etissue.py/plt.png"),
+        os.path.join(outdir, "pltbox_x_per_variant_egene_etissue_y_gwas.py/plt.png"),
+        os.path.join(outdir, "pltbox_x_per_gwas_cat_y_logpval.py/eqtl.png"),
+        os.path.join(outdir, "pltbox_x_per_gwas_cat_y_logpval.py/gwas.png"),
+        os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
+        os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
+        os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
+        os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_egene.png"),
+        os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_etissue.png"),
+
+rule pltbox_logpval_per_gwas_cat:
+    input:
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "pltbox_x_per_gwas_cat_y_logpval.py/eqtl.png"),
+        os.path.join(outdir, "pltbox_x_per_gwas_cat_y_logpval.py/gwas.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/pltbox_x_per_gwas_cat_y_logpval.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
+
+rule plt_violin_beta_per_gwas_cat:
+    input:
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "pltbox_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
+        os.path.join(outdir, "pltbox_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/pltbox_x_per_gwas_cat_y_beta.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
+
+rule plt_violin_egenes_per_region:
+    input:
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.bed"),
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.bed"),
+    output:
+        os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/plt_violin_x_per_region_y_egenes.py {input[0]} {input[1]} {output[0]}"
+
+rule plt_violin_interactors_per_egene:
+    input:
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
+    output:
+        os.path.join(outdir, "plt_violin_x_per_egene_y_interactors.py/vlnplt.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/plt_violin_x_per_egene_y_interactors.py {input[0]} {input[1]} {input[2]} {params.upper_var_gwas_cat_count} {output[0]}"
+
+rule pltbox_remaptf_per_rsid:
+    input:
+        os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_0_hg38.bed"),
+        os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_50_hg38.bed"),
+    output:
+        os.path.join(outdir, "pltbox_x_per_rsid_y_remaptf.py/bxplt_remaptf_per_rsid_flank_0.png"),
+        os.path.join(outdir, "pltbox_x_per_rsid_y_remaptf.py/bxplt_remaptf_per_rsid_flank_50.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/pltbox_x_per_rsid_y_remaptf.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
+
+rule plt_vep_consequence:
+    input:
+        os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
+    output:
+        os.path.join(outdir, "plt_vep_consequence.py/missense_variant.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/plt_vep_consequence.py {input[0]} {params[0]} {output[0]}"
+
+rule plt_violin_gwas_per_variant_egene_etissue:
+    input:
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "pltbox_x_per_variant_egene_etissue_y_gwas.py/plt.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/pltbox_x_per_variant_egene_etissue_y_gwas.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]}"
+
+rule plt_violin_etissue_per_egene_variant:
+    input:
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "pltbox_x_per_variant_egene_y_etissue.py/plt.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/pltbox_x_per_variant_egene_y_etissue.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]}"
+
+rule pltbox_egene_per_variant:
+    input:
+        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "pltbox_x_per_variant_y_egene.py/plt.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/pltbox_x_per_variant_y_egene.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]}"
+
+rule plt_scttr_count_per_rsid_etissue:
+    input:
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+    params: os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py"),
+    log: os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/log.txt"),
+    shell:
+        "python scripts/pltsctr_x_per_rsid_y_etissue.py {input[0]} {input[1]} {params} >{log}"
+
+rule plt_scttr_count_per_rsid_egene:
+    input:
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+    params: os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py"),
+    log: os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
+    shell:
+        "python scripts/pltsctr_x_per_rsid_y_egene.py {input[0]} {input[1]} {params} >{log}"
+
+rule plt_scttr_count_per_rsid_gwas:
+    input:
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    params: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py"),
+    log: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
+    shell:
+        "python scripts/pltsctr_x_per_rsid_y_gwas.py {input[0]} {input[1]} {params} >{log}"
+
+rule plt_vlnplt_gwas_egene_etissue:
+    input:
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+    output:
+        os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_egene.png"),
+        os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_etissue.png"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/pltvln_egene_etissue_freq_per_gwas_cat.py {input[0]} {input[1]} {input[2]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
+
+rule plt_hist_gwas_etissue_egene:
+    input:
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+    output:
+        os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
+        os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
+        os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
+    shell:
+        "python scripts/plthst_gwas_egene_etissue.py {input[0]} {input[1]} {input[2]} {output[0]} {output[1]} {output[2]}"

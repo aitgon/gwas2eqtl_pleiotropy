@@ -4,19 +4,19 @@ import sys
 import pandas
 import seaborn
 
-from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, dpi
+from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, dpi, annotator_config_dic, seaborn_theme_dic
 from matplotlib import pyplot as plt
 from statannotations.Annotator import Annotator
 
-consequence_tsv_path = 'out/gwas413/genome/5e-08/1000000/cmpt_vep_consequence_fisher.py/cons_stat.tsv'
-consequence_png_path = 'out/gwas413/genome/5e-08/1000000/plt_vep_consequence.py/bar.png'
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
 try:
     consequence_tsv_path = sys.argv[1]
-    consequence_png_path = sys.argv[2]
-    if len(sys.argv) > 3:
+    upper_var_gwas_cat_count = sys.argv[2]
+    consequence_png_path = sys.argv[3]
+    if len(sys.argv) > 4:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -32,6 +32,7 @@ pathlib.Path(outdir_path).mkdir(exist_ok=True, parents=True)
 #%%
 in_df = pandas.read_csv(consequence_tsv_path, sep="\t", header=0)
 in_df['gwas_category_count'] = in_df['gwas_category_count'].astype(int).astype(str)
+in_df.loc[in_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
 
 #%% set signif symbols
 in_df['signif'] = "ns"
@@ -51,7 +52,6 @@ for consequence in in_df['consequence'].unique():
 
     #%%
     order = sorted(plt_df['gwas_category_count'].unique())
-    seaborn.set_theme(style="whitegrid")
     xticklabels = order.copy()
     title = consequence
     xlabel = "GWAS category count"
@@ -70,7 +70,7 @@ for consequence in in_df['consequence'].unique():
     pairs = [(x, x) for x in plt_df['gwas_category_count']]
     annotator = Annotator(ax, pairs, data=plt_df, x=x, y=y, order=order, size=label_fontsize)
     annotator.set_custom_annotations(formatted_pvalues)
-    annotator.configure(**{'fontsize': 16})
+    annotator.configure(**annotator_config_dic)
     annotator.annotate()
 
 
@@ -84,5 +84,5 @@ for consequence in in_df['consequence'].unique():
 
     plt.tight_layout()
     plt_path = os.path.join(outdir_path, consequence + ".png")
-    plt.savefig(plt_path)
+    plt.savefig(plt_path, dpi=dpi)
     plt.close()

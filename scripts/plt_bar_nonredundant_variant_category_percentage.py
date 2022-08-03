@@ -7,17 +7,16 @@ import pandas
 import pathlib
 import shlex
 import subprocess
-import seaborn as sns
+import seaborn
 
 from eqtl2gwas_pleiotropy.Logger import Logger
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+from eqtl2gwas_pleiotropy.constants import dpi, tick_fontsize, label_fontsize
 
 plt.rcParams["figure.figsize"] = (16, 6)
-
-
-#%%
-from eqtl2gwas_pleiotropy.constants import dpi, tick_fontsize, label_fontsize
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%% outdir path
 if not '__file__' in locals():
@@ -74,7 +73,7 @@ for pleiotropy in range(1, 6):
 
 variant_cat_perc_df = pandas.DataFrame(out_lst_2d_lst, columns=['Pleiotropy', 'Category', 'variant_cat_perc'])
 
-ax = sns.barplot(x="Category", y="variant_cat_perc", hue="Pleiotropy", data=variant_cat_perc_df)
+ax = seaborn.barplot(x="Category", y="variant_cat_perc", hue="Pleiotropy", data=variant_cat_perc_df)
 
 plt.grid(axis='y')
 plt.legend(fontsize=16) # using a size in points
@@ -86,8 +85,6 @@ plt.ylabel("Variant category [%]", fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-fig = ax.get_figure()
 png_path = os.path.join(outdir_path, "non_redundant_variant_category_pleio2.png")
-fig.savefig(png_path, dpi=dpi)
-plt.clf()
+plt.savefig(png_path, dpi=dpi)
 plt.close()
