@@ -1,5 +1,7 @@
 import sys
 
+import seaborn
+
 from eqtl2gwas_pleiotropy.PathManager import PathManager
 from eqtl2gwas_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from matplotlib import pyplot as plt
@@ -16,6 +18,9 @@ import pathlib
 #     __file__ = "cmpt_pleiotropic_regions.py"
 # outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
 # pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
+
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
@@ -141,7 +146,7 @@ for count_pleio in range(1, 6):
 plt.rcParams["figure.figsize"] = (8, 6)
 region_lenght_ser = (regions_pleio_df['end'] - regions_pleio_df['start'])
 
-ylabel = "Count"
+ylabel = "Proportion"
 title = "Lengths of pleiotropic regions"
 ylim=[1e-10, 1]
 edgecolor='k'
@@ -152,11 +157,13 @@ hist_kwargs = {'density': False, 'edgecolor': edgecolor, 'linewidth': linewidth}
 #%%
 # bins = numpy.array(range(11))*100000
 # import pdb; pdb.set_trace()
-plt.hist(region_lenght_ser/1000000, **hist_kwargs)
+# plt.hist(region_lenght_ser/1000000, **hist_kwargs)
+data_ser = region_lenght_ser/100000
+seaborn.histplot(data_ser, stat='probability', discrete=True)
 
-plt.grid(axis='y')
+plt.grid(visible=True, axis='y')
 plt.title(title, fontsize=label_fontsize)
-plt.xlabel("Region length [Mbp]", fontsize=label_fontsize)
+plt.xlabel("Region length [1e5 bp]", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yscale('log')
@@ -166,5 +173,4 @@ plt.tight_layout()
 # fig = ax.get_figure()
 # png_path = os.path.join(outdir_path, "regions_{}_length_hist.png".format(region_bin))
 plt.savefig(png_path)
-plt.clf()
 plt.close()

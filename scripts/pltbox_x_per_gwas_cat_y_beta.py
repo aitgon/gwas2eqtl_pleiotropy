@@ -62,17 +62,16 @@ m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pvalue', 'egene', 'etissue_category', 'g
 #%%
 m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
 order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
-seaborn.set_theme(style="whitegrid")
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1) ]
 x = 'gwas_category_count'
 xlabel = "GWAS category count"
+title = "Colocalized eQTL/GWAS variants"
+ylabel = "GWAS beta"
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 y = "eqtl_beta"
-title = y
-ylabel = y
 
 #%%
 y_df = m_df[['gwas_category_count', 'rsid', 'egene', 'etissue_category', y]].drop_duplicates()
@@ -112,8 +111,6 @@ plt.close()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 y = "gwas_beta"
-title = y
-ylabel = y
 
 #%%
 y_df = m_df[['gwas_category_count', 'rsid', 'gwas_identifier', y]].drop_duplicates()
@@ -125,10 +122,9 @@ describe_df = y_df.groupby(['gwas_category_count'])[y].apply(lambda x: x.describ
 
 #%%
 pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
-y_df[x] = y_df[x].astype(str)
-# import pdb; pdb.set_trace()
-ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, **boxplot_kwargs)
+y_df['gwas_category_count'] = y_df['gwas_category_count'].astype(str)
 
+ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, **boxplot_kwargs)
 annotator = Annotator(ax, pairs, data=y_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()

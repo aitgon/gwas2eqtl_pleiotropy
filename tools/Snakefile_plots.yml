@@ -25,8 +25,6 @@ rule all_plots:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
-        os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_egene.png"),
-        os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_etissue.png"),
 
 rule pltbox_logpval_per_gwas_cat:
     input:
@@ -156,19 +154,6 @@ rule plt_scttr_count_per_rsid_gwas:
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
     shell:
         "python scripts/pltsctr_x_per_rsid_y_gwas.py {input[0]} {input[1]} {params} >{log}"
-
-rule plt_vlnplt_gwas_egene_etissue:
-    input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
-    output:
-        os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_egene.png"),
-        os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_etissue.png"),
-    params:
-        upper_var_gwas_cat_count=upper_var_gwas_cat_count
-    shell:
-        "python scripts/pltvln_egene_etissue_freq_per_gwas_cat.py {input[0]} {input[1]} {input[2]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
 
 rule plt_hist_gwas_etissue_egene:
     input:

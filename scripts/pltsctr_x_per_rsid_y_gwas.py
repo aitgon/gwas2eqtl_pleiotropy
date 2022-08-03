@@ -46,7 +46,7 @@ region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%% Plot parameters
-title = "Count Per SNP: Disease Category"
+title = "Phenotype categories per variant"
 count_col_name = "gwas_category_count"
 ylim = [0, 5.1]
 c = 'blue'

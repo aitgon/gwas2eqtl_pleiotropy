@@ -45,7 +45,7 @@ region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t
 # outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-title = "Count Per SNP: eGenes"
+title = "eGenes per variant"
 count_col_name = "egene_count"
 ylim = [0, 35]
 c = 'blue'
