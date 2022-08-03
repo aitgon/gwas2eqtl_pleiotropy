@@ -14,17 +14,17 @@
 
 \begin{abstract}
 Genome-wide association studies (GWAS) have shown that pleiotropic genetic variants affecting multiple traits are relatively common in the genome.
-A large majority of these variants fall in non-coding regions and are likely gene regulatory variants
-
-We compute the colocalization of ? GWAS traits and ? eQTLs to pinpoint ? eQTLs associated to at least one GWAS trait.
-We categorized GWAS traits and segregated eQTLs according to belonging to one or more categories.
-Pleiotropy was defined as being associated to more than one category.
-Pleiotropic variants clustered in regions with larger number of pleiotropic variants.
-Pleiotropic variants were associated to more etissues and egenes.
-Interestingly pleiotropic variants bound more transcription factors.
-These colocalization data are available here: ?.
-
-In summary, pleitropy of regulatory variants results from a higher number of bound transcription factors, regulated genes and active tissues.
+A large majority of these variants fall in non-coding regions and are likely gene regulatory variants.
+Previous works investigated the pleitropy of frequent variants in the genome, but did not address specifically the link between gene regulation and pleiotropy.
+%
+In this work we have computed the colocalization of 413 GWAS studies and 125 eQTL studies and have observed XXX colocalized pairs with a probability above 0.8.
+We have categorized the GWAS studies into XXX categories and have splitted variants according to the number of groups they belong to.
+We observed that pleiotropic variants are associated to more eQTL genes (egenes), more eQTL tissues (etissues).
+Unique egenes-etissues pairs are also associated to more GWAS phenotypes.
+These observations could be partially explained, because pleitropic variants are enriched in splicing and missense variants and bind more transcription factors.
+We provide a public ressource to explore these genome-wide eQTL/GWAS colocalizations.
+%
+Our work provide valuable information to better understand the molecular mechanism of pleitropy in the genome.
 
 
 \lipsum[1][1]
@@ -35,14 +35,22 @@ keyword1 | keyword2 | keyword3
 \end{keywords}
 
 \begin{corrauthor}
-aitor.gonzalez\at univ-amu.fr
+%aitor.gonzalez\at univ-amu.fr
 \end{corrauthor}
 
 \section*{Introduction}\label{sec:introduction}
 
-\lipsum[2][1]
+Genome-wide association studies (GWAS) evaluate the impact of frequent variants on a trait in the population.
+%
+The number of GWAS has rapidly increased since the first GWAS in 2010 and has result in databases that collect these data systematically such as the NHGRI-EBI GWAS Catalog.
+%
+For instance, in 2019, NHGRI-EBI GWAS Catalog contained 5687 GWAS comprising 71673 variant-trait associations from 3567 publications \citep{}.
 
 \section*{Results}\label{s:results}
+
+\subsection*{A pipeline to systematically colocalize eQTLs and GWAS variants}
+
+We developed 
 
 \subsection*{Which regulatory variants are the most pleiotropic?}
 
@@ -133,5 +141,5 @@ In figure \ref{fig:beta}, we find that pleiotropic variants have a smaller absol
 \end{itemize}
 
 \section*{Bibliography}
-\bibliographystyle{bxv_abbrvnat}
-\bibliography{refs.bib}
+\bibliographystyle{naturemag}
+\bibliography{ms/pleiotropy_ms.bib}
