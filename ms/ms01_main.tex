@@ -13,6 +13,7 @@
 \maketitle
 
 \begin{abstract}
+
 Genome-wide association studies (GWAS) have shown that pleiotropic genetic variants affecting multiple traits are relatively common in the genome.
 A large majority of these variants fall in non-coding regions and are likely gene regulatory variants.
 Previous works investigated the pleitropy of frequent variants in the genome, but did not address specifically the link between gene regulation and pleiotropy.
@@ -42,27 +43,84 @@ keyword1 | keyword2 | keyword3
 
 Genome-wide association studies (GWAS) evaluate the impact of frequent variants on a trait in the population.
 %
-The number of GWAS has rapidly increased since the first GWAS in 2010 and has result in databases that collect these data systematically such as the NHGRI-EBI GWAS Catalog.
+The number of GWAS has rapidly increased since the first GWAS in 2010 and has result in comprehensive databases such as the NHGRI-EBI GWAS Catalog \citep{2018.Parkinson.Buniello}.
 %
-For instance, in 2019, NHGRI-EBI GWAS Catalog contained 5687 GWAS comprising 71673 variant-trait associations from 3567 publications \citep{}.
+For instance, in 2019, NHGRI-EBI GWAS Catalog contained 5687 GWAS comprising 71673 variant-trait associations from 3567 publications \citep{2018.Parkinson.Buniello}.
+
+However the molecular mechanism of GWAS variants is most often unclear because of three reasons \citep{2020.Trynka.CanoGamez}.
+%
+First, identification of the causaul variant is difficult because of linkage disequilibrium.
+%
+Second, GWAS do not provide hints regarding the tissues involved in the phenotypes.
+%
+Third, GWAS variants affect most often non-coding regions.
+
+Expression QTLs (eQTLs) are variants that change the expression of a given gene in a tissue or cell type.
+%
+eQTLs have some of the same shortcommings as GWAS variants such as inability to identify the causal variant.
+%
+On the other hand, eQTLs provide information about the target genes and tissues.
+
+eQTLs 
+
+
+A large number of GWAS variants are found in non-conding regions.
+To priori
+
+Sentence describing EBI eQTL
+
+In this work, I investigate the molecular basis of pleiotropy of gene regulatory variants.
 
 \section*{Results}\label{s:results}
 
 \subsection*{A pipeline to systematically colocalize eQTLs and GWAS variants}
 
-We developed 
+I developed a pipeline to systematically colocalize eQTLs and GWAS variants.
+
+I retrieved the better powered GWAS studies from the OpenGWAS database \citep{2018.Parkinson.Buniello}.
+
+I selected physiological phenotypes that were well defined and excluded environmental traits.
+
+This resulted in 413 GWAS studies and ??? loci (Supplementary table).
+
+Then I manually organized these GWAS studies in categories to aggregate identical or similar phenotypes.
+
+This annotation resulted in 96 categories that included between 1 and 24 GWAS identifiers (Supplementary table).
+
+Then I retrieved all 125 eQTL studies from the EBI eQTL Catalogue at the date of XXX (Supplementary table).
+
+This combination results potentially in 51,625 combinations.
+
+%
+125 eQTL studies were retrieved from the EBI eQTL Catalogue (Supplementary table).
+
+Then, while GWAS variants were retrieved from the OpenGWAS database \citep{2018.Parkinson.Buniello,2021.Alasoo.Kerimov}.
+
+ based on the EBI eQTL Catalogue and the NHGRI-EBI GWAS Catalog \citep{2018.Parkinson.Buniello,2021.Alasoo.Kerimov}.
+
 
 \subsection*{Which regulatory variants are the most pleiotropic?}
 
-The list of variants involved in 5 or GWAS categories are shown in table \ref{tab:pleitropic_variants}. 
+We classified colocalized eQTL/GWAS variants according to the number of GWAS categories they belong to.
 
-The variant rs1344674 is the only one that is not known in the literature.
-This suggest that our genome-wide approach is able to point at functional variants.
+The list of variants involved in 5 or GWAS categories with the categories the variants are involved in are shown in table \ref{tab:pleitropic_variants}.
 
-The complete list of variants in any category is in Supplementary Table TODO.
-Among the following variants involved in 4 categories, we made a number of observations.
 
-First we see that variants do not belong to independent regions and cluster together in small regions.
+These variants are known in the literature with the exception of variant rs1344674.
+%
+For instance the most pleiotropic variant rs3184504 is a missense variants of the SH2B3 gene.
+This variant is in the chromosomal locus 12q24 that is known to be involve in a wide palette of diseases.
+This locus has been used to explain links between inflammaiton and hypertension (10.1097/MNH.0000000000000196), diabetes and autoimmunity (10.4239/wjd.v5.i3.316)
+
+%
+This means that this genome-wide colocalization analysis is able to point at highly functional variants.
+
+The complete list of variants belonging to any number of GWAS categories is in Supplementary Table xxx.
+
+I observed that pleitropic variants do not cluster independently.
+%
+For instance the first five most pleiotropic variants belong to a region of around 2 MBp in chromosome 12 (Table \ref{tab:pleitropic_variants}).
+
 For instance, variants rs159963, rs301802, rs301806, rs301807, rs301816 and rs301817 are found in a small region of around 23 kb in chromosome 1 in the intron of gene RERE.
 Moreover the GWAS categories are identical in these variants that are close together.
 This observation made us analyzed pleiotropic regions below.
@@ -121,7 +179,7 @@ This observation could be explained by a non-significant tendency of pleiotropic
 In figure \ref{fig:freq_gwas_egene_etisue_per_variant}c, we have found that egenes of pleiotropic variants regulate more phenotype.
 This observation could be explained by a significant enrichment of pleiotropic variants to be missense variants (Figure \ref{fig:vep_consequence}a).
 
-\subsection*{How to explain that pleiotropic variants are active in more tissues?}
+\subsection*{How tbo explain that pleiotropic variants are active in more tissues?}
 
 In figure \ref{fig:freq_gwas_egene_etisue_per_variant}b, we have found that pleiotropic variants are active in more tissues.
 To explain this observation, we hypothesize that genomic regions around pleiotropic variants bind more transcriptions factors.
@@ -140,6 +198,35 @@ In figure \ref{fig:beta}, we find that pleiotropic variants have a smaller absol
   \item Downloadable raw TSV files
 \end{itemize}
 
+Text is added like this
+This is a reference to a published paper \citep{2019.Watanabe}.
+We can cite other things too \citep{watson_molecular_1953}
+
+\section*{Methods}\label{s:methods}
+
+\subsection*{Colocalization}
+
+The colocalization pipeline is managed by the Snakemake pipeline manager \citep{2021.Koester.Moelder}.
+
+% Plagiat
+Colocalization analyses were performed between 413 GWAS studies from the OpenGWAS databased and 125 eQTL studies from the EBI eQTL database.
+
+The full list of GWAS with references is given in Supplementary Table xxx.
+
+% Plagiat
+To assess colocalization between GWAS loci and QTLs, I modified a pipeline from the github repository of the eQTL-Catalogue ( \url{https://github.com/eQTL-Catalogue/eQTL-Catalogue-resources} ).
+
+First the lead eQTLs with FDR 0.05 are identified and their flanking region with radius 500 000 is tested.
+
+\subsection*{Characterization of regulatory QTLs}
+
+
+\subsection*{Definition of pleiotropic regions}
+
+
+
 \section*{Bibliography}
-\bibliographystyle{naturemag}
-\bibliography{ms/pleiotropy_ms.bib}
+\bibliographystyle{unsrt}
+\bibliography{ms_pleiotropy.bib}
+
+
