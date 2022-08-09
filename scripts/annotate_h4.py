@@ -1,13 +1,11 @@
 from eqtl2gwas_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
 from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.OpenGWASinfo import OpenGWASinfo
-from eqtl2gwas_pleiotropy.PathManager import PathManager
-from eqtl2gwas_pleiotropy.constants import coloc_h4_tsv_path
 
 import os
 import pandas
 import pathlib
 import sys
+
 
 #%%
 help_cmd_str = "todo"
