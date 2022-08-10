@@ -49,7 +49,7 @@ coloc_h4_df = coloc_h4_df.merge(eqtl_info_df[['eqtl_identifier', 'etissue_catego
 
 #%% cytoband
 cytoband_url = "http://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/cytoBand.txt.gz"
-cytoband_path = URL(cytoband_url).gunzip()
+cytoband_path = URL(cytoband_url).download()
 cyto_df = pandas.read_csv(cytoband_path, sep="\t", header=None, usecols=[0, 1, 2, 3])
 cyto_df.columns = ['chrom', 'start', 'end', 'cytoband']
 cyto_df['chrom'] = cyto_df['chrom'].str.replace('chr', '')

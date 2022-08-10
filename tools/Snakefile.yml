@@ -135,12 +135,3 @@ rule wget_interactome:
     shell:
         """wget -nc -q -r {params.url} -P {params.public_data_dir_path}"""
 
-rule wget_cytoband:
-    output:
-        os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
-    params:
-        "hgdownload.cse.ucsc.edu/goldenpath/hg38/database/cytoBand.txt.gz",
-        public_data_dir_path,
-    shell:
-        """wget -nc -q -r {params[0]} -P {params[1]}"""
-
