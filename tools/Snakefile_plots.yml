@@ -2,7 +2,7 @@ etissue_cat_ods = config['etissue_cat_ods']
 gwas_cat_ods = config['gwas_cat_ods']
 outdir = config['outdir']
 public_data_dir_path = config['public_data_dir']
-raw_coloc_tsv = config['raw_coloc_tsv']
+coloc_tsv_gz = config['coloc_tsv_gz']
 upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
 
 rule all_plots:

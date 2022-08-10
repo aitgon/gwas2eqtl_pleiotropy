@@ -1,6 +1,6 @@
 \leadauthor{Scientist}
 
-\title{Trait pleiotropy of regulatory variants increases with the variety of bound transcription factors, regulated genes and active tissues}
+\title{Phenotype pleiotropy of regulatory variants increases with the variety of bound transcription factors, regulated genes and active tissues}
 \shorttitle{Running title here}
 
 \author[1,\Letter]{Aitor González \orcidlink{0000-0002-8402-1655}}
@@ -36,7 +36,7 @@ keyword1 | keyword2 | keyword3
 \end{keywords}
 
 \begin{corrauthor}
-%aitor.gonzalez\at univ-amu.fr
+aitor.gonzalez\at univ-amu.fr
 \end{corrauthor}
 
 \section*{Introduction}\label{sec:introduction}
@@ -105,30 +105,73 @@ We classified colocalized eQTL/GWAS variants according to the number of GWAS cat
 
 The list of variants involved in 5 or GWAS categories with the categories the variants are involved in are shown in table \ref{tab:pleitropic_variants}.
 
+We can see that these 10 variants aggregate to 7 cytobands.
 
-These variants are known in the literature with the exception of variant rs1344674.
+We can see the variants aggregate to pleiotropic regions, so that we also compute pleitropic region to explore them (See Methods).
+
+\subsection*{How many pleiotropic regions are there}
+
+We have found 454 regions with variants involved in 2 or more categories (Suppl. table region_window_100000.tsv).
+
+Around 90\% regions, are shorter than 100 kb, 10\% are around 100 kb and a small fraction are larger than 100 kb.
+
+The largest region is 11:13260511-17396930 (Centered in cytoband 11p15.2) with a length of 4,136,419 bp and variants involved in cardiovascular and hypertension phenotypes.
+We find genes RRAS2, COPB1, CYP2R1 and SRY that are involved in mendelian diseases (REF TODO + OMIM).
+
+The second largest region is 2:187235912-191066738 (Centered in cytoband 2q32.2) with a length of 3,830,826 bp and variants involved in cardiovascular, hypertension and autoimmune phenotypes (REF TODO + OMIM).
+We find genes COL3A1, COL5A2 and SLC40A1.
+
+\subsection*{Which genomic regions are the most pleiotropic?}
+
+The list of pleiotropic regions (6 phenotype categories and more) is shown in Table \ref{tab:pleiotropic_regions}. The whole list will be given in a Supplementary file.
+
+\subsection*{What is the function of the variants in the most pleiotropic regions?}
+
+% 12q24.12
+The cytoband 12q24.12 has five variants rs3184504, rs653178, rs7310615, rs597808, rs11065979, that are known in the literature to be associated to a wide palette of diseases.
+This locus has been used to explain links between inflammaiton and hypertension (10.1097/MNH.0000000000000196), diabetes and autoimmunity (10.4239/wjd.v5.i3.316).
 %
-For instance the most pleiotropic variant rs3184504 is a missense variants of the SH2B3 gene.
-This variant is in the chromosomal locus 12q24 that is known to be involve in a wide palette of diseases.
-This locus has been used to explain links between inflammaiton and hypertension (10.1097/MNH.0000000000000196), diabetes and autoimmunity (10.4239/wjd.v5.i3.316)
+Our analysis add up that the variants in this cytoband control important genes such as ALDH2, ATXN2, MAPKAPK5, SH2B3 and TMEM116 in several tissues such as adipose, artery, blood, brain, digestive, skin, heart and skin tissue as well as immune cells.
 
+% 5q31.1
+The variant rs17622656 in locus 5q31.1 is involved in allergic, cardiovascular, hypertension and autoimmune diseases and is located in the intron of the IRF1 gene.
+The IRF1 gene is a key activator gene for the innate and acquired immune responses.
+In this locus there are rs736801 and rs2522051, which are upstream and downstream of IRF1 gene, respectively.
+
+% 6p21.3
+% TODO
+
+%15q26.1
+The next pleiotropic locus is in cytoband 15q26.1 involved in cardiovascular, hypertension and psyciatric diseases with variants rs2071382, rs8039305 and rs6224.
 %
-This means that this genome-wide colocalization analysis is able to point at highly functional variants.
-
-The complete list of variants belonging to any number of GWAS categories is in Supplementary Table xxx.
-
-I observed that pleitropic variants do not cluster independently.
+eQTLs in cytoband 15q26.1 control genes like Furin, oncogene Fes and UNC45A involved in Osteootohepatoenteric syndrome (OMIM DB).
 %
-For instance the first five most pleiotropic variants belong to a region of around 2 MBp in chromosome 12 (Table \ref{tab:pleitropic_variants}).
+eQTLs are active in a very large number of cells including blood, artery, brain and immune cells (See supplementary table).
 
-For instance, variants rs159963, rs301802, rs301806, rs301807, rs301816 and rs301817 are found in a small region of around 23 kb in chromosome 1 in the intron of gene RERE.
-Moreover the GWAS categories are identical in these variants that are close together.
-This observation made us analyzed pleiotropic regions below.
+% 1p13.3
+The locus in cytoband 1p13.3 is mainly related to cardiovascular diseases.
+Interestingly, these variants are active in many tissues (Supp table h4_annotated.ods).
 
-The second observation is that these different GWAS categories are actually related.
-For instance, the categories of the variants in the gene RERE allergic rhinitis, asthma, cardiovascular and hypertension.
+The variant rs1344674 in cytoband 3q23 is involved in allergy, cancer and height phenotypes (tab 1 and count_per_rsid_gwas.tsv).
+The target of this variant, which is an intron of the same gene, is ZBTB38 and it is active in the esophagus, blood and monocytes.
+
+The variant rs2107595 is in locus 7p21.1 downstream of the histone deacetylase 9 (HDAC9) is cardiovascular. Interestingly, it controls expression of lncRNA XXX that is not known in the context of cardiovascular diseases.
+
+The variant rs11236797 and the two others in locus 11q13.5 is mainly autoimmune.
+All three regulate the gene EMSY-DT and are active induced pluripotent cells, LCDs and skin.
+
+Another pleiotropic variants rs301806
+rs301807
+rs301802
+rs301817
+rs159963
+rs301816
+in the cytoband 1p36.23 that are involved in allergy, cardiovascular and hypertension.
+This variants control the gene RERE, which is a nuclear receptor corregulator and is involved in neurodevelopmental disorders.\\
 
 \subsection*{What is the frequency and proportion of variants with different phenotype categories, egene count and etissue categories?}
+
+Next we wanted to explore the molecular basis of pleiotropy.
 
 Figure \ref{fig:hist_gwas_egene_etissue}(a) shows that close to 99\% variants are involved in one GWAS category, 10\% are involved in 2 categories and less than 1\% of variants are involved in 5 GWAS categories
 
@@ -159,15 +202,6 @@ Yes. There is a higher proportion of pleitropic egenes with higher number of GWA
 \subsection*{What is the mechanism of the pleiotropy? Are pleiotropic egenes associated to more etissues?}
 
 Yes. There is a higher proportion of pleitropic egenes associated with higher number of etissues (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}c).
-
-\subsection*{How many pleiotropic regions are there}
-
-We have found around 350 regions with variants involved in 2 or more categories (Fig. \ref{fig:pleiotropy_region_distribution}).
-Around 250 are 100,000 bp in length, 100 regions are 200,000 bp and the others are longer.
-
-\subsection*{Which genomic regions are the most pleiotropic?}
-
-The list of pleiotropic regions (6 phenotype categories and more) is shown in Table \ref{tab:pleiotropic_regions}. The whole list will be given in a Supplementary file.
 
 \subsection*{How to explain that pleiotropic variants regulate more genes?}
 
@@ -203,6 +237,23 @@ This is a reference to a published paper \citep{2019.Watanabe}.
 We can cite other things too \citep{watson_molecular_1953}
 
 \section*{Methods}\label{s:methods}
+
+\subsection*{Data sets and data exploration}
+
+I used these data sets here: eQTLs from the eQTL Catalogue \citep{2021.Alasoo.Kerimov}, GWAS variants from the IEU OpenGWAS project \citep{2021.Marcora.Lyon}, chromatin immunoprecipitation (ChIP)	transcription factors peaks from the ReMap database \citep{2021.Ballester.Hammal}, UCSC annotation data.
+%
+I explore the data using the UCSC browser (\url{http://genome.ucsc.edu}) \citep{2021.Kent.Lee}, and OMIM database (\url{https://omim.org/}). 
+%
+Colocalization and analysis pipelines were implemented with Snakemake (Supplementary Figure S1) .
+%
+The colocalization and analysis pipelines can be found here: https://github.com/aitgon/eqtl2gwas
+
+
+%
+The developer documentation and scripts to download the data sets, anno-
+tate the SNPs, train the model and score the genome can be
+found here: https://github.com/aitgon/tagoos.
+
 
 \subsection*{Colocalization}
 

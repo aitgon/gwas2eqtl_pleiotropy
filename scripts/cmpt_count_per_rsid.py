@@ -1,12 +1,3 @@
-import shlex
-import subprocess
-
-from eqtl2gwas_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
-from eqtl2gwas_pleiotropy.OpenGWASinfo import OpenGWASinfo
-from eqtl2gwas_pleiotropy.PathManager import PathManager
-from eqtl2gwas_pleiotropy.URL import URL
-from eqtl2gwas_pleiotropy.constants import coloc_raw_tsv_path
-
 import os
 import pandas
 import pathlib
@@ -33,26 +24,28 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
 coloc_df = pandas.read_csv(annotated_tsv_path, sep="\t")
+coloc_df['chrom'] = coloc_df['chrom'].astype(int)
 
 #%% etissue pleiotropy
-pleio_etissue_df = coloc_df[['chrom', 'pos', 'rsid', 'etissue_category']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'etissue_category': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
-pleio_etissue_df.columns = ['chrom', 'pos', 'rsid', 'etissue_label_count', 'etissue_subcategory_lst']
-pleio_etissue_df = pleio_etissue_df.sort_values(by=['etissue_label_count', 'etissue_subcategory_lst', 'rsid'], ascending=[False, True, True])
+pleio_etissue_df = coloc_df[['chrom', 'cytoband', 'pos', 'rsid', 'etissue_category']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos', 'rsid']).agg({'etissue_category': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
+pleio_etissue_df.columns = ['chrom', 'cytoband', 'pos', 'rsid', 'etissue_label_count', 'etissue_subcategory_lst']
+pleio_etissue_df = pleio_etissue_df.sort_values(by=['etissue_label_count', 'chrom', 'pos', 'etissue_subcategory_lst', 'rsid'], ascending=[False, True, True, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_etissue.tsv")
 pleio_etissue_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%% egene pleiotropy
-pleio_egene_df = coloc_df[['chrom', 'pos', 'rsid', 'egene', 'egene_symbol']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'egene': ['size', (lambda x: (",".join(sorted(x))))], 'egene_symbol': (lambda x: (",".join(sorted([str(i) for i in x]))))}).reset_index()
-pleio_egene_df.columns = ['chrom', 'pos', 'rsid', 'egene_count', 'egene_lst', 'egene_symbol_lst']
-pleio_egene_df = pleio_egene_df.sort_values(by=['egene_count', 'egene_lst', 'egene_symbol_lst', 'rsid'], ascending=[False, True, True, True])
+pleio_egene_df = coloc_df[['chrom', 'cytoband', 'pos', 'rsid', 'egene', 'egene_symbol']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos', 'rsid']).agg({'egene': ['size', (lambda x: (",".join(sorted(x))))], 'egene_symbol': (lambda x: (",".join(sorted([str(i) for i in x]))))}).reset_index()
+pleio_egene_df.columns = ['chrom', 'cytoband', 'pos', 'rsid', 'egene_count', 'egene_lst', 'egene_symbol_lst']
+pleio_egene_df = pleio_egene_df.sort_values(by=['egene_count', 'chrom', 'pos', 'egene_lst', 'egene_symbol_lst', 'rsid'], ascending=[False, True, True, True, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_egene.tsv")
 pleio_egene_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%% gwas pleiotropy
-pleio_gwas_df = coloc_df[['chrom', 'pos', 'rsid', 'gwas_category_eqtl2gwas']].drop_duplicates().groupby(['chrom', 'pos', 'rsid']).agg({'gwas_category_eqtl2gwas': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
-pleio_gwas_df.columns = ['chrom', 'pos', 'rsid', 'gwas_category_count', 'gwas_category_lst']
-pleio_gwas_df = pleio_gwas_df.sort_values(by=['gwas_category_count', 'gwas_category_lst', 'rsid'], ascending=[False, True, True])
+pleio_gwas_df = coloc_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category_eqtl2gwas']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos', 'rsid']).agg({'gwas_category_eqtl2gwas': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
+pleio_gwas_df.columns = ['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category_count', 'gwas_category_lst']
+pleio_gwas_df = pleio_gwas_df.sort_values(by=['gwas_category_count', 'chrom', 'pos', 'gwas_category_lst', 'rsid'], ascending=[False, True, True, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas.tsv")
+# import pdb; pdb.set_trace()
 pleio_gwas_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%########################################### bed files, flanking=0

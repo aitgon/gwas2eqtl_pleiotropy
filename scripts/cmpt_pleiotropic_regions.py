@@ -98,6 +98,7 @@ category_lst = []
 for i, row in df.iterrows():
     # beginning of region, set start, start category list, store category
     if row['region_pleio'] and not region_pleio_prev:
+        cytoband = row['cytoband']
         start = row['pos']
         gwas_category_count = row['gwas_category_count']
         gwas_category_lst = row['gwas_category_lst']
@@ -116,7 +117,7 @@ for i, row in df.iterrows():
         # import pdb; pdb.set_trace()
         category_lst = sorted([*set(category_lst)])
         category_str = ','.join(category_lst)
-        region_lst.append([row['chrom'], start, end, len(category_lst), category_str])
+        region_lst.append([row['chrom'], cytoband, start, end, len(category_lst), category_str])
         start = math.nan
         end = math.nan
         gwas_subcategory_count = 0
@@ -124,13 +125,14 @@ for i, row in df.iterrows():
     region_pleio_prev = row['region_pleio']
 
 # tsv
-regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
+regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'cytoband', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
 # pleio_tsv_path = os.path.join(outdir_path, "region_window_{}.tsv".format(region_bin))
 regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
 # bed
 regions_pleio_df['start'] = regions_pleio_df['start'] - 1
 regions_pleio_df['chrom'] = 'chr' + regions_pleio_df['chrom'].astype('str')
+regions_pleio_df.drop(['cytoband'], axis=1, inplace=True)
 pleio_bed_path = os.path.join(outdir_path, "region_window_{}.bed".format(region_bin))
 regions_pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
 

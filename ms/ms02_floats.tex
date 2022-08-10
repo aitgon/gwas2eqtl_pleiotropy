@@ -11,13 +11,49 @@
 \scriptsize
 \hline
 \csvreader[separator=tab,
-tabular=rrrcp{0.6\textwidth},
+tabular=rrrrcp{0.6\textwidth},
 head,
-table head=\bfseries Chrom. & \bfseries Pos. (hg38) & \bfseries Variant & \bfseries Cat. ct. & \bfseries GWAS Categories\\\hline,
+table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos. (hg38) & \bfseries Variant & \bfseries Cat. ct. & \bfseries GWAS Categories\\\hline,
 ]{fig/tab_rsid_most_pleiotropic.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv}% specify your coloumns here
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv & \csvcolvi}% specify your coloumns here
 \hline
 \end{table*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Tab 2: Winner regions
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% full size table is table*
+\begin{table*}[]
+\caption{Pleiotropic regions involving 6 or more GWAS categories.}\label{tab:pleiotropic_regions}
+\centering
+\scriptsize
+\hline
+\csvreader[
+separator=tab,
+tabular=rrrrcp{0.5\textwidth},
+head,
+table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfseries End (hg38) & \bfseries Cat. ct. & \bfseries GWAS Categories\\\hline,
+]{fig/tab_region_window_100000_pleio_highest.tsv}{}% use head of csv as column names
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv & \csvcolvi}% specify your coloumns here
+\hline
+\end{table*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 5: Length histogram of regions
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure*}[]
+\centering
+%
+\includegraphics[width=0.33\textwidth]{\floatRelativePath/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png}
+%
+\caption{\textbf{Length distribution of pleiotropic regions.} (\textbf{a}) TODO.} \label{fig:pleiotropy_region_distribution}
+\end{figure*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -180,42 +216,6 @@ table head=\bfseries Chrom. & \bfseries Pos. (hg38) & \bfseries Variant & \bfser
 %
 \caption{\textbf{Frequency of eGenes per variant, eTissues per variant-eGene and phenotypes per variant-eGene-eTissue.} (\textbf{a}) TODO.} \label{fig:freq_gwas_egene_etisue_per_variant}
 %
-\end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Tab 2: Winner regions
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% full size table is table*
-\begin{table*}[]
-\caption{Pleiotropic regions involving 6 or more GWAS categories.}\label{tab:pleiotropic_regions}
-\centering
-\scriptsize
-\hline
-\csvreader[
-separator=tab,
-tabular=rrrcp{0.5\textwidth},
-head,
-table head=\bfseries Chrom. & \bfseries Start (hg38) & \bfseries End (hg38) & \bfseries Cat. ct. & \bfseries GWAS Categories\\\hline,
-]{fig/tab_region_window_100000_pleio_highest.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv}% specify your coloumns here
-\hline
-\end{table*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Fig 5: Length histogram of regions
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure*}[]
-\centering
-%
-\includegraphics[width=0.33\textwidth]{\floatRelativePath/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png}
-%
-\caption{\textbf{Length distribution of pleiotropic regions.} (\textbf{a}) TODO.} \label{fig:pleiotropy_region_distribution}
 \end{figure*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

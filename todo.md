@@ -1,6 +1,11 @@
+# Aug 10, 2022
+
+- compare OMIM rare variants
+- compare population frequency
+
 # Aug 6, 2022
 
-- add cytoband to table 1 and 2 to show that locus is already known for pleiotropy
+- add cytoband to table 1 and 2 to show that locus is already known for pleiotropy -> DONE
 
 # Jul 29, 2022
 

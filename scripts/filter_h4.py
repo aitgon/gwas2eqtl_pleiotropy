@@ -33,6 +33,6 @@ if not os.path.isfile(coloc_raw_tsv_path):
     sys.exit(1)
 
 #%%
-coloc_df = pandas.read_csv(coloc_raw_tsv_path, sep="\t")
+coloc_df = pandas.read_csv(coloc_raw_tsv_path, sep="\t", compression='gzip')
 coloc_df = coloc_df.loc[coloc_df['PP.H4.abf'] >= h4_cutoff, ]
 coloc_df.to_csv(coloc_h4_tsv_path, sep="\t", index=False)

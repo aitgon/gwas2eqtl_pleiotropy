@@ -2,7 +2,7 @@ etissue_cat_ods = config['etissue_cat_ods']
 gwas_cat_ods = config['gwas_cat_ods']
 outdir = config['outdir']
 public_data_dir_path = config['public_data_dir']
-raw_coloc_tsv = config['raw_coloc_tsv']
+coloc_tsv_gz = config['coloc_tsv_gz']
 upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
 
 rule all:
@@ -40,6 +40,7 @@ rule intrsct_remap_nr_gwas_categories:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_0_hg38.bed"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_50_hg38.bed"),
+        os.path.join(public_data_dir_path, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
     output:
         os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_0_hg38.bed"),
         os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_50_hg38.bed"),
@@ -75,10 +76,11 @@ rule cmpt_pleiotropic_regions:
     input:
         gwas=os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
-        tsv=os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
-        png=os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.bed"),
     shell:
-        "python scripts/cmpt_pleiotropic_regions.py {input.gwas} {output.tsv} {output.png}"
+        "python scripts/cmpt_pleiotropic_regions.py {input.gwas} {output[0]} {output[1]}"
 
 rule count_per_rsid:
     input:
@@ -108,7 +110,7 @@ rule h4_annotated:
 
 rule filter_h4:
     input:
-        tsv=raw_coloc_tsv
+        tsv=coloc_tsv_gz
     output:
         tsv=os.path.join(outdir, "filter_h4.py/coloc_h4.tsv"),
     shell:
@@ -116,7 +118,7 @@ rule filter_h4:
 
 rule wget_remap:
     output:
-        chain_gz=os.path.join(public_data_dir_path, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
+        os.path.join(public_data_dir_path, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
     params:
         url="remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz",
         public_data_dir_path=public_data_dir_path,

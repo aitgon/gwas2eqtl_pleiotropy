@@ -1,12 +1,20 @@
-# Run analyses and generate MS figures
+# eqtl2gwas_pleiotropy
 
-The input path is given as "raw_coloc_tsv" and it must be copied somewhere in this folder
+## Colocalization using eqtl2gwas
+
+The input data was generated using https://github.com/aitgon/eqtl2gwas, tag, 0.1.1), run with pval=5e-8, window 1000000
 
 ~~~
-rsync -avzP gonzalez@warsaw:/home/gonzalez/Repositories/eqtl2gwas/out/merged/genome/5e-08/1000000/coloc413.tsv /home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/gwas413/genome/5e-08/1000000/.
+git clone git@github.com:aitgon/eqtl2gwas.git
+cd eqtl2gwas
+PYTHONPATH=.:$PYTHONPATH snakemake -j all -s workflow/Snakefile_eqtl.yml -p --rerun-incomplete  --config  public_data_dir=$HOME/Software/public process_data_dir=$HOME/Software/process region=genome eqtl_fdr=0.05 window=500000
+PYTHONPATH=.:$PYTHONPATH snakemake -j all -s workflow/Snakefile_gwas.yml -p --config gwas_ods=gwas413.ods gwas_pval=5e-8 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process image_sif=out/eqt2gwas.sif --rerun-incomplete
+snakemake -c all -s workflow/Snakefile.yml -p --config gwas_ods=gwas413.ods gwas_pval=5e-8 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process region=genome window=1000000 eqtl_fdr=0.05 image_sif=out/eqtl2gwas.sif --rerun-incomplete
 ~~~
 
-The columns are these:
+The previous commands result in this file coloc413.tsv.gz that can be also foud in the OSF site
+
+These are the columns:
 
 - chrom
 - pos
@@ -29,10 +37,12 @@ The columns are these:
 - PP.H1.abf
 - PP.H0.abf
 
+## Analyse pleiotropy using this repository.
+
 Then snamake is run with:
 
 ~~~
-snakemake --cores all -p -d ${PWD} -s tools/Snakefile.yml --config outdir=out/gwas413/genome/5e-08/1000000 raw_coloc_tsv=out/gwas413/genome/5e-08/1000000/coloc413.tsv gwas_cat_ods=config/gwas413.ods etissue_cat_ods=config/etissue_category.ods upper_var_gwas_cat_count=5 public_data_dir=/home/gonzalez/Software/public
+snakemake --cores all -p -d ${PWD} -s tools/Snakefile.yml --config outdir=out/gwas413/genome/5e-08/1000000 coloc_tsv_gz=out/gwas413/genome/5e-08/1000000/coloc413.tsv.gz gwas_cat_ods=config/gwas413.ods etissue_cat_ods=config/etissue_category.ods upper_var_gwas_cat_count=5 public_data_dir=/home/gonzalez/Software/public
 ~~~
 
 # MS

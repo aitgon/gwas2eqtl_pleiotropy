@@ -1,6 +1,6 @@
 from eqtl2gwas_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
 from eqtl2gwas_pleiotropy.Logger import Logger
-
+import pandas
 import os
 import pandas
 import pathlib
@@ -8,6 +8,8 @@ import sys
 
 
 #%%
+from eqtl2gwas_pleiotropy.URL import URL
+
 help_cmd_str = "todo"
 try:
     coloc_h4_tsv_path = sys.argv[1]
@@ -41,13 +43,29 @@ gwas_annot_df.rename({'id': "gwas_identifier", 'subcategory': 'gwas_category_mrc
 #%%
 coloc_h4_df = pandas.read_csv(coloc_h4_tsv_path, sep="\t")
 
-# import pdb; pdb.set_trace()
 #%%
 coloc_h4_df = coloc_h4_df.merge(gwas_annot_df[["gwas_identifier", "gwas_trait", 'gwas_category_mrcieu', 'gwas_category_eqtl2gwas']], on='gwas_identifier')
 coloc_h4_df = coloc_h4_df.merge(eqtl_info_df[['eqtl_identifier', 'etissue_category']].drop_duplicates(), on='eqtl_identifier')
 
+#%% cytoband
+cytoband_url = "http://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/cytoBand.txt.gz"
+cytoband_path = URL(cytoband_url).gunzip()
+cyto_df = pandas.read_csv(cytoband_path, sep="\t", header=None, usecols=[0, 1, 2, 3])
+cyto_df.columns = ['chrom', 'start', 'end', 'cytoband']
+cyto_df['chrom'] = cyto_df['chrom'].str.replace('chr', '')
+coloc_h4_df['chrom'] = coloc_h4_df['chrom'].copy().astype('str')
+coloc_h4_df['cytoband'] = None
+for rowi, row in cyto_df.iterrows():
+    chrom = row['chrom']
+    start = row['start']
+    end = row['end']
+    cytoband = row['cytoband']
+    coloc_h4_df.loc[
+        (coloc_h4_df['chrom'] == chrom) & (start <= coloc_h4_df['pos']) & (
+                    coloc_h4_df['pos'] <= end), 'cytoband'] = cytoband
+
 #%%
-columns = ['chrom', 'pos', 'rsid', 'ref', 'alt', 'egene', 'egene_symbol',
+columns = ['chrom', 'cytoband', 'pos', 'rsid', 'ref', 'alt', 'egene', 'egene_symbol',
            'eqtl_beta', 'eqtl_pvalue', 'eqtl_identifier', 'etissue_category', 'gwas_beta',
            'gwas_pvalue', 'gwas_identifier', 'gwas_trait', 'gwas_category_eqtl2gwas',
            'pp_h4', 'PP.H4.abf', 'coloc_window', 'nsnps', 'PP.H3.abf', 'PP.H2.abf', 'PP.H1.abf', 'PP.H0.abf', 'gwas_category_mrcieu']
@@ -63,6 +81,7 @@ with pandas.ExcelWriter(h4_annotated_ods_path) as fout:
 
 #%% BED
 coloc_h4_bed_df = coloc_h4_df.rename({'chrom': '#chrom', 'pos': 'end'}, axis=1)
+coloc_h4_bed_df.drop(['cytoband'], axis=1, inplace=True)
 coloc_h4_bed_df['#chrom'] = 'chr' + coloc_h4_bed_df['#chrom'].astype('str')
 coloc_h4_bed_df.insert(1, 'start', coloc_h4_bed_df['end'] - 1)
 coloc_h4_bed_df.sort_values(by=coloc_h4_bed_df.columns.tolist(), inplace=True)
