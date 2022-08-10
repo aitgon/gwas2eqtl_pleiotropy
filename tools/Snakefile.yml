@@ -98,15 +98,16 @@ rule count_per_rsid:
 
 rule h4_annotated:
     input:
-        tsv=os.path.join(outdir, "filter_h4.py/coloc_h4.tsv"),
-        gwas_cat_ods=gwas_cat_ods,
-        etissue_cat_ods=etissue_cat_ods,
+        os.path.join(outdir, "filter_h4.py/coloc_h4.tsv"),
+        gwas_cat_ods,
+        etissue_cat_ods,
+        "hgdownload.cse.ucsc.edu/goldenpath/hg38/database/cytoBand.txt.gz",
     output:
         tsv=os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
         ods=os.path.join(outdir, "annotate_h4.py/h4_annotated.ods"),
         bed=os.path.join(outdir, "annotate_h4.py/h4_annotated.bed"),
     shell:
-        "python scripts/annotate_h4.py {input.tsv} {input.gwas_cat_ods} {input.etissue_cat_ods} {output.tsv} {output.ods} {output.bed}"
+        "python scripts/annotate_h4.py {input[0]} {input[1]} {input[2]} {output.tsv} {output.ods} {output.bed}"
 
 rule filter_h4:
     input:
@@ -133,4 +134,13 @@ rule wget_interactome:
         public_data_dir_path=public_data_dir_path,
     shell:
         """wget -nc -q -r {params.url} -P {params.public_data_dir_path}"""
+
+rule wget_cytoband:
+    output:
+        os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
+    params:
+        "hgdownload.cse.ucsc.edu/goldenpath/hg38/database/cytoBand.txt.gz",
+        public_data_dir_path,
+    shell:
+        """wget -nc -q -r {params[0]} -P {params[1]}"""
 
