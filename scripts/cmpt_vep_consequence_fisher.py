@@ -37,7 +37,8 @@ except IndexError:
 #%%
 vep_input_column_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_category_count']
 vep_input_df = pandas.read_csv(vep_input_path, sep=" ", header=None, names=vep_input_column_lst)
-vep_output_df = pandas.read_csv(vep_output_path, sep="\t", skiprows=41, header=0)
+columns = ['#Uploaded_variation', 'Location', 'Allele', 'Gene', 'Feature', 'Feature_type', 'Consequence', 'cDNA_position', 'CDS_position', 'Protein_position', 'Amino_acids', 'Codons', 'Existing_variation', 'Extra']
+vep_output_df = pandas.read_csv(vep_output_path, sep="\t", comment='#', header=None, names=columns)
 
 
 #%%
@@ -53,7 +54,7 @@ out_df = pandas.DataFrame(out_dic)
 #%%
 # consequence = 'missense_variant'
 consequence_lst = ['3_prime_UTR_variant', '5_prime_UTR_variant', 'downstream_gene_variant', 'frameshift_variant', 'intergenic_variant', 'intron_variant', 'missense_variant', 'splice_region_variant', 'stop_lost', 'upstream_gene_variant']
-for consequence in sorted(df['Consequence0'].unique()):
+for consequence in sorted(df.loc[~df['Consequence0'].isna(), 'Consequence0'].unique()):
     Logger.info('Consenquence: ' + consequence)
     all_df = vep_input_df[['rsid', 'gwas_category_count']].drop_duplicates()
     cons_df = df.loc[df['Consequence0'] == consequence, ['rsid', 'gwas_category_count']].drop_duplicates()
@@ -80,6 +81,8 @@ for consequence in sorted(df['Consequence0'].unique()):
         oddsr, ppp = fisher_exact(table, alternative='two-sided')
 
         #%% perc
+        if (bb+dd) == 0 or (aa+cc)==0:
+            continue
         perc_cons_pleio1 = round(bb/(bb+dd)*100)
         perc_cons_pleioi = round(aa/(aa+cc)*100)
 
