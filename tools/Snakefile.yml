@@ -101,7 +101,6 @@ rule h4_annotated:
         os.path.join(outdir, "filter_h4.py/coloc_h4.tsv"),
         gwas_cat_ods,
         etissue_cat_ods,
-        "hgdownload.cse.ucsc.edu/goldenpath/hg38/database/cytoBand.txt.gz",
     output:
         tsv=os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
         ods=os.path.join(outdir, "annotate_h4.py/h4_annotated.ods"),
