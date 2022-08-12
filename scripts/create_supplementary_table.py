@@ -89,8 +89,27 @@ sheet_name = 'ST{}'.format(sheet_counter)
 sheet_counter += 1
 tsv_path = os.path.join(wdir_path, "cmpt_pleiotropic_regions.py/region_window_100000.tsv")
 st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+st_df['egene'] = None
+st_df['egene_symbol'] = None
+st_df['etissue'] = None
+
+tsv_path = os.path.join(wdir_path, "annotate_h4.py/h4_annotated.tsv")
+h4annot_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+
+for rowi, row in st_df.iterrows():
+    chrom = row['chrom']
+    start = row['start']
+    end = row['end']
+    egene_symbol_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'egene_symbol'].unique()
+    egene_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'egene'].unique()
+    etissue_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'etissue_category'].unique()
+    st_df.at[rowi, 'egene'] = ", ".join(egene_lst)
+    st_df.at[rowi, 'egene_symbol'] = ", ".join(egene_symbol_lst)
+    st_df.at[rowi, 'etissue'] = ", ".join(etissue_lst)
+
 st_df.sort_values(by=['gwas_category_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)
 st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
+st_df = st_df[['chrom', 'cytoband', 'start', 'end', 'gwas_category_count', 'gwas_category_lst', 'egene_symbol', 'etissue', 'egene']]
 st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
 
 #%%
