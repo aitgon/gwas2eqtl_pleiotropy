@@ -38,12 +38,15 @@ sheet_name_lst.append("ST2")
 description_lst.append("Metadata and classification of GWAS")
 #
 sheet_name_lst.append("ST3")
-description_lst.append("Count of GWAS phenotypes of eQTL/GWAS variants")
+description_lst.append("Count and list of GWAS phenotypes, eGenes and eTissues for each eQTL/GWAS variant")
+#
+sheet_name_lst.append("ST4")
+description_lst.append("Count and list of GWAS phenotypes for each pleiotropic region")
 
 capt_df = pandas.DataFrame({'Supp. Tab.': sheet_name_lst, 'Description': description_lst})
 capt_df.to_excel(writer, sheet_name='Table descrip.', index=False, header=True)
 
-#%%
+#%% ST1
 sheet_name = 'ST{}'.format(sheet_counter)
 sheet_counter += 1
 etissue_category_ods_path = os.path.join(PathManager.get_project_path(), "config", "etissue_category.ods")
@@ -51,7 +54,7 @@ st_df = pandas.read_excel(etissue_category_ods_path, index_col=None, header=0)
 st_df.drop(['Unnamed: 7', 'etissue_category.1', 'count'], axis=1, inplace=True)
 st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
 
-#%%
+#%% ST2
 sheet_name = 'ST{}'.format(sheet_counter)
 sheet_counter += 1
 tsv_path = os.path.join(wdir_path, "annot_gwas_metadata.py/gwas413_metadata.tsv")
@@ -59,17 +62,35 @@ st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 st_df.sort_values(by=st_df.columns.tolist(), inplace=True)
 st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
 
-#%%
+#%% ST3
 sheet_name = 'ST{}'.format(sheet_counter)
 sheet_counter += 1
 tsv_path = os.path.join(wdir_path, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv")
-st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+gwas_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+
+tsv_path = os.path.join(wdir_path, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv")
+egene_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+
+tsv_path = os.path.join(wdir_path, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv")
+etissue_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+
+st_df = pandas.merge(gwas_df, egene_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
+st_df = pandas.merge(st_df, etissue_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
+st_df = st_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category_count', 'gwas_category_lst', 'egene_count', 'egene_symbol_lst', 'etissue_label_count', 'etissue_subcategory_lst', 'egene_lst']]
+st_df.sort_values(['gwas_category_count', 'chrom', 'pos', 'rsid'], ascending=[False, True, True, True], inplace=True)
 st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
-# st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.split(',')
-# st_df = st_df.explode('gwas_category_lst')
-# st_df['gwas_category'] = 1
-# st_df = st_df.pivot_table(index=['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category_count'], columns='gwas_category_lst', values='gwas_category', fill_value=0).reset_index()
-# st_df.sort_values(['gwas_category_count', 'chrom', 'pos'], inplace=True, ascending=[False, True, True])
+st_df['egene_symbol_lst'] = st_df['egene_symbol_lst'].str.replace(',', ', ')
+st_df['etissue_subcategory_lst'] = st_df['etissue_subcategory_lst'].str.replace(',', ', ')
+st_df['egene_lst'] = st_df['egene_lst'].str.replace(',', ', ')
+st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
+
+#%% ST4
+sheet_name = 'ST{}'.format(sheet_counter)
+sheet_counter += 1
+tsv_path = os.path.join(wdir_path, "cmpt_pleiotropic_regions.py/region_window_100000.tsv")
+st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+st_df.sort_values(by=['gwas_category_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)
+st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
 st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
 
 #%%

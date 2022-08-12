@@ -95,7 +95,7 @@ I developed a colocalization pipeline that explored all the 51 625 combinations 
 %
 This analysis explored 30 261 unique variants and 2,479,065 potential variant colocalizations (OSF URL).
 %
-Selection colocalizations with PP.H4.abf greater than 0.8 resultd in .... TODO
+Selection of colocalizations with PP.H4.abf greater than 0.8 resulted in 9 758 variants and 143 119 colocalizations (Table TODO).
 
 \subsection*{Which regulatory variants are the most pleiotropic?}
 
@@ -105,21 +105,57 @@ In the EBI eQTL Catalogue, immune cell types are annotated to great detail while
 %
 Therefore I manually defined 36 categories to annotate eQTL biological samples at equivalent resolution (Supplementary table 1).
 
-These category annotations were used to investigate the pleiotropy of eQTL/GWAS variants at the level of GWAS phenotypes.
+These category annotations were used to investigate the variant pleiotropy for GWAS phenotypes.
 %
 Colocalized eQTL/GWAS variants were classified according to the number of GWAS categories they belong to (Table \ref{tab:pleitropic_variants} and Supplementary table TODO).
 %
 Pleiotropic variants aggregate in some cytobands such as 3q23, 5q31.1, 11q13.5, 12q24.12 and 15q26.1 (Table \ref{tab:pleitropic_variants} and Supplementary table 3).
 
-The list of variants involved in 5 or GWAS categories with the categories the variants are involved in are shown in table \ref{tab:pleitropic_variants}.
+% 12q24.12
+For instance, the most pleiotropic variants in cytoband 12q24.12 are involved in allergies, cancer, cardiovascular and autoimmune diseases (Table \ref{tab:pleitropic_variants}).
+%
+These variants control eGenes ALDH2, LINC01405, MAPKAPK5, SH2B3 that are involved in alcohol-related disorders (ALDH2), cancer (LINC01405), multiple congenital anomalies syndromes (MAPKAPK5),  inflammation and hematological disorders (SH2B3).
+%
+These eQTLs are active in adipose tissue, arteries, blood, colon, immune cells, skin and induced pluripotent stem cells (iPSC).
 
-We can see that these 10 variants aggregate to 7 cytobands.
+%3q23
+The variants in cytoband 3q23 are involved in allergy, cancer and height phenotypes (Supplementary table 3).
+%
+Interestingly all these variants target the egene ZBTB3, which is a transcription factor, which controls pro-inflammatory factors such as IRF5 (10.1016/j.jaut.2016.08.001).
+%
+These variants are active in tissues such as blood, esophagus, immune cell, LCLs and muscle (Supplementary table 3).
 
-We can see the variants aggregate to pleiotropic regions, so that we also compute pleitropic region to explore them (See Methods).
+% 5q31.1
+Another pleiotropic locus is cytoband 5q31.1 with variants that are involved in allergy, asthma, cardiovascular diseases, hypertension and ulcerative colitis.
+%
+eGenes under control of these variants are important genes of the immune system such as IRF1 and IL4.
+%
+Variant rs17622656 is in the intron of IRF1 gene and variants rs736801 and rs2522051, which are upstream and downstream of IRF1 gene, respectively.
+%
+IRF1 is a response protein to the presence of virus and oncogenic proteins.
+%
+IL4 is required to stimulate proliferation of activated B and T-cells.
+%
+There are other several other eGenes in the region such as KIF3A, MIR3936HG, P4HA2, P4HA2-AS1, PDLIM4, RAD50, SEPTIN8, SLC22A4 and SLC22A5.
+%
+These variants are active in a large number of tissues including artery, blood, brain, breast, digestive and immune system, muscle, skin, ovary, testis and thyroid.
+
+%11q13.5
+The variants in cytoband 11q13.5 is involved in allergy and autoimmune disease (Supplementary table 3).
+%
+All these variants target the egene EMSY-DT, which is a long noncoding RNA upstream of EMSY.
+%
+These variants are active in LCL, Skin and iPSC (Supplementary table 3).
 
 \subsection*{How many pleiotropic regions are there}
 
-We have found 454 regions with variants involved in 2 or more categories (Suppl. table region_window_100000.tsv).
+As we saw, pleiotropic variants are aggregated in common cytobands.
+%
+Therefore I wanted to delimit regions with a higher concentration of pleiotropic variants, so that these pleiotropic can be analysed (See Methods).
+%
+There are 453 regions with 441 regions with 2 or more categories, 114 regions with 3 or more categories, 37 region with 4 or more categories and 18 regions with 5 or more categories (Supplementary table 3).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ONGOING
 
 Around 90\% regions, are shorter than 100 kb, 10\% are around 100 kb and a small fraction are larger than 100 kb.
 
@@ -141,10 +177,7 @@ This locus has been used to explain links between inflammaiton and hypertension 
 %
 Our analysis add up that the variants in this cytoband control important genes such as ALDH2, ATXN2, MAPKAPK5, SH2B3 and TMEM116 in several tissues such as adipose, artery, blood, brain, digestive, skin, heart and skin tissue as well as immune cells.
 
-% 5q31.1
-The variant rs17622656 in locus 5q31.1 is involved in allergic, cardiovascular, hypertension and autoimmune diseases and is located in the intron of the IRF1 gene.
-The IRF1 gene is a key activator gene for the innate and acquired immune responses.
-In this locus there are rs736801 and rs2522051, which are upstream and downstream of IRF1 gene, respectively.
+
 
 % 6p21.3
 % TODO
@@ -160,8 +193,7 @@ eQTLs are active in a very large number of cells including blood, artery, brain 
 The locus in cytoband 1p13.3 is mainly related to cardiovascular diseases.
 Interestingly, these variants are active in many tissues (Supp table h4_annotated.ods).
 
-The variant rs1344674 in cytoband 3q23 is involved in allergy, cancer and height phenotypes (tab 1 and count_per_rsid_gwas.tsv).
-The target of this variant, which is an intron of the same gene, is ZBTB38 and it is active in the esophagus, blood and monocytes.
+
 
 The variant rs2107595 is in locus 7p21.1 downstream of the histone deacetylase 9 (HDAC9) is cardiovascular. Interestingly, it controls expression of lncRNA XXX that is not known in the context of cardiovascular diseases.
 
@@ -252,28 +284,25 @@ We can cite other things too \citep{watson_molecular_1953}
 
 I used these data sets here: eQTLs from the eQTL Catalogue \citep{2021.Alasoo.Kerimov}, GWAS variants from the IEU OpenGWAS project \citep{2021.Marcora.Lyon}, chromatin immunoprecipitation (ChIP)	transcription factors peaks from the ReMap database \citep{2021.Ballester.Hammal}, UCSC annotation data.
 %
-I explore the data using the UCSC browser (\url{http://genome.ucsc.edu}) \citep{2021.Kent.Lee}, and OMIM database (\url{https://omim.org/}). 
+I explore the data using the UCSC browser (\url{http://genome.ucsc.edu}) \citep{2021.Kent.Lee}, and OMIM database (\url{https://omim.org/}).
 %
 Colocalization and analysis pipelines were implemented with Snakemake (Supplementary Figure S1) .
 %
-The colocalization and analysis pipelines can be found here: https://github.com/aitgon/eqtl2gwas
-
-
-%
-The developer documentation and scripts to download the data sets, anno-
-tate the SNPs, train the model and score the genome can be
-found here: https://github.com/aitgon/tagoos.
-
+The colocalization and analysis pipelines can be found here: \url{https://github.com/aitgon/eqtl2gwas} and \url{https://github.com/aitgon/eqtl2gwas_pleiotropy}.
 
 \subsection*{Colocalization}
 
-I developed a colocalization pipeline based on another pipeline at the eQTL Catalogue Github repository ( \url{https://github.com/eQTL-Catalogue/colocalisation} ).
+I developed a colocalization pipeline based on a pipeline that is public at the eQTL Catalogue Github repository ( \url{https://github.com/eQTL-Catalogue/colocalisation} ).
 %
 First lead eQTLs with FDR 0.05 in each sample are selected and surrounding eQTL and GWAS variants in a radius of 500 000 nt are retrieved.
 %
 Colocalization between eQTL and GWAS variants is tested using the "coloc.abf" function of CRAN coloc for each window, each eQTL sample and each GWAS.
+
+\subsection*{Definition of pleiotropic regions}
+
+To define pleiotropic regions, I included "pleiotropic" variants defining as having more than 2 categories as long as the distance between the two "pleiotropic" variants is less than 100 000 bp.
 %
-This 
+Then the number of GWAS categories in Supplementary table TODO is given by the number of different variant categories in the region.
 
 \subsection*{Characterization of regulatory QTLs}
 
