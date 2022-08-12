@@ -113,3 +113,9 @@ cd ms
 latex textgreek.ins
 cd $OLDPWD
 ~~~
+
+# MS Supplementary table
+
+~~~
+python scripts/create_supplementary_table.py out/gwas413/genome/5e-08/1000000 out/gwas413/genome/5e-08/1000000/ms_supp_tab/supplementary_table.xlsx
+~~~

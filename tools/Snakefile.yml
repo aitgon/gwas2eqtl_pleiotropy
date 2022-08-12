@@ -32,6 +32,7 @@ rule all:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
         os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_egene.png"),
         os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_etissue.png"),
+        os.path.join(outdir, "annot_gwas_metadata.py/gwas413_metadata.tsv"),
 
 include: 'Snakefile_plots.yml'
 
@@ -115,6 +116,14 @@ rule filter_h4:
         tsv=os.path.join(outdir, "filter_h4.py/coloc_h4.tsv"),
     shell:
         "python scripts/filter_h4.py {input.tsv} {output.tsv}"
+
+rule annot_gwas_metadata:
+    input:
+        "config/gwas413.ods",
+    output:
+        os.path.join(outdir, "annot_gwas_metadata.py/gwas413_metadata.tsv"),
+    shell:
+        "python scripts/annot_gwas_metadata.py {input[0]} {output[0]}"
 
 rule wget_remap:
     output:
