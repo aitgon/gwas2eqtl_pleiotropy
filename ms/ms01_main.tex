@@ -2,7 +2,7 @@
 
 \title{Phenotype pleiotropy of regulatory variants increases with the variety of bound transcription factors, regulated genes and active tissues}
 \shorttitle{Running title here}
-
+	
 \author[1,\Letter]{Aitor González \orcidlink{0000-0002-8402-1655}}
 \author[2]{Second Doctor \orcidlink {000-0002-0000-0000}}
 \author[1]{Third Professor \orcidlink {000-0003-0000-0000}}
@@ -114,7 +114,7 @@ Pleiotropic variants aggregate in some cytobands such as 3q23, 5q31.1, 11q13.5, 
 % 12q24.12
 For instance, the most pleiotropic variants in cytoband 12q24.12 are involved in allergies, cancer, cardiovascular and autoimmune diseases (Table \ref{tab:pleitropic_variants}).
 %
-These variants control eGenes ALDH2, LINC01405, MAPKAPK5, SH2B3 that are involved in alcohol-related disorders (ALDH2), cancer (LINC01405), multiple congenital anomalies syndromes (MAPKAPK5),  inflammation and hematological disorders (SH2B3).
+These variants control egenes ALDH2, LINC01405, MAPKAPK5, SH2B3 that are involved in alcohol-related disorders (ALDH2), cancer (LINC01405), multiple congenital anomalies syndromes (MAPKAPK5),  inflammation and hematological disorders (SH2B3).
 %
 These eQTLs are active in adipose tissue, arteries, blood, colon, immune cells, skin and induced pluripotent stem cells (iPSC).
 
@@ -136,7 +136,7 @@ IRF1 is a response protein to the presence of virus and oncogenic proteins.
 %
 IL4 is required to stimulate proliferation of activated B and T-cells.
 %
-There are other several other eGenes in the region such as KIF3A, MIR3936HG, P4HA2, P4HA2-AS1, PDLIM4, RAD50, SEPTIN8, SLC22A4 and SLC22A5.
+There are other several other egenes in the region such as KIF3A, MIR3936HG, P4HA2, P4HA2-AS1, PDLIM4, RAD50, SEPTIN8, SLC22A4 and SLC22A5.
 %
 These variants are active in a large number of tissues including artery, blood, brain, breast, digestive and immune system, muscle, skin, ovary, testis and thyroid.
 
@@ -147,29 +147,25 @@ All these variants target the egene EMSY-DT, which is a long noncoding RNA upstr
 %
 These variants are active in LCL, Skin and iPSC (Supplementary table 3).
 
-\subsection*{How many pleiotropic regions do I find?}
+\subsection*{Analysis of pleiotropic regions}
 
 As we saw, pleiotropic variants are aggregated in common cytobands.
 %
-Therefore I wanted to delimit regions with a higher concentration of pleiotropic variants, so that these pleiotropic can be analysed (See Methods).
+Therefore I computed regions with a larger number of pleiotropic variants (See Methods) (Table \ref{tab:pleiotropic_regions}).
 %
 There are 453 regions with 441 regions with 2 or more categories, 114 regions with 3 or more categories, 37 region with 4 or more categories and 18 regions with 5 or more categories (Supplementary table 3).
 %
-Most regions are shorter than 100 kb, 10\% are around 100 kb and a smaller fraction are larger than 100 kb (Fig. \ref{fig:pleiotropy_region_distribution).
+75\% of regions are shorter than 100 kb, 15\% of regions are between 100 kb and 200 kb, and less than 5\% are larger than 200 kb (Fig. \ref{fig:pleiotropy_region_distribution}).
 
-The most pleiotropic region is 12:111,395,984-111,645,358 in cytoband 12q24.12, which we discussed above.
-
-The largest region is 11:13,260,511-17,396,930 (Centered in cytoband 11p15.2) with a length of 4,136,419 bp and variants involved in cardiovascular and hypertension phenotypes.
+The most pleiotropic region is 12:111,395,984-111,645,358 in cytoband 12q24.12 that we discussed above (Table \ref{tab:pleiotropic_regions}).
 %
-We find genes RRAS2, COPB1, CYP2R1 and SRY that are involved in mendelian diseases (REF TODO + OMIM).
-
-The second largest region is 2:187,235,912-191,066,738 (Centered in cytoband 2q32.2) with a length of 3,830,826 bp and variants involved in cardiovascular, hypertension and autoimmune phenotypes (REF TODO + OMIM).
+The largest region is 11:13,260,511-17,396,930 in cytoband 11p15.2 with a length of 4,136,419 bp and variants involved in cardiovascular and hypertension phenotypes (Supplementary table 3).
 %
-We find genes COL3A1, COL5A2 and SLC40A1.
-
-The list of pleiotropic regions (6 phenotype categories and more) is shown in Table \ref{tab:pleiotropic_regions}. The whole list will be given in a Supplementary file.
+The second largest region is 2:187,235,912-191,066,738 in cytoband 2q32.2 with a length of 3,830,826 bp and variants involved in cardiovascular, hypertension and autoimmune phenotypes  (Supplementary table 3).
 
 \subsection*{What is the function of the variants in the most pleiotropic regions?}
+
+% TODO GO DAVID
 
 % 12q24.12
 The cytoband 12q24.12 has five variants rs3184504, rs653178, rs7310615, rs597808, rs11065979, that are known in the literature to be associated to a wide palette of diseases.
@@ -207,74 +203,90 @@ rs301816
 in the cytoband 1p36.23 that are involved in allergy, cardiovascular and hypertension.
 This variants control the gene RERE, which is a nuclear receptor corregulator and is involved in neurodevelopmental disorders.\\
 
-\subsection*{What is the frequency and proportion of variants with different phenotype categories, egene count and etissue categories?}
+\subsection*{How specific or non-specific are variants to GWAS phenotypes, egenes and etissues?}
 
-Next we wanted to explore the distribution of GWAS categories, egenes and etissues.
-
-Figure \ref{fig:hist_gwas_egene_etissue}(a) shows that almost all variants are involved in one GWAS category, 10\% are involved in 2 categories and less than 1\% of variants are involved in 4 or more GWAS categories.
-
-%%%%%%%%%%%%%%%%%%%% ONGOING
-
-Figure \ref{fig:hist_gwas_egene_etissue}(b) shows that around 50\% are associated to 1-5 egenes, 1\% are associated to ...
-
-Figure \ref{fig:hist_gwas_egene_etissue}(c) shows that around 50\% are active in 1-5 etissues, 1\% are associated to ...
+Next I explored the distribution of GWAS categories, egenes and etissues.
+%
+83\% of variants are involved in one GWAS category, 14\% are involved in 2 categories and the remaining variants with 3 or more phenotype categories make 3\% or less (Fig. \ref{fig:hist_gwas_egene_etissue}(a).
+%
+Regarding egenes, half of variants modulate one egene, and the other half modulate two or more egenes (Fig. \ref{fig:hist_gwas_egene_etissue}(b).
+%
+In the case of etissues, only 40\% of variants are specific to a single tissue while the other 60\% are active in two or more tissues (Fig. \ref{fig:hist_gwas_egene_etissue}(c).
+%
+In conclusion, while most colocalized eQTL/GWAS variants are specific to one GWAS phenotype, half of them only module one specific egene, and less than half are active in a single tissue.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection*{How do phenotype frequencies relates to eQTL and etissue frequency at the loci level?}
 
-In Figure \ref{fig:region_gwas_egenes_tissues}, we can see the number of GWAS categories, eGenes and eTissues for regulatory variants in pleiotropic regions.
+% TODO
 
-\subsection*{Where are the pleitropic variants?}
+In Figure \ref{fig:region_gwas_egenes_tissues}, we can see the number of GWAS categories, egenes and eTissues for regulatory variants in pleiotropic regions.
 
-Based on the VEP consequence, we see that pleiotropic variants are increased in the coding regions (Missense) and 3' prime UTRs (Fig. \ref{fig:genome_location}).
-By contrast pleiotropic variants decrease in introns.
-This suggests their effects are stronger.
+\subsection*{What are the mechanisms of pleiotropy}
 
-\subsection*{What is the mechanism of the pleiotropy? Are pleiotropic variants associated to more egenes or less genes?}
+\subsubsection*{More severe variant effect consequences?}
 
-First we want to know if pleiotropic eQTLs are associated to more egenes.
-The histograms of pleiotropic eQTLs are shifted to the righted compared to less pleiotropic eQTLs (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}a).
+Then I wanted to know whether there is a significant difference of effect consequence between more and less pleiotropic variants.
+%
+I separated variants according to the count of GWAS categories and computed the EBI variant effect predictor (VEP) consequence.
+%
+I found a significant increase of the missense variants among those with 2, 3 and 4 categories compared to variants with 1 category (Fig. \ref{fig:vep_consequence}a).
+%
+There is also a significant increase of the splicing variants among those with 3 categories (Fig. \ref{fig:vep_consequence}b).
+%
+There is also a significant increase of the 3'-UTR variants among those with 4 categories (Fig. \ref{fig:vep_consequence}c).
+%
+This analysis suggest that more pleiotropic variants have a stronger effect on the coding sequence and splicing regions, which might explain partly their more pleiotropic function.
 
-\subsection*{What is the mechanism of the pleiotropy? Are pleiotropic egenes associated to more GWAS?}
+\subsubsection*{More egenes per variant?}
 
-Yes. There is a higher proportion of pleitropic egenes with higher number of GWAS traits (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}b).
+To find further explanations of pleiotropy, I computed whether pleiotropic variants have more egenes independently of the tissue.
+%
+I found that pleiotropic variants have significantly more egenes compared to variants with one GWAS category (Fig. \ref{fig:gwas_egene_etisue_per_variant}a).
+%
+This observation could be explained by my previous observation that pleiotropic variants have more often an effect on the splicing and 3'UTR regions (Figure \ref{fig:vep_consequence}b,c).
 
-\subsection*{What is the mechanism of the pleiotropy? Are pleiotropic egenes associated to more etissues?}
+\subsubsection*{More etissues per variant-egene?}
 
-Yes. There is a higher proportion of pleitropic egenes associated with higher number of etissues (Fig. \ref{fig:distrib_variant_egene_etissue_gwas}c).
+The next hypothesis is that pleiotropic variant-egene pairs are active in more tissues compared with variant-egene pairs with one GWAS category and this increases their probability to affect more GWAS categories.
+%
+Indeed, we find that pleitropic variant-egenes associated are associated with a higher number of etissues (Fig. \ref{fig:gwas_egene_etisue_per_variant}b).
 
-\subsection*{How to explain that pleiotropic variants regulate more genes?}
+\subsubsection*{More GWAS per variant-egene-etissue?}
 
-In figure \ref{fig:freq_gwas_egene_etisue_per_variant}a, we have found that pleiotropic variants regulate more genes.
-This observation could be explained by a non-significant tendency of pleiotropic variants to be in splicing and 3' UTR regions (Figure \ref{fig:vep_consequence}).
+Another possibility is that variant-egene-etissue triples correlate with more GWAS categories.
+%
+Indeed we found a significant increase of GWAS categories for pleiotropic variant-egene-etissue triple (Fig. \ref{fig:gwas_egene_etisue_per_variant}c).
+%
+This observation could be explained by my previous observation that pleiotropic variants have more often a missense effect (Fig. \ref{fig:vep_consequence}a).
 
-\subsection*{How to explain that pleiotropic egene affect more phenotypes?}
+\subsubsection*{How to explain that pleiotropic variants are active in more tissues?}
 
-In figure \ref{fig:freq_gwas_egene_etisue_per_variant}c, we have found that egenes of pleiotropic variants regulate more phenotype.
-This observation could be explained by a significant enrichment of pleiotropic variants to be missense variants (Figure \ref{fig:vep_consequence}a).
+I wondered why pleiotropic variants are active in more tissues as show in Fig. \ref{fig:gwas_egene_etisue_per_variant}b.
+%
+To explain this observation, I hypothesized that genomic regions around pleiotropic variants bind more transcriptions factors, which upregulate the pleiotropic regions in more tissues.
+%
+I looked at the number of different transcription factors per variant bound in a window of 100 bp.
+%
+I found a significant increase of diversity of transcription factors per variants for pleiotropic variants (Fig. \ref{fig:freq_tf_per_variant}a).
 
-\subsection*{How tbo explain that pleiotropic variants are active in more tissues?}
-
-In figure \ref{fig:freq_gwas_egene_etisue_per_variant}b, we have found that pleiotropic variants are active in more tissues.
-To explain this observation, we hypothesize that genomic regions around pleiotropic variants bind more transcriptions factors.
-In figure \ref{fig:freq_tf_per_variant}, we find that pleiotropic variants bind more transcription factors in a window with radius 50 nt around the variant.
+%TODO CRMs and variants
 
 \subsection*{What is the effect size of pleiotropic eQTLs?}
 
-In figure \ref{fig:beta}, we find that pleiotropic variants have a smaller absolute effect size.
+Then I wondered, how does the effect size (beta) and significance (p-value) relate to pleiotropy.
+%
+I found a significant decrease of effect size with the excepction of the GWAS effect size of variants with 3 categories (Fig. \ref{fig:beta_pval}a).
 
-\subsection*{How can other people access these colocalized GWAS/eQTL?}
+Then I looked at the siginificance of pleiotropic eQTLs and GWAS variants.
+%
+I found a significant decrease of the eQTL significance (Fig. \ref{fig:beta_pval}c).
+%
+By contrast, the tendency of GWAS significance is unclear (Fig. \ref{fig:beta_pval}d).
 
-\begin{itemize}
-  \item Remote and local access with Tabix
-  \item UCSC browser track
-  \item Downloadable SQLite database
-  \item Downloadable raw TSV files
-\end{itemize}
-
-Text is added like this
-This is a reference to a published paper \citep{2019.Watanabe}.
-We can cite other things too \citep{watson_molecular_1953}
+In summary, it seems that pleiotropic eQTLs are weaker with a weaker effect size and less significant p-values.
+%
+The effect size of GWAS seems also to be smaller for pleiotropic variants but the effect is less clear for the significance.
 
 \section*{Discussion}
 
@@ -313,14 +325,13 @@ Then the number of GWAS categories in Supplementary table TODO is given by the n
 
 The eQTL/GWAS variant colocalization pipeline code is available at this repository: \url{https://github.com/aitgon/eqtl2gwas}.
 %
-The analysis of the eQTL/GWAS colocalization pipeline and the source code of this manuscript is available at this repository: \url{https://github.com/aitgon/eqtl2gwas_pleiotropy}.
+The analysis pipeline of the eQTL/GWAS colocalization data and the source code of this manuscript is available at this repository: \url{https://github.com/aitgon/eqtl2gwas_pleiotropy}.
 
 \section*{Data availability}
 
 The raw colocalization data in a single file is available at this OSF site: \url{https://osf.io/hvmje}.
 %
 A website to access significant colocalization results (PP.H4.abf \geq 0.8) is available at this URL TODO.
-
 
 \section*{References}
 \bibliographystyle{unsrt}

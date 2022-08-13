@@ -31,4 +31,4 @@ alpha = 0.5
 boxplot_kwargs = {'linewidth': 3, 'notch': True, 'palette': "rocket_r", 'showfliers': False, 'boxprops': dict(alpha=alpha)}
 
 # statannotations
-annotator_config_dic = {'fontsize': 20}
+annotator_config_dic = {'fontsize': 16}

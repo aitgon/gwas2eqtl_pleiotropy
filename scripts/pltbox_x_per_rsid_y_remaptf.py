@@ -52,7 +52,7 @@ for pleio in range(1, upper_var_gwas_cat_count+1):
 order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-title = "ReMap TFs per var."
+title = "TFs per variant"
 xlabel = "GWAS category count"
 ylabel = "TF count"
 y = "tf"

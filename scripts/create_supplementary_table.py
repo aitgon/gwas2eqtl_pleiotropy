@@ -38,7 +38,7 @@ sheet_name_lst.append("ST2")
 description_lst.append("Metadata and classification of GWAS")
 #
 sheet_name_lst.append("ST3")
-description_lst.append("Count and list of GWAS phenotypes, eGenes and eTissues for each eQTL/GWAS variant")
+description_lst.append("Count and list of GWAS phenotypes, egenes and etissues for each eQTL/GWAS variant")
 #
 sheet_name_lst.append("ST4")
 description_lst.append("Count and list of GWAS phenotypes for each pleiotropic region")

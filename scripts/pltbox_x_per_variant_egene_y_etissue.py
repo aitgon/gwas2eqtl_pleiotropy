@@ -75,7 +75,7 @@ m_df.groupby('gwas_category_count')['etissue_category_count'].apply(lambda x: x.
 order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-title = "eTissues per variant-eGene "
+title = "eTissues per variant-egene "
 xlabel = "GWAS category count"
 ylabel = "eTissue count"
 y = "etissue_category_count"

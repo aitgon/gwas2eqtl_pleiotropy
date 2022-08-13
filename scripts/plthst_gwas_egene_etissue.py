@@ -36,20 +36,21 @@ pathlib.Path(os.path.dirname(hist_rsid_egene_path)).mkdir(parents=True, exist_ok
 pathlib.Path(os.path.dirname(hist_rsid_etissue_path)).mkdir(parents=True, exist_ok=True)
 
 #%%
-ylabel = "Proportion"
-title = "Colocalized eQTLs/GWAS variants"
-ylim=[1e-10, 10]
+ylabel = "Percent"
+title = "Colocalized eQTL/GWAS variants"
+ylim=[0, 100]
 edgecolor='k'
 linewidth = 2
 grid_axis = 'y'
 hist_kwargs = {'density': 1, 'edgecolor': edgecolor, 'linewidth': linewidth}
-
+stat = 'percent'
+label_fontsize = 28
 
 #%% gwas
 count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
 # bins = numpy.array(range(6))
 data_ser = count_df['gwas_category_count']
-seaborn.histplot(data_ser, stat='probability', discrete=True)
+shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
 plt.title(title.format(" and GWAS categories"), fontsize=label_fontsize)
@@ -58,53 +59,60 @@ plt.xticks(fontsize=tick_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.ylim(ylim)
-plt.yscale('log')
+# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 plt.savefig(hist_rsid_gwas_path, dpi=dpi)
 plt.close()
-# import pdb; pdb.set_trace()
+
+with open(hist_rsid_gwas_path + ".txt", 'w') as fout:
+    fout.write('\n'.join([str(h.get_height()) for h in shplt.patches]))
+
 #%% egene
 count_df = pandas.read_csv(egene_count_tsv_path, sep="\t", header=0)
 data_ser = count_df['egene_count']
 # plt.hist(data_ser, **hist_kwargs)
-seaborn.histplot(data_ser, stat='probability', discrete=True)
+shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
-plt.title(title.format(" and eGenes"), fontsize=label_fontsize)
+plt.title(title.format(" and egenes"), fontsize=label_fontsize)
 plt.xlabel("eGene count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.ylim(ylim)
-plt.yscale('log')
+# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 # png_path = os.path.join(outdir_path, "hist_egene.png")
 plt.savefig(hist_rsid_egene_path, dpi=dpi)
-plt.clf()
 plt.close()
+
+with open(hist_rsid_egene_path + ".txt", 'w') as fout:
+    fout.write('\n'.join([str(h.get_height()) for h in shplt.patches]))
 
 #%% etissue
 count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
 data_ser = count_df['etissue_label_count']
 # plt.hist(data_ser, **hist_kwargs)
-seaborn.histplot(data_ser, stat='probability', discrete=True)
+shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
-plt.title(title.format(" and eTissues"), fontsize=label_fontsize)
+plt.title(title.format(" and etissues"), fontsize=label_fontsize)
 plt.xlabel("eTissue category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.ylim(ylim)
-plt.yscale('log')
+# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 # png_path = os.path.join(outdir_path, "hist_etissue.png")
 plt.savefig(hist_rsid_etissue_path, dpi=dpi)
-plt.clf()
 plt.close()
+
+with open(hist_rsid_etissue_path + ".txt", 'w') as fout:
+    fout.write('\n'.join([str(h.get_height()) for h in shplt.patches]))

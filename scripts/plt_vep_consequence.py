@@ -42,7 +42,7 @@ in_df.loc[in_df['p'] <= 1.00e-03, 'signif'] = '***'
 in_df.loc[in_df['p'] <= 1.00e-04, 'signif'] = '****'
 
 #%%
-consequence = 'missense_variant'
+# consequence = 'missense_variant'
 
 #%%
 for consequence in in_df['consequence'].unique():
@@ -53,15 +53,16 @@ for consequence in in_df['consequence'].unique():
     #%%
     order = sorted(plt_df['gwas_category_count'].unique())
     xticklabels = order.copy()
+    xticklabels[-1] = '≥{}'.format(order[-1])
     title = consequence
     xlabel = "GWAS category count"
     ylabel = "Odds ratio"
-    ylim = [0, 9]
+    # ylim = [0, 9]
     y = "oddsr"
     x = "gwas_category_count"
 
     #%%
-    ax = seaborn.barplot(x=x, y=y, data=plt_df, order=order, palette="rocket_r", ci=None)
+    ax = seaborn.barplot(x=x, y=y, data=plt_df, order=order, palette="rocket_r")
 
     #%%
     formatted_pvalues = plt_df['signif'].tolist()
@@ -73,12 +74,11 @@ for consequence in in_df['consequence'].unique():
     annotator.configure(**annotator_config_dic)
     annotator.annotate()
 
-
     plt.title(title, fontsize=label_fontsize)
     plt.xlabel(xlabel, fontsize=label_fontsize)
     plt.xticks(fontsize=tick_fontsize, rotation=0)
     plt.ylabel(ylabel, fontsize=label_fontsize)
-    plt.ylim(ylim)
+    # plt.ylim(ylim)
     plt.yticks(fontsize=tick_fontsize)
     ax.set_xticklabels(xticklabels)
 

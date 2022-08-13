@@ -69,11 +69,11 @@ xticklabels[-1] = '≥{}'.format(order[-1])
 pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
 x = 'gwas_category_count'
 xlabel = "GWAS category count"
+title = "Coloc. eQTL/GWAS variants"
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 y = "eqtl_logpval"
-title = y
-ylabel = y
+ylabel = "eQTL neg log p-val"
 
 #%%
 plt_df = m_df[['gwas_category_count', 'rsid', 'egene', 'etissue_category', y]].drop_duplicates()
@@ -103,8 +103,7 @@ plt.close()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 y = "gwas_logpval"
-title = y
-ylabel = y
+ylabel = "GWAS neg log p-val"
 
 #%%
 plt_df = m_df[['gwas_category_count', 'rsid', 'gwas_identifier', y]].drop_duplicates()

@@ -45,10 +45,11 @@ region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t
 # outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basename(__file__))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-title = "eTissues per variant"
+title = "Coloc. eQTL/GWAS variant"
 count_col_name = "etissue_label_count"
-ylim = [0, 35]
+ylim = [0, 40]
 c = 'blue'
+ylabel = "eTissue count"
 
 count_per_rsid_df['pos'] = count_per_rsid_df['pos'].astype('int')
 
@@ -74,7 +75,7 @@ for rowi, row in pleiotropic_regions_df.iterrows():
     plt.yticks(fontsize=tick_fontsize)
     plt.title(title, fontsize=label_fontsize)
     plt.xlabel("Chr{} position [Mbp]".format(chrom), fontsize=label_fontsize)
-    plt.ylabel("eTissue count", fontsize=label_fontsize)
+    plt.ylabel(ylabel, fontsize=label_fontsize)
     plt.ylim(ylim)
 
     plt.tight_layout()

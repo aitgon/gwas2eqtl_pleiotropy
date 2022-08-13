@@ -101,7 +101,7 @@ m_df.groupby('gwas_category_count')['interactor_count'].apply(lambda x: x.descri
 order = [*range(1, upper_var_gwas_cat_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-title = "Interactors per eGene"
+title = "Interactors per egene"
 xlabel = "GWAS category count"
 ylabel = "Phys. interactor count"
 y = "interactor_count"

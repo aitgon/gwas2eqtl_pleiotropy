@@ -67,11 +67,12 @@ xticklabels[-1] = '≥{}'.format(order[-1])
 box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1) ]
 x = 'gwas_category_count'
 xlabel = "GWAS category count"
-title = "Colocalized eQTL/GWAS variants"
-ylabel = "GWAS beta"
+title = "Coloc. eQTL/GWAS variants"
+
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 y = "eqtl_beta"
+ylabel = "eQTL beta"
 
 #%%
 y_df = m_df[['gwas_category_count', 'rsid', 'egene', 'etissue_category', y]].drop_duplicates()
@@ -111,6 +112,7 @@ plt.close()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 y = "gwas_beta"
+ylabel = "GWAS beta"
 
 #%%
 y_df = m_df[['gwas_category_count', 'rsid', 'gwas_identifier', y]].drop_duplicates()

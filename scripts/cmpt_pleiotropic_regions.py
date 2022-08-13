@@ -161,14 +161,14 @@ hist_kwargs = {'density': False, 'edgecolor': edgecolor, 'linewidth': linewidth}
 # import pdb; pdb.set_trace()
 # plt.hist(region_lenght_ser/1000000, **hist_kwargs)
 data_ser = region_lenght_ser/100000
-seaborn.histplot(data_ser, stat='probability', discrete=True)
+seaborn.histplot(data_ser, stat='percent', discrete=True)
 
 plt.grid(visible=True, axis='y')
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel("Region length [1e5 bp]", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yscale('log')
+# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()

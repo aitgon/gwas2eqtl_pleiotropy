@@ -46,10 +46,11 @@ region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%% Plot parameters
-title = "Phenotype categories per variant"
+title = "Coloc. eQTL/GWAS variant"
 count_col_name = "gwas_category_count"
-ylim = [0, 5.1]
+ylim = [0, 12]
 c = 'blue'
+ylabel = "GWAS cat. count"
 
 count_per_rsid_df['pos'] = count_per_rsid_df['pos'].astype('int')
 
@@ -80,7 +81,7 @@ for rowi, row in pleiotropic_regions_df.iterrows():
     plt.xlabel("Chr{} position [Mbp]".format(chrom), fontsize=label_fontsize)
     plt.xticks(fontsize=tick_fontsize)
     plt.xticks(fontsize=tick_fontsize, rotation=45)
-    plt.ylabel("GWAS category ct.", fontsize=label_fontsize)
+    plt.ylabel(ylabel, fontsize=label_fontsize)
     plt.ylim(ylim)
     plt.yticks(fontsize=tick_fontsize)
 
