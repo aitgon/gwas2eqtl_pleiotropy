@@ -1,6 +1,7 @@
 etissue_cat_ods = config['etissue_cat_ods']
 gwas_cat_ods = config['gwas_cat_ods']
 outdir = config['outdir']
+david_email = config['david_email']
 public_data_dir_path = config['public_data_dir']
 coloc_tsv_gz = config['coloc_tsv_gz']
 upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
@@ -33,6 +34,8 @@ rule all:
         os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_egene.png"),
         os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_etissue.png"),
         os.path.join(outdir, "annot_gwas_metadata.py/gwas413_metadata.tsv"),
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
 
 include: 'Snakefile_plots.yml'
 
@@ -83,6 +86,30 @@ rule cmpt_pleiotropic_regions:
     shell:
         "python scripts/cmpt_pleiotropic_regions.py {input.gwas} {output[0]} {output[1]}"
 
+rule pltbar_davidgo:
+    input:
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
+    output:
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
+    params:
+        upper_var_gwas_cat_count,
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
+    shell:
+        "python scripts/pltbar_davidgo.py {params[1]} {params[0]} {params[2]}"
+
+rule cmpt_davidgo:
+    input:
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
+    params:
+        david_email,
+        upper_var_gwas_cat_count,
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
+    shell:
+        "python scripts/cmpt_davidgo.py {input[0]} {params[0]} {params[1]} {params[2]}"
+
 rule count_per_rsid:
     input:
         tsv=os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
@@ -92,6 +119,7 @@ rule count_per_rsid:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_0_hg38.bed"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_50_hg38.bed"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
     params:
         upper_var_gwas_cat_count=upper_var_gwas_cat_count
     shell:
