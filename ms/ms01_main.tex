@@ -14,18 +14,18 @@
 
 \begin{abstract}
 
-Genome-wide association studies (GWAS) have shown that pleiotropic genetic variants affecting multiple traits are relatively common in the genome.
+Pleiotropic genetic variants affecting multiple traits are relatively common in the genome as shown by genome-wide association studies (GWAS).
 A large majority of these variants fall in non-coding regions and are likely gene regulatory variants.
-Previous works investigated the pleitropy of frequent variants in the genome, but did not address specifically the link between gene regulation and pleiotropy.
+Previous works investigated the pleiotropy of frequent variants in the genome, but did not address specifically the link between gene regulation and pleiotropy.
 %
-In this work we have computed the colocalization of 413 GWAS studies and 127 eQTL studies and have observed XXX colocalized pairs with a probability above 0.8.
-We have categorized the GWAS studies into XXX categories and have splitted variants according to the number of groups they belong to.
-We observed that pleiotropic variants are associated to more eQTL genes (egenes), more eQTL tissues (etissues).
+In this work I have computed the colocalization of 413 GWAS studies and 127 eQTL studies and have observed 143,119 colocalized pairs with a probability above 0.8.
+I have categorized the GWAS studies into 96 categories and have splitted variants according to the number of groups they belong to.
+I have observed that pleiotropic variants are associated to more eQTL genes (egenes) and more eQTL tissues (etissues).
 Unique egenes-etissues pairs are also associated to more GWAS phenotypes.
 These observations could be partially explained, because pleitropic variants are enriched in splicing and missense variants and bind more transcription factors.
 We provide a public ressource to explore these genome-wide eQTL/GWAS colocalizations.
 %
-Our work provide valuable information to better understand the molecular mechanism of pleitropy in the genome.
+My work provides new information regarding the role of gene regulatory variants as mechanism of pleitropy in the genome.
 
 
 \lipsum[1][1]
@@ -75,13 +75,13 @@ In this work, I investigate the molecular basis of pleiotropy of gene regulatory
 
 \subsection*{A pipeline to systematically colocalize eQTLs and GWAS variants}
 
-I developed a pipeline to systematically colocalize eQTLs and GWAS variants (Section \ref{sec:methods}).
+To better understand the role of gene regulatory variants for variant pleiotropy, I developed a pipeline to systematically colocalize eQTLs and GWAS variants (Section Methods).
 
 125 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many tissues and cell types \citep{2021.Alasoo.Kerimov}.
 
 Public GWAS summary statistics were selected from the IEU OpenGWAS database based on four criteria \citep{2018.Parkinson.Buniello}.
 %
-The first criterion was to exclude molecular data sets such as proteome or methylome.
+The first criterion was to exclude molecular phenotypes such as proteome or methylome.
 %	
 The second criterion was to include only the European population, because most samples from the EBI eQTL catalogue belong to the European population.
 %
@@ -95,7 +95,7 @@ I developed a colocalization pipeline that explored all the 51 625 combinations 
 %
 This analysis explored 30 261 unique variants and 2,479,065 potential variant colocalizations (OSF URL).
 %
-Selection of colocalizations with PP.H4.abf greater than 0.8 resulted in 9 758 variants and 143 119 colocalizations (Table TODO).
+Selection of colocalizations with PP.H4.abf greater than 0.8 resulted in 9 758 variants and 143 119 colocalizations (Supplementary table 3).
 
 \subsection*{Which regulatory variants are the most pleiotropic?}
 
@@ -107,7 +107,7 @@ Therefore I manually defined 36 categories to annotate eQTL biological samples a
 
 These category annotations were used to investigate the variant pleiotropy for GWAS phenotypes.
 %
-Colocalized eQTL/GWAS variants were classified according to the number of GWAS categories they belong to (Table \ref{tab:pleitropic_variants} and Supplementary table TODO).
+Colocalized eQTL/GWAS variants were classified according to the number of GWAS categories they belong to (Table \ref{tab:pleitropic_variants} and Supplementary table 3).
 %
 Pleiotropic variants aggregate in some cytobands such as 3q23, 5q31.1, 11q13.5, 12q24.12 and 15q26.1 (Table \ref{tab:pleitropic_variants} and Supplementary table 3).
 
@@ -118,15 +118,23 @@ These variants control egenes ALDH2, LINC01405, MAPKAPK5, SH2B3 that are involve
 %
 These eQTLs are active in adipose tissue, arteries, blood, colon, immune cells, skin and induced pluripotent stem cells (iPSC).
 
-%3q23
-The variants in cytoband 3q23 are involved in allergy, cancer and height phenotypes (Supplementary table 3).
+\subsection*{What is the function of pleiotropic variants?}
+
+Then I evaluated the function of pleiotropic variants.
 %
-Interestingly all these variants target the egene ZBTB3, which is a transcription factor, which controls pro-inflammatory factors such as IRF5 (10.1016/j.jaut.2016.08.001).
+I submitted the egenes of pleiotropic variants with 5, 4, 3 and 2 GWAS categories to gene ontology analysis.
+%
+I found that egene of pleiotropic variants with 3 and 2 GWAS categories were significantly involved in functions of the immune system.
+
+Variants of the 3q23 cytoband are involved in allergy, cancer and height phenotypes (Supplementary table 3).
+%
+Interestingly all these variants target the egene ZBTB3.
+%
+ZBTB3 is a transcription factor that controls pro-inflammatory factors such as IRF5 (10.1016/j.jaut.2016.08.001).
 %
 These variants are active in tissues such as blood, esophagus, immune cell, LCLs and muscle (Supplementary table 3).
 
-% 5q31.1
-Another pleiotropic locus is cytoband 5q31.1 with variants that are involved in allergy, asthma, cardiovascular diseases, hypertension and ulcerative colitis.
+The variants of the cytoband 5q31.1 are involved in allergy, asthma, cardiovascular diseases, hypertension and ulcerative colitis.
 %
 eGenes under control of these variants are important genes of the immune system such as IRF1 and IL4.
 %
@@ -136,24 +144,26 @@ IRF1 is a response protein to the presence of virus and oncogenic proteins.
 %
 IL4 is required to stimulate proliferation of activated B and T-cells.
 %
-There are other several other egenes in the region such as KIF3A, MIR3936HG, P4HA2, P4HA2-AS1, PDLIM4, RAD50, SEPTIN8, SLC22A4 and SLC22A5.
-%
 These variants are active in a large number of tissues including artery, blood, brain, breast, digestive and immune system, muscle, skin, ovary, testis and thyroid.
 
 %11q13.5
-The variants in cytoband 11q13.5 is involved in allergy and autoimmune disease (Supplementary table 3).
+The variants in cytoband 11q13.5 are involved in allergy and autoimmune disease (Supplementary table 3).
 %
 All these variants target the egene EMSY-DT, which is a long noncoding RNA upstream of EMSY.
 %
 These variants are active in LCL, Skin and iPSC (Supplementary table 3).
 
+In summary, I have identified pleiotropic variants with gene regulatory function.
+%
+Some of these loci are strongly involved in the immune system.
+
 \subsection*{Analysis of pleiotropic regions}
 
-As we saw, pleiotropic variants are aggregated in common cytobands.
+Pleiotropic variants are aggregated in some cytobands.
 %
-Therefore I computed regions with a larger number of pleiotropic variants (See Methods) (Table \ref{tab:pleiotropic_regions}).
+Therefore I computed regions that include a large number of pleiotropic variants (See Methods) (Table \ref{tab:pleiotropic_regions}).
 %
-There are 453 regions with 441 regions with 2 or more categories, 114 regions with 3 or more categories, 37 region with 4 or more categories and 18 regions with 5 or more categories (Supplementary table 3).
+I found 453 regions with 441 regions with 2 or more categories, 114 regions with 3 or more categories, 37 regions with 4 or more categories and 18 regions with 5 or more categories (Supplementary table 3).
 %
 75\% of regions are shorter than 100 kb, 15\% of regions are between 100 kb and 200 kb, and less than 5\% are larger than 200 kb (Fig. \ref{fig:pleiotropy_region_distribution}).
 
@@ -290,7 +300,7 @@ The effect size of GWAS seems also to be smaller for pleiotropic variants but th
 
 \section*{Discussion}
 
-\section*{Methods}\label{sec:methods}
+\section{Methods}\label{sec:methods}
 
 \subsection*{Data sets and data exploration}
 

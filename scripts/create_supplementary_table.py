@@ -37,10 +37,10 @@ description_lst = ['Classification of eQTL tissues and cell types. The first six
 sheet_name_lst.append("ST2")
 description_lst.append("Metadata and classification of GWAS")
 #
-sheet_name_lst.append("ST3")
+sheet_name_lst.append("ST4")
 description_lst.append("Count and list of GWAS phenotypes, egenes and etissues for each eQTL/GWAS variant")
 #
-sheet_name_lst.append("ST4")
+sheet_name_lst.append("ST5")
 description_lst.append("Count and list of GWAS phenotypes for each pleiotropic region")
 
 capt_df = pandas.DataFrame({'Supp. Tab.': sheet_name_lst, 'Description': description_lst})
@@ -48,23 +48,32 @@ capt_df.to_excel(writer, sheet_name='Table descrip.', index=False, header=True)
 
 #%% ST1
 sheet_name = 'ST{}'.format(sheet_counter)
-sheet_counter += 1
 etissue_category_ods_path = os.path.join(PathManager.get_project_path(), "config", "etissue_category.ods")
 st_df = pandas.read_excel(etissue_category_ods_path, index_col=None, header=0)
 st_df.drop(['Unnamed: 7', 'etissue_category.1', 'count'], axis=1, inplace=True)
 st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
+sheet_counter += 1
 
 #%% ST2
 sheet_name = 'ST{}'.format(sheet_counter)
-sheet_counter += 1
 tsv_path = os.path.join(wdir_path, "annot_gwas_metadata.py/gwas413_metadata.tsv")
 st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 st_df.sort_values(by=st_df.columns.tolist(), inplace=True)
 st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
+sheet_counter += 1
 
 #%% ST3
 sheet_name = 'ST{}'.format(sheet_counter)
+tsv_path = os.path.join(wdir_path, "filter_h4.py/coloc_h4.tsv")
+st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+h4_xlsx_path = os.path.join(os.path.dirname(supp_tabl_xlsx_path), "ST{}_eqtl2gwas_h4.xlsx".format(sheet_counter))
+writer_coloc_h4 = pandas.ExcelWriter(h4_xlsx_path, engine='xlsxwriter')
+st_df.sort_values(by=st_df.columns.tolist(), inplace=True)
+st_df.to_excel(writer_coloc_h4, sheet_name=sheet_name, index=False, header=True)
 sheet_counter += 1
+
+#%% ST4
+sheet_name = 'ST{}'.format(sheet_counter)
 tsv_path = os.path.join(wdir_path, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv")
 gwas_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 
@@ -83,17 +92,17 @@ st_df['egene_symbol_lst'] = st_df['egene_symbol_lst'].str.replace(',', ', ')
 st_df['etissue_subcategory_lst'] = st_df['etissue_subcategory_lst'].str.replace(',', ', ')
 st_df['egene_lst'] = st_df['egene_lst'].str.replace(',', ', ')
 st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
-
-#%% ST4
-sheet_name = 'ST{}'.format(sheet_counter)
 sheet_counter += 1
+
+#%% ST5
+sheet_name = 'ST{}'.format(sheet_counter)
 tsv_path = os.path.join(wdir_path, "cmpt_pleiotropic_regions.py/region_window_100000.tsv")
 st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 st_df['egene'] = None
 st_df['egene_symbol'] = None
 st_df['etissue'] = None
 
-tsv_path = os.path.join(wdir_path, "annotate.py/h4_annotated.tsv")
+tsv_path = os.path.join(wdir_path, "filter_h4.py/coloc_h4.tsv")
 h4annot_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 
 for rowi, row in st_df.iterrows():
@@ -102,6 +111,7 @@ for rowi, row in st_df.iterrows():
     end = row['end']
     egene_symbol_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'egene_symbol'].unique()
     egene_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'egene'].unique()
+    import pdb; pdb.set_trace()
     etissue_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'etissue_category'].unique()
     st_df.at[rowi, 'egene'] = ", ".join(egene_lst)
     st_df.at[rowi, 'egene_symbol'] = ", ".join(egene_symbol_lst)
@@ -111,6 +121,7 @@ st_df.sort_values(by=['gwas_category_count', 'chrom', 'start'], ascending=[False
 st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
 st_df = st_df[['chrom', 'cytoband', 'start', 'end', 'gwas_category_count', 'gwas_category_lst', 'egene_symbol', 'etissue', 'egene']]
 st_df.to_excel(writer, sheet_name=sheet_name, index=False, header=True)
+sheet_counter += 1
 
 #%%
 writer.sheets['Table descrip.'].activate()

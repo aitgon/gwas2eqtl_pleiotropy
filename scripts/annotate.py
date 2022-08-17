@@ -77,3 +77,5 @@ coloc_df = coloc_df[columns]
 coloc_df.sort_values(by=coloc_df.columns.tolist(), inplace=True)
 Logger.info("Writing {}".format(annotated_tsv_gz_path))
 coloc_df.to_csv(annotated_tsv_gz_path, sep="\t", index=True, index_label='id', na_rep='na')
+
+#%% DBSQLITE
