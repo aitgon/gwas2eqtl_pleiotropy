@@ -15,7 +15,7 @@ outdir_path = os.path.join(PathManager.get_project_path(), "out", os.path.basena
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%% input h4_annotated
-h4_annotated_bed_path = os.path.join(PathManager.get_outdir_path(), "annotate_h4.py", "h4_annotated.bed")
+h4_annotated_bed_path = os.path.join(PathManager.get_outdir_path(), "annotate.py", "h4_annotated.bed")
 
 #%% input region window
 region_window_bed_path = os.path.join(PathManager.get_outdir_path(), "cmpt_pleiotropic_regions.py", "region_window_100000.bed")

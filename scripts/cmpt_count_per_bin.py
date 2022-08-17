@@ -22,7 +22,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 coloc_h4_tsv_path = os.path.join(PathManager.get_project_path(), "out", 'filter_h4.py/coloc_h4.tsv')
 
 #%% Input1
-h4_annot_tsv_path = os.path.join(PathManager.get_outdir_path(), "annotate_h4.py", "h4_annotated.tsv")
+h4_annot_tsv_path = os.path.join(PathManager.get_outdir_path(), "annotate.py", "h4_annotated.tsv")
 if not os.path.isfile(h4_annot_tsv_path):
     print("input file does not exit")
     sys.exit(1)

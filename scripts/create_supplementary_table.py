@@ -93,7 +93,7 @@ st_df['egene'] = None
 st_df['egene_symbol'] = None
 st_df['etissue'] = None
 
-tsv_path = os.path.join(wdir_path, "annotate_h4.py/h4_annotated.tsv")
+tsv_path = os.path.join(wdir_path, "annotate.py/h4_annotated.tsv")
 h4annot_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 
 for rowi, row in st_df.iterrows():

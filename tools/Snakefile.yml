@@ -36,6 +36,7 @@ rule all:
         os.path.join(outdir, "annot_gwas_metadata.py/gwas413_metadata.tsv"),
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
+        os.path.join(outdir, "web/db.sqlite"),
 
 include: 'Snakefile_plots.yml'
 
@@ -66,7 +67,7 @@ rule cmpt_vep_consequence_fisher:
 
 rule cmpt_vep:
     input:
-        os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
@@ -112,7 +113,7 @@ rule cmpt_davidgo:
 
 rule count_per_rsid:
     input:
-        tsv=os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
+        tsv=os.path.join(outdir, "filter_h4.py/h4.tsv"),
     output:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
@@ -125,25 +126,34 @@ rule count_per_rsid:
     shell:
         "python scripts/cmpt_count_per_rsid.py {input.tsv} {params.upper_var_gwas_cat_count} {output[0]}"
 
-rule h4_annotated:
+rule filter_h4:
     input:
-        os.path.join(outdir, "filter_h4.py/coloc_h4.tsv"),
+        os.path.join(outdir, "annotate.py/annotated.tsv.gz"),
+    output:
+        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+    shell:
+        "python scripts/filter_h4.py {input[0]} {output[0]}"
+
+rule web_db:
+    input:
+        os.path.join(outdir, "annotate.py/annotated.tsv.gz"),
+    output:
+        os.path.join(outdir, "web/db.sqlite"),
+    shell:
+        """
+        sqlite3 {output[0]} 'create table coloc (chrom INTEGER, pos INTEGER, cytoband TEXT, rsid TEXT, ref TEXT, alt TEXT, egene TEXT, egene_symbol TEXT, eqtl_beta REAL, eqtl_pvalue REAL, eqtl_identifier TEXT, etissue_category TEXT, gwas_beta REAL, gwas_pvalue REAL, gwas_identifier TEXT, gwas_trait TEXT, gwas_category TEXT, "SNP.PP.H4" REAL, "PP.H4.abf" REAL, coloc_window TEXT, nsnps INTEGER, "PP.H3.abf" REAL, "PP.H2.abf" REAL, "PP.H1.abf" REAL, "PP.H0.abf" REAL);'
+        gunzip -c {input[0]} |sqlite3 -csv -separator $'\t' {output[0]} '.import --skip 1 /dev/stdin coloc'
+        """
+
+rule annotate:
+    input:
+        coloc_tsv_gz,
         gwas_cat_ods,
         etissue_cat_ods,
     output:
-        tsv=os.path.join(outdir, "annotate_h4.py/h4_annotated.tsv"),
-        ods=os.path.join(outdir, "annotate_h4.py/h4_annotated.ods"),
-        bed=os.path.join(outdir, "annotate_h4.py/h4_annotated.bed"),
+        os.path.join(outdir, "annotate.py/annotated.tsv.gz"),
     shell:
-        "python scripts/annotate_h4.py {input[0]} {input[1]} {input[2]} {output.tsv} {output.ods} {output.bed}"
-
-rule filter_h4:
-    input:
-        tsv=coloc_tsv_gz
-    output:
-        tsv=os.path.join(outdir, "filter_h4.py/coloc_h4.tsv"),
-    shell:
-        "python scripts/filter_h4.py {input.tsv} {output.tsv}"
+        "python scripts/annotate.py {input[0]} {input[1]} {input[2]} {output[0]}"
 
 rule annot_gwas_metadata:
     input:
