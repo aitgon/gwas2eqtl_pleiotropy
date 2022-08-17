@@ -42,7 +42,7 @@ gwas_annot_df.rename({'id': "gwas_identifier", 'subcategory': 'gwas_category_mrc
 Logger.info("Reading {}".format(coloc_tsv_gz_path))
 coloc_df = pandas.read_csv(coloc_tsv_gz_path, sep="\t")
 coloc_df = coloc_df.loc[coloc_df['PP.H4.abf'] >= pp_h4_abf]
-coloc_df.rename({'pp_h4': "pp_h4", }, axis=1, inplace=True)
+coloc_df.rename({'pp_h4': "SNP.PP.H4", }, axis=1, inplace=True)
 
 #%%
 coloc_df = coloc_df.merge(gwas_annot_df[["gwas_identifier", "gwas_trait", 'gwas_category_mrcieu', 'gwas_category']], on='gwas_identifier')

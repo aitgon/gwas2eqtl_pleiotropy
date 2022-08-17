@@ -6,10 +6,6 @@ public_data_dir_path = config['public_data_dir']
 coloc_tsv_gz = config['coloc_tsv_gz']
 upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
 
-rule all2:
-    input:
-        os.path.join(outdir, "web/db.sqlite"),
-
 rule all:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
