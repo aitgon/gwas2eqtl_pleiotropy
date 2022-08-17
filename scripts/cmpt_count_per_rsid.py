@@ -41,7 +41,7 @@ tsv_path = os.path.join(outdir_path, "count_per_rsid_egene.tsv")
 egene_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%% gwas pleiotropy
-gwas_df = coloc_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category_eqtl2gwas']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos', 'rsid']).agg({'gwas_category_eqtl2gwas': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
+gwas_df = coloc_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos', 'rsid']).agg({'gwas_category': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
 gwas_df.columns = ['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category_count', 'gwas_category_lst']
 gwas_df = gwas_df.sort_values(by=['gwas_category_count', 'chrom', 'pos', 'gwas_category_lst', 'rsid'], ascending=[False, True, True, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas.tsv")
