@@ -11,4 +11,5 @@ snakemake
 sqlalchemy
 statannotations
 statsmodels
+suds
 termcolor

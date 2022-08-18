@@ -70,7 +70,7 @@ for rowi, row in cyto_df.iterrows():
 columns = ['chrom', 'pos', 'cytoband', 'rsid', 'ref', 'alt', 'egene', 'egene_symbol',
            'eqtl_beta', 'eqtl_pvalue', 'eqtl_identifier', 'etissue_category', 'gwas_beta',
            'gwas_pvalue', 'gwas_identifier', 'gwas_trait', 'gwas_category',
-           'SNP.PP.H4', 'PP.H4.abf', 'coloc_window', 'nsnps', 'PP.H3.abf', 'PP.H2.abf', 'PP.H1.abf', 'PP.H0.abf']
+           'SNP.PP.H4', 'PP.H4.abf', 'coloc_window', 'nsnps']
 coloc_df = coloc_df[columns]
 
 #%% TSV

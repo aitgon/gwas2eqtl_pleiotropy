@@ -9,7 +9,7 @@ import sys
 help_cmd_str = "todo"
 try:
     annotated_tsv_gz_path = sys.argv[1]
-    h4_tsv_path = sys.argv[2]
+    h4_tsv_gz_path = sys.argv[2]
     if len(sys.argv) > 3:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -19,7 +19,7 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-pathlib.Path(os.path.dirname((h4_tsv_path))).mkdir(parents=True, exist_ok=True)
+pathlib.Path(os.path.dirname((h4_tsv_gz_path))).mkdir(parents=True, exist_ok=True)
 
 #%% input
 if not os.path.isfile(annotated_tsv_gz_path):
@@ -27,6 +27,7 @@ if not os.path.isfile(annotated_tsv_gz_path):
     sys.exit(1)
 
 #%%
-coloc_df = pandas.read_csv(annotated_tsv_gz_path, sep="\t", compression='gzip')
+coloc_df = pandas.read_csv(annotated_tsv_gz_path, sep="\t")
+coloc_df.drop(['id'], inplace=True, axis=1)
 coloc_df = coloc_df.loc[coloc_df['PP.H4.abf'] >= h4_cutoff, ]
-coloc_df.to_csv(h4_tsv_path, sep="\t", index=False)
+coloc_df.to_csv(h4_tsv_gz_path, sep="\t", index=False)
