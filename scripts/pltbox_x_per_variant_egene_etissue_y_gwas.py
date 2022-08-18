@@ -77,7 +77,7 @@ xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "GWAS per variant-egene-etissue"
 xlabel = "GWAS category count"
-ylabel = "GWAS trait count"
+ylabel = "GWAS pheno. count"
 y = "gwas_trait_count"
 x = "gwas_category_count"
 

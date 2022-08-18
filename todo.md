@@ -1,7 +1,11 @@
+# Aug 18, 2022
+
+- add chrom to cytoband
+
 # Aug 10, 2022
 
-- compare OMIM rare variants
-- compare population frequency
+- compare OMIM rare variants -> ONHOLD
+- compare population frequency -> ONHOLD
 
 # Aug 6, 2022
 
