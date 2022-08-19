@@ -124,12 +124,11 @@ for i, row in df.iterrows():
     pos_prev = row['pos']
     region_pleio_prev = row['region_pleio']
 
-# tsv
+#%% tsv
 regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'cytoband', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
-# pleio_tsv_path = os.path.join(outdir_path, "region_window_{}.tsv".format(region_bin))
 regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
-# bed
+#%% bed
 regions_pleio_df['start'] = regions_pleio_df['start'] - 1
 regions_pleio_df['chrom'] = 'chr' + regions_pleio_df['chrom'].astype('str')
 regions_pleio_df.drop(['cytoband'], axis=1, inplace=True)
@@ -157,9 +156,6 @@ linewidth = 2
 hist_kwargs = {'density': False, 'edgecolor': edgecolor, 'linewidth': linewidth}
 
 #%%
-# bins = numpy.array(range(11))*100000
-# import pdb; pdb.set_trace()
-# plt.hist(region_lenght_ser/1000000, **hist_kwargs)
 data_ser = region_lenght_ser/100000
 seaborn.histplot(data_ser, stat='percent', discrete=True)
 
@@ -172,7 +168,5 @@ plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-# fig = ax.get_figure()
-# png_path = os.path.join(outdir_path, "regions_{}_length_hist.png".format(region_bin))
 plt.savefig(png_path)
 plt.close()

@@ -13,7 +13,7 @@ from scipy.stats import fisher_exact
 from statannotations.Annotator import Annotator
 from eqtl2gwas_pleiotropy.Logger import Logger
 from eqtl2gwas_pleiotropy.constants import public_data_dir, \
-    annotator_config_dic, label_fontsize, tick_fontsize, dpi
+    annotator_config_dic, label_fontsize, tick_fontsize, dpi, seaborn_theme_dic
 
 seaborn.set_theme(**seaborn_theme_dic)
 

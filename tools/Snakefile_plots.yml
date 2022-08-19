@@ -26,6 +26,15 @@ rule all_plots:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
         os.path.join(outdir, "pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png"),
+        os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+
+rule pltbar_pleiotropic_regions_cumsum:
+    input:
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+    output:
+        os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+    shell:
+        "python scripts/pltbar_pleiotropic_regions_cumsum.py {input.gwas} {output[0]} {output[1]}"
 
 rule pltbox_logpval_per_gwas_cat:
     input:

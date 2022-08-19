@@ -74,9 +74,19 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 \begin{figure*}[]
 \centering
 %
-\includegraphics[width=0.33\textwidth]{\floatRelativePath/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png}
+\begin{subfigure}[]{.33\textwidth}
+\textbf{a}
+\\
+\includegraphics[width=\textwidth]{\floatRelativePath/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png}
+\end{subfigure}
 %
-\caption{Length distribution of pleiotropic regions.} \label{fig:pleiotropy_region_distribution}
+\begin{subfigure}[]{.33\textwidth}
+\textbf{b}
+\\
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png}
+\end{subfigure}
+%
+\caption{Analysis of pleiotropic regions. \textbf{a}, Length distribution of pleiotropic regions. \textbf{b}, Cumulative sum ordered inversely with the number of GWAS categories.} \label{fig:pleiotropy_region_distribution}
 \end{figure*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
