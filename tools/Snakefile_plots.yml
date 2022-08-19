@@ -27,6 +27,7 @@ rule all_plots:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
         os.path.join(outdir, "pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
 
 rule pltbar_pleiotropic_regions_cumsum:
     input:
@@ -35,6 +36,19 @@ rule pltbar_pleiotropic_regions_cumsum:
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
     shell:
         "python scripts/pltbar_pleiotropic_regions_cumsum.py {input.gwas} {output[0]} {output[1]}"
+
+
+rule pltbar_davidgo:
+    input:
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
+    output:
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
+    params:
+        upper_var_gwas_cat_count,
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
+    shell:
+        "python scripts/pltbar_davidgo.py {params[1]} {params[0]} {params[2]}"
 
 rule pltbox_logpval_per_gwas_cat:
     input:

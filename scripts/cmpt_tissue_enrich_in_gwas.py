@@ -12,7 +12,6 @@ import sys
 
 from scipy.stats import binomtest
 from statsmodels.stats.multitest import fdrcorrection
-from eqtl2gwas_pleiotropy.PathManager import PathManager
 
 
 #%%
@@ -39,6 +38,8 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 #%%
 # h4_tsv_path = "/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/gwas413/genome/5e-08/1000000/filter_h4.py/h4.tsv"
 df_raw = pandas.read_csv(h4_tsv_path, sep="\t")
+df_raw = df_raw.loc[df_raw['SNP.PP.H4']>0.33]
+# import pdb; pdb.set_trace()
 
 #%%
 columns = ['chrom', 'pos', 'rsid', 'eqtl_identifier', 'etissue_category', 'gwas_identifier', 'gwas_trait', 'gwas_category']

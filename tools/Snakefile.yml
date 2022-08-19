@@ -38,17 +38,8 @@ rule all:
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "web/db.sqlite"),
         os.path.join(outdir, "pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png"),
-        os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
 
 include: 'Snakefile_plots.yml'
-
-rule cmpt_tissue_enrich_in_gwas:
-    input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv"),
-    output:
-        os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
-    shell:
-        "python scripts/cmpt_tissue_enrich_in_gwas.py {input[0]} {output[0]}"
 
 rule intrsct_remap_nr_gwas_categories:
     input:
@@ -97,18 +88,6 @@ rule cmpt_pleiotropic_regions:
     shell:
         "python scripts/cmpt_pleiotropic_regions.py {input.gwas} {output[0]} {output[1]}"
 
-rule pltbar_davidgo:
-    input:
-        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
-    output:
-        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
-    params:
-        upper_var_gwas_cat_count,
-        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
-        os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
-    shell:
-        "python scripts/pltbar_davidgo.py {params[1]} {params[0]} {params[2]}"
-
 rule cmpt_davidgo:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
@@ -143,17 +122,6 @@ rule filter_h4:
         os.path.join(outdir, "filter_h4.py/h4.tsv"),
     shell:
         "python scripts/filter_h4.py {input[0]} {output[0]}"
-
-rule web_db:
-    input:
-        os.path.join(outdir, "annotate.py/annotated.tsv.gz"),
-    output:
-        os.path.join(outdir, "web/db.sqlite"),
-    shell:
-        """
-        sqlite3 {output[0]} 'create table eqtl2gwas (id INTEGER PRIMARY KEY AUTOINCREMENT, chrom INTEGER NOT NULL, pos INTEGER NOT NULL, cytoband TEXT NOT NULL, rsid TEXT NOT NULL, ref TEXT NOT NULL, alt TEXT NOT NULL, egene TEXT NOT NULL, egene_symbol TEXT NOT NULL, eqtl_beta REAL NOT NULL, eqtl_pvalue REAL NOT NULL, eqtl_identifier TEXT NOT NULL, etissue_category TEXT NOT NULL, gwas_beta REAL NOT NULL, gwas_pvalue REAL NOT NULL, gwas_identifier TEXT NOT NULL, gwas_trait TEXT NOT NULL, gwas_category TEXT NOT NULL, SNP_PP_H4 REAL NOT NULL, PP_H4_abf REAL NOT NULL, coloc_window TEXT NOT NULL, nsnps INTEGER NOT NULL);'
-        gunzip -c {input[0]} |sqlite3 -csv -separator $'\t' {output[0]} '.import --skip 1 /dev/stdin eqtl2gwas'
-        """
 
 rule annotate:
     input:
@@ -192,13 +160,3 @@ rule wget_remap_nr:
         public_data_dir_path=public_data_dir_path,
     shell:
         """wget -nc -q -r {params.url} -P {params.public_data_dir_path}"""
-
-rule wget_interactome:
-    output:
-        os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
-    params:
-        url="stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz",
-        public_data_dir_path=public_data_dir_path,
-    shell:
-        """wget -nc -q -r {params.url} -P {params.public_data_dir_path}"""
-

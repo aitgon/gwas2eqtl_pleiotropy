@@ -1,0 +1,43 @@
+etissue_cat_ods = config['etissue_cat_ods']
+gwas_cat_ods = config['gwas_cat_ods']
+outdir = config['outdir']
+david_email = config['david_email']
+public_data_dir_path = config['public_data_dir']
+coloc_tsv_gz = config['coloc_tsv_gz']
+upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
+
+rule all:
+    input:
+        os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
+        os.path.join(outdir, "web/db.sqlite"),
+
+include: 'Snakefile_plots.yml'
+
+rule cmpt_tissue_enrich_in_gwas:
+    input:
+        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
+    shell:
+        "python scripts/cmpt_tissue_enrich_in_gwas.py {input[0]} {output[0]}"
+
+rule web_db:
+    input:
+        os.path.join(outdir, "annotate.py/annotated.tsv.gz"),
+    output:
+        os.path.join(outdir, "web/db.sqlite"),
+    shell:
+        """
+        sqlite3 {output[0]} 'create table eqtl2gwas (id INTEGER PRIMARY KEY AUTOINCREMENT, chrom INTEGER NOT NULL, pos INTEGER NOT NULL, cytoband TEXT NOT NULL, rsid TEXT NOT NULL, ref TEXT NOT NULL, alt TEXT NOT NULL, egene TEXT NOT NULL, egene_symbol TEXT NOT NULL, eqtl_beta REAL NOT NULL, eqtl_pvalue REAL NOT NULL, eqtl_identifier TEXT NOT NULL, etissue_category TEXT NOT NULL, gwas_beta REAL NOT NULL, gwas_pvalue REAL NOT NULL, gwas_identifier TEXT NOT NULL, gwas_trait TEXT NOT NULL, gwas_category TEXT NOT NULL, SNP_PP_H4 REAL NOT NULL, PP_H4_abf REAL NOT NULL, coloc_window TEXT NOT NULL, nsnps INTEGER NOT NULL);'
+        gunzip -c {input[0]} |sqlite3 -csv -separator $'\t' {output[0]} '.import --skip 1 /dev/stdin eqtl2gwas'
+        """
+
+rule wget_interactome:
+    output:
+        os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
+    params:
+        url="stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz",
+        public_data_dir_path=public_data_dir_path,
+    shell:
+        """wget -nc -q -r {params.url} -P {params.public_data_dir_path}"""
+
