@@ -1,25 +1,16 @@
-import sys
-
-import seaborn
-
-from eqtl2gwas_pleiotropy.PathManager import PathManager
 from eqtl2gwas_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
 from matplotlib import pyplot as plt
 
 import math
-import numpy
 import os
 import pandas
 import pathlib
+import seaborn
+import sys
 
 
-# #%% Outdir
-# if not '__file__' in locals():
-#     __file__ = "cmpt_pleiotropic_regions.py"
-# outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
-# pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
-
-from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+#%%
 seaborn.set_theme(**seaborn_theme_dic)
 
 #%%

@@ -38,8 +38,17 @@ rule all:
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "web/db.sqlite"),
         os.path.join(outdir, "pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png"),
+        os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
 
 include: 'Snakefile_plots.yml'
+
+rule cmpt_tissue_enrich_in_gwas:
+    input:
+        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
+    shell:
+        "python scripts/cmpt_tissue_enrich_in_gwas.py {input[0]} {output[0]}"
 
 rule intrsct_remap_nr_gwas_categories:
     input:

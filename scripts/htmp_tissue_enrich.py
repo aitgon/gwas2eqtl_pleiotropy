@@ -17,7 +17,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
 seaborn.set_theme(color_codes=True)
-tissue_enrich_tsv_path = "out/cmpt_tissue_enrich.py/tissue_enrich.tsv"
+tissue_enrich_tsv_path = "out/cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"
 # gwas_info_df = pandas.read_csv("out/download/gwas-api.mrcieu.ac.uk/gwasinfo/opengwas.tsv", sep="\t")
 gwas_info_df = OpenGWASinfo().df
 

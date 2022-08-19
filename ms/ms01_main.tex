@@ -75,7 +75,7 @@ In this work, I investigate the molecular basis of pleiotropy of gene regulatory
 
 To better understand the role of gene regulatory variants for variant pleiotropy, I developed a pipeline to systematically colocalize eQTLs and GWAS variants (Section Methods).
 
-125 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many tissues and cell types \citep{2021.Alasoo.Kerimov}.
+127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many tissues and cell types \citep{2021.Alasoo.Kerimov}.
 
 Public GWAS summary statistics were selected from the IEU OpenGWAS database based on four criteria \citep{2018.Parkinson.Buniello}.
 %
@@ -239,8 +239,6 @@ I looked at the number of unique transcription factors bound in a window of 100 
 %
 I found a significant increase of unique transcription factors around pleagonzaleziotropic variants (Fig. \ref{fig:freq_tf_per_variant}a).
 
-%TODO CRMs and variants
-
 \subsubsection*{More GWAS per variant-egene-etissue?}
 
 Another molecular mechanism of pleiotropy is that egenes correlate with more GWAS categories even after taking into account variants and etissues.
@@ -269,10 +267,7 @@ On the other hand, the effect size of GWAS seems smaller for pleiotropic variant
 
 \section*{Discussion}
 
-%TODO idea that gene expression is causal to disease
-
-% Confirm eQTL studies
-In this work, I present a colocalization pipeline for eQTLs and GWAS variants that I have applied to a large number of 413 GWAS and 125 eQTL studies.
+In this work, I present a colocalization pipeline for eQTLs and GWAS variants that I have applied to a large number of 413 GWAS and 127 eQTL studies.
 %
 For this purpose, I have taken advantage of two public resources of GWAS and eQTL studies with summary statistics to compute a large number of colocalizations between eQTLs and GWAS variants.
 %
@@ -282,7 +277,6 @@ First these results allow to investigate the molecular characteristics of pleiot
 %
 Second, the colocalized loci provide predictions of causal variants in given loci of GWAS.
 %
-% TODO how many
 Third, egenes and etissues of colocalized eQTL variants provide potential predictions of the molecular mechanism of many GWAs traits.
 
 % First insight: pleiotropy %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -291,6 +285,9 @@ For a posterior probability $\ge$ 0.8 that the GWAS variants and the eQTLs are c
 %
 Our analysis suggests that these pleiotropic variants are under the control of more transcription factors and regulate more egenes in more etissues.
 
+% Second insight: causal variants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Third insight: mechanistic information for GWAS variants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 These variants are under control of more transcription factors
 
