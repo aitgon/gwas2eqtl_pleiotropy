@@ -62,9 +62,6 @@ eQTLs have some of the same shortcommings as GWAS variants such as inability to 
 %
 On the other hand, eQTLs provide information about the target genes and tissues.
 
-eQTLs 
-
-
 A large number of GWAS variants are found in non-conding regions.
 To priori
 
@@ -98,7 +95,9 @@ This analysis explored 30 261 unique variants and 2,479,065 potential variant co
 %
 Selection of colocalizations with PP.H4.abf greater than 0.8 resulted in 9 758 variants and 143 119 colocalizations (Supplementary table 3).
 
-\subsection*{Which regulatory variants are the most pleiotropic?}
+\subsection*{Pleiotropic variants colocalized with eQTLs}
+
+\subsubsection*{Which variants are the most pleiotropic?}
 
 I manually assigned the 413 GWAS to 96 categories to aggregate identical or similar phenotypes (Supplementary table 2).
 %
@@ -119,7 +118,7 @@ These variants control egenes ALDH2, LINC01405, MAPKAPK5, SH2B3 that are involve
 %
 These eQTLs are active in adipose tissue, arteries, blood, colon, immune cells, skin and induced pluripotent stem cells (iPSC).
 
-\subsection*{What is the function of pleiotropic variants?}
+\subsubsection*{What is the function of pleiotropic variants?}
 
 Then I evaluated the function of pleiotropic variants with 5, 4, 3 and 2 GWAS categories using gene ontology analysis.
 %
@@ -153,7 +152,7 @@ These variants are associated with allergy, asthma, cardiovascular diseases, hyp
 %%
 %Some of these loci are strongly involved in the immune system.
 
-\subsection*{Analysis of pleiotropic regions}
+\subsection*{Pleiotropic regions}
 
 Pleiotropic variants are aggregated in few cytobands.
 %
@@ -168,6 +167,8 @@ The most pleiotropic region is 12:111,395,984-111,645,358 in cytoband 12q24.12 t
 The largest region is 11:13,260,511-17,396,930 in cytoband 11p15.2 with a length of 4,136,419 bp and variants involved in cardiovascular and hypertension phenotypes (Supplementary table 5).
 %
 The second largest region is 2:187,235,912-191,066,738 in cytoband 2q32.2 with a length of 3,830,826 bp and variants involved in cardiovascular, hypertension and autoimmune phenotypes  (Supplementary table 5).
+
+%TODO cumulated covering of genome by pleitopic
 
 \subsection*{How specific are variants to GWAS phenotypes, egenes and etissues?}
 
@@ -218,6 +219,7 @@ These analyses suggest that more pleiotropic variants have a stronger effect on 
 
 \subsubsection*{More egenes per variant?}
 
+%TODO egene per variant-etissue
 Then I hypothesized that pleiotropic variants modulate more egenes.
 %
 I found that pleiotropic variants have significantly more egenes compared to variants with one GWAS category (Fig. \ref{fig:gwas_egene_etisue_per_variant}a).
@@ -268,10 +270,14 @@ On the other hand, the effect size of GWAS seems smaller for pleiotropic variant
 
 \section*{Discussion}
 
+%TODO idea that gene expression is causal to disease
+
 % Confirm eQTL studies
 In this work, I present a colocalization pipeline for eQTLs and GWAS variants that I have applied to a large number of 413 GWAS and 125 eQTL studies.
 %
-This pipeline and the results is useful for three aspects.
+For this purpose, I have taken advantage of two public resources of GWAS and eQTL studies with summary statistics to compute a large number of colocalizations between eQTLs and GWAS variants.
+%
+The results of this pipeline provides three types of insights.
 %
 First these results allow to investigate the molecular characteristics of pleiotropic variants with a gene regulatory effect.
 %
@@ -280,11 +286,14 @@ Second, the colocalized loci provide predictions of causal variants in given loc
 % TODO how many
 Third, egenes and etissues of colocalized eQTL variants provide potential predictions of the molecular mechanism of many GWAs traits.
 
-In this work, I have explore variants with a role in gene regulation that are highly pleiotropic.
-%
-For this purpose, I have taken advantage of two public resources of GWAS and eQTL studies with summary statistics to compute a large number of colocalizations between eQTLs and GWAS variants.
+% First insight: pleiotropy %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 For a posterior probability $\ge$ 0.8 that the GWAS variants and the eQTLs are common, we found TODO variants.
+%
+Our analysis suggests that these pleiotropic variants are under the control of more transcription factors and regulate more egenes in more etissues.
+
+
+These variants are under control of more transcription factors
 
 
 

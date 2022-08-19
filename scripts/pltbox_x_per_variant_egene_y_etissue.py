@@ -1,16 +1,15 @@
-import seaborn
-from statannot import add_stat_annotation
 from statannotations.Annotator import Annotator
+from eqtl2gwas_pleiotropy.constants import label_fontsize, dpi, tick_fontsize, boxplot_kwargs, annotator_config_dic
 
-from eqtl2gwas_pleiotropy.PathManager import PathManager
 
 import os
 import pandas
 import pathlib
+import seaborn
 import sys
 import matplotlib.pyplot as plt
-from eqtl2gwas_pleiotropy.constants import label_fontsize, dpi, tick_fontsize, boxplot_kwargs, annotator_config_dic
 
+#%%
 plt.rcParams["figure.figsize"] = (8, 6)
 from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
 seaborn.set_theme(**seaborn_theme_dic)
@@ -55,7 +54,7 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 # %%
-sel_cols = ['rsid', 'egene', 'etissue_category']  # tissue per egene
+sel_cols = ['rsid', 'egene', 'etissue_category']  # tissue per variant-egene
 
 #%% set upper_var_gwas_cat_count
 m_df = m_df[sel_cols + ['gwas_category_count']]

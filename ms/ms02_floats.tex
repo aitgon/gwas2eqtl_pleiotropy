@@ -189,21 +189,21 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 \begin{subfigure}[]{.33\textwidth}
 \textbf{a}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/plt_vep_consequence.py/missense_variant.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/missense_variant.png}
 %
 \end{subfigure}
 %
 \begin{subfigure}[]{.33\textwidth}
 \textbf{b}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/plt_vep_consequence.py/splice_region_variant.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/splice_region_variant.png}
 %
 \end{subfigure}
 %
 \begin{subfigure}[]{.33\textwidth}
 \textbf{c}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/plt_vep_consequence.py/3_prime_UTR_variant.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/3_prime_UTR_variant.png}
 %
 \end{subfigure}
 %
@@ -223,7 +223,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 \begin{subfigure}[]{.33\textwidth}
 \textbf{a}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_variant_y_egene.py/plt.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_variant_etissue_y_egene.py/plt.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.33\textwidth}
@@ -238,7 +238,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 \includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_variant_egene_etissue_y_gwas.py/plt.png}
 \end{subfigure}
 %
-\caption{Count of egenes per variant (\textbf{a}), etissues per variant-egene (\textbf{b}) and GWAS categories per variant-egene-etissue (\textbf{c}).} \label{fig:gwas_egene_etisue_per_variant}
+\caption{Count of egenes per variant-tissue (\textbf{a}), etissues per variant-egene (\textbf{b}) and GWAS categories per variant-egene-etissue (\textbf{c}).} \label{fig:gwas_egene_etisue_per_variant}
 %
 \end{figure*}
 
@@ -252,11 +252,18 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 \centering
 %
 \begin{subfigure}[]{.33\textwidth}
-%
+\textbf{a}
+\\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_rsid_y_remaptf.py/bxplt_remaptf_per_rsid_flank_0.png}
 \end{subfigure}
 %
-\caption{Binding of transcription factors in the region around pleiotropic variants (Radius 50 bp) as a function of the GWAS category count.} \label{fig:freq_tf_per_variant}
+\begin{subfigure}[]{.33\textwidth}
+\textbf{b}
+\\
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png}
+\end{subfigure}
+%
+\caption{Analysis of transcription factor binding. \textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic variants (Radius 50 bp) as a function of the GWAS category count. \textbf{b}, Odds ratio of cis regulatory module-annotated vs non-annotated variants.} \label{fig:freq_tf_per_variant}
 %
 \end{figure*}
 

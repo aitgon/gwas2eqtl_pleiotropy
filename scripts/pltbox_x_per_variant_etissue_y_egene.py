@@ -1,5 +1,5 @@
 from statannotations.Annotator import Annotator
-
+from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
 from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi, boxplot_kwargs, annotator_config_dic
 
 import matplotlib.pyplot as plt
@@ -10,9 +10,9 @@ import seaborn
 import sys
 
 
+#%%
 # Plot parameters
 plt.rcParams["figure.figsize"] = (8, 6)
-from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
 seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
@@ -55,7 +55,7 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 # %%
-sel_cols = ['rsid', 'egene']  # egene per variant
+sel_cols = ['rsid', 'egene', 'etissue_category']  # egene per variant-etissuecategory
 
 #%%
 m2_df = m_df[['chrom', 'pos'] + sel_cols + ['egene_symbol', 'gwas_category_count']].drop_duplicates()
@@ -69,9 +69,9 @@ m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category
 
 #%%
 m_df = m_df.drop_duplicates()
-m_df = m_df.groupby(['rsid', 'gwas_category_count']).count()
+m_df = m_df.groupby(['rsid', 'etissue_category', 'gwas_category_count']).count()
 m_df = m_df.reset_index()
-m_df.columns = ['rsid', 'gwas_category_count', 'egene_count']
+m_df.columns = ['rsid', 'etissue_category', 'gwas_category_count', 'egene_count']
 
 #%%
 describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
@@ -81,7 +81,7 @@ m_df.groupby('gwas_category_count')['egene_count'].apply(lambda x: x.describe())
 order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-title = "eGenes per variant"
+title = "eGenes per variant-etissue"
 xlabel = "GWAS category count"
 ylabel = "eGene count"
 y = "egene_count"

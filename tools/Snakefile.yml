@@ -18,12 +18,12 @@ rule all:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/log.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
-        os.path.join(outdir, "plt_vep_consequence.py/missense_variant.png"),
+        os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
         os.path.join(outdir, "pltbox_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
         os.path.join(outdir, "pltbox_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
         os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
         os.path.join(outdir, "plt_violin_x_per_egene_y_interactors.py/vlnplt.png"),
-        os.path.join(outdir, "pltbox_x_per_variant_y_egene.py/plt.png"),
+        os.path.join(outdir, "pltbox_x_per_variant_etissue_y_egene.py/plt.png"),
         os.path.join(outdir, "pltbox_x_per_variant_egene_y_etissue.py/plt.png"),
         os.path.join(outdir, "pltbox_x_per_variant_egene_etissue_y_gwas.py/plt.png"),
         os.path.join(outdir, "pltbox_x_per_gwas_cat_y_logpval.py/eqtl.png"),
@@ -37,6 +37,7 @@ rule all:
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "web/db.sqlite"),
+        os.path.join(outdir, "pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png"),
 
 include: 'Snakefile_plots.yml'
 
@@ -165,7 +166,16 @@ rule annot_gwas_metadata:
     shell:
         "python scripts/annot_gwas_metadata.py {input[0]} {output[0]}"
 
-rule wget_remap:
+rule wget_remap_crm:
+    output:
+        os.path.join(public_data_dir_path, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"),
+    params:
+        url="remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz",
+        public_data_dir_path=public_data_dir_path,
+    shell:
+        """wget -nc -q -r {params.url} -P {params.public_data_dir_path}"""
+
+rule wget_remap_nr:
     output:
         os.path.join(public_data_dir_path, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
     params:
