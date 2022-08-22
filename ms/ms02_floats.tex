@@ -6,7 +6,6 @@
 
 % full size table is table*
 \begin{table*}[]
-  \caption{Colocalized eQTL/GWAS variants involved in 5 or more GWAS categories. Genomic coordinates are given for the hg38 assembly. }\label{tab:pleitropic_variants}
 \centering
 \scriptsize
 \hline
@@ -17,6 +16,10 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos. (hg38) & \bfse
 ]{fig/tab_rsid_most_pleiotropic.tsv}{}% use head of csv as column names
 {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv & \csvcolvi}% specify your coloumns here
 \hline
+%
+\vspace{15pt}
+%
+  \caption{Colocalized eQTL/GWAS variants involved in 5 or more GWAS categories. Genomic coordinates are given for the hg38 assembly. }\label{tab:pleitropic_variants}
 \end{table*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -45,13 +48,30 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos. (hg38) & \bfse
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
+% Fig 2: Fisher stat of tissues in variants as a function of gwas category count
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure*}[]
+\centering
+%
+\begin{subfigure}[]{.66\textwidth}
+\textbf{a}
+\\
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_tissue_enrich_in_pleio.py/plt.png}
+\end{subfigure}
+%
+\caption{Tissue category odds ratio in pleitropic variants compared with variant with GWAS category count 1.} \label{fig:geneontology}
+\end{figure*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % Tab 2: Winner regions
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % full size table is table*
-\begin{table*}[]
-\caption{Pleiotropic regions involving 5 or more GWAS categories. Genomic coordinates are given for the hg38 assembly.}\label{tab:pleiotropic_regions}
+\begin{table*}[H]
 \centering
 \scriptsize
 \hline
@@ -63,6 +83,9 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 ]{fig/tab_region_window_100000_pleio_highest.tsv}{}% use head of csv as column names
 {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv & \csvcolvi}% specify your coloumns here
 \hline
+%
+\vspace{15pt}
+\caption{Pleiotropic regions involving 5 or more GWAS categories. Genomic coordinates are given for the hg38 assembly.}\label{tab:pleiotropic_regions}
 \end{table*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

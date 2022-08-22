@@ -37,6 +37,7 @@ rule all:
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png"),
+        os.path.join(outdir, "pltbar_tissue_enrich_in_pleio.py/fisher.tsv"),
 
 include: 'Snakefile_plots.yml'
 
