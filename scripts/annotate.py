@@ -12,11 +12,10 @@ from eqtl2gwas_pleiotropy.URL import URL
 
 help_cmd_str = "todo"
 try:
-    pp_h4_abf = float(sys.argv[1])
-    coloc_tsv_gz_path = sys.argv[2]
-    gwas_cat_ods_path = sys.argv[3]
-    etissue_cat_ods_path = sys.argv[4]
-    annotated_tsv_gz_path = sys.argv[5]
+    coloc_tsv_gz_path = sys.argv[1]
+    gwas_cat_ods_path = sys.argv[2]
+    etissue_cat_ods_path = sys.argv[3]
+    annotated_tsv_gz_path = sys.argv[4]
     if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -41,7 +40,7 @@ gwas_annot_df.rename({'id': "gwas_identifier", 'subcategory': 'gwas_category_mrc
 #%%
 Logger.info("Reading {}".format(coloc_tsv_gz_path))
 coloc_df = pandas.read_csv(coloc_tsv_gz_path, sep="\t")
-coloc_df = coloc_df.loc[coloc_df['PP.H4.abf'] >= pp_h4_abf]
+# coloc_df = coloc_df.loc[coloc_df['PP.H4.abf'] >= pp_h4_abf]
 coloc_df.rename({'pp_h4': "SNP.PP.H4", }, axis=1, inplace=True)
 
 #%%
@@ -65,6 +64,7 @@ for rowi, row in cyto_df.iterrows():
     coloc_df.loc[
         (coloc_df['chrom'] == chrom) & (start <= coloc_df['pos']) & (
                 coloc_df['pos'] <= end), 'cytoband'] = cytoband
+coloc_df['cytoband'] = coloc_df['chrom'].astype(str) + coloc_df['cytoband']
 
 #%%
 columns = ['chrom', 'pos', 'cytoband', 'rsid', 'ref', 'alt', 'egene', 'egene_symbol',
@@ -77,5 +77,3 @@ coloc_df = coloc_df[columns]
 coloc_df.sort_values(by=coloc_df.columns.tolist(), inplace=True)
 Logger.info("Writing {}".format(annotated_tsv_gz_path))
 coloc_df.to_csv(annotated_tsv_gz_path, sep="\t", index=True, index_label='id', na_rep='na')
-
-#%% DBSQLITE
