@@ -6,6 +6,7 @@ public_data_dir_path = config['public_data_dir']
 coloc_tsv_gz = config['coloc_tsv_gz']
 upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
 
+
 rule all:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
@@ -127,12 +128,13 @@ rule filter_h4:
 rule create_table_web:
     input:
         os.path.join(outdir, "annotate.py/annotated.tsv.gz"),
+        "config/etissue_category.ods",
     output:
         os.path.join(outdir, "create_table_web.py/web.tsv.gz"),
     params:
         pp_h4_abf=0.5,
     shell:
-        "python scripts/create_table_web.py {params.pp_h4_abf} {input[0]} {output[0]}"
+        "python scripts/create_table_web.py {params.pp_h4_abf} {input[0]} {input[1]} {output[0]}"
 
 rule annotate:
     input:
