@@ -29,6 +29,7 @@ rule all_plots:
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "pltbar_tissue_enrich_in_pleio.py/fisher.tsv"),
+        os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
 
 rule pltbar_tissue_enrich_in_pleio:
     input:
