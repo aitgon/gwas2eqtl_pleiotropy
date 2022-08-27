@@ -5,16 +5,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % full size table is table*
-\begin{table*}[]
+\begin{table*}[!tbp]
 \centering
 \scriptsize
 \hline
 \csvreader[separator=tab,
-tabular=rrrrcp{0.6\textwidth},
+tabular=ccrrp{0.4\textwidth},
 head,
-table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos. (hg38) & \bfseries Variant & \bfseries Cat. ct. & \bfseries GWAS Categories\\\hline,
+table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfseries Variant & \bfseries GWAS Categories\\\hline,
 ]{fig/tab_rsid_most_pleiotropic.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv & \csvcolvi}% specify your coloumns here
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolvi}% specify your coloumns here
 \hline
 %
 \vspace{15pt}
@@ -28,7 +28,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos. (hg38) & \bfse
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.66\textwidth}
@@ -52,7 +52,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos. (hg38) & \bfse
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.66\textwidth}
@@ -71,17 +71,17 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos. (hg38) & \bfse
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % full size table is table*
-\begin{table*}[H]
+\begin{table*}[!tbp]
 \centering
 \scriptsize
 \hline
 \csvreader[
 separator=tab,
-tabular=rrrrcp{0.5\textwidth},
+tabular=ccrrp{0.45\textwidth},
 head,
-table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfseries End (hg38) & \bfseries Cat. ct. & \bfseries GWAS Categories\\\hline,
+table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries End & \bfseries GWAS Categories\\\hline,
 ]{fig/tab_region_window_100000_pleio_highest.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv & \csvcolvi}% specify your coloumns here
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolvi}% specify your coloumns here
 \hline
 %
 \vspace{15pt}
@@ -94,7 +94,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.33\textwidth}
@@ -118,7 +118,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.32\textwidth}
@@ -149,58 +149,58 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\begin{figure*}[!ht]
+\begin{figure*}[!tbp]
 
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{a}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr5_start132239645_end132497907_categories8.png}
 \end{subfigure}
 %
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{b}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr6_start31034839_end32478149_categories8.png}
 \end{subfigure}
 %
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{c}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr12_start111395984_end111645358_categories11.png}
 \end{subfigure}
 
 
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{d}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr5_start132239645_end132497907_categories8.png}
 \end{subfigure}
 %
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{e}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr6_start31034839_end32478149_categories8.png}
 \end{subfigure}
 %
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{f}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr12_start111395984_end111645358_categories11.png}
 \end{subfigure}
 
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{g}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr5_start132239645_end132497907_categories8.png}
 \end{subfigure}
 %
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{h}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr6_start31034839_end32478149_categories8.png}
 \end{subfigure}
 %
-\begin{subfigure}[]{.33\textwidth}
+\begin{subfigure}[]{.32\textwidth}
 \textbf{i}
 \\
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr12_start111395984_end111645358_categories11.png}
@@ -216,7 +216,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[!]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.33\textwidth}
@@ -250,7 +250,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[!]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.33\textwidth}
@@ -281,7 +281,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[!]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.33\textwidth}
@@ -306,7 +306,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[!]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.33\textwidth}
@@ -343,7 +343,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start (hg38) & \bfs
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure*}[!]
+\begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{\textwidth}

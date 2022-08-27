@@ -1,0 +1,112 @@
+\section*{Discussion}
+
+In this work, I present a colocalization pipeline for eQTLs and GWAS variants that I have applied to a large number of 413 GWAS and 127 eQTL studies.
+%
+For this purpose, I have taken advantage of two public resources of GWAS and eQTL studies with summary statistics to compute a large number of colocalizations between eQTLs and GWAS variants.
+%
+The results of this pipeline provides three types of insights.
+%
+First these results allow to investigate the molecular characteristics of pleiotropic variants with a gene regulatory effect.
+%
+Second, the colocalized loci provide predictions of causal variants in given loci of GWAS.
+%
+Third, egenes and etissues of colocalized eQTL variants provide potential predictions of the molecular mechanism of many GWAs traits.
+
+% First insight: pleiotropy %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+For a posterior probability PP.H4.abf$\ge$0.8 of common causal eQTL and GWAS variants, we found 100,526 loci.
+%
+If I focus in causal variants with PP.H4.abf$\ge$0.8 and SNP.PP.H4$\ge$0.5, then I find 4684 variants.
+%
+Our analysis suggests that these pleiotropic variants are under the control of more transcription factors and regulate more egenes in more etissues.
+
+% Second insight: causal variants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Third insight: mechanistic information for GWAS variants %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+These variants are under control of more transcription factors
+
+%\subsection*{What is the function of the variants in the most pleiotropic regions?}
+%
+%% 12q24.12
+%The cytoband 12q24.12 has five variants rs3184504, rs653178, rs7310615, rs597808, rs11065979, that are known in the literature to be associated to a wide palette of diseases.
+%This locus has been used to explain links between inflammaiton and hypertension (10.1097/MNH.0000000000000196), diabetes and autoimmunity (10.4239/wjd.v5.i3.316).
+%%
+%Our analysis add up that the variants in this cytoband control important genes such as ALDH2, ATXN2, MAPKAPK5, SH2B3 and TMEM116 in several tissues such as adipose, artery, blood, brain, digestive, skin, heart and skin tissue as well as immune cells.
+%
+%% 6p21.3
+%% TODO
+%
+%%15q26.1
+%The next pleiotropic locus is in cytoband 15q26.1 involved in cardiovascular, hypertension and psyciatric diseases with variants rs2071382, rs8039305 and rs6224.
+%%
+%eQTLs in cytoband 15q26.1 control genes like Furin, oncogene Fes and UNC45A involved in Osteootohepatoenteric syndrome (OMIM DB).
+%%
+%eQTLs are active in a very large number of cells including blood, artery, brain and immune cells (See supplementary table).
+%
+%% 1p13.3
+%The locus in cytoband 1p13.3 is mainly related to cardiovascular diseases.
+%Interestingly, these variants are active in many tissues (Supp table h4_annotated.ods).
+%
+%
+%
+%The variant rs2107595 is in locus 7p21.1 downstream of the histone deacetylase 9 (HDAC9) is cardiovascular. Interestingly, it controls expression of lncRNA XXX that is not known in the context of cardiovascular diseases.
+%
+%The variant rs11236797 and the two others in locus 11q13.5 is mainly autoimmune.
+%All three regulate the gene EMSY-DT and are active induced pluripotent cells, LCDs and skin.
+%
+%Another pleiotropic variants rs301806
+%rs301807
+%rs301802
+%rs301817
+%rs159963
+%rs301816
+%in the cytoband 1p36.23 that are involved in allergy, cardiovascular and hypertension.
+%This variants control the gene RERE, which is a nuclear receptor corregulator and is involved in neurodevelopmental disorders.\\
+
+\section*{Methods}\label{sec:methods}
+
+\subsection*{Data sets and data exploration}
+
+I used these data sets here: eQTLs from the eQTL Catalogue \citep{2021.Alasoo.Kerimov}, GWAS variants from the IEU OpenGWAS project \citep{2021.Marcora.Lyon}, chromatin immunoprecipitation (ChIP) transcription factors peaks from the ReMap database \citep{2021.Ballester.Hammal}, and UCSC annotation data.
+%
+I explore the data using the UCSC browser (\url{http://genome.ucsc.edu}) \citep{2021.Kent.Lee}, and OMIM database (\url{https://omim.org/}).
+%
+Colocalization and analysis pipelines were implemented with Snakemake (Supplementary Figure S1) .
+%
+The colocalization and analysis pipelines can be found here: \url{https://github.com/aitgon/eqtl2gwas} and \url{https://github.com/aitgon/eqtl2gwas_pleiotropy}.
+
+\subsection*{Colocalization}
+
+I developed a colocalization pipeline based on a pipeline that is public at the eQTL Catalogue Github repository ( \url{https://github.com/eQTL-Catalogue/colocalisation} ).
+%
+First lead eQTLs with FDR 0.05 in each sample are selected and surrounding eQTL and GWAS variants in a radius of 500 000 nt are retrieved.
+%
+Colocalization between eQTL and GWAS variants is tested using the "coloc.abf" function of CRAN coloc for each window, each eQTL sample and each GWAS.
+
+\subsection*{Definition of pleiotropic regions}
+
+To define pleiotropic regions, I included "pleiotropic" variants defining as having more than 2 categories as long as the distance between the two "pleiotropic" variants is less than 100 000 bp.
+%
+Then the number of GWAS categories in Supplementary table TODO is given by the number of different variant categories in the region.
+
+\subsection*{Characterization of regulatory QTLs}
+
+\section*{Code availability}
+
+The eQTL/GWAS variant colocalization pipeline code is available at this repository: \url{https://github.com/aitgon/eqtl2gwas}.
+%
+The analysis pipeline of the eQTL/GWAS colocalization data and the source code of this manuscript is available at this repository: \url{https://github.com/aitgon/eqtl2gwas_pleiotropy}.
+
+\section*{Data availability}
+
+The raw colocalization data before filtering in a single file is available at this URL: \url{https://osf.io/hvmje}.
+%
+A website to access colocalization variants with PP.H4.abf $\geq$ 0.8 is available at this URL \url{https://agonzalez.pythonanywhere.com}.
+
+\section*{Acknowledgements}
+
+Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
+%
+I thank Sandrine Marquet, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and L\'eopoldine Lecerf for a preliminary version of the pipeline developed during her internship.
+

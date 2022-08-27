@@ -16,9 +16,10 @@ ms/chemgreek.sty
 ms/ifsym.sty
 ms/internal_seminar_20220119.pdf
 ms/mhchem.sty
-ms/ms_00_merge (copy).pdf
 ms/ms_00_merge_0.1.1.pdf
 ms/ms_01_main.blg
+ms/ms_pleiotropy.bib.bak
+ms/ms_pleiotropy.bib.sav.tmp
 ms/orcidlink.sty
 ms/presentation_20220329.pdf
 ms/presentation_20220429.pdf
@@ -31,14 +32,19 @@ ms/textgreek.log
 ms/textgreek.sty
 ms/todo.pdf
 ms00_merge.aux
+ms00_merge.bbl
+ms00_merge.blg
 ms00_merge.log
 ms00_merge.out
 ms00_merge.pdf
 ms01_main.aux
 ms01_main.bbl
 ms01_main.blg
+ms01_titlepage.aux
 ms02_floats.aux
+ms02_intro.aux
+ms03_results.aux
 ms03_suppl.aux
+ms04_discussion.aux
+ms05_floats.aux
 out
-ms/ms_pleiotropy.bib.bak
-ms/ms_pleiotropy.bib.sav.tmp
