@@ -1,41 +1,48 @@
 \section*{Introduction}\label{sec:introduction}
 
-Genome-wide association studies (GWAS) allow to define the impact of genetic variants on a trait in the population.
+% GWAS in general
+Genome-wide association studies (GWAS) aim at associating common genetic variants with common traits.
 %
-The number of GWAS has rapidly increased since the first GWAS in 2010 and has result in comprehensive databases such as the NHGRI-EBI GWAS Catalog \citep{2018.Parkinson.Buniello}.
+The number of GWAS has rapidly increased since the first GWAS around 15 years ago and has result in comprehensive databases such as the NHGRI-EBI GWAS Catalog \citep{2007...Nature,2018.Parkinson.Buniello}.
 %
 For instance, in 2019, NHGRI-EBI GWAS Catalog contained 5687 GWAS comprising 71673 variant-trait associations from 3567 publications \citep{2018.Parkinson.Buniello}.
 
-However the molecular mechanism of GWAS variants is most often unclear because of three reasons \citep{2020.Trynka.CanoGamez}.
+% Short comings of GWAS
+However interpretation of the GWAS variants is complicate because of three reasons \citep{2020.Trynka.CanoGamez}.
 %
 First, identification of the causaul variant is difficult because of linkage disequilibrium.
 %
 Second, GWAS do not provide hints regarding the tissues involved in the phenotypes.
 %
-Third, GWAS variants affect most often non-coding regions.
+Third, GWAS variants affect often non-coding regions.
 
+% Intererest of studying GWAS
 Expression QTLs (eQTLs) are variants that change the expression of a given gene in a tissue or cell type.
 %
 eQTLs share some of the same shortcommings as GWAS variants such as inability to identify the causal variant.
 %
-Also the distribution of eQTLs and GWAS variants in the genome have been suggested to be different because of negative selection.
+Moreover the distribution of eQTLs and GWAS variants in the genome have been suggested to be different because of negative selection \citep{2022.Pritchard.Mostafavi}.
 
-Nevertheless eQTLs are still important data sets to interprete GWAS variants, because they provide gene regulatory information about the eQTL genes (eGenes) and tissues (etissues) (REF).
+Nevertheless eQTLs are still important data sets to interprete GWAS variants, because they provide gene regulatory information about the eQTL genes (eGenes) and tissues (eTissues) \citep{2021.Li.Mu.GenomeBiology.impactcelltype}.
 %
-In addition colocalization anlaysis can pinpoint more precisely the causal variants that either data set independently (REF).
+In addition colocalization analysis can help prioritize causal variants.
 
-The large number of GWAS has allowed to discover that many genetic variants are involved in different traits \citep{2019.Posthuma.Watanabe}.
+The large number of GWAS has allowed to observe that many genetic variants are involved in different traits \citep{2019.Posthuma.Watanabe}.
 %
-In this work, the analysed loci covered 60\% of the genome and 90\% of these loci contained associations across different traits \citep{2019.Posthuma.Watanabe}.
+In that work, the analysed loci covered 60\% of the genome and 90\% of these loci contained associations across different traits \citep{2019.Posthuma.Watanabe}.
 %
 They also found that pleiotropic genes and variants where less tissue specific in terms of gene expression and eQTLs \citep{2019.Posthuma.Watanabe}.
 %
-The question of tissue specificity of eQTLs has been analyzed in different works with conflicting conclusions \citep{2021.Li.Mu.GenomeBiology.impactcelltype,2018.Vijayanand.Schmiedel.Cell.ImpactGeneticPolymorphisms,2017...Nature}.
+However the question of tissue specificity of eQTLs has been analyzed in different works with conflicting conclusions \citep{2021.Li.Mu.GenomeBiology.impactcelltype,2018.Vijayanand.Schmiedel.Cell.ImpactGeneticPolymorphisms,2017...Nature}.
+%
+In addition, no hypothesis have been directly tested and proposed for the cause of pleiotropy.
 
-In this work, I have taken advantage of two well formatted eQTL and GWAS data sets to develop a global colocalization analysis that includes 127 eQTL studies and 413 GWAS.
+In this work, I have taken advantage of two well formatted eQTL and GWAS data sets from the EBI eQTL Catalogue and the IEU OpenGWAS to develop a global colocalization analysis that includes 127 eQTL studies and 413 GWAS.
 %
-I have used these colocalization results to investigate molecular differences between pleiotropic variants in terms of gene regulatory properties.
+I have developed a pipeline that takes these data and carries out colocalization analysis between all pairs of eQTLs studies and GWAS
 %
-We provide a model to mechanistically understand our results.
+I have used the colocalization results to investigate how gene regulatory properties of pleiotropic variant contribute to trait pleiotropy.
 %
-This global colocalization analysis is also useful to help interpret GWAS variants.
+These results are also helpful to prioritize the causal variants and to interpret the molecular mechanisms of functional variants.
+%
+Therefore I provide the whole results as an interactive table that can be easily browsed by biologists.

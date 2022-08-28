@@ -43,7 +43,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfser
 \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_davidgo.py/david_pleio_2.png}
 \end{subfigure}
 %
-\caption{Gene ontology analysis of egenes of variants associated to three (\textbf{a}) and two (\textbf{b}) GWAS categories compared to egenes of variants associated to one GWAS category.} \label{fig:geneontology}
+\caption{Gene ontology analysis of eGenes of variants associated to three (\textbf{a}) and two (\textbf{b}) GWAS categories compared to eGenes of variants associated to one GWAS category.} \label{fig:geneontology}
 \end{figure*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -61,7 +61,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfser
 \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_tissue_enrich_in_pleio.py/plt.png}
 \end{subfigure}
 %
-\caption{Tissue category odds ratio in pleitropic variants compared with variant with GWAS category count 1.} \label{fig:geneontology}
+\caption{Tissue category odds ratio in pleitropic variants compared with variant with GWAS category count 1.} \label{fig:tissues}
 \end{figure*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -114,7 +114,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 1: Histograms variants vs GWAS, egene and etissues
+% Fig 1: Histograms variants vs GWAS, eGene and eTissues
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -139,7 +139,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \includegraphics[width=\textwidth]{\floatRelativePath/plthst_gwas_egene_etissue.py/hist_etissue.png}
 \end{subfigure}
 %
-\caption{Percentage of colocalized eQTL/GWAS variants with different number of GWAS categories (\textbf{a}), egenes (\textbf{b}) and etissues (\textbf{c}).} \label{fig:hist_gwas_egene_etissue}
+\caption{Percentage of colocalized eQTL/GWAS variants with different number of GWAS categories (\textbf{a}), eGenes (\textbf{b}) and eTissues (\textbf{c}).} \label{fig:hist_gwas_egene_etissue}
 \end{figure*}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -206,7 +206,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr12_start111395984_end111645358_categories11.png}
 \end{subfigure}
 
-\caption{Count of GWAS categories (\textbf{a-c}), egenes (\textbf{d-f}) and etissues (\textbf{g-i}) in three pleiotropic genomic regions: \textbf{a,d,g}: 5:132,239,645-132,497,907 (5q31.1), \textbf{b,e,h}: 6:31,034,839-32,478,149 (6p21.33) and \textbf{c,g,i}: 12:111,395,984-111,645,358 (12q24.1). Genomic coordinates are given for the hg38 assembly.} \label{fig:region_gwas_egenes_tissues}
+\caption{Count of GWAS categories (\textbf{a-c}), eGenes (\textbf{d-f}) and eTissues (\textbf{g-i}) in three pleiotropic genomic regions: \textbf{a,d,g}: 5:132,239,645-132,497,907 (5q31.1), \textbf{b,e,h}: 6:31,034,839-32,478,149 (6p21.33) and \textbf{c,g,i}: 12:111,395,984-111,645,358 (12q24.1). Genomic coordinates are given for the hg38 assembly.} \label{fig:region_gwas_egenes_tissues}
 %
 \end{figure*}
 
@@ -246,7 +246,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 4: Violin plots. eGenes, etissues and gwas per variants
+% Fig 4: Violin plots. eGenes, eTissues and gwas per variants
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -256,22 +256,22 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \begin{subfigure}[]{.32\textwidth}
 \textbf{a}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_variant_etissue_y_egene.py/plt.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_variant_etissue_y_egene.py/plt.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{b}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_variant_egene_y_etissue.py/plt.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_variant_egene_y_etissue.py/plt.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{c}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_variant_egene_etissue_y_gwas.py/plt.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png}
 \end{subfigure}
 %
-\caption{Count of egenes per variant-tissue (\textbf{a}), etissues per variant-egene (\textbf{b}) and GWAS categories per variant-egene-etissue (\textbf{c}).} \label{fig:gwas_egene_etisue_per_variant}
+\caption{Count of eGenes per variant-tissue (\textbf{a}), eTissues per variant-eGene (\textbf{b}) and GWAS categories per variant-eGene-eTissue (\textbf{c}).} \label{fig:gwas_egene_etisue_per_variant}
 %
 \end{figure*}
 
@@ -351,7 +351,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \includegraphics[width=\textwidth]{fig/graphical_summary.png}
 \end{subfigure}
 
-\caption{\textbf{Model of regulatory variant pleiotropy.} I have investigated three possible mechanisms of pleiotropy. \textbf{Left}, Pleiotropic variants have more egenes that result in more functions and more phenotypes. This might arise from an enrichment of pleiotropic variants in splicing or 3' UTR regions. \textbf{Center}, I have also found that egenes of pleiotropic variants are active in more etissues which result in more GWAS phenotypes. This might be explained from variants being bound by more transcription factors. \textbf{Left} Triplets of variant-egene-etissues are associated with more GWAS phenotypes, which directly affect the number of GWAS phenotypes. I have found that this might be explained by an enrichment of missense alleles.} \label{fig:beta}
+\caption{\textbf{Model of regulatory variant pleiotropy.} I have investigated three possible mechanisms of pleiotropy. \textbf{Left}, Pleiotropic variants have more eGenes that result in more functions and more phenotypes. This might arise from an enrichment of pleiotropic variants in splicing or 3' UTR regions. \textbf{Center}, I have also found that eGenes of pleiotropic variants are active in more etissues which result in more GWAS phenotypes. This might be explained from variants being bound by more transcription factors. \textbf{Left} Triplets of variant-eGene-eTissues are associated with more GWAS phenotypes, which directly affect the number of GWAS phenotypes. I have found that this might be explained by an enrichment of missense alleles.} \label{fig:beta}
 %
 \end{figure*}
 

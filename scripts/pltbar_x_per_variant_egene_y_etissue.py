@@ -1,13 +1,14 @@
 from statannotations.Annotator import Annotator
 from eqtl2gwas_pleiotropy.constants import label_fontsize, dpi, tick_fontsize, boxplot_kwargs, annotator_config_dic
 
-
+import numpy
 import os
 import pandas
 import pathlib
 import seaborn
 import sys
 import matplotlib.pyplot as plt
+
 
 #%%
 plt.rcParams["figure.figsize"] = (8, 6)
@@ -77,9 +78,9 @@ m_df.groupby('gwas_category_count')['etissue_category_count'].apply(lambda x: x.
 order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-title = "eTissues per variant-egene "
+title = "eTissues per variant-eGene "
 xlabel = "GWAS category count"
-ylabel = "eTissue count"
+ylabel = "eTissue count mean"
 y = "etissue_category_count"
 x = "gwas_category_count"
 
@@ -88,7 +89,8 @@ pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
 
 #%%
 m_df[x] = m_df[x].astype(str)
-ax = seaborn.boxplot(x=x, y=y, data=m_df, order=order, **boxplot_kwargs)
+# ax = seaborn.boxplot(x=x, y=y, data=m_df, order=order, **boxplot_kwargs)
+ax = seaborn.barplot(x=x, y=y, data=m_df, order=order, estimator=numpy.mean, palette="rocket_r")
 annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
