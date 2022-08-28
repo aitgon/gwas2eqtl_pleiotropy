@@ -67,8 +67,12 @@ m2_df.to_csv(tsv_path, header=True, index=False, sep='\t')
 m_df = m_df[sel_cols + ['gwas_category_count']]
 m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
 
+#%% keep unique rsid-etissue_category pairs with max. gwas category
+m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
+# import pdb; pdb.set_trace()
+m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_category', 'egene'], keep='first')
+
 #%%
-m_df = m_df.drop_duplicates()
 m_df = m_df.groupby(['rsid', 'etissue_category', 'gwas_category_count']).count()
 m_df = m_df.reset_index()
 m_df.columns = ['rsid', 'etissue_category', 'gwas_category_count', 'egene_count']

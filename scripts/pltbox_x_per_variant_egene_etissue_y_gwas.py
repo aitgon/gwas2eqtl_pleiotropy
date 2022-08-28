@@ -55,21 +55,25 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 # %%
-sel_cols = ['rsid', 'egene', 'etissue_category', 'gwas_trait']  # gwas per egene
+sel_cols = ['rsid', 'egene', 'etissue_category', 'gwas_category']  # gwas per egene
 
 #%% set upper_var_gwas_cat_count
 m_df = m_df[sel_cols + ['gwas_category_count']]
 m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
 
+#%% keep unique rsid-etissue_category pairs with max. gwas category
+m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
+m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_category', 'egene', 'gwas_category'], keep='first')
+
 #%%
-m_df = m_df.drop_duplicates()
+# m_df = m_df.drop_duplicates()
 m_df = m_df.groupby(['rsid', 'egene', 'etissue_category', 'gwas_category_count']).count()  # count gwas traits
 m_df = m_df.reset_index()
-m_df.columns = ['rsid', 'egene', 'etissue_category', 'gwas_category_count', 'gwas_trait_count']
+m_df.columns = ['rsid', 'egene', 'etissue_category', 'gwas_category_count', 'gwas_category_count2']
 
 #%%
 describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
-m_df.groupby('gwas_category_count')['gwas_trait_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
+m_df.groupby('gwas_category_count')['gwas_category_count2'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
 order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
@@ -77,8 +81,8 @@ xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "GWAS per variant-egene-etissue"
 xlabel = "GWAS category count"
-ylabel = "GWAS pheno. count"
-y = "gwas_trait_count"
+ylabel = "GWAS # (var-gene-tissue)"
+y = "gwas_category_count2"
 x = "gwas_category_count"
 
 #%%

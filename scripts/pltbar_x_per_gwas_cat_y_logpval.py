@@ -57,7 +57,7 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 #%%
-m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pvalue', 'egene', 'etissue_category', 'gwas_beta', 'gwas_pvalue', 'gwas_identifier', 'gwas_category_count']].drop_duplicates()
+m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pvalue', 'egene', 'eqtl_identifier', 'gwas_beta', 'gwas_pvalue', 'gwas_identifier', 'gwas_category_count']].drop_duplicates()
 m_df['eqtl_logpval'] = m_df['eqtl_pvalue'].apply(lambda x: -numpy.log(x))
 m_df['gwas_logpval'] = m_df['gwas_pvalue'].apply(lambda x: -numpy.log(x))
 
@@ -69,14 +69,15 @@ xticklabels[-1] = '≥{}'.format(order[-1])
 pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
 x = 'gwas_category_count'
 xlabel = "GWAS category count"
-title = "Coloc. eQTL/GWAS variants"
+# title = "Coloc. eQTL/GWAS variants"
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 y = "eqtl_logpval"
-ylabel = "eQTL neg log p-val"
+title = "eQTL significance"
+ylabel = "Neg. log10 p-val mean"
 
 #%%
-plt_df = m_df[['gwas_category_count', 'rsid', 'egene', 'etissue_category', y]].drop_duplicates()
+plt_df = m_df[['gwas_category_count', 'rsid', 'egene', 'eqtl_identifier', y]].drop_duplicates()
 plt_df[y] = plt_df[y].abs()
 
 #%%
@@ -85,7 +86,8 @@ describe_df = plt_df.groupby(['gwas_category_count'])[y].apply(lambda x: x.descr
 
 #%%
 plt_df[x] = plt_df[x].astype(str)
-ax = seaborn.boxplot(x=x, y=y, data=plt_df, order=order, **boxplot_kwargs)
+# ax = seaborn.boxplot(x=x, y=y, data=plt_df, order=order, **boxplot_kwargs)
+ax = seaborn.barplot(x=x, y=y, data=plt_df, order=order, estimator=numpy.mean, palette="rocket_r")
 annotator = Annotator(ax, pairs, data=plt_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
@@ -103,7 +105,9 @@ plt.close()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 y = "gwas_logpval"
-ylabel = "GWAS neg log p-val"
+# ylabel = "GWAS neg log p-val"
+title = "GWAS variant significance"
+ylabel = "Neg. log10 p-val mean"
 
 #%%
 plt_df = m_df[['gwas_category_count', 'rsid', 'gwas_identifier', y]].drop_duplicates()
@@ -115,7 +119,8 @@ describe_df = plt_df.groupby(['gwas_category_count'])[y].apply(lambda x: x.descr
 
 #%%
 plt_df[x] = plt_df[x].astype(str)
-ax = seaborn.boxplot(x=x, y=y, data=plt_df, order=order, **boxplot_kwargs)
+# ax = seaborn.boxplot(x=x, y=y, data=plt_df, order=order, **boxplot_kwargs)
+ax = seaborn.barplot(x=x, y=y, data=plt_df, order=order, estimator=numpy.mean, palette="rocket_r")
 annotator = Annotator(ax, pairs, data=plt_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', loc='inside')
 annotator.apply_and_annotate()

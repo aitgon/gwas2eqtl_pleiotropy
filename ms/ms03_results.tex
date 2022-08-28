@@ -43,7 +43,7 @@ Pleiotropic variants aggregate in some cytobands such as 3q23, 5q31.1, 11q13.5, 
 % 12q24.12
 For instance, the most pleiotropic variants in cytoband 12q24.12 are involved in allergies, cancer, cardiovascular and autoimmune diseases (Table \ref{tab:pleitropic_variants}).
 %
-These variants control egenes ALDH2, LINC01405, MAPKAPK5, SH2B3 that are involved in alcohol-related disorders (ALDH2), cancer (LINC01405), multiple congenital anomalies syndromes (MAPKAPK5),  inflammation and hematological disorders (SH2B3).
+These variants control eGenes ALDH2, LINC01405, MAPKAPK5, SH2B3 that are involved in alcohol-related disorders (ALDH2), cancer (LINC01405), multiple congenital anomalies syndromes (MAPKAPK5),  inflammation and hematological disorders (SH2B3).
 %
 These eQTLs are active in adipose tissue, arteries, blood, colon, immune cells, skin and induced pluripotent stem cells (iPSC).
 
@@ -51,10 +51,10 @@ These eQTLs are active in adipose tissue, arteries, blood, colon, immune cells, 
 
 Then I evaluated the function of pleiotropic variants with 5, 4, 3 and 2 GWAS categories using gene ontology analysis.
 %
-I analyzed the ontology of egenes with 5, 4, 3 and 2 GWAS categories using the DAVID web services \citep{2008.Lempicki.Huang,2008.Lempicki.Huang.NucleicAcidsResearch}.
+I analyzed the ontology of eGenes with 5, 4, 3 and 2 GWAS categories using the DAVID web services \citep{2008.Lempicki.Huang,2008.Lempicki.Huang.NucleicAcidsResearch}.
 %
-I found that egenes of pleiotropic variants with 3 and 2 GWAS categories were significantly enriched in functions of the immune system (Fig. \ref{s:results}{fig:geneontology}).
-For instance, egenes in the cytoband 5q31.1 include IRF1 and IL4, which are important factors of the immune system.
+I found that eGenes of pleiotropic variants with 3 and 2 GWAS categories were significantly enriched in functions of the immune system (Fig. \ref{s:results}{fig:geneontology}).
+For instance, eGenes in the cytoband 5q31.1 include IRF1 and IL4, which are important factors of the immune system.
 %
 IRF1 is a response protein to the presence of virus and oncogenic proteins and IL4 is required to stimulate proliferation of activated B and T-cells.
 %
@@ -64,7 +64,7 @@ These variants are associated with allergy, asthma, cardiovascular diseases, hyp
 
 %Variants of the 3q23 cytoband are involved in allergy, cancer and height traits (Supplementary table 3).
 %%
-%Interestingly all these variants target the egene ZBTB3.
+%Interestingly all these variants target the eGene ZBTB3.
 %%
 %ZBTB3 is a transcription factor that controls pro-inflammatory factors such as IRF5 (10.1016/j.jaut.2016.08.001).
 %%
@@ -73,7 +73,7 @@ These variants are associated with allergy, asthma, cardiovascular diseases, hyp
 %%11q13.5
 %The variants in cytoband 11q13.5 are involved in allergy and autoimmune disease (Supplementary table 3).
 %%
-%All these variants target the egene EMSY-DT, which is a long noncoding RNA upstream of EMSY.
+%All these variants target the eGene EMSY-DT, which is a long noncoding RNA upstream of EMSY.
 %%
 %These variants are active in LCL, Skin and iPSC (Supplementary table 3).
 %
@@ -99,98 +99,136 @@ The second largest region is 2:187,235,912-191,066,738 in cytoband 2q32.2 with a
 
 Very pleiotropic regions with 6 GWAS categories or more make less than 1Mb of the genome, while moderate pleiotropic regions with 3 GWAS categories or more make 2 Mb of the genome (Fig. \ref{fig:pleiotropy_region_distribution}b.
 
-\subsection*{How specific are variants to GWAS traits, egenes and etissues?}
+\subsection*{How specific are variants to GWAS traits, eGenes and eTissues?}
 
-Next I explored the trait, egene and etissue specificity of eQTL/GWAS variants.
+Next I explored the trait, eGene and eTissue specificity of eQTL/GWAS variants.
 %
 83\% of variants are involved in one GWAS category, 14\% are involved in 2 categories and the remaining variants with 3 or more trait categories make 3\% or less (Fig. \ref{fig:hist_gwas_egene_etissue}(a).
 %
-Regarding egenes, half of variants modulate one egene, and the other half modulate two or more egenes (Fig. \ref{fig:hist_gwas_egene_etissue}(b).
+Regarding eGenes, half of variants modulate one eGene, and the other half modulate two or more eGenes (Fig. \ref{fig:hist_gwas_egene_etissue}(b).
 %
-In the case of etissues, only 40\% of variants are specific to a single tissue while the other 60\% are active in two or more tissues (Fig. \ref{fig:hist_gwas_egene_etissue}(c).
+In the case of eTissues, only 40\% of variants are specific to a single tissue while the other 60\% are active in two or more tissues (Fig. \ref{fig:hist_gwas_egene_etissue}(c).
 %
-In conclusion, most colocalized eQTL/GWAS variants are specific to one GWAS trait. By contrast, half of them only module one specific egene, and less than half are active in a single tissue.
+In conclusion, most colocalized eQTL/GWAS variants are specific to one GWAS trait. By contrast, half of them only module one specific eGene, and less than half are active in a single tissue.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{How do trait frequencies relates to eQTL and etissue frequency at the loci level?}
+\subsection*{How do trait frequencies relates to eQTL and eTissue frequency at the loci level?}
 
-In Figure \ref{fig:region_gwas_egenes_tissues}, I have plotted the number of GWAS categories, egenes and eTissues for regulatory variants in three pleiotropic regions.
+In Figure \ref{fig:region_gwas_egenes_tissues}, I have plotted the number of GWAS categories, eGenes and eTissues for regulatory variants in three pleiotropic regions.
 %
 All three regions are very pleiotropic with very different associated trait categories such as cancer, cardiovascular and autoimmune diseases.
 %
-However these plots show that the relationship between the number of traits, egenes and etissues can be very different.
+However these plots show that the relationship between the number of traits, eGenes and eTissues can be very different.
 %
-The SLC22A5 locus in region 5:132,239,645-132,497,907 (5q31.1) has a low number of egenes but a high number of etissues.
+The SLC22A5 locus in region 5:132,239,645-132,497,907 (5q31.1) has a low number of eGenes but a high number of eTissues.
 %
-By contrast, the MHC locus in region 6:31,034,839-32,478,149 (6p21.33) has a high number of both egenes and etissues.
+By contrast, the MHC locus in region 6:31,034,839-32,478,149 (6p21.33) has a high number of both eGenes and eTissues.
 %
-Finally, the ATXN2 locus in region 12:111,395,984-111,645,358 (12q24.12) shows the highest trait pleiotropy but the number of egenes and etissues is very low.
+Finally, the ATXN2 locus in region 12:111,395,984-111,645,358 (12q24.12) shows the highest trait pleiotropy but the number of eGenes and eTissues is very low.
 %
-In summary, trait pleiotropy can arise from different situations: few egenes and etissues, many egenes and etissues or a mix of both.
+In summary, trait pleiotropy can arise from different situations: few eGenes and eTissues, many eGenes and eTissues or a mix of both.
 
 \subsection*{What are the mechanisms of pleiotropy}
 
-Then, I wanted to understand the molecular mechanism of pleiotropic regions.
+Then, I wanted to understand the molecular mechanism of pleiotropic variants and regions.
+%
+I hypothesized that pleiotropy arises from bias in regulatory effects of variants.
+%
+For instance, pleiotropic variants might significantly affect some molecular functions more often.
+%
+Another possibility is that pleiotropic variants affect more eGenes in more eTissues, which affect more GWAS traits.
 
 \subsubsection*{More severe variant effect consequences?}
 
-I first analysed whether there are significant differences of effect consequences between more and less pleiotropic variants.
+I first analysed whether there are significant differences of some effect consequences between more and less pleiotropic variants.
 %
 I separated variants according to the count of GWAS categories and computed the EBI variant effect predictor (VEP) consequence \citep{2016.Cunningham.McLaren}.
 %
-I found a significant increase of missense variants among variants with 2, 3 and 4 categories compared to variants with 1 category (Fig. \ref{fig:vep_consequence}a).
+I found a significant larger number of missense variants among variants with 2, 3 and 4 categories compared to variants with 1 category (Fig. \ref{fig:vep_consequence}a).
 %
-I also found a significant increase of splicing variants among variants with 3 categories (Fig. \ref{fig:vep_consequence}b).
+I also found a significant larger number of splicing variants among variants with 3 categories (Fig. \ref{fig:vep_consequence}b).
 %
-Finally, there is also a significant increase of the 3'-UTR variants among variants with 4 categories (Fig. \ref{fig:vep_consequence}c).
+Finally, there is also a larger of the 3'-UTR variants among variants with 4 categories (Fig. \ref{fig:vep_consequence}c).
 %
+% TODO Discuss sQTLs in 2021.Li.Mu.GenomeBiology.impactcelltype paper
 These analyses suggest that more pleiotropic variants have a stronger effect on the coding sequence and splicing regions, which might explain partly their more pleiotropic function.
 
-\subsubsection*{More egenes per variant-etissue?}
+\subsubsection*{More eGenes per variant-eTissue?}
 
-Then I hypothesized that pleiotropic variant-etissue pairs modulate more egenes.
+Then I hypothesized that pleiotropic variants regulate more eGene even when we keep fixed the eTissue.
 %
-I found that pleiotropic variant-etissues pairs have significantly more egenes compared to variants with one GWAS category (Fig. \ref{fig:gwas_egene_etisue_per_variant}a).
+To test this hypothesis, the eGenes per variant-eTissues pairs were counted.
+%
+Then these eGene counts were classified according to the GWAS category count.
+%
+If the GWAS category count of a variant changed in different variant-eGene-eTissue trios, then we kept the maximal one.
+%
+I found means of eGene counts of 1.4, 1.7, 1.7 and 1.6 for GWAS categories counts 5, 4, 3 and 2 compared to eGene count mean of 1.5 for GWAS category count 1 (Fig. \ref{fig:gwas_egene_etisue_per_variant}a).
+%
+This suggests that pleiotropic variant-eTissue pairs have slightly but significantly (Mann–Whitney U test) more eGenes compared to variants with one GWAS category (Fig. \ref{fig:gwas_egene_etisue_per_variant}a).
 %
 This observation could be explained by my previous observation that pleiotropic variants have more often an effect on the splicing and 3'UTR regions (Figure \ref{fig:vep_consequence}b,c).
 
-\subsubsection*{More etissues per variant-egene?}
+\subsubsection*{More eTissues per variant-eGene?}
 
-My next hypothesis was that pleiotropic variant-egene pairs are active in more tissues compared with variant-egene pairs with one GWAS category and this increases their probability to affect more GWAS categories.
+My next hypothesis was that pleiotropic variant-eGene pairs are active in more eTissues compared with variant-eGene pairs with one GWAS category and this increases their probability to affect more GWAS categories.
 %
-Indeed, I found that pleiotropic variant-egenes pairs are associated with a higher number of etissues (Fig. \ref{fig:gwas_egene_etisue_per_variant}b).
+To test this hypothesis, the eTissues per variant-eGene pairs were counted.
+%
+Then these eTissue counts were classified according to the GWAS category count.
+%
+If the GWAS category count of a variant changed in different variant-eGene-eTissue trios, then we kept the maximal GWAS category count.
+%
+I found means of eTissue counts of 2.2, 3, 3 and 2.6 for GWAS categories counts 5, 4, 3 and 2 compared to eTissue count mean of 2.5 for GWAS category count 1 (Fig. \ref{fig:gwas_egene_etisue_per_variant}b).
+%
+This suggests that pleiotropic variant-eGene pairs are active slightly but significantly (Mann–Whitney U test) in more eTissues compared to variants with one GWAS category (Fig. \ref{fig:gwas_egene_etisue_per_variant}b).
 
-\subsubsection*{How to explain that pleiotropic variants are active in more tissues?}
+\subsubsection*{More GWAS per variant-eGene-eTissue?}
 
-I hypothesized that pleiotropic variants are active in more etissues, because genomic regions around pleiotropic variants bind more transcription factors, which upregulate the pleiotropic regions in more tissues.
-%
-I looked at the number of unique transcription factors bound in a window of 100 bp around each variant.
-%
-I found a significant increase of unique transcription factors around pleagonzaleziotropic variants (Fig. \ref{fig:freq_tf_per_variant}a).
+My next hypothesis was that pleiotropic variants are associated to more GWAS categories even after taking into account differences in eGene and eTissue counts.
 
-\subsubsection*{More GWAS per variant-egene-etissue?}
-
-Another molecular mechanism of pleiotropy is that egenes correlate with more GWAS categories even after taking into account variants and etissues.
+To test this hypothesis, the GWAS category counts per variant-eGene-eTissue trios were counted.
 %
-I computed the number of GWAS categories per variant-egene-etissue triplet.
+Then these GWAS categorie counts per variant-eGene-eTissue trios were classified according to the GWAS category count per variant.
 %
-Indeed I found a significant increase of GWAS categories for pleiotropic variant-egene-etissue triplets (Fig. \ref{fig:gwas_egene_etisue_per_variant}c).
+If the GWAS category count per variant changed in different variant-eGene-eTissue trios, then we kept the maximal GWAS category count per variant.
+%
+I found means of GWAS category counts per variant-eGene-eTissue of 3, 2, 1.6, 1.4 and 1 for GWAS categories counts per variant of 5, 4, 3, 2 and 1 (Fig. \ref{fig:gwas_egene_etisue_per_variant}c).
+%
+This shows a significant larger number of GWAS categories even in unique trios of variant-eGene-eTissue (Fig. \ref{fig:gwas_egene_etisue_per_variant}c).
 %
 This observation could be explained by my previous observation that pleiotropic variants have more often missense effects (Fig. \ref{fig:vep_consequence}a).
 
-\subsection*{What is the effect size of pleiotropic eQTLs?}
+\subsubsection*{How to explain that pleiotropic variants are active in more tissues?}
 
-Then I wondered, how does the effect size (beta) and significance (p-value) relate to pleiotropy.
+In Fig. \ref{fig:gwas_egene_etisue_per_variant}b, I observed that pairs of eQTL-eGene are active in more eTissues.
 %
-I found a significant decrease of effect size of eQTLs and GWAS variants with the exception of the GWAS effect size of variants with 3 categories (Fig. \ref{fig:beta_pval}a,b).
+To explain this observation, I hypothesized that pleiotropic variants are active in more eTissues, because genomic regions around pleiotropic variants bind more transcription factors, which upregulate the pleiotropic regions in more tissues.
+%
+To test this hypothesis, I counted the number of unique transcription factors bound in a radius of 50 bp around each variant (Window of 100 bp).
+%
+I found a significant larger number of transcription factors bound around pleiotropic variants (Fig. \ref{fig:freq_tf_per_variant}a).
 
-Then I looked at the significance of pleiotropic eQTLs and GWAS variants.
+Cis-regulatory modules (CRMs) are non-coding genomic regions with a higher density of bound cis-regulatory modules \citep{2021.Ballester.Hammal}.
 %
-eQTL significance significantly decreased for pleiotropic variants (Fig. \ref{fig:beta_pval}c).
-%
-By contrast, the significance of GWAS associations increased for GWAS variants (Fig. \ref{fig:beta_pval}d).
+I found that the odds ratio of variants annotated with CRMs vs non-annotated is significantly (Fisher's exact test) higher for variants with 2 and 3 GWAS category counts compared to category count 1 (Fig. \ref{fig:freq_tf_per_variant}b).
 
-In summary, pleiotropic eQTLs are weaker with a weaker beta and less significant p-values..
-%
-On the other hand, the effect size of GWAS seems smaller for pleiotropic variants but the significance is stronger.
+\subsection*{How do effect size and }
 
+Pleiotropic variants affect simultaneously more GWAS traits.
+%
+Therefore it is interesting to investigate how does variant causality and pleiotropy relate to effect size (beta) and significance (p-value) at the level of eQTL and GWAS traits.
+%
+I found that the mean of the absolute eQTL effect sizes (beta) decreased between GWAS category counts 1 and 5 (Fig. \ref{fig:beta_pval}a).
+%
+Regarding the eQTL significance (Negative decimal logarithm of the p-values), I found decreasing mean values for GWAS category counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
+
+Then I carried out the same analysis for the GWAS effect size (beta) and significance (p-value).
+%
+I found that the mean of the absolute GWAS effect sizes (beta) decreased between GWAS category counts 1 and 5 (Fig. \ref{fig:beta_pval}b).
+%
+Regarding the GWAS variant significance (Negative decimal logarithm of the p-values), I found increasing mean values for GWAS category counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
+
+These observations suggest that the strength of both eQTL and GWAS effects decrease with the pleiotropy (Fig. \ref{fig:beta_pval}a,b).
+
+In summary, I observed opposite effects of pleiotropy on the eQTL and GWAS variant strengths.

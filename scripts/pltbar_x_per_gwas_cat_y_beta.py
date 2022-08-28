@@ -1,3 +1,4 @@
+import numpy
 from statannot import add_stat_annotation
 from statannotations.Annotator import Annotator
 
@@ -57,25 +58,28 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 #%%
-m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pvalue', 'egene', 'etissue_category', 'gwas_beta', 'gwas_pvalue', 'gwas_identifier', 'gwas_category_count']].drop_duplicates()
+m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pvalue', 'egene', 'eqtl_identifier', 'gwas_beta', 'gwas_pvalue', 'gwas_identifier', 'gwas_category_count']].drop_duplicates()
 
 #%%
 m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
+
+#%%
 order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1) ]
 x = 'gwas_category_count'
 xlabel = "GWAS category count"
-title = "Coloc. eQTL/GWAS variants"
-
+# title = "Coloc. eQTL/GWAS variants"
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# boxplot and mann-whitney
 y = "eqtl_beta"
-ylabel = "eQTL beta"
+title = "eQTL effect size"
+ylabel = "Absolute beta mean"
 
 #%%
-y_df = m_df[['gwas_category_count', 'rsid', 'egene', 'etissue_category', y]].drop_duplicates()
+y_df = m_df[['gwas_category_count', 'rsid', 'egene', 'eqtl_identifier', y]].drop_duplicates()
 y_df[y] = y_df[y].abs()
 
 #%%
@@ -85,18 +89,13 @@ describe_df = y_df.groupby(['gwas_category_count'])[y].apply(lambda x: x.describ
 #%%
 pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
 y_df[x] = y_df[x].astype(str)
-# import pdb; pdb.set_trace()
-ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, **boxplot_kwargs)
+
+# ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, **boxplot_kwargs)
+ax = seaborn.barplot(x=x, y=y, data=y_df, order=order, estimator=numpy.mean, palette="rocket_r")
 
 annotator = Annotator(ax, pairs, data=y_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
-
-# ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, palette="rocket_r")
-# test_results = add_stat_annotation(ax, data=y_df, x="gwas_category_count", y=y, order=order,
-#                                    box_pairs=box_pairs,
-#                                    test='Mann-Whitney', text_format='star',
-#                                    loc='inside', verbose=2)
 
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
@@ -111,8 +110,10 @@ plt.savefig(eqtl_beta_png_path)
 plt.close()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# boxplot and mann-whitney
 y = "gwas_beta"
-ylabel = "GWAS beta"
+title = "GWAS variant effect size"
+ylabel = "Absolute beta mean"
 
 #%%
 y_df = m_df[['gwas_category_count', 'rsid', 'gwas_identifier', y]].drop_duplicates()
@@ -126,7 +127,8 @@ describe_df = y_df.groupby(['gwas_category_count'])[y].apply(lambda x: x.describ
 pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
 y_df['gwas_category_count'] = y_df['gwas_category_count'].astype(str)
 
-ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, **boxplot_kwargs)
+# ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, **boxplot_kwargs)
+ax = seaborn.barplot(x=x, y=y, data=y_df, order=order, estimator=numpy.mean, palette="rocket_r")
 annotator = Annotator(ax, pairs, data=y_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
@@ -142,3 +144,4 @@ plt.tight_layout()
 # png_path = os.path.join(outdir_path, y + ".png")
 plt.savefig(gwas_beta_png_path)
 plt.close()
+

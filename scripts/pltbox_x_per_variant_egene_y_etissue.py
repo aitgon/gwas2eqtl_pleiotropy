@@ -60,8 +60,11 @@ sel_cols = ['rsid', 'egene', 'etissue_category']  # tissue per variant-egene
 m_df = m_df[sel_cols + ['gwas_category_count']]
 m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
 
+#%% keep unique rsid-etissue_category pairs with max. gwas category
+m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
+m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_category', 'egene'], keep='first')
+
 #%%
-m_df = m_df.drop_duplicates()
 m_df = m_df.groupby(['rsid', 'egene', 'gwas_category_count']).count()
 m_df = m_df.reset_index()
 m_df.columns = ['rsid', 'egene', 'gwas_category_count', 'etissue_category_count']
