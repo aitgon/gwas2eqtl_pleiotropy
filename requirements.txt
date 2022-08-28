@@ -14,3 +14,4 @@ statannotations
 statsmodels
 suds
 termcolor
+xlsxwriter

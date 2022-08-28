@@ -50,7 +50,7 @@ capt_df.to_excel(st_writer, sheet_name='Table descrip.', index=False, header=Tru
 sheet_name = 'ST1'
 etissue_category_ods_path = os.path.join(PathManager.get_project_path(), "config", "etissue_category.ods")
 st_df = pandas.read_excel(etissue_category_ods_path, index_col=None, header=0)
-st_df.drop(['Unnamed: 7', 'etissue_category.1', 'count'], axis=1, inplace=True)
+st_df.drop(['Unnamed: 8', 'etissue_category.1', 'count'], axis=1, inplace=True)
 st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 sheet_counter += 1
 
