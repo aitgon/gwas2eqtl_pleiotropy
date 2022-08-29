@@ -43,6 +43,8 @@ rule all:
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
         os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
         os.path.join(outdir, "ms_supp_tab/ST3_eqtl2gwas_h4.xlsx"),
+        os.path.join(outdir, "cmpt_explained_loci.py/list.tsv"),
+        os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
 
 include: 'Snakefile_plots.yml'
 
@@ -55,6 +57,7 @@ rule create_table_supplementary:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),    
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),    
         os.path.join(outdir, "filter_h4.py/h4.tsv"),
+        os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
     output:
         os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
         os.path.join(outdir, "ms_supp_tab/ST3_eqtl2gwas_h4.xlsx"),
@@ -144,6 +147,15 @@ rule filter_h4:
         os.path.join(outdir, "filter_h4.py/h4.tsv"),
     shell:
         "python scripts/filter_h4.py {input[0]} {output[0]}"
+
+rule cmpt_explained_loci:
+    input:
+        os.path.join(outdir, "annotate.py/annotated.tsv.gz"),
+    output:
+        os.path.join(outdir, "cmpt_explained_loci.py/list.tsv"),
+        os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
+    shell:
+        "python scripts/cmpt_explained_loci.py {input[0]} {output[0]} {output[1]}"
 
 rule create_table_web:
     input:

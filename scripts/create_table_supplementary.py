@@ -42,6 +42,9 @@ description_lst.append("Count and list of GWAS phenotypes, egenes and etissues f
 #
 sheet_name_lst.append("ST5")
 description_lst.append("Count and list of GWAS phenotypes for each pleiotropic region")
+#
+sheet_name_lst.append("ST6")
+description_lst.append("Percentage of explained GWAS loci")
 
 capt_df = pandas.DataFrame({'Supp. Tab.': sheet_name_lst, 'Description': description_lst})
 capt_df.to_excel(st_writer, sheet_name='Table descrip.', index=False, header=True)
@@ -110,6 +113,14 @@ for rowi, row in st_df.iterrows():
 st_df.sort_values(by=['gwas_category_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)
 st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
 st_df = st_df[['chrom', 'cytoband', 'start', 'end', 'gwas_category_count', 'gwas_category_lst', 'egene_symbol', 'etissue', 'egene']]
+st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
+sheet_counter += 1
+
+#%% ST6
+sheet_name = 'ST6'
+tsv_path = os.path.join(wdir_path, "cmpt_explained_loci.py/explained_perc.tsv")
+st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
+st_df.sort_values(by=st_df.columns.tolist(), inplace=True)
 st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 sheet_counter += 1
 
