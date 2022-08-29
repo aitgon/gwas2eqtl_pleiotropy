@@ -89,9 +89,9 @@ The colocalization and analysis pipelines can be found here: \url{https://github
 
 \subsection*{Colocalization}
 
-I developed a colocalization pipeline based on a pipeline that is public at the eQTL Catalogue Github repository ( \url{https://github.com/eQTL-Catalogue/colocalisation} ).
+My colocalization pipeline was initially based on another pipeline that is at the eQTL Catalogue Github repository ( \url{https://github.com/eQTL-Catalogue/colocalisation} ).
 %
-First lead eQTLs with FDR 0.05 in each sample are selected and surrounding eQTL and GWAS variants in a radius of 500 000 nt are retrieved.
+First lead eQTLs with FDR 0.05 in each sample are selected and surrounding eQTL and GWAS variants with radius of 500,000 nt (Total window 1,000,000 nt) are retrieved.
 %
 Colocalization between eQTL and GWAS variants is tested using the "coloc.abf" function of CRAN coloc for each window, each eQTL sample and each GWAS.
 
