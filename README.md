@@ -93,3 +93,9 @@ cd ms
 latex textgreek.ins
 cd $OLDPWD
 ~~~
+
+# Poster
+
+Go to poster_eccb22_barcelona and follow the readme.md instructions
+
+

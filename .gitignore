@@ -47,8 +47,11 @@ poster_eccb22_barcelona/a0header.ps
 poster_eccb22_barcelona/a0poster.cls
 poster_eccb22_barcelona/a0size.sty
 poster_eccb22_barcelona/agsm.bst
+poster_eccb22_barcelona.bbl
 poster_eccb22_barcelona/biblio.bib
+poster_eccb22_barcelona.blg
 poster_eccb22_barcelona/img/
+poster_eccb22_barcelona/img_tmp
 poster_eccb22_barcelona/indent.log
 poster_eccb22_barcelona/nature.bst
 poster_eccb22_barcelona/naturemag.bst
@@ -60,7 +63,6 @@ poster_eccb22_barcelona/poster_eccb22_barcelona.log
 poster_eccb22_barcelona/poster_eccb22_barcelona.out
 poster_eccb22_barcelona/poster_eccb22_barcelona.pdf
 poster_eccb22_barcelona/tcrm3583.log
-poster_eccb22_barcelona/a0header.ps
 __pycache__
 .RData
 .Rhistory
