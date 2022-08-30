@@ -1,0 +1,296 @@
+%\documentclass[landscape,a0b,final,a4resizeable]{a0poster}
+%\documentclass[landscape,a0b,final]{a0poster}
+%\documentclass[portrait,a0b,final,a4resizeable]{a0poster}
+\documentclass[portrait,a0b,final,a4resizeable]{a0poster}
+%%% Option "a4resizeable" makes it possible ot resize the
+%   poster by the command: psresize -pa4 poster.ps poster-a4.ps
+%   For final printing, please remove option "a4resizeable" !!
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{multicol}
+\usepackage{natbib}
+\usepackage{pstricks,pst-grad}
+\usepackage{subfigure}
+\usepackage{hyperref}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%           document formatting parameters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% DEFINE POSTER WIDTH
+\newenvironment{poster}{
+  \begin{center}
+  \begin{minipage}[c]{0.98\textwidth}
+}{
+  \end{minipage} 
+  \end{center}
+}
+% DEFINITION OF SOME METRICS
+\setlength{\columnsep}{3cm}
+\setlength{\columnseprule}{2mm}
+%\setlength{\parindent}{0.0cm}
+% DEFINITION OF FUNCTION TO SET POSTER BACKGROUND GRADIENT COLORS
+\newcommand{\backgroundcolor}[3]{
+  \newrgbcolor{cgradbegin}{#1}
+  \newrgbcolor{cgradend}{#2}
+  \psframe[fillstyle=gradient,gradend=cgradend,
+  gradbegin=cgradbegin,gradmidpoint=#3](0.,0.)(1.\textwidth,-1.\textheight)
+}
+% MAIN TITLE ENVIRONMENT
+\newenvironment{pcolumn}[1]{
+  \begin{minipage}{#1\textwidth}
+  \begin{center}
+}{
+  \end{center}
+  \end{minipage}
+}
+% SECTION TITLE DECORATION BOX (BLUE GRADIENT)
+\newrgbcolor{lcolor}{0. 0. 0.80}
+\newrgbcolor{gcolor1}{1. 1. 1.}
+\newrgbcolor{gcolor2}{.80 .80 1.}
+%
+\newcommand{\pbox}[4]{
+\psshadowbox[#3]{
+\begin{minipage}[t][#2][t]{#1}
+#4
+\end{minipage}
+}}
+
+% MY FIGURES
+% \myfig - replacement for \figure
+% necessary, since in multicol-environment 171231_training_matrix.eps
+% \figure won't work
+\newcommand{\myfig}[3][0]{
+\begin{center}
+  \vspace{0.5cm}
+  \includegraphics[width=#3\hsize,angle=#1]{#2}
+  \nobreak\medskip
+\end{center}}
+%
+% MY CAPTIONS
+% \mycaption - replacement for \caption
+% necessary, since in multicol-environment \figure and
+% therefore \caption won't work
+%\newcounter{figure}
+\setcounter{figure}{1}
+\newcommand{\mycaption}[1]{
+  \vspace{0.25cm}
+  \begin{quote}%\centering
+    {{\bf Figure \arabic{figure}:} #1}
+  \end{quote}
+  \vspace{0.5cm}
+  \stepcounter{figure}
+}
+% DEFINE FONT COMMANDS
+\newcommand{\fontbody}{\Large}
+%\newcommand{\fontbody}[1]{\textsf{#1}}
+\newcommand{\fonttitle}[1]{\veryHuge \textsf{#1}} 
+\newcommand{\fontheader}[1]{\Huge \textsf{#1}} 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Begin of Document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+% Set document size
+\large
+
+\backgroundcolor{1. 1. 1.}{1. 1. 1.}{0.5}
+
+\vspace*{0.5cm}
+
+
+\newrgbcolor{lightblue}{0. 0. 0.80}
+\newrgbcolor{white}{1. 1. 1.}
+\newrgbcolor{whiteblue}{.80 .80 1.}
+
+
+\begin{poster}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%% Header
+%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center}
+%\begin{pcolumn}{1}
+\pbox{0.98\textwidth}{}{linewidth=2mm,framearc=0.3,linecolor=lightblue,fillstyle=gradient,gradangle=0,gradbegin=white,gradend=whiteblue,gradmidpoint=1.0,framesep=0.25em}{
+\begin{minipage}[c][10cm][c]{0.1\textwidth}
+  \begin{center}
+    \includegraphics[width=12cm,angle=0]{img/logo_sciences.eps}
+  \end{center}
+\end{minipage}
+\begin{minipage}[c][9cm][c]{0.7\textwidth}
+  \begin{center}
+%Microarray analysis of chicken and mouse presomitic mesoderm along the posterior-anterior axisS
+%    {\sc \Huge Microarray analysis of chicken and mouse}\\[4.mm]
+%    {\sc \Huge presomitic mesoderm along the posterior-anterior axis}\\[2.mm]
+%\vspace{1cm}
+    { \fonttitle{Analysis of gene regulatory properties} }\\[4.mm]
+    { \fonttitle{underlying trait pleiotropy} }\\[2.mm]
+    \huge Aitor Gonz\'alez$^*$\\[2.mm]
+    \large TAGC Laboratory, Aix-Marseille Univ, INSERM UMR1090, 13288 Marseille, France\\[2.mm]
+    \large $^*$Email: aitor.gonzalez@univ-amu.fr
+  \end{center}
+  \end{minipage}
+\begin{minipage}[c][10cm][c]{0.1\textwidth}
+  \begin{center}
+    \includegraphics[width=12cm,angle=0]{img/logo_tagc_400x230_centered_1.eps}
+    \includegraphics[width=12cm,angle=0]{img/logo_tagc_400x230_centered_1.eps}
+  \end{center}
+\end{minipage}
+} % end pbox
+%\end{pcolumn}
+\end{center}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%%% Content
+%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{0.5cm} % intersection space
+
+%%% Begin of Multicols-Enviroment
+\begin{multicols}{2}
+
+%%%%%%%%%%%%%%%%%%%%%
+%%% Background
+
+\begin{center}\pbox{0.8\columnwidth}{}{linewidth=2mm,framearc=0.1,linecolor=lightblue,fillstyle=gradient,gradangle=0,gradbegin=white,gradend=whiteblue,gradmidpoint=1.0,framesep=0.5em}{\huge \begin{center}\fontheader{Background and Objectives}\end{center}}\end{center}
+
+\section*{Background} 
+
+\begin{enumerate}
+\item Genome-wide association studies (GWAS) map genotypes to traits.
+\item The IEU OpenGWAS project is a database of GWAS:\\ \url{https://gwas.mrcieu.ac.uk}
+\item The large number of available GWAS have allowed to define pleiotropic regions in the genome (REF).
+\item Most GWAS loci are non-coding but the gene regulatory basis of pleiotropy is well understood.
+\item Expression quantitative trait loci (eQTL) map genotypes to expression phenotypes.
+\item The EBI eQTL Catalogue is a database of uniformely processed eQTLs:\\ \url{https://www.ebi.ac.uk/eqtl}
+\item The R package coloc performs colocalization tests between genetic traits:\\ \url{https://CRAN.R-project.org/package=coloc}
+\end{enumerate}
+
+\section*{Objectives} 
+
+\begin{enumerate}
+\item To develop an eQTL/GWAS variant colocalization pipeline
+\item To investigate gene regulatory properties underlying trait pleiotropy
+\end{enumerate}
+
+\vspace{0.5cm} % intersection space
+
+%%%%%%%%%%%%%%%%%%%%%
+%%% Results
+
+\begin{center}\pbox{0.8\columnwidth}{}{linewidth=2mm,framearc=0.1,linecolor=lightblue,fillstyle=gradient,gradangle=0,gradbegin=white,gradend=whiteblue,gradmidpoint=1.0,framesep=0.5em}{\begin{center}\fontheader{Results}\end{center}}\end{center}
+
+- A pipeline of eQTL/GWAS variant colocalization (Screenshot pythonanywhere)
+- Table with most pleiotropic variants (Table 1)
+- Molecular mechanisms Fig 7 and fig 8a
+- Model of mechanisms Fig 10
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FIGURE 1
+\begin{minipage}{1\columnwidth}
+    \begin{center}
+	    \begin{minipage}{0.6\columnwidth} 
+		    \includegraphics[width=\columnwidth]{example-image-a}
+	    \end{minipage}
+	    \mycaption{\fontbody A set of pruned index SNPs in approximate linkage equilibrium is labeled as positive based on LD distance to associated SNPs from the GRASP database \citep{Leslie2014} and annotated with the LD distance to annotations. This training dataset is used for supervised classification based on the gradient boosting algorithm (XGBOOST software). Intergenic regions are annotated and scored with this model.}
+    \end{center}
+\end{minipage}
+
+\vspace{0.5cm} % intersection space
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FIGURE 2
+\begin{minipage}{1\columnwidth}
+    \begin{center}
+	    \begin{minipage}{0.55\columnwidth} 
+		    \includegraphics[width=\columnwidth]{example-image-a}
+	    \end{minipage}
+	    \begin{minipage}{0.35\columnwidth} 
+		    \includegraphics[width=\columnwidth]{example-image-b}
+	    \end{minipage}
+	    \mycaption{\fontbody A GWAS SNP prediction model based on gene regulatory annotations. Left: AUC values of intergenic GWAS Catalog SNPs calculated with GWAVA, DeepSea and TAGOOS scores. Right: Odds ratio of GWAS Catalog SNP enrichment in TAGOOS-significant or cell-specific regulatory (TSS, promoter flanking region, weak or strong enhancer) chromatin state regions.}
+    \end{center}
+\end{minipage}
+
+\vspace{0.5cm} % intersection space
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FIGURE 3
+\begin{minipage}{1\columnwidth}
+    \begin{center}
+	    \begin{center}
+		    \begin{minipage}{0.45\columnwidth} 
+			    \includegraphics[width=\columnwidth]{example-image-c}
+		    \end{minipage}
+		    \begin{minipage}{0.45\columnwidth} 
+		    \mycaption{\fontbody Correlation of sample number of selected variables with the TAGOOS score. For each unseen GWAS Catalog SNPs, we calculated a sample proportion matrix with the proportion of samples out of the maximal sample number of a given molecular assay. Heatmap of the sample proportion matrix with the SNPs in the rows ordered by the TAGOOS score (Green column).}
+		    \end{minipage}
+	    \end{center}
+    \end{center}
+\end{minipage}
+
+\vspace{0.5cm} % intersection space
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FIGURE 3
+\begin{minipage}{1\columnwidth}
+    \begin{center}
+	    \begin{center}
+		    \begin{minipage}{0.5\columnwidth} 
+			    \includegraphics[width=\columnwidth]{example-image-a}
+		    \end{minipage}
+		    \mycaption{\fontbody Percentage of unseen GWAS Catalog SNPs with significant and non-significant TAGOOS scores annotated with each transcriptional regulator from the ReMap database ordered by the decreasing percentage in significant TAGOOS SNPs ($P_{\text{Wilcox paired}}=2.2\times 10^{-16}$) \citep{Cheneby2017}.}
+	    \end{center}
+    \end{center}
+\end{minipage}
+
+\vspace{0.5cm} % intersection space
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FIGURE 5
+\begin{minipage}{1\columnwidth}
+    \begin{center}
+	    \begin{center}
+		    \begin{minipage}{0.7\columnwidth} 
+			    \includegraphics[width=\columnwidth]{example-image-b}
+		    \end{minipage}
+		    \mycaption{\fontbody Motif density computed with RSAT Matrix-scan in 10 nt bins in a 100 nt window around intergenic unseen GWAS Catalog SNPs split according to the TAGOOS significance and the reference versus alternative allele \citep{Medina-Rivera2015}}
+	    \end{center}
+    \end{center}
+\end{minipage}
+
+\vspace{0.5cm} % intersection space
+
+%%%%%%%%%%%%%%%%%%%%%
+%%% Conclusions and Future Directions
+
+\begin{center}\pbox{0.8\columnwidth}{}{linewidth=2mm,framearc=0.1,linecolor=lightblue,fillstyle=gradient,gradangle=0,gradbegin=white,gradend=whiteblue,gradmidpoint=1.0,framesep=0.5em}{\begin{center}\fontheader{Conclusions}\end{center}}\end{center}
+
+\begin{itemize}
+\fontbody
+
+\item We present a new method to learn a supervised model of associated SNPs based on regulatory features (Fig. 1).
+
+\end{itemize}
+
+\footnotesize
+\bibliographystyle{plain}
+\bibliography{biblio}
+
+\end{multicols}
+
+\end{poster}
+
+\end{document}
+
