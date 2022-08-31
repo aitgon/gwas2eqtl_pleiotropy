@@ -94,7 +94,7 @@
 	    {{\bf Table \arabic{table}:} #1}
 	  \end{quote}
 	  \vspace{0.5cm}
-	  \stepcounter{figure}
+	  \stepcounter{table}
 	}
 	
 	% DEFINE FONT COMMANDS
@@ -134,7 +134,8 @@
 	\pbox{0.98\textwidth}{}{linewidth=2mm,framearc=0.3,linecolor=lightblue,fillstyle=gradient,gradangle=0,gradbegin=white,gradend=whiteblue,gradmidpoint=1.0,framesep=0.25em}{
 	\begin{minipage}[c][10cm][c]{0.1\textwidth}
 	  \begin{center}
-	    \includegraphics[width=12cm,angle=0]{img_tmp/logo_sciences.eps}
+	    \includegraphics[width=12cm,angle=0]{img_tmp/tagc_logo.eps}
+	    \includegraphics[width=12cm,angle=0]{img_tmp/inserm.eps}
 	  \end{center}
 	\end{minipage}
 	\begin{minipage}[c][9cm][c]{0.7\textwidth}
@@ -151,16 +152,13 @@
 	  \end{center}
 	  \end{minipage}
 	\begin{minipage}[c][10cm][c]{0.1\textwidth}
+	    \includegraphics[width=12cm,angle=0]{img_tmp/DIRCOM-Logo-FSS.eps}
 	  \begin{center}
-	    \includegraphics[width=12cm,angle=0]{img_tmp/logo_tagc_400x230_centered_1.eps}
-	    \includegraphics[width=12cm,angle=0]{img_tmp/logo_tagc_400x230_centered_1.eps}
 	  \end{center}
 	\end{minipage}
 	} % end pbox
 	%\end{pcolumn}
 	\end{center}
-	
-	
 	
 	%%%%%%%%%%%%%%%%%%%%%
 	%%% Content
@@ -180,11 +178,11 @@
 	
 	\begin{enumerate}
 	\item Genome-wide association studies (GWAS) map genotypes to traits.
-	\item The IEU OpenGWAS project is a database of GWAS:\\ \url{https://gwas.mrcieu.ac.uk}
+	\item Here we use this GWAS database: The IEU OpenGWAS project\\ \url{https://gwas.mrcieu.ac.uk}
 	\item The large number of available GWAS have allowed to define pleiotropic regions in the genome (\citep{2019.Posthuma.Watanabe}).
-	\item Most GWAS loci are non-coding but the gene regulatory basis of pleiotropy is well understood.
+	\item Most GWAS loci are non-coding but the gene regulatory basis of pleiotropy is not well understood.
 	\item Expression quantitative trait loci (eQTL) map genotypes to expression phenotypes.
-	\item The EBI eQTL Catalogue is a database of uniformely processed eQTLs:\\ \url{https://www.ebi.ac.uk/eqtl}
+	\item Here we use this eQTL database: The EBI eQTL Catalogue\\ \url{https://www.ebi.ac.uk/eqtl}
 	\item The R package coloc performs colocalization tests between genetic traits:\\ \url{https://CRAN.R-project.org/package=coloc}
 	\end{enumerate}
 	
@@ -244,26 +242,21 @@
 	\vspace{0.5cm} % intersection space	
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% FIGURE 1
+	% FIGURE 2 downstream regulation
 	\begin{minipage}{1\columnwidth}
 	    \begin{center}
-		    \begin{minipage}{0.32\columnwidth} 
-			    \includegraphics[width=\columnwidth]{img_tmp/pltbar_x_per_variant_etissue_y_egene.eps}
+		    \begin{minipage}{\columnwidth} 
+\includegraphics[width=\textwidth]{img_tmp/david_pleio_3.eps}
+\includegraphics[width=\textwidth]{img_tmp/david_pleio_2.eps}
 		    \end{minipage}
-		    \begin{minipage}{0.32\columnwidth} 
-			    \includegraphics[width=\columnwidth]{img_tmp/pltbar_x_per_variant_egene_y_etissue.eps}
-		    \end{minipage}
-		    \begin{minipage}{0.32\columnwidth} 
-			    \includegraphics[width=\columnwidth]{img_tmp/pltbar_x_per_variant_egene_etissue_y_gwas.eps}
-		    \end{minipage}
-		    \mycaptionfig{Count of eGenes per variant-tissue (\textbf{Left}), eTissues per variant-eGene (\textbf{Center}) and GWAS categories per variant-eGene-eTissue (\textbf{Right}).}
+		    \mycaptionfig{Gene ontology analysis of eGenes of variants associated to three (\textbf{a}) and two (\textbf{b}) GWAS categories compared to eGenes of variants associated to one GWAS category.}
 	    \end{center}
 	\end{minipage}
 	
 	\vspace{0.5cm} % intersection space
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% FIGURE 2 VEP
+	% FIGURE 1 VEP
 	\begin{minipage}{1\columnwidth}
 	    \begin{center}
 		    \begin{minipage}{0.32\columnwidth} 
@@ -282,7 +275,26 @@
 	\vspace{0.5cm} % intersection space	
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% FIGURE 2
+	% FIGURE 2 downstream regulation
+	\begin{minipage}{1\columnwidth}
+	    \begin{center}
+		    \begin{minipage}{0.32\columnwidth} 
+			    \includegraphics[width=\columnwidth]{img_tmp/pltbar_x_per_variant_etissue_y_egene.eps}
+		    \end{minipage}
+		    \begin{minipage}{0.32\columnwidth} 
+			    \includegraphics[width=\columnwidth]{img_tmp/pltbar_x_per_variant_egene_y_etissue.eps}
+		    \end{minipage}
+		    \begin{minipage}{0.32\columnwidth} 
+			    \includegraphics[width=\columnwidth]{img_tmp/pltbar_x_per_variant_egene_etissue_y_gwas.eps}
+		    \end{minipage}
+		    \mycaptionfig{Count of eGenes per variant-tissue (\textbf{Left}), eTissues per variant-eGene (\textbf{Center}) and GWAS categories per variant-eGene-eTissue (\textbf{Right}).}
+	    \end{center}
+	\end{minipage}
+	
+	\vspace{0.5cm} % intersection space
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% FIGURE 3 TFs
 	\begin{minipage}{1\columnwidth}
 	    \begin{center}
 		    \begin{center}
@@ -299,7 +311,7 @@
 	\vspace{0.5cm} % intersection space
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	% FIGURE 3
+	% FIGURE 4 Model
 	\begin{minipage}{1\columnwidth}
 	    \begin{center}
 		    \begin{minipage}{1\columnwidth} 
@@ -325,12 +337,14 @@
 	
 	\begin{center}\pbox{0.8\columnwidth}{}{linewidth=2mm,framearc=0.1,linecolor=lightblue,fillstyle=gradient,gradangle=0,gradbegin=white,gradend=whiteblue,gradmidpoint=1.0,framesep=0.5em}{\begin{center}\fontheader{Conclusions}\end{center}}\end{center}
 	
-	\begin{itemize}
-	\fontbody
-	
-	\item A pipeline to colocalize eQTLs and GWAS variantsWe present a new method to learn a supervised model of associated SNPs based on regulatory features (Fig. 1).
-	\item We present a new method to learn a supervised model of associated SNPs based on regulatory features (Fig. 1).
-	
+	\begin{itemize}	
+	\item We have developed a pipeline of eQTL/GWAS colocalization (Fig. 1).
+	\item These colocalization results are in an easy to use web site (Fig. 1).
+	\item We have computed a list of pleiotropic eQTLs (Table 1).
+	\item Pleiotropic variants are enriched in missense and splice region VEP effect consequences (Fig. 2).
+	\item Pleiotropic eQTLs have more eGenes per variant-eTissue, are active in more eTissues per variant-eGene and are associated to more GWAS categories per variant-eGene-eTissue (Fig. 3).
+	\item Pleiotropic variants bind transcription factors (Fig. 4).
+	\item Model explaining the reason of pleiotropy for eQTLs (Fig. 5).
 	\end{itemize}
 	
 	\normalsize
