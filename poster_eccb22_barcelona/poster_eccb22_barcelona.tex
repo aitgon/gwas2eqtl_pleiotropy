@@ -1,7 +1,7 @@
 	%\documentclass[landscape,a0b,final,a4resizeable]{a0poster}
 	%\documentclass[landscape,a0b,final]{a0poster}
 	%\documentclass[portrait,a0b,final,a4resizeable]{a0poster}
-	\documentclass[portrait,a0b,final,a4resizeable]{a0poster}
+	\documentclass[portrait,a0b,final]{a0poster}
 	%%% Option "a4resizeable" makes it possible ot resize the
 	%   poster by the command: psresize -pa4 poster.ps poster-a4.ps
 	%   For final printing, please remove option "a4resizeable" !!
@@ -179,10 +179,11 @@
 	\begin{enumerate}
 	\item Genome-wide association studies (GWAS) map genotypes to traits.
 	\item Here we use this GWAS database: The IEU OpenGWAS project\\ \url{https://gwas.mrcieu.ac.uk}
-	\item The large number of available GWAS have allowed to define pleiotropic regions in the genome (\citep{2019.Posthuma.Watanabe}).
+	\item The large number of available GWAS have allowed to define pleiotropic regions in the genome \citep{2019.Posthuma.Watanabe}.
 	\item Most GWAS loci are non-coding but the gene regulatory basis of pleiotropy is not well understood.
 	\item Expression quantitative trait loci (eQTL) map genotypes to expression phenotypes.
 	\item Here we use this eQTL database: The EBI eQTL Catalogue\\ \url{https://www.ebi.ac.uk/eqtl}
+	\item Databases of GWAS and eQTL studies allow large colocalization analysis \citep{2021.Li.Mu}.
 	\item The R package coloc performs colocalization tests between genetic traits:\\ \url{https://CRAN.R-project.org/package=coloc}
 	\end{enumerate}
 	
@@ -199,11 +200,6 @@
 	%%% Results
 	
 	\begin{center}\pbox{0.8\columnwidth}{}{linewidth=2mm,framearc=0.1,linecolor=lightblue,fillstyle=gradient,gradangle=0,gradbegin=white,gradend=whiteblue,gradmidpoint=1.0,framesep=0.5em}{\begin{center}\fontheader{Results}\end{center}}\end{center}
-	
-	- A pipeline of eQTL/GWAS variant colocalization (Screenshot pythonanywhere)
-	- Table with most pleiotropic variants (Table 1)
-	- Molecular mechanisms Fig 7 and fig 8a
-	- Model of mechanisms Fig 10
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% FIGURE 1 web interface
@@ -249,7 +245,7 @@
 \includegraphics[width=\textwidth]{img_tmp/david_pleio_3.eps}
 \includegraphics[width=\textwidth]{img_tmp/david_pleio_2.eps}
 		    \end{minipage}
-		    \mycaptionfig{Gene ontology analysis of eGenes of variants associated to three (\textbf{a}) and two (\textbf{b}) GWAS categories compared to eGenes of variants associated to one GWAS category.}
+		    \mycaptionfig{Gene ontology analysis of genes associated with eQTLs (eGenes) of variants associated to three (\textbf{Upper}) and two (\textbf{Bottom}) GWAS categories compared to eGenes of variants associated to one GWAS category.}
 	    \end{center}
 	\end{minipage}
 	
@@ -268,11 +264,11 @@
 		    \begin{minipage}{0.32\columnwidth} 
 			    \includegraphics[width=\columnwidth]{img_tmp/3_prime_UTR_variant.eps}
 		    \end{minipage}
-		    \mycaptionfig{Variant effect predictor (VEP) analysis as a function of the number of GWAS catategory number for three different consequences: Missense variant (Left), splice region variant (Center) and 3’ UTR variant (Right)}
+		    \mycaptionfig{Variant effect predictor (VEP) analysis as a function of the number of GWAS catategory number for three different consequences: Missense variant (\textbf{Left}), splice region variant (\textbf{Center}) and 3’ UTR variant (\textbf{Right})}
 	    \end{center}
 	\end{minipage}
 	
-	\vspace{0.5cm} % intersection space	
+	\vspace{0.9cm} % intersection space	
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% FIGURE 2 downstream regulation
@@ -287,11 +283,11 @@
 		    \begin{minipage}{0.32\columnwidth} 
 			    \includegraphics[width=\columnwidth]{img_tmp/pltbar_x_per_variant_egene_etissue_y_gwas.eps}
 		    \end{minipage}
-		    \mycaptionfig{Count of eGenes per variant-tissue (\textbf{Left}), eTissues per variant-eGene (\textbf{Center}) and GWAS categories per variant-eGene-eTissue (\textbf{Right}).}
+		    \mycaptionfig{Count of eGenes per variant-tissue (\textbf{Left}), samples of eQTLs (eTissues) per variant-eGene (\textbf{Center}) and GWAS categories per variant-eGene-eTissue (\textbf{Right}).}
 	    \end{center}
 	\end{minipage}
 	
-	\vspace{0.5cm} % intersection space
+	\vspace{0.9cm} % intersection space
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% FIGURE 3 TFs
@@ -308,7 +304,7 @@
 	    \end{center}
 	\end{minipage}
 	
-	\vspace{0.5cm} % intersection space
+	\vspace{0.9cm} % intersection space
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% FIGURE 4 Model
@@ -318,19 +314,19 @@
 			    \includegraphics[width=\columnwidth]{img_tmp/graphical_summary.eps}
 		    \end{minipage}
 		    \mycaptionfig{Model of regulatory variant pleiotropy. I have investigated
-	three possible mechanisms of pleiotropy. Left, Pleiotropic variants have more
+	three possible mechanisms of pleiotropy. (\textbf{Left}), Pleiotropic variants have more
 	eGenes that result in more functions and more phenotypes. This might arise
 	from an enrichment of pleiotropic variants in splicing or 3’ UTR regions.
-	Center, I have also found that eGenes of pleiotropic variants are active
+	(\textbf{Center}), I have also found that eGenes of pleiotropic variants are active
 	in more etissues which result in more GWAS phenotypes. This might be
-	explained from variants being bound by more transcription factors. Left
+	explained from variants being bound by more transcription factors. (\textbf{Right}),
 	Triplets of variant-eGene-eTissues are associated with more GWAS pheno-
 	types, which directly affect the number of GWAS phenotypes. I have found
 	that this might be explained by an enrichment of missense alleles.}
 	    \end{center}
 	\end{minipage}
 	
-	\vspace{0.5cm} % intersection space
+	\vspace{0.9cm} % intersection space
 	
 	%%%%%%%%%%%%%%%%%%%%%
 	%%% Conclusions and Future Directions
@@ -338,13 +334,14 @@
 	\begin{center}\pbox{0.8\columnwidth}{}{linewidth=2mm,framearc=0.1,linecolor=lightblue,fillstyle=gradient,gradangle=0,gradbegin=white,gradend=whiteblue,gradmidpoint=1.0,framesep=0.5em}{\begin{center}\fontheader{Conclusions}\end{center}}\end{center}
 	
 	\begin{itemize}	
-	\item We have developed a pipeline of eQTL/GWAS colocalization (Fig. 1).
-	\item These colocalization results are in an easy to use web site (Fig. 1).
-	\item We have computed a list of pleiotropic eQTLs (Table 1).
-	\item Pleiotropic variants are enriched in missense and splice region VEP effect consequences (Fig. 2).
-	\item Pleiotropic eQTLs have more eGenes per variant-eTissue, are active in more eTissues per variant-eGene and are associated to more GWAS categories per variant-eGene-eTissue (Fig. 3).
-	\item Pleiotropic variants bind transcription factors (Fig. 4).
-	\item Model explaining the reason of pleiotropy for eQTLs (Fig. 5).
+	\item We have developed a pipeline of eQTL/GWAS colocalization based on 127 eQTL studies and 150 GWAS (\textbf{Fig. 1}).
+	\item These colocalization results are available in an easy to use web site (\textbf{Fig. 1}).
+	\item We have computed a list of pleiotropic eQTLs (\textbf{Table 1}).
+	\item eGenes of pleiotropic variants are enriched in immune related functions (\textbf{Fig. 2}).
+	\item Pleiotropic variants are enriched in missense and splice region VEP effect consequences (\textbf{Fig. 3}).
+	\item Pleiotropic eQTLs have more eGenes per variant-eTissue, are active in more eTissues per variant-eGene and are associated to more GWAS categories per variant-eGene-eTissue (\textbf{Fig. 4}).
+	\item Pleiotropic variants bind more transcription factors (\textbf{Fig. 5}).
+	\item We propose a model explaining the hypotheses underlying the pleiotropy for eQTLs (\textbf{Fig. 6}).
 	\end{itemize}
 	
 	\normalsize
