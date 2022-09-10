@@ -3,12 +3,39 @@ etissue_cat_ods = config['etissue_cat_ods']
 gwas_cat_ods = config['gwas_cat_ods']
 outdir = config['outdir']
 url_db = config['url_db']
+upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
 
 """time snakemake --cores 1 -p -s tools/snkfl_db.yml --config url_db='sqlite:///out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/db/db.sqlite' coloc_tsv_gz=../gwas2eqtl/out/gwas420/gwas_ebi-a-GCST002318_eqtl_Schmiedel_2018_CD8_T-cell_naive.tsv.gz outdir=out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000 gwas_cat_ods=config/gwas420.ods etissue_cat_ods=config/etissue_category.ods --rerun-incomplete"""
 
 rule all:
     input:
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+
+rule count_per_rsid:
+    input:
+        os.path.join(outdir, "filter_h4_2.py/h4.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_0_hg38.bed"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_50_hg38.bed"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
+    params:
+        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+    shell:
+        "python scripts/cmpt_count_per_rsid.py {input[0]} {params.upper_var_gwas_cat_count} {output[0]}"
+
+rule filter_h4:
+    input:
+        etissue_cat_ods,
         os.path.join(outdir, "db/db_annotated.txt"),
+    output:
+        os.path.join(outdir, "filter_h4_2.py/h4.tsv"),
+    params:
+        url_db,
+    shell:
+        "python scripts2/filter_h4_2.py {params[0]} {input[0]} {output[0]}"
 
 rule annotate:
     input:
