@@ -42,7 +42,7 @@ rule all:
         os.path.join(outdir, "create_table_web.py/web.tsv.gz"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
         os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
-        os.path.join(outdir, "ms_supp_tab/ST3_eqtl2gwas_h4.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/ST3_gwas2eqtl_h4.xlsx"),
         os.path.join(outdir, "cmpt_explained_loci.py/list.tsv"),
         os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
 
@@ -60,7 +60,7 @@ rule create_table_supplementary:
         os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
     output:
         os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
-        os.path.join(outdir, "ms_supp_tab/ST3_eqtl2gwas_h4.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/ST3_gwas2eqtl_h4.xlsx"),
     params:
         indir=outdir,
     shell:

@@ -133,7 +133,7 @@ sheet_counter = 3
 sheet_name = 'ST{}'.format(sheet_counter)
 tsv_path = os.path.join(wdir_path, "filter_h4.py/h4.tsv")
 h4_annot_df = pandas.read_csv(tsv_path, sep="\t", header=0)
-h4_xlsx_path = os.path.join(os.path.dirname(supp_tabl_xlsx_path), "ST{}_eqtl2gwas_h4.xlsx".format(sheet_counter))
+h4_xlsx_path = os.path.join(os.path.dirname(supp_tabl_xlsx_path), "ST{}_gwas2eqtl_h4.xlsx".format(sheet_counter))
 writer_coloc_h4 = pandas.ExcelWriter(h4_xlsx_path, engine='xlsxwriter')
 h4_annot_df.sort_values(by=h4_annot_df.columns.tolist(), inplace=True)
 with pandas.ExcelWriter(h4_xlsx_path) as fout_h4_annot:

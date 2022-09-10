@@ -1,15 +1,15 @@
-# eqtl2gwas_pleiotropy
+# gwas2eqtl_pleiotropy
 
-## Colocalization using eqtl2gwas
+## Colocalization using gwas2eqtl
 
-The input data was generated using https://github.com/aitgon/eqtl2gwas, tag, 0.1.1), run with pval=5e-8, window 1000000
+The input data was generated using https://github.com/aitgon/gwas2eqtl, tag, 0.1.1), run with pval=5e-8, window 1000000
 
 ~~~
-git clone git@github.com:aitgon/eqtl2gwas.git
-cd eqtl2gwas
+git clone git@github.com:aitgon/gwas2eqtl.git
+cd gwas2eqtl
 PYTHONPATH=.:$PYTHONPATH snakemake -j all -s workflow/Snakefile_eqtl.yml -p --rerun-incomplete  --config  public_data_dir=$HOME/Software/public process_data_dir=$HOME/Software/process region=genome eqtl_fdr=0.05 window=500000
 PYTHONPATH=.:$PYTHONPATH snakemake -j all -s workflow/Snakefile_gwas.yml -p --config gwas_ods=gwas413.ods gwas_pval=5e-8 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process image_sif=out/eqt2gwas.sif --rerun-incomplete
-snakemake -c all -s workflow/Snakefile.yml -p --config gwas_ods=gwas413.ods gwas_pval=5e-8 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process region=genome window=1000000 eqtl_fdr=0.05 image_sif=out/eqtl2gwas.sif --rerun-incomplete
+snakemake -c all -s workflow/Snakefile.yml -p --config gwas_ods=gwas413.ods gwas_pval=5e-8 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process region=genome window=1000000 eqtl_fdr=0.05 image_sif=out/gwas2eqtl.sif --rerun-incomplete
 ~~~
 
 The previous commands result in this file coloc413.tsv.gz that can be also foud in the OSF site
