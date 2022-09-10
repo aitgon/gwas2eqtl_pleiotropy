@@ -1,6 +1,6 @@
 from statannotations.Annotator import Annotator
-from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi, boxplot_kwargs, annotator_config_dic
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi, boxplot_kwargs, annotator_config_dic
 
 import matplotlib.pyplot as plt
 import numpy

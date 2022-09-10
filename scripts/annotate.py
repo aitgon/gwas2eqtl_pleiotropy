@@ -1,5 +1,5 @@
-from eqtl2gwas_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
-from eqtl2gwas_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
+from gwas2eqtl_pleiotropy.Logger import Logger
 
 import os
 import pandas
@@ -8,7 +8,7 @@ import sys
 
 
 #%%
-from eqtl2gwas_pleiotropy.URL import URL
+from gwas2eqtl_pleiotropy.URL import URL
 
 help_cmd_str = "todo"
 try:

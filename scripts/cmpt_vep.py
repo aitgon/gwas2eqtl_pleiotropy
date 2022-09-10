@@ -1,7 +1,7 @@
 """Variant effect predictor"""
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.PathManager import PathManager
-from eqtl2gwas_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from matplotlib import pyplot as plt
 
 import sys

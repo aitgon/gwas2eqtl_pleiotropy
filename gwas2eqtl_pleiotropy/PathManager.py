@@ -7,7 +7,7 @@ import os
 import pathlib
 import tempfile
 
-import eqtl2gwas_pleiotropy
+import gwas2eqtl_pleiotropy
 
 
 class PathManager:
@@ -38,12 +38,12 @@ class PathManager:
     @staticmethod
     def get_package_path():
         """
-        Returns the eqtl2gwas_pleiotropy.__path__[0]
+        Returns the gwas2eqtl_pleiotropy.__path__[0]
 
         :return: path to the package
         """
 
-        package_path = eqtl2gwas_pleiotropy.__path__[0]
+        package_path = gwas2eqtl_pleiotropy.__path__[0]
         return package_path
 
     @classmethod

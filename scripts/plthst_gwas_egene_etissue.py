@@ -7,10 +7,10 @@ import pandas
 import pathlib
 import seaborn
 
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 
 plt.rcParams["figure.figsize"] = (8, 6)
-from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 seaborn.set_theme(**seaborn_theme_dic)
 
 #%%

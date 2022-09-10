@@ -3,8 +3,8 @@ import pathlib
 import pandas
 
 from mysql.connector import connect
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.PathManager import PathManager
 
 
 class UCSC:

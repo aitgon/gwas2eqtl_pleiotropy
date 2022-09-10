@@ -1,15 +1,15 @@
 import pdb
 
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.PathManager import PathManager
 from pandas import ExcelWriter
 import os
 import pandas
 import pathlib
 import requests
 
-from eqtl2gwas_pleiotropy.URL import URL
-from eqtl2gwas_pleiotropy.constants import eqtl_metadata_url
+from gwas2eqtl_pleiotropy.URL import URL
+from gwas2eqtl_pleiotropy.constants import eqtl_metadata_url
 
 
 class EBIeQTLinfo:

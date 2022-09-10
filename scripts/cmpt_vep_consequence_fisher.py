@@ -11,8 +11,8 @@ import numpy
 #%%
 from scipy.stats import fisher_exact
 
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, dpi
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.constants import tick_fontsize, label_fontsize, dpi
 
 upper_var_gwas_cat_count = 5
 vep1_path = "out/gwas413/genome/5e-08/1000000/cmpt_vep.py/vep_pleio1.tsv"

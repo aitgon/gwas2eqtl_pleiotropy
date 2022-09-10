@@ -5,8 +5,8 @@ import sys
 import urllib.request
 import requests
 
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.constants import public_data_dir
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.constants import public_data_dir
 
 
 class URL:

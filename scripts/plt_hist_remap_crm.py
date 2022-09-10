@@ -1,5 +1,5 @@
-from eqtl2gwas_pleiotropy.PathManager import PathManager
-from eqtl2gwas_pleiotropy.URL import URL
+from gwas2eqtl_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.URL import URL
 from pybedtools import BedTool
 
 import matplotlib.pyplot as plt
@@ -8,7 +8,7 @@ import pathlib
 
 
 #%%
-from eqtl2gwas_pleiotropy.constants import label_fontsize
+from gwas2eqtl_pleiotropy.constants import label_fontsize
 
 plt.rcParams["figure.figsize"] = (8, 6)
 ylabel = "Prob. Density"

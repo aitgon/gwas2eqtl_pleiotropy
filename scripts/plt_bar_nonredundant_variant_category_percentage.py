@@ -9,11 +9,11 @@ import shlex
 import subprocess
 import seaborn
 
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
-from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
-from eqtl2gwas_pleiotropy.constants import dpi, tick_fontsize, label_fontsize
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import dpi, tick_fontsize, label_fontsize
 
 plt.rcParams["figure.figsize"] = (16, 6)
 seaborn.set_theme(**seaborn_theme_dic)

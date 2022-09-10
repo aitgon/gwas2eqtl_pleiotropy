@@ -1,6 +1,6 @@
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 from matplotlib import pyplot as plt
-from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 
 import os
 import pandas

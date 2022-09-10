@@ -1,6 +1,6 @@
 import numpy
 
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, alpha, boxplot_kwargs, dpi, \
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, alpha, boxplot_kwargs, dpi, \
     annotator_config_dic
 
 import matplotlib.pyplot as plt
@@ -13,7 +13,7 @@ import sys
 from statannotations.Annotator import Annotator
 # Plot parameters
 plt.rcParams["figure.figsize"] = (8, 6)
-from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 seaborn.set_theme(**seaborn_theme_dic)
 
 #%%

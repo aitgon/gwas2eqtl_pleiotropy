@@ -6,7 +6,7 @@ from scipy.sparse import csr_matrix
 
 #%%
 
-count_per_rsid_gwas_tsv_path = "/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/gwas413/genome/5e-08/1000000/cmpt_pleiotropic_regions.py/region_window_100000.tsv"
+count_per_rsid_gwas_tsv_path = "/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas413/genome/5e-08/1000000/cmpt_pleiotropic_regions.py/region_window_100000.tsv"
 count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t", header=0)
 
 #%%

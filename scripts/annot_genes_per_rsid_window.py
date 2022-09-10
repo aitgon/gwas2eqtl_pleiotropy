@@ -7,11 +7,11 @@ import seaborn
 from matplotlib import pyplot as plt
 from statannot import add_stat_annotation
 
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.UCSC import UCSC
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.UCSC import UCSC
 
 #%%
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize
 
 refseq_df = UCSC().get_ref_gene_table(force=True)
 

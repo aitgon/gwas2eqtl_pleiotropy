@@ -24,8 +24,8 @@ plt.rcParams["figure.figsize"] = (20, 4)
 
 
 #%%
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 
 help_cmd_str = "todo"
 try:

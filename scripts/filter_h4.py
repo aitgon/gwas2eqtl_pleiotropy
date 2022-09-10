@@ -1,4 +1,4 @@
-from eqtl2gwas_pleiotropy.constants import h4_cutoff
+from gwas2eqtl_pleiotropy.constants import h4_cutoff
 
 import os
 import pandas

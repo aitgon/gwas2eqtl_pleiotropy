@@ -1,5 +1,5 @@
 import os
-from eqtl2gwas_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.PathManager import PathManager
 
 public_data_dir = os.path.join(os.environ['HOME'], "Software", "public")
 

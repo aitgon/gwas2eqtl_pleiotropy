@@ -4,8 +4,8 @@ import pathlib
 import shlex
 import subprocess
 
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.PathManager import PathManager
 
 
 #%% outdir path

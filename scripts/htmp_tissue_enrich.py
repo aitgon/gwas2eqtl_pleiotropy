@@ -1,6 +1,6 @@
 """This script will compute a tissue enrichment in a given GWAS"""
-from eqtl2gwas_pleiotropy.OpenGWASinfo import OpenGWASinfo
-from eqtl2gwas_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.OpenGWASinfo import OpenGWASinfo
+from gwas2eqtl_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
 
 import os
@@ -17,9 +17,9 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
 seaborn.set_theme(color_codes=True)
-tissue_enrich_tsv_path = "/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/gwas413/genome/5e-08/1000000/cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"
+tissue_enrich_tsv_path = "/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas413/genome/5e-08/1000000/cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"
 # gwas_info_df = pandas.read_csv("out/download/gwas-api.mrcieu.ac.uk/gwasinfo/opengwas.tsv", sep="\t")
-gwas_category_path = "/home/gonzalez/Repositories/eqtl2gwas_pleiotropy/out/gwas413/genome/5e-08/1000000/filter_h4.py/h4.tsv"
+gwas_category_path = "/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas413/genome/5e-08/1000000/filter_h4.py/h4.tsv"
 gwas_category_df = pandas.read_csv(gwas_category_path, sep="\t", header=0, usecols=["gwas_identifier", "gwas_category"]).drop_duplicates()
 
 #%%

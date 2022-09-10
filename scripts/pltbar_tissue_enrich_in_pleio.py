@@ -11,7 +11,7 @@ import sys
 from scipy.stats import fisher_exact
 from statsmodels.stats.multitest import fdrcorrection
 from matplotlib import pyplot as plt
-from eqtl2gwas_pleiotropy.constants import dpi, label_fontsize, tick_fontsize
+from gwas2eqtl_pleiotropy.constants import dpi, label_fontsize, tick_fontsize
 
 #%%
 plt.rcParams["figure.figsize"] = (16, 6)

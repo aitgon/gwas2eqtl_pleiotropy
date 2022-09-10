@@ -4,7 +4,7 @@ import sys
 import pandas
 import seaborn
 
-from eqtl2gwas_pleiotropy.constants import tick_fontsize, label_fontsize, dpi, annotator_config_dic, seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import tick_fontsize, label_fontsize, dpi, annotator_config_dic, seaborn_theme_dic
 from matplotlib import pyplot as plt
 from statannotations.Annotator import Annotator
 

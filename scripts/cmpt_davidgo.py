@@ -17,7 +17,7 @@ from suds.client import Client
 from datetime import datetime
 
 #%%
-from eqtl2gwas_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.Logger import Logger
 
 help_cmd_str = "todo"
 try:

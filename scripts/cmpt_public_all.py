@@ -1,8 +1,8 @@
-from eqtl2gwas_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
-from eqtl2gwas_pleiotropy.OpenGWASinfo import OpenGWASinfo
-from eqtl2gwas_pleiotropy.PathManager import PathManager
-from eqtl2gwas_pleiotropy.PyTabix import bgzip, tabix_index
-from eqtl2gwas_pleiotropy.constants import coloc_raw_tsv_path, h4_cutoff
+from gwas2eqtl_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
+from gwas2eqtl_pleiotropy.OpenGWASinfo import OpenGWASinfo
+from gwas2eqtl_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.PyTabix import bgzip, tabix_index
+from gwas2eqtl_pleiotropy.constants import coloc_raw_tsv_path, h4_cutoff
 
 import os
 import pandas

@@ -11,8 +11,8 @@ import seaborn
 from matplotlib import pyplot as plt
 from scipy.stats import fisher_exact
 from statannotations.Annotator import Annotator
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.constants import public_data_dir, \
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.constants import public_data_dir, \
     annotator_config_dic, label_fontsize, tick_fontsize, dpi, seaborn_theme_dic
 
 seaborn.set_theme(**seaborn_theme_dic)

@@ -1,7 +1,7 @@
 from statannot import add_stat_annotation
 
-from eqtl2gwas_pleiotropy.UCSC import UCSC
-from eqtl2gwas_pleiotropy.constants import label_fontsize, tick_fontsize
+from gwas2eqtl_pleiotropy.UCSC import UCSC
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize
 
 import matplotlib.pyplot as plt
 import os
@@ -13,7 +13,7 @@ import sys
 
 # Plot parameters
 plt.rcParams["figure.figsize"] = (8, 6)
-from eqtl2gwas_pleiotropy.constants import seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 seaborn.set_theme(**seaborn_theme_dic)
 
 #%%

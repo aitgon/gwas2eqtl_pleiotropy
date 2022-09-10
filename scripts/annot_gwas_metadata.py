@@ -1,5 +1,5 @@
-from eqtl2gwas_pleiotropy.Logger import Logger
-from eqtl2gwas_pleiotropy.URL import URL
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.URL import URL
 
 import os
 import pandas

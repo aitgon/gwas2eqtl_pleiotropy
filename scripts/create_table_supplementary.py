@@ -1,6 +1,6 @@
 import pathlib
 
-from eqtl2gwas_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.PathManager import PathManager
 
 import os
 import pandas
