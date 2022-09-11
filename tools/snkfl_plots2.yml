@@ -27,7 +27,7 @@ rule all_plots:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
         os.path.join(outdir, "pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
-#        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "pltbar_tissue_enrich_in_pleio.py/fisher.tsv"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
 
@@ -49,18 +49,29 @@ rule pltbar_pleiotropic_regions_cumsum:
     shell:
         "python scripts/pltbar_pleiotropic_regions_cumsum.py {input[0]} {output[0]}"
 
+rule pltbar_davidgo:
+    input:
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
+    output:
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
+    params:
+        upper_var_gwas_cat_count,
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
+    shell:
+        "python scripts/pltbar_davidgo.py {params[1]} {params[0]} {params[2]}"
 
-#rule pltbar_davidgo:
-#    input:
-#        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
-#    output:
-#        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
-#    params:
-#        upper_var_gwas_cat_count,
-#        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
-#        os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
-#    shell:
-#        "python scripts/pltbar_davidgo.py {params[1]} {params[0]} {params[2]}"
+rule cmpt_davidgo:
+    input:
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
+    params:
+        david_email,
+        upper_var_gwas_cat_count,
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
+    shell:
+        "python scripts/cmpt_davidgo.py {input[0]} {params[0]} {params[1]} {params[2]}"
 
 rule pltbox_logpval_per_gwas_cat:
     input:
