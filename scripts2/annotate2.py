@@ -44,6 +44,34 @@ ins = coloc.insert().from_select(cols, colocimport.select())
 with engine.connect() as con:
     con.execute(ins)
 
+#%% download gene symbols
+Logger.info("Annotate egene symbols")
+# ensg2symbol_df = UCSC().gene_id_to_symbol()
+
+# egene_lst = None
+sel = select(coloc.c.egene).distinct()
+with engine.connect() as con:
+    # egene_lst = [egene[0] for egene in con.execute(sel).fetchall()]
+    fetch_res = con.execute(sel).fetchall()
+
+ensg2symbol_df = pandas.DataFrame(fetch_res).drop_duplicates()
+egene_lst = ensg2symbol_df['egene'].tolist()
+mg = mygene.MyGeneInfo()
+query_df = mg.getgenes(egene_lst, fields='symbol', as_dataframe=True)
+query_df['egene'] = query_df.index
+query_df = query_df[['egene', 'symbol']].drop_duplicates()
+ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_on='egene', how='left')
+ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'symbol'] = ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'egene']
+ensg2symbol_df.rename({'egene': 'gene_id'}, axis=1, inplace=True)
+# import pdb; pdb.set_trace()
+# ensg2symbol_df = ensg2symbol_df.merge(pandas.Series(egene_lst, name='gene_id'), left_on='gene_id', right_on='gene_id')
+
+dlt = ensg2symbol_tbl.delete()
+ins = ensg2symbol_tbl.insert()
+with engine.connect() as con:
+    con.execute(dlt)
+    con.execute(ins, ensg2symbol_df.to_dict('records'))
+
 #%% cytoband
 Logger.info("Annotate cytobands")
 cytoband_url = "http://hgdownload.cse.ucsc.edu/goldenpath/hg38/database/cytoBand.txt.gz"
@@ -89,34 +117,6 @@ ins = gwas_annot_tbl.insert()
 with engine.connect() as con:
     con.execute(dlt)
     con.execute(ins, gwas_annot_df.to_dict('records'))
-
-#%% download gene symbols
-Logger.info("Annotate egene symbols")
-# ensg2symbol_df = UCSC().gene_id_to_symbol()
-
-# egene_lst = None
-sel = select(coloc.c.egene).distinct()
-with engine.connect() as con:
-    # egene_lst = [egene[0] for egene in con.execute(sel).fetchall()]
-    fetch_res = con.execute(sel).fetchall()
-
-ensg2symbol_df = pandas.DataFrame(fetch_res).drop_duplicates()
-egene_lst = ensg2symbol_df['egene'].tolist()
-mg = mygene.MyGeneInfo()
-query_df = mg.getgenes(egene_lst, fields='symbol', as_dataframe=True)
-query_df['egene'] = query_df.index
-query_df = query_df[['egene', 'symbol']].drop_duplicates()
-ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_on='egene', how='left')
-ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'symbol'] = ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'egene']
-ensg2symbol_df.rename({'egene': 'gene_id'}, axis=1, inplace=True)
-# import pdb; pdb.set_trace()
-# ensg2symbol_df = ensg2symbol_df.merge(pandas.Series(egene_lst, name='gene_id'), left_on='gene_id', right_on='gene_id')
-
-dlt = ensg2symbol_tbl.delete()
-ins = ensg2symbol_tbl.insert()
-with engine.connect() as con:
-    con.execute(dlt)
-    con.execute(ins, ensg2symbol_df.to_dict('records'))
 
 # #%% delete table import to save space
 Logger.info("Drop colocimport to save space")
