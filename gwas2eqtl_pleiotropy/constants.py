@@ -14,6 +14,7 @@ coloc_h4_tsv_path = os.path.join(PathManager.get_project_path(), "out", "filter_
 eqtl_metadata_url = 'https://raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv'
 
 h4_cutoff = 0.8  # coloc cutoff
+snp_h4_cutoff = 0.5  # pp cutoff of snp
 
 region_bin = 100000  # region bin to define as pleiotropic
 

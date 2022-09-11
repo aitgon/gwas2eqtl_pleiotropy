@@ -1,23 +1,38 @@
-from sqlalchemy import Table, Column, Integer, String, MetaData, Float, UniqueConstraint
+from sqlalchemy import Table, Column, Integer, String, MetaData, Float, UniqueConstraint, ForeignKey
 
 meta = MetaData()
+
+rsid2cytoband_tbl = Table(
+   'rsid2cytoband', meta,
+   Column('rsid', String(50), primary_key=True),
+   Column('cytoband', String(50), nullable=False),
+)
+
+ensg2symbol_tbl = Table(
+   'ensg2symbol', meta,
+   Column('gene_id', String(50), primary_key=True),
+   Column('symbol', String(50), nullable=False),
+)
+
+gwas_annot_tbl = Table(
+   'gwas_annot', meta,
+   Column('gwas_id', String(50), primary_key=True),
+   Column('gwas_category', String(50), nullable=False),
+   Column('gwas_trait', String(50), nullable=False),
+)
 
 coloc = Table(
    'coloc', meta,
    Column('id', Integer, primary_key = True),
    Column('chrom', Integer, nullable=False),
    Column('pos', Integer, nullable=False),
-   Column('cytoband', String(50), nullable=True),
-   Column('rsid', String(50), nullable=False),
+   Column('rsid', String(50), ForeignKey("rsid2cytoband.rsid"), nullable=False),
    Column('ref', String(50), nullable=False),
    Column('alt', String(50), nullable=False),
-   Column('egene', String(50), nullable=False),
-   Column('egene_symbol', String(50), nullable=True),
-   Column('gwas_trait', String(50), nullable=True),
-   Column('gwas_category', String(50), nullable=True),
+   Column('egene', String(50), ForeignKey("ensg2symbol.gene_id"), nullable=False),
    Column('gwas_beta', Float, nullable=False),
    Column('gwas_pval', Float, nullable=False),
-   Column('gwas_id', String(50), nullable=False),
+   Column('gwas_id', String(50), ForeignKey("gwas_annot.gwas_id"), nullable=False),
    Column('eqtl_id', String(50), nullable=False),
    Column('eqtl_beta', Float, nullable=False),
    Column('eqtl_pval', Float, nullable=False),

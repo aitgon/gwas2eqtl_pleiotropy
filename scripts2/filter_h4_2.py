@@ -2,14 +2,15 @@
 from sqlalchemy import create_engine, select
 
 from gwas2eqtl_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
-from gwas2eqtl_pleiotropy.constants import h4_cutoff
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.constants import h4_cutoff, snp_h4_cutoff
 
 import os
 import pandas
 import pathlib
 import sys
 
-from gwas2eqtl_pleiotropy.db import meta, coloc
+from gwas2eqtl_pleiotropy.db import meta, coloc, gwas_annot_tbl, ensg2symbol_tbl, rsid2cytoband_tbl
 
 #%%
 help_cmd_str = "todo"
@@ -34,14 +35,21 @@ engine = create_engine(url_db, echo = False)
 meta.create_all(engine)
 
 #%%
-sel = select(coloc).distinct().where(coloc.c['PP.H4.abf'] >= h4_cutoff)
-h4_df = None
-with engine.connect() as con:
-    h4_df = pandas.DataFrame.from_records([row for row in con.execute(sel).fetchall()], columns=coloc.columns.keys())
+Logger.info("Select colocalization joins")
 
-#%%
+sel_cols = [coloc, gwas_annot_tbl.c.gwas_category, ensg2symbol_tbl.c.symbol, rsid2cytoband_tbl.c.cytoband]
+sel = select(sel_cols).distinct()
+sel = sel.where(coloc.c.gwas_id == gwas_annot_tbl.c.gwas_id)
+sel = sel.where(coloc.c.egene == ensg2symbol_tbl.c.gene_id)
+sel = sel.where(coloc.c.rsid == rsid2cytoband_tbl.c.rsid)
+sel = sel.where(coloc.c['PP.H4.abf'] >= h4_cutoff)
+with engine.connect() as con:
+    result_lst = con.execute(sel).fetchall()
+Logger.info("End select colocalization joins")
+
+h4_df = pandas.DataFrame(result_lst)
 h4_df.drop(['id'], inplace=True, axis=1)
-h4_df = h4_df.loc[h4_df['PP.H4.abf'] >= h4_cutoff,]
+h4_df.rename({'symbol': 'egene_symbol'}, axis=1, inplace=1)
 
 #%% Download eQTL annotations
 eqtl_info_df = EBIeQTLinfo().df
@@ -59,7 +67,7 @@ loci_h4_df.to_csv(loci_coloc_h4_path, sep="\t", index=False)
 #%% how many causal variants, SNP.PP.H4>=0.5?
 variants_h4_df = h4_df.sort_values(by=['SNP.PP.H4'], ascending=False)
 variants_h4_df = variants_h4_df.drop_duplicates(subset=['chrom', 'pos', 'cytoband', 'rsid'], keep='first')
-variants_h4_df = variants_h4_df.loc[variants_h4_df['SNP.PP.H4'] >= 0.5, ]
+variants_h4_df = variants_h4_df.loc[variants_h4_df['SNP.PP.H4'] >= snp_h4_cutoff, ]
 variants_h4_path = os.path.join(outdir_path, "variants_h4.tsv")
 variants_h4_df.to_csv(variants_h4_path, sep="\t", index=False)
 

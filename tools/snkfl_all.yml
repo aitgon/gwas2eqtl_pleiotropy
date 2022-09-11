@@ -46,7 +46,7 @@ rule all:
         os.path.join(outdir, "cmpt_explained_loci.py/list.tsv"),
         os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
 
-include: 'Snakefile_plots.yml'
+include: 'snkfl_plots.yml'
 
 rule create_table_supplementary:
     input:
