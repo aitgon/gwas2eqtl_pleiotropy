@@ -58,11 +58,17 @@ ensg2symbol_df = pandas.DataFrame(fetch_res).drop_duplicates()
 egene_lst = ensg2symbol_df['egene'].tolist()
 mg = mygene.MyGeneInfo()
 query_df = mg.getgenes(egene_lst, fields='symbol', as_dataframe=True)
-query_df['egene'] = query_df.index
-query_df = query_df[['egene', 'symbol']].drop_duplicates()
-ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_on='egene', how='left')
+
+ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_index=True, how='left')
 ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'symbol'] = ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'egene']
+ensg2symbol_df = ensg2symbol_df.drop_duplicates(subset='egene')
 ensg2symbol_df.rename({'egene': 'gene_id'}, axis=1, inplace=True)
+
+#query_df['egene'] = query_df.index
+#query_df = query_df[['egene', 'symbol']].drop_duplicates()
+#ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_on='egene', how='left')
+#ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'symbol'] = ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'egene']
+#ensg2symbol_df.rename({'egene': 'gene_id'}, axis=1, inplace=True)
 # import pdb; pdb.set_trace()
 # ensg2symbol_df = ensg2symbol_df.merge(pandas.Series(egene_lst, name='gene_id'), left_on='gene_id', right_on='gene_id')
 
