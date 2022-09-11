@@ -70,7 +70,7 @@ The MS template is taken from here: <https://github.com/quantixed/manuscript-tem
 Compilation works like this:
 
 ~~~
-rm -f ms_00_merge.tex.pdf; singularity exec -u ../singularity/out/latex.sif texi2pdf ms/ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
+rm -f ms_00_merge.tex.pdf; texi2pdf ms/ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
 ~~~
 
 Download dependencies
