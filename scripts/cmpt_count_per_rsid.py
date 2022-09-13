@@ -45,8 +45,19 @@ gwas_df = coloc_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category']].drop_d
 gwas_df.columns = ['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category_count', 'gwas_category_lst']
 gwas_df = gwas_df.sort_values(by=['gwas_category_count', 'chrom', 'pos', 'gwas_category_lst', 'rsid'], ascending=[False, True, True, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas.tsv")
-# import pdb; pdb.set_trace()
 gwas_df.to_csv(tsv_path, sep="\t", index=False)
+
+#%% gwas variant pleiotropy for MS
+gwas_ms_df = gwas_df.copy()
+# gwas_ms_df['cytoband'] = gwas_ms_df['cytoband'].str.split('.', expand=True)[0]
+gwas_ms_df = gwas_ms_df.drop_duplicates('cytoband', keep='first')
+gwas_ms_df = gwas_ms_df.loc[gwas_ms_df['gwas_category_count'] >= 6]
+# format output
+gwas_ms_df.drop(['gwas_category_count'], inplace=True, axis=1)
+gwas_ms_df['gwas_category_lst'] = gwas_ms_df['gwas_category_lst'].str.replace(',', ', ')
+gwas_ms_df['pos']=gwas_ms_df['pos'].apply(lambda x : '{0:,}'.format(x))
+tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas_ms.tsv")
+gwas_ms_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%% merge gwas, egene and etissue
 m_df = pandas.merge(gwas_df, egene_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
