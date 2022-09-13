@@ -149,7 +149,7 @@ rule plt_vep_consequence:
     output:
         os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
     params:
-        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+        upper_var_gwas_cat_count=(upper_var_gwas_cat_count-1)
     shell:
         "python scripts/pltbar_vep_consequence.py {input[0]} {params[0]} {output[0]}"
 

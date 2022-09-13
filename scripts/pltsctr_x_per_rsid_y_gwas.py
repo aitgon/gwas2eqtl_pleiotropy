@@ -48,7 +48,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 #%% Plot parameters
 title = "Coloc. eQTL/GWAS variant"
 count_col_name = "gwas_category_count"
-ylim = [0, 8]
+ylim = [0, 10]
 c = 'blue'
 ylabel = "GWAS cat. count"
 
