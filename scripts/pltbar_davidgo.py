@@ -82,6 +82,7 @@ for pleio_i in range(2, upper_var_gwas_cat_count+1):
 
     plt.tight_layout()
     png_path = davidgo_png_path + "_{}.png".format(pleio_i)
+    Logger.info(png_path)
     plt.savefig(png_path, dpi=dpi)
     plt.close()
 

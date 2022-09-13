@@ -1,5 +1,6 @@
 crossmap
 matplotlib
+mygene
 mysql-client
 mysql-connector-python
 numpy

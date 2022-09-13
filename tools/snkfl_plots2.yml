@@ -49,7 +49,6 @@ rule pltbar_pleiotropic_regions_cumsum:
     shell:
         "python scripts/pltbar_pleiotropic_regions_cumsum.py {input[0]} {output[0]}"
 
-
 rule pltbar_davidgo:
     input:
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
@@ -61,6 +60,18 @@ rule pltbar_davidgo:
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
     shell:
         "python scripts/pltbar_davidgo.py {params[1]} {params[0]} {params[2]}"
+
+rule cmpt_davidgo:
+    input:
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
+    params:
+        david_email,
+        upper_var_gwas_cat_count,
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
+    shell:
+        "python scripts/cmpt_davidgo.py {input[0]} {params[0]} {params[1]} {params[2]}"
 
 rule pltbox_logpval_per_gwas_cat:
     input:
@@ -86,16 +97,16 @@ rule plt_violin_beta_per_gwas_cat:
     shell:
         "python scripts/pltbar_x_per_gwas_cat_y_beta.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
 
-rule plt_violin_egenes_per_region:
-    input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.bed"),
-        os.path.join(outdir, "annotate.py/h4_annotated.bed"),
-    output:
-        os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
-    params:
-        upper_var_gwas_cat_count=upper_var_gwas_cat_count
-    shell:
-        "python scripts/plt_violin_x_per_region_y_egenes.py {input[0]} {input[1]} {output[0]}"
+#rule plt_violin_egenes_per_region:
+#    input:
+#        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.bed"),
+#        os.path.join(outdir, "annotate.py/h4_annotated.bed"),
+#    output:
+#        os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
+#    params:
+#        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+#    shell:
+#        "python scripts/plt_violin_x_per_region_y_egenes.py {input[0]} {input[1]} {output[0]}"
 
 rule plt_violin_interactors_per_egene:
     input:
@@ -138,7 +149,7 @@ rule plt_vep_consequence:
     output:
         os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
     params:
-        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+        upper_var_gwas_cat_count=(upper_var_gwas_cat_count-1)
     shell:
         "python scripts/pltbar_vep_consequence.py {input[0]} {params[0]} {output[0]}"
 

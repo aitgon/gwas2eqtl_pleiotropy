@@ -68,3 +68,4 @@ __pycache__
 .Rproj.user
 .snakemake/
 texput.log
+gwas2eqtl_pleiotropy.egg-info/

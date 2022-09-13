@@ -47,7 +47,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 title = "Coloc. eQTL/GWAS variant"
 count_col_name = "etissue_label_count"
-ylim = [0, 40]
+ylim = [0, 30]
 c = 'blue'
 ylabel = "eTissue count"
 

@@ -119,6 +119,20 @@ for i, row in df.iterrows():
 regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'cytoband', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
 regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
+#%##############
+#%% GWAS region pleiotropy for MS
+regions_pleio_ms_df = regions_pleio_df.copy()
+regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_category_count', 'chrom', 'start', 'gwas_category_lst'], ascending=[False, True, True, True])
+regions_pleio_ms_df = regions_pleio_ms_df.drop_duplicates('cytoband', keep='first')
+regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_category_count'] >= 6]
+# format output
+regions_pleio_ms_df.drop(['gwas_category_count'], inplace=True, axis=1)
+regions_pleio_ms_df['gwas_category_lst'] = regions_pleio_ms_df['gwas_category_lst'].str.replace(',', ', ')
+regions_pleio_ms_df['start']=regions_pleio_ms_df['start'].apply(lambda x : '{0:,}'.format(x))
+regions_pleio_ms_df['end']=regions_pleio_ms_df['end'].apply(lambda x : '{0:,}'.format(x))
+tsv_path = os.path.join(outdir_path, "region_window_ms_100000.tsv")
+regions_pleio_ms_df.to_csv(tsv_path, sep="\t", index=False)
+
 #%% bed
 regions_pleio_df['start'] = regions_pleio_df['start'] - 1
 regions_pleio_df['chrom'] = 'chr' + regions_pleio_df['chrom'].astype('str')
@@ -131,6 +145,7 @@ for count_pleio in range(1, 6):
     region_pleio_i_bed_path = os.path.join(outdir_path, "region_window_{}_pleio_{}.bed".format(region_bin, count_pleio))
     region_pleio_i_df = regions_pleio_df.loc[regions_pleio_df['gwas_category_count'] == count_pleio,]
     region_pleio_i_df.to_csv(region_pleio_i_bed_path, sep="\t", index=False, header=False)
+
 
 
 #%##############

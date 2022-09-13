@@ -13,57 +13,57 @@
 tabular=ccrrp{0.4\textwidth},
 head,
 table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfseries Variant & \bfseries GWAS Categories\\\hline,
-]{fig/tab_rsid_most_pleiotropic.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolvi}% specify your coloumns here
+]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv}% specify your coloumns here
 \hline
 %
 \vspace{15pt}
 %
-  \caption{Colocalized eQTL/GWAS variants involved in 5 or more GWAS categories. Genomic coordinates are given for the hg38 assembly. }\label{tab:pleitropic_variants}
+  \caption{Colocalized eQTL/GWAS variants involved in 6 or more GWAS categories. Genomic coordinates are given for the hg38 assembly. }\label{tab:pleitropic_variants}
 \end{table*}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 1: GO of pleiotropic variants
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 1: GO of pleiotropic variants
+%\begin{figure*}[!tbp]
+%\centering
+%%
+%\begin{subfigure}[]{0.99\textwidth}
+%\textbf{a}
+%\\
+%\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_davidgo.py/david_pleio_3.png}
+%\end{subfigure}
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{subfigure}[]{.99\textwidth}
+%\textbf{b}
+%\\
+%\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_davidgo.py/david_pleio_2.png}
+%\end{subfigure}
+%%
+%\caption{Gene ontology analysis of eGenes of variants associated to three (\textbf{a}) and two (\textbf{b}) GWAS categories compared to eGenes of variants associated to one GWAS category.} \label{fig:geneontology}
+%\end{figure*}
 
-\begin{figure*}[!tbp]
-\centering
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%
+%%% Fig 2: Fisher stat of tissues in variants as a function of gwas category count
+%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\begin{subfigure}[]{0.99\textwidth}
-\textbf{a}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_davidgo.py/david_pleio_3.png}
-\end{subfigure}
-
-\begin{subfigure}[]{.99\textwidth}
-\textbf{b}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_davidgo.py/david_pleio_2.png}
-\end{subfigure}
+%\begin{figure*}[!tbp]
+%\centering
+%%
+%\begin{subfigure}[]{.66\textwidth}
+%\textbf{a}
+%\\
+%\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_tissue_enrich_in_pleio.py/plt.png}
+%\end{subfigure}
+%%
+%\caption{Tissue category odds ratio in pleitropic variants compared with variant with GWAS category count 1.} \label{fig:tissues}
+%\end{figure*}
 %
-\caption{Gene ontology analysis of eGenes of variants associated to three (\textbf{a}) and two (\textbf{b}) GWAS categories compared to eGenes of variants associated to one GWAS category.} \label{fig:geneontology}
-\end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Fig 2: Fisher stat of tissues in variants as a function of gwas category count
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure*}[!tbp]
-\centering
-%
-\begin{subfigure}[]{.66\textwidth}
-\textbf{a}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_tissue_enrich_in_pleio.py/plt.png}
-\end{subfigure}
-%
-\caption{Tissue category odds ratio in pleitropic variants compared with variant with GWAS category count 1.} \label{fig:tissues}
-\end{figure*}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Tab 2: Winner regions
@@ -80,20 +80,20 @@ separator=tab,
 tabular=ccrrp{0.45\textwidth},
 head,
 table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries End & \bfseries GWAS Categories\\\hline,
-]{fig/tab_region_window_100000_pleio_highest.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolvi}% specify your coloumns here
+]{\floatRelativePath/cmpt_pleiotropic_regions.py/region_window_ms_100000.tsv}{}% use head of csv as column names
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv}% specify your coloumns here
 \hline
 %
 \vspace{15pt}
 \caption{Pleiotropic regions involving 5 or more GWAS categories. Genomic coordinates are given for the hg38 assembly.}\label{tab:pleiotropic_regions}
 \end{table*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 2: Length histogram of regions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 2: Length histogram of regions
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{figure*}[!tbp]
 \centering
 %
@@ -111,13 +111,13 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 %
 \caption{Analysis of pleiotropic regions. \textbf{a}, Length distribution of pleiotropic regions. \textbf{b}, Cumulative sum ordered inversely with the number of GWAS categories.} \label{fig:pleiotropy_region_distribution}
 \end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 1: Histograms variants vs GWAS, eGene and eTissues
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 1: Histograms variants vs GWAS, eGene and eTissues
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{figure*}[!tbp]
 \centering
 %
@@ -141,95 +141,95 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 %
 \caption{Percentage of colocalized eQTL/GWAS variants with different number of GWAS categories (\textbf{a}), eGenes (\textbf{b}) and eTissues (\textbf{c}).} \label{fig:hist_gwas_egene_etissue}
 \end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 2: Scatter plots of winner regions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 2: Scatter plots of winner regions
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+%
 \begin{figure*}[!tbp]
 
 \begin{subfigure}[]{.32\textwidth}
 \textbf{a}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr5_start132239645_end132497907_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr5_start131912097_end132802472_categories9.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{b}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr6_start31034839_end32478149_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr17_start39548459_end40421164_categories8.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{c}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr12_start111395984_end111645358_categories11.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr17_start48116861_end49436349_categories8.png}
 \end{subfigure}
 
 
 \begin{subfigure}[]{.32\textwidth}
 \textbf{d}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr5_start132239645_end132497907_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr5_start131912097_end132802472_categories9.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{e}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr6_start31034839_end32478149_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr17_start39548459_end40421164_categories8.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{f}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr12_start111395984_end111645358_categories11.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr17_start48116861_end49436349_categories8.png}
 \end{subfigure}
 
 \begin{subfigure}[]{.32\textwidth}
 \textbf{g}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr5_start132239645_end132497907_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr5_start131912097_end132802472_categories9.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{h}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr6_start31034839_end32478149_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr17_start39548459_end40421164_categories8.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{i}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr12_start111395984_end111645358_categories11.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr17_start48116861_end49436349_categories8.png}
 \end{subfigure}
 
 \caption{Count of GWAS categories (\textbf{a-c}), eGenes (\textbf{d-f}) and eTissues (\textbf{g-i}) in three pleiotropic genomic regions: \textbf{a,d,g}: 5:132,239,645-132,497,907 (5q31.1), \textbf{b,e,h}: 6:31,034,839-32,478,149 (6p21.33) and \textbf{c,g,i}: 12:111,395,984-111,645,358 (12q24.1). Genomic coordinates are given for the hg38 assembly.} \label{fig:region_gwas_egenes_tissues}
 %
 \end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 3: VEP consequences
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 3: VEP consequences
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{figure*}[!tbp]
 \centering
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{a}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/missense_variant.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/upstream_gene_variant.png}
 %
 \end{subfigure}
 %
 \begin{subfigure}[]{.32\textwidth}
 \textbf{b}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/splice_region_variant.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/intron_variant.png}
 %
 \end{subfigure}
 %
@@ -240,16 +240,16 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 %
 \end{subfigure}
 %
-\caption{Variant effect predictor (VEP) analysis as a function of the number of GWAS catategory number for three different consequences: \textbf{a}, Missense variant, \textbf{b}, splice region variant and \textbf{c}, 3' UTR variant.} \label{fig:vep_consequence}
+\caption{Variant effect predictor (VEP) analysis as a function of the number of GWAS catategory number for three different consequences: \textbf{a}, Upstream gene variant, \textbf{b}, intron variant and \textbf{c}, 3' UTR variant.} \label{fig:vep_consequence}
 %
 \end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 4: Violin plots. eGenes, eTissues and gwas per variants
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 4: Violin plots. eGenes, eTissues and gwas per variants
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{figure*}[!tbp]
 \centering
 %
@@ -274,12 +274,12 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \caption{Count of eGenes per variant-tissue (\textbf{a}), eTissues per variant-eGene (\textbf{b}) and GWAS categories per variant-eGene-eTissue (\textbf{c}).} \label{fig:gwas_egene_etisue_per_variant}
 %
 \end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 6: TF count per GWAS category count
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 6: TF count per GWAS category count
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{figure*}[!tbp]
 \centering
@@ -287,7 +287,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \begin{subfigure}[]{.33\textwidth}
 \textbf{a}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_rsid_y_remaptf.py/bxplt_remaptf_per_rsid_flank_0.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_rsid_y_remaptf.py/bxplt_remaptf_per_rsid_flank_50.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.33\textwidth}
@@ -299,13 +299,13 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \caption{Analysis of transcription factor binding. \textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic variants (Radius 50 bp) as a function of the GWAS category count. \textbf{b}, Odds ratio of cis regulatory module-annotated vs non-annotated variants.} \label{fig:freq_tf_per_variant}
 %
 \end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 7: beta and log pval
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 7: beta and log pval
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{figure*}[!tbp]
 \centering
 %
@@ -336,13 +336,13 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \caption{eQTL and GWAS effect size/beta (\textbf{a,b}) and eQTL and GWAS significance/p-value (\textbf{c,d}) as a function of the GWAS category count.} \label{fig:beta_pval}
 %
 \end{figure*}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 7: graphical conclusions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 7: graphical conclusions
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{figure*}[!tbp]
 \centering
 %

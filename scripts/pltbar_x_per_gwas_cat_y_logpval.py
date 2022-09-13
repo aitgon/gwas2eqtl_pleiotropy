@@ -57,9 +57,9 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 #%%
-m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pvalue', 'egene', 'eqtl_identifier', 'gwas_beta', 'gwas_pvalue', 'gwas_identifier', 'gwas_category_count']].drop_duplicates()
-m_df['eqtl_logpval'] = m_df['eqtl_pvalue'].apply(lambda x: -numpy.log(x))
-m_df['gwas_logpval'] = m_df['gwas_pvalue'].apply(lambda x: -numpy.log(x))
+m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pval', 'egene', 'eqtl_id', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_category_count']].drop_duplicates()
+m_df['eqtl_logpval'] = m_df['eqtl_pval'].apply(lambda x: -numpy.log(x))
+m_df['gwas_logpval'] = m_df['gwas_pval'].apply(lambda x: -numpy.log(x))
 
 #%%
 m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
@@ -77,7 +77,7 @@ title = "eQTL significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%%
-plt_df = m_df[['gwas_category_count', 'rsid', 'egene', 'eqtl_identifier', y]].drop_duplicates()
+plt_df = m_df[['gwas_category_count', 'rsid', 'egene', 'eqtl_id', y]].drop_duplicates()
 plt_df[y] = plt_df[y].abs()
 
 #%%
@@ -110,7 +110,7 @@ title = "GWAS variant significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%%
-plt_df = m_df[['gwas_category_count', 'rsid', 'gwas_identifier', y]].drop_duplicates()
+plt_df = m_df[['gwas_category_count', 'rsid', 'gwas_id', y]].drop_duplicates()
 plt_df[y] = plt_df[y].abs()
 
 #%%

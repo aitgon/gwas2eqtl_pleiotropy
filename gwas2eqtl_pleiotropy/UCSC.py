@@ -15,6 +15,38 @@ class UCSC:
         self.user = 'genome'
         self.database = database
 
+    def gene_id_to_symbol(self, force=False):
+
+        """Given ensemble gene id, ENSG00000137203, return gene symbol, TFAP2A
+
+        Force True will download data"""
+
+        wdir = PathManager.get_outdir_path()
+        ensg2symbol_tsv_path = os.path.join(wdir, "ucsc", "ensg2symbol.tsv")
+
+        if not os.path.isfile(ensg2symbol_tsv_path) or force:
+            Logger.debug("Download gene informations: {}".format(ensg2symbol_tsv_path))
+
+            pathlib.Path(os.path.dirname(ensg2symbol_tsv_path)).mkdir(exist_ok=True, parents=True)
+
+            output_list = list()
+
+            sql = "select distinct knownAttrs.geneId, kgXref.geneSymbol from knownAttrs, kgXref where knownAttrs.kgID=kgXref.kgID"
+
+            connection = connect(host=self.host, user=self.user, database=self.database)
+            cursor = connection.cursor()
+            Logger.info("SQL select UCSC...")
+            cursor.execute(sql)
+            ensg2symbol_df = pandas.DataFrame.from_records(cursor.fetchall(), columns=['gene_id', 'symbol'])
+            ensg2symbol_df['gene_id'] = ensg2symbol_df['gene_id'].str.split('.', expand=True)[0]
+            cursor.close()
+            connection.close()
+            ensg2symbol_df.to_csv(ensg2symbol_tsv_path, index=False, header=True, sep="\t")
+
+        ensg2symbol_df = pandas.read_csv(ensg2symbol_tsv_path, sep='\t', header=0)
+
+        return ensg2symbol_df
+
     def get_ref_gene_table(self, force=False):
 
         """Get full refgene tss table
