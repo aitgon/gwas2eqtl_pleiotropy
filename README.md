@@ -60,7 +60,7 @@ Copy input data to the config folder; eg out/config/genome/5e-08/1000000
 # Run analyses and generate MS figures
 
 ~~~
-snakemake --cores all -p -d ${PWD} -s tools/snkfl_all2.yml --config coloc_tsv_gz=../gwas2eqtl/out/gwas420/coloc_gwas420.tsv.gz david_email=mylogin@mylab.edu outdir=out/gwas413/genome/5e-08/1000000 url_db='sqlite:///out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/db/db.sqlite'  raw_coloc_tsv=config/coloc413.tsv gwas_cat_ods=config/gwas413.ods etissue_cat_ods=config/etissue_category.ods upper_var_gwas_cat_count=5 public_data_dir=/home/gonzalez/Software/public
+snakemake --cores all -p -d ${PWD} -s tools/snkfl_all2.yml --config coloc_tsv_gz=../gwas2eqtl/out/gwas420/coloc_gwas420.tsv.gz david_email=aitor.gonzalez@inserm.fr outdir=out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000 url_db='sqlite:///out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/db/db.sqlite'  raw_coloc_tsv=config/coloc413.tsv gwas_cat_ods=config/gwas413.ods etissue_cat_ods=config/etissue_category.ods upper_var_gwas_cat_count=5 public_data_dir=/home/gonzalez/Software/public
 ~~~
 
 # MS

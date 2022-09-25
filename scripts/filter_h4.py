@@ -1,4 +1,4 @@
-from gwas2eqtl_pleiotropy.constants import h4_cutoff
+from gwas2eqtl_pleiotropy.constants import h4_cutoff, snp_h4_cutoff
 
 import os
 import pandas
@@ -41,7 +41,7 @@ loci_h4_df.to_csv(loci_coloc_h4_path, sep="\t", index=False)
 #%% how many causal variants, SNP.PP.H4>=0.5?
 variants_h4_df = coloc_df.sort_values(by=['SNP.PP.H4'], ascending=False)
 variants_h4_df = variants_h4_df.drop_duplicates(subset=['chrom', 'pos', 'cytoband', 'rsid'], keep='first')
-variants_h4_df = variants_h4_df.loc[variants_h4_df['SNP.PP.H4'] >= 0.5, ]
+variants_h4_df = variants_h4_df.loc[variants_h4_df['SNP.PP.H4'] >= snp_h4_cutoff, ]
 variants_h4_path = os.path.join(outdir_path, "variants_h4.tsv")
 variants_h4_df.to_csv(variants_h4_path, sep="\t", index=False)
 
