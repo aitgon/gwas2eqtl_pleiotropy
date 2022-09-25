@@ -33,27 +33,37 @@ Logger.info("Reading {}".format(disease_corr_tsv_path))
 corr_df = pandas.read_csv(disease_corr_tsv_path, sep="\t")
 
 #%%
-gwas_cat_df = pandas.read_excel(gwas_cat_ods_path, engine="odf", usecols=['id', 'trait', 'manual_category'])
-gwas_cat_df.rename({'id': 'gwas_id', 'manual_category': 'category'}, axis=1, inplace=True)
+gwas_cat_df = pandas.read_excel(gwas_cat_ods_path, engine="odf")
+gwas_id_df = gwas_cat_df[['id', 'trait', 'category', 'code']].drop_duplicates()
+gwas_category_df = gwas_cat_df[['category.1', 'code.1', 'category2', 'code2']].dropna(axis=0).drop_duplicates()
+
+m_df = gwas_id_df.merge(gwas_category_df, left_on='code', right_on='code.1', how='outer')
+# import pdb; pdb.set_trace()
+
+gwas_id_df = gwas_id_df.merge(gwas_category_df, left_on='code', right_on='code.1', how='outer')
+
+gwas_id_df.rename({'id': 'gwas_id'}, axis=1, inplace=True)
+gwas_id_df = gwas_id_df[['gwas_id', 'trait', 'category2']]
+
 
 #%%
-# import pdb; pdb.set_trace()
-
-# iris = seaborn.load_dataset("iris")
-
-# species = iris.pop("species")
-# import pdb; pdb.set_trace()
-corr_df = corr_df.merge(gwas_cat_df, on='gwas_id')
-corr_df.set_index(['gwas_id', 'trait', 'category'], inplace=True)
+corr_df = corr_df.merge(gwas_id_df, on='gwas_id')
+corr_df.set_index(['gwas_id', 'trait', 'category2'], inplace=True)
 
 #%%
 # Prepare a vector of color mapped to the 'cyl' column
-# lut2 = dict(zip(corr_df.index.get_level_values('category').unique(), "tab10"))
-# row_colors2 = corr_df.index.get_level_values('category').map(lut2)
+# import pdb; pdb.set_trace()
+category2_lst = corr_df.index.get_level_values('category2').tolist()
+
+# lut2 = dict(zip(category2_lst, seaborn.color_palette(palette="deep", n_colors=len(category2_lst), as_cmap=True)))
+# row_colors2 = corr_df.index.get_level_values('category2').map(lut2)
+lut = dict(zip(set(category2_lst), seaborn.hls_palette(len(set(category2_lst)), l=0.5, s=0.8)))
+row_colors = pandas.DataFrame(category2_lst)[0].map(lut)
 
 #%%
 seaborn.set(font_scale=0.3)
-g = seaborn.clustermap(corr_df, cmap='coolwarm')
+# import pdb; pdb.set_trace()
+g = seaborn.clustermap(corr_df, cmap='coolwarm', row_colors=[row_colors])
 
 plt.tight_layout()
 png_path = os.path.join(outdir_path, "blood.png")

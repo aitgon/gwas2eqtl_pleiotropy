@@ -98,4 +98,8 @@ cd $OLDPWD
 
 Go to poster_eccb22_barcelona and follow the readme.md instructions
 
+python scripts/cmpt_disease_comorbidity_matrix.py out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/filter_h4.py/h4.tsv config/gwas420.ods out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/cmpt_disease_comorbidity_matrix.py/van_de_Bunt_2015_ge_pancreatic_islet.tsv
+
+python scripts/plthtmp_disease_comorbidity_matrix.py out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/cmpt_disease_comorbidity_matrix.py/GTEx_ge_blood.tsv config/gwas420.ods out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/plthtmp_disease_comorbidity_matrix.py/GTEx_ge_blood.png
+
 
