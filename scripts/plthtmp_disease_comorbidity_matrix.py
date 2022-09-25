@@ -7,7 +7,7 @@ from gwas2eqtl_pleiotropy.Logger import Logger
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, dpi
 from matplotlib import pyplot as plt
 import scipy.spatial as sp, scipy.cluster.hierarchy as hc
-
+from matplotlib.pyplot import gcf
 from matplotlib.patches import Patch
 
 #%%
@@ -45,56 +45,86 @@ gwas_cat_df = pandas.read_excel(gwas_cat_ods_path, engine="odf")
 gwas_id_df = gwas_cat_df[['id', 'trait', 'category', 'code']].drop_duplicates()
 gwas_id_df.set_index('id', inplace=True, verify_integrity=True)
 
-gwas_category_df = gwas_cat_df[['category.1', 'code.1', 'category4', 'code2']].dropna(axis=0).drop_duplicates()
+gwas_category_df = gwas_cat_df[['category.1', 'code.1', 'category3', 'code2']].dropna(axis=0).drop_duplicates()
 gwas_category_df.rename({'category.1': 'category', 'code.1': 'code'}, axis=1, inplace=True)
 gwas_category_df.set_index('code', inplace=True, verify_integrity=True)
 gwas_id_df = gwas_id_df.merge(gwas_category_df, left_on='code', right_index=True, how='inner')
-gwas_id_df = gwas_id_df[['trait', 'category4']]
-
+gwas_id_df = gwas_id_df.merge(dis_df, left_index=True, right_index=True)[['trait', 'category3']]
 # import pdb; pdb.set_trace()
 #%%
-# dis_df = dis_df.merge(gwas_id_df, on='gwas_id')
-# dis_df.set_index(['gwas_id', 'trait', 'category4'], inplace=True)
+category_lst = gwas_id_df['category3'].unique()
+category_lst_len = len(category_lst)
+nb_lst = int(category_lst_len/2)
+category1_lst = gwas_id_df['category3'].unique()[:nb_lst]
+category2_lst = gwas_id_df['category3'].unique()[nb_lst:]
+# import pdb; pdb.set_trace()
+#%%
+gwas_id_df['subset1'] = 'Other'
+mask1 = gwas_id_df['category3'].isin(category1_lst)
+gwas_id_df.loc[mask1, 'subset1'] = gwas_id_df.loc[mask1, 'category3']
+
+gwas_id_df['subset2'] = 'Other'
+gwas_id_df.loc[~mask1, 'subset2'] = gwas_id_df.loc[~mask1, 'category3']
+# import pdb; pdb.set_trace()
+#%%
+annotation_df = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')[['subset1', 'subset2']]
+
+# Label 1
+subset1_labels = annotation_df["subset1"]
+subset1_pal = seaborn.color_palette(palette='bright', n_colors=subset1_labels.unique().size)
+subset1_lut = dict(zip(map(str, sorted(subset1_labels.unique())), subset1_pal))
+subset1_colors = pandas.Series(subset1_labels, index=annotation_df.index).map(subset1_lut)
+
+# Label 2
+subset2_labels = annotation_df["subset2"]
+subset2_pal = seaborn.color_palette(palette='tab10', n_colors=subset2_labels.unique().size)
+subset2_lut = dict(zip(map(str, sorted(subset2_labels.unique())), subset2_pal))
+subset2_colors = pandas.Series(subset2_labels, index=annotation_df.index).map(subset2_lut)
+
+# import pdb; pdb.set_trace()
+network_node_colors = pandas.DataFrame(subset1_colors).join(pandas.DataFrame(subset2_colors))
 
 #%%
-# Prepare a vector of color mapped to the 'cyl' column
-# import pdb; pdb.set_trace()
-category3_lst = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')['category4'].tolist()
-# lut2 = dict(zip(category3_lst, seaborn.color_palette(palette="deep", n_colors=len(category3_lst), as_cmap=True)))
-# row_colors2 = corr_df.index.get_level_values('category4').map(lut2)
-# import pdb; pdb.set_trace()
-lut = dict(zip(category3_lst, seaborn.color_palette(palette='Paired', n_colors=len(category3_lst))))
-row_colors = pandas.DataFrame(category3_lst)[0].map(lut)
-# print(zip(set(category3_lst), seaborn.color_palette(palette='bright', n_colors=len(category3_lst))))
-# print(lut)
-# print(row_colors)
-# import pdb; pdb.set_trace()
+# category_annot_lst = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')['subset1'].tolist()
+# lut = dict(zip(category_annot_lst, seaborn.color_palette(palette='bright', n_colors=len(category_annot_lst))))
+# row_colors = pandas.DataFrame(category_annot_lst)[0].map(lut)
+#
+# #%%
+# category_annot_lst = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')['subset2'].tolist()
+# lut2 = dict(zip(category_annot_lst, seaborn.color_palette(palette='bright', n_colors=len(category_annot_lst))))
+# row_colors2 = pandas.DataFrame(category_annot_lst)[0].map(lut2)
 
 #%%
-# import pdb; pdb.set_trace()
-seaborn.set(font_scale=0.2)
+# seaborn.set(font_scale=0.2)
 
 linkage = hc.linkage(sp.distance.squareform(dis_df), method='average')
-# import pdb; pdb.set_trace()
 
-# clustermap_args_dic = {'dendrogram_ratio': 0.1, 'colors_ratio': 0.1}
 clustermap_args_dic = {}
 clustermap_args_dic['cmap'] = 'mako'
-clustermap_args_dic['row_colors'] = [row_colors]
-clustermap_args_dic['col_colors'] = [row_colors]
+clustermap_args_dic['row_colors'] = network_node_colors
+clustermap_args_dic['col_colors'] = network_node_colors
 clustermap_args_dic['row_linkage'] = linkage
 clustermap_args_dic['col_linkage'] = linkage
 clustermap_args_dic['row_cluster'] = False
 clustermap_args_dic['col_cluster'] = False
+clustermap_args_dic['xticklabels'] = False
+clustermap_args_dic['yticklabels'] = False
 # clustermap_args_dic['cbar_pos'] = None
 # clustermap_args_dic['dendrogram_ratio'] = (0.05, 0.05)
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
-# g = seaborn.clustermap(dis_df, cmap='coolwarm', row_linkage=linkage, col_linkage=linkage)
+# add legends
+g.cax.set_visible(False)
 
-handles = [Patch(facecolor=lut[name]) for name in lut]
-plt.legend(handles, lut, title='Category3', bbox_transform=plt.gcf().transFigure, loc='best')
+for label in subset1_labels.unique():
+    g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
+l1 = g.ax_col_dendrogram.legend(title='subset1', loc="upper left", bbox_to_anchor=(0.0, 1), ncol=3, bbox_transform=gcf().transFigure)
 
-plt.subplots_adjust(top=0.95, left=0.05, right=0.95, bottom=0.05)
+for label in subset2_labels.unique():
+    g.ax_row_dendrogram.bar(0, 0, color=subset2_lut[label], label=label, linewidth=0);
+l2 = g.ax_row_dendrogram.legend(title='subset2', loc="upper left", bbox_to_anchor=(0.0, 0.9), ncol=3, bbox_transform=gcf().transFigure)
+
+plt.subplots_adjust(top=0.95, left=0.00, right=0.9, bottom=0.05)
+# g.fig.subplots_adjust(right=0.7)
 # plt.tight_layout()
 # png_path = os.path.join(outdir_path, "blood.png")
 plt.savefig(htmp_disease_corr_png_path, dpi=600)
