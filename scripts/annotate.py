@@ -1,18 +1,23 @@
-from gwas2eqtl_pleiotropy.EBIeQTLinfo import EBIeQTLinfo
 from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.UCSC import UCSC
+from gwas2eqtl_pleiotropy.URL import URL
+from gwas2eqtl_pleiotropy.db import meta, coloc
+from gwas2eqtl_pleiotropy.db import ensg2symbol_tbl
+from gwas2eqtl_pleiotropy.db import gwas_annot_tbl
+from gwas2eqtl_pleiotropy.db import rsid2cytoband_tbl
+from sqlalchemy import create_engine, select, Table
 
 import os
 import pandas
 import pathlib
 import sys
-
+import mygene
 
 #%%
-from gwas2eqtl_pleiotropy.URL import URL
 
 help_cmd_str = "todo"
 try:
-    coloc_tsv_gz_path = sys.argv[1]
+    url_db = sys.argv[1]
     gwas_cat_ods_path = sys.argv[2]
     etissue_cat_ods_path = sys.argv[3]
     annotated_tsv_gz_path = sys.argv[4]
@@ -26,26 +31,52 @@ except IndexError:
     sys.exit(1)
 
 pathlib.Path(os.path.dirname(annotated_tsv_gz_path)).mkdir(parents=True, exist_ok=True)
+engine = create_engine(url_db, echo = False)
 
-#%% Download eQTL annotations
-eqtl_info_df = EBIeQTLinfo().df
-etissue_cat_df = pandas.read_excel(etissue_cat_ods_path, engine="odf")
-eqtl_info_df = eqtl_info_df.merge(etissue_cat_df, on=['study', 'qtl_group', 'tissue_ontology_id', 'tissue_ontology_term', 'tissue_label', 'condition_label'])
-eqtl_info_df.rename({'identifier': "eqtl_identifier"}, axis=1, inplace=True)
+#%% Insert into coloc
+meta.create_all(engine)
 
-#%% gwas category
-gwas_annot_df = pandas.read_excel(gwas_cat_ods_path, engine="odf")
-gwas_annot_df.rename({'id': "gwas_identifier", 'subcategory': 'gwas_category_mrcieu', 'manual_category': 'gwas_category', 'trait': 'gwas_trait'}, axis=1, inplace=True)
+#%% Copy from colocimport
+Logger.info("Copy from colocimport")
+cols = ["chrom", "pos", "rsid", "ref", "alt", "egene", "gwas_beta", "gwas_pval", "gwas_id", "eqtl_beta", "eqtl_pval", "eqtl_id", "PP.H4.abf", "SNP.PP.H4", "nsnps", "PP.H3.abf", "PP.H2.abf", "PP.H1.abf", "PP.H0.abf", "coloc_lead_pos", "coloc_lead_rsid", "coloc_region"]
+colocimport = Table('colocimport', meta, autoload_with=engine)
+ins = coloc.insert().from_select(cols, colocimport.select())
+with engine.connect() as con:
+    con.execute(ins)
 
-#%%
-Logger.info("Reading {}".format(coloc_tsv_gz_path))
-coloc_df = pandas.read_csv(coloc_tsv_gz_path, sep="\t")
-# coloc_df = coloc_df.loc[coloc_df['PP.H4.abf'] >= pp_h4_abf]
-coloc_df.rename({'pp_h4': "SNP.PP.H4", }, axis=1, inplace=True)
+#%% download gene symbols
+Logger.info("Annotate egene symbols")
+# ensg2symbol_df = UCSC().gene_id_to_symbol()
 
-#%%
-coloc_df = coloc_df.merge(gwas_annot_df[["gwas_identifier", "gwas_trait", 'gwas_category_mrcieu', 'gwas_category']], on='gwas_identifier')
-coloc_df = coloc_df.merge(eqtl_info_df[['eqtl_identifier', 'etissue_category']].drop_duplicates(), on='eqtl_identifier')
+# egene_lst = None
+sel = select(coloc.c.egene).distinct()
+with engine.connect() as con:
+    # egene_lst = [egene[0] for egene in con.execute(sel).fetchall()]
+    fetch_res = con.execute(sel).fetchall()
+
+ensg2symbol_df = pandas.DataFrame(fetch_res).drop_duplicates()
+egene_lst = ensg2symbol_df['egene'].tolist()
+mg = mygene.MyGeneInfo()
+query_df = mg.getgenes(egene_lst, fields='symbol', as_dataframe=True)
+
+ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_index=True, how='left')
+ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'symbol'] = ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'egene']
+ensg2symbol_df = ensg2symbol_df.drop_duplicates(subset='egene')
+ensg2symbol_df.rename({'egene': 'gene_id'}, axis=1, inplace=True)
+
+#query_df['egene'] = query_df.index
+#query_df = query_df[['egene', 'symbol']].drop_duplicates()
+#ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_on='egene', how='left')
+#ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'symbol'] = ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'egene']
+#ensg2symbol_df.rename({'egene': 'gene_id'}, axis=1, inplace=True)
+# import pdb; pdb.set_trace()
+# ensg2symbol_df = ensg2symbol_df.merge(pandas.Series(egene_lst, name='gene_id'), left_on='gene_id', right_on='gene_id')
+
+dlt = ensg2symbol_tbl.delete()
+ins = ensg2symbol_tbl.insert()
+with engine.connect() as con:
+    con.execute(dlt)
+    con.execute(ins, ensg2symbol_df.to_dict('records'))
 
 #%% cytoband
 Logger.info("Annotate cytobands")
@@ -54,26 +85,48 @@ cytoband_path = URL(cytoband_url).download()
 cyto_df = pandas.read_csv(cytoband_path, sep="\t", header=None, usecols=[0, 1, 2, 3])
 cyto_df.columns = ['chrom', 'start', 'end', 'cytoband']
 cyto_df['chrom'] = cyto_df['chrom'].str.replace('chr', '')
-coloc_df['chrom'] = coloc_df['chrom'].copy().astype('str')
-coloc_df['cytoband'] = None
+
+#%%
+sel = select([coloc.c.chrom, coloc.c.pos, coloc.c.rsid]).distinct()
+with engine.connect() as con:
+    fetch_res = con.execute(sel).fetchall()
+rsid2cytoband_df = pandas.DataFrame(fetch_res)
+
+rsid2cytoband_df['chrom'] = rsid2cytoband_df['chrom'].astype(str)
+cyto_df['chrom'] = cyto_df['chrom'].astype(str)
 for rowi, row in cyto_df.iterrows():
     chrom = row['chrom']
     start = row['start']
     end = row['end']
     cytoband = row['cytoband']
-    coloc_df.loc[
-        (coloc_df['chrom'] == chrom) & (start <= coloc_df['pos']) & (
-                coloc_df['pos'] <= end), 'cytoband'] = cytoband
-coloc_df['cytoband'] = coloc_df['chrom'].astype(str) + coloc_df['cytoband']
+    rsid2cytoband_df.loc[
+        (rsid2cytoband_df['chrom'] == chrom) & (start <= rsid2cytoband_df['pos']) & (
+                rsid2cytoband_df['pos'] <= end), 'cytoband'] = cytoband
+rsid2cytoband_df['cytoband'] = rsid2cytoband_df['chrom'].astype(str) + rsid2cytoband_df['cytoband']
+rsid2cytoband_df = rsid2cytoband_df[['rsid', 'cytoband']]
 
-#%%
-columns = ['chrom', 'pos', 'cytoband', 'rsid', 'ref', 'alt', 'egene', 'egene_symbol',
-           'eqtl_beta', 'eqtl_pvalue', 'eqtl_identifier', 'etissue_category', 'gwas_beta',
-           'gwas_pvalue', 'gwas_identifier', 'gwas_trait', 'gwas_category',
-           'SNP.PP.H4', 'PP.H4.abf', 'coloc_window', 'nsnps']
-coloc_df = coloc_df[columns]
+dlt = rsid2cytoband_tbl.delete()
+ins = rsid2cytoband_tbl.insert()
+with engine.connect() as con:
+    con.execute(dlt)
+    con.execute(ins, rsid2cytoband_df.to_dict('records'))
 
-#%% TSV
-coloc_df.sort_values(by=coloc_df.columns.tolist(), inplace=True)
-Logger.info("Writing {}".format(annotated_tsv_gz_path))
-coloc_df.to_csv(annotated_tsv_gz_path, sep="\t", index=True, index_label='id', na_rep='na')
+#%% gwas category
+Logger.info("Annotate GWAS categories")
+gwas_annot_df = pandas.read_excel(gwas_cat_ods_path, engine="odf")
+gwas_annot_df = gwas_annot_df[['id', 'manual_category', 'trait']]
+gwas_annot_df.rename({'id': "gwas_id", 'manual_category': 'gwas_category', 'trait': 'gwas_trait'}, axis=1, inplace=True)
+gwas_annot_df.drop_duplicates(inplace=True)
+
+dlt = gwas_annot_tbl.delete()
+ins = gwas_annot_tbl.insert()
+with engine.connect() as con:
+    con.execute(dlt)
+    con.execute(ins, gwas_annot_df.to_dict('records'))
+
+# #%% delete table import to save space
+Logger.info("Drop colocimport to save space")
+dlt = colocimport.delete()
+with engine.connect() as con:
+    con.execute(dlt)
+

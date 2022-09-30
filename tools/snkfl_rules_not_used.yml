@@ -10,8 +10,20 @@ rule all:
     input:
         os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
         os.path.join(outdir, "web/db.sqlite"),
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
 
-include: 'snkfl_plots.yml'
+rule pltbar_davidgo:
+    input:
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
+    output:
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
+    params:
+        upper_var_gwas_cat_count,pltbar_davidgo
+        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
+        os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
+    shell:
+        "python scripts/.py {params[1]} {params[0]} {params[2]}"
 
 rule cmpt_tissue_enrich_in_gwas:
     input:

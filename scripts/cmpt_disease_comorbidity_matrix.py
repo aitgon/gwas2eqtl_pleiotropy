@@ -32,9 +32,18 @@ coloc_df = pandas.read_csv(annotated_tsv_path, sep="\t", usecols=['rsid', 'eqtl_
 
 eqtl_id = 'GTEx_ge_blood'
 # for eqtl_id in sorted(coloc_df.eqtl_id.unique()):
-d_df = coloc_df.loc[coloc_df.eqtl_id == eqtl_id, ['rsid', 'eqtl_beta', 'egene', 'gwas_id']].drop_duplicates()
-d_df = d_df.pivot_table(values='eqtl_beta', index=['rsid', 'egene'], columns='gwas_id', fill_value=0)
+# d_df = coloc_df.loc[coloc_df.eqtl_id == eqtl_id, ['rsid', 'eqtl_beta', 'egene', 'gwas_id', 'eqtl_id']].drop_duplicates()
+d_df = coloc_df[['rsid', 'eqtl_beta', 'egene', 'gwas_id', 'eqtl_id']].drop_duplicates()
+d_df = d_df.pivot_table(values='eqtl_beta', index=['rsid', 'egene', 'eqtl_id'], columns='gwas_id', fill_value=0)
+
+# d_df = d_df.loc[(d_df != 0).sum(axis=1) >= 5]
+# import pdb; pdb.set_trace()
+
 Logger.info("Spearman correlation")
 d_df = d_df.corr(method='spearman')
+
+d_df.fillna(0, inplace=True)
+
 out_tsv_path = os.path.join(outdir_path, eqtl_id + '.tsv')
-d_df.to_csv(out_tsv_path, sep='\t', index=True, header=True)
+d_df.to_csv(disease_corr_tsv_path, sep='\t', index=True, header=True)
+
