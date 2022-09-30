@@ -60,7 +60,7 @@ Copy input data to the config folder; eg out/config/genome/5e-08/1000000
 # Run analyses and generate MS figures
 
 ~~~
-snakemake --cores all -p -d ${PWD} -s tools/snkfl_all2.yml --config coloc_tsv_gz=../gwas2eqtl/out/gwas420/coloc_gwas420.tsv.gz david_email=mylogin@mylab.edu outdir=out/gwas413/genome/5e-08/1000000 url_db='sqlite:///out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/db/db.sqlite'  raw_coloc_tsv=config/coloc413.tsv gwas_cat_ods=config/gwas413.ods etissue_cat_ods=config/etissue_category.ods upper_var_gwas_cat_count=5 public_data_dir=/home/gonzalez/Software/public
+snakemake --cores all -p -d ${PWD} -s tools/snkfl_all2.yml --config coloc_tsv_gz=../gwas2eqtl/out/gwas420/coloc_gwas420.tsv.gz david_email=aitor.gonzalez@inserm.fr outdir=out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000 url_db='sqlite:///out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/db/db.sqlite'  raw_coloc_tsv=config/coloc413.tsv gwas_cat_ods=config/gwas413.ods etissue_cat_ods=config/etissue_category.ods upper_var_gwas_cat_count=5 public_data_dir=/home/gonzalez/Software/public
 ~~~
 
 # MS
@@ -97,5 +97,10 @@ cd $OLDPWD
 # Poster
 
 Go to poster_eccb22_barcelona and follow the readme.md instructions
+
+python scripts/cmpt_disease_comorbidity_matrix2.py out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/filter_h4.py/h4.tsv out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/cmpt_disease_comorbidity_matrix.py/corr.tsv
+
+python scripts/plthtmp_disease_comorbidity_matrix.py out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/cmpt_disease_comorbidity_matrix2.py/corr3.tsv config/gwas418.ods out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/plthtmp_disease_comorbidity_matrix.py/corr3.png
+
 
 
