@@ -38,6 +38,7 @@ rule all:
         os.path.join(outdir, "pltbar_tissue_enrich_in_pleio.py/fisher.tsv"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
         os.path.join(outdir, "cmpt_disease_comorbidity_matrix.py/corr.tsv"),
+        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
 
 #os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
 # os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_egene.png"),

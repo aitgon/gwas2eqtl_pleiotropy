@@ -30,6 +30,16 @@ rule all_plots:
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "pltbar_tissue_enrich_in_pleio.py/fisher.tsv"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
+
+rule plthtmp_disease_comorbidity_matrix:
+    input:
+        os.path.join(outdir, "cmpt_disease_comorbidity_matrix.py/corr.tsv"),
+        "config/gwas418.ods",
+    output:
+        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
+    shell:
+        "python scripts/plthtmp_disease_comorbidity_matrix.py {input[0]} {output[0]}"
 
 rule pltbar_tissue_enrich_in_pleio:
     input:
