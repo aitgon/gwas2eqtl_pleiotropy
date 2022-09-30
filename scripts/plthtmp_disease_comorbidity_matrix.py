@@ -8,10 +8,11 @@ from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, dpi
 from matplotlib import pyplot as plt
 import scipy.spatial as sp, scipy.cluster.hierarchy as hc
 from matplotlib.pyplot import gcf
-from matplotlib.patches import Patch
 
 #%%
 seaborn.set_theme(**seaborn_theme_dic)
+
+
 
 #%%
 help_cmd_str = "todo"
@@ -39,7 +40,7 @@ corr_df = corr_df.loc[corr_df.sum(axis=1) > 0, ]
 corr_df = corr_df[corr_df.columns[corr_df.sum(axis=0) > 0]]
 
 #%% filter row with at least a number of correlations >0.1 larger than 30
-mask = (corr_df >= 0.05).sum(axis=1) > 15
+mask = (corr_df >= 0.05).sum(axis=1) > 5
 corr_df = corr_df.loc[mask]
 corr_df = corr_df[corr_df.columns[mask]]
 
@@ -48,37 +49,37 @@ dis_df = 1 - corr_df   # distance matrix
 
 #%%
 gwas_annotation_df = pandas.read_excel(gwas_cat_ods_path, engine="odf")
-gwas_id_df = gwas_annotation_df[['id', 'trait', 'category', 'code']].drop_duplicates()
+gwas_id_df = gwas_annotation_df[['id', 'trait', 'icd10_level1', 'icd10_code_level1']].drop_duplicates()
 gwas_id_df.set_index('id', inplace=True, verify_integrity=True)
 # import pdb; pdb.set_trace()
-gwas_category_df = gwas_annotation_df[['code.1', 'category3']].dropna(axis=0).drop_duplicates()
-gwas_category_df.rename({'code.1': 'code'}, axis=1, inplace=True)
+gwas_category_df = gwas_annotation_df[['icd10_code_level1.1', 'category_pleiotropy']].dropna(axis=0).drop_duplicates()
+gwas_category_df.rename({'icd10_code_level1.1': 'icd10_code_level1'}, axis=1, inplace=True)
 
-gwas_category_df.set_index('code', inplace=True, verify_integrity=True)
-gwas_id_df = gwas_id_df.merge(gwas_category_df, left_on='code', right_index=True, how='inner')
-gwas_id_df = gwas_id_df.merge(dis_df, left_index=True, right_index=True)[['trait', 'category', 'category3']]
+gwas_category_df.set_index('icd10_code_level1', inplace=True, verify_integrity=True)
+gwas_id_df = gwas_id_df.merge(gwas_category_df, left_on='icd10_code_level1', right_index=True, how='inner')
+gwas_id_df = gwas_id_df.merge(dis_df, left_index=True, right_index=True)[['trait', 'icd10_level1', 'category_pleiotropy']]
 # import pdb; pdb.set_trace()
 #%%
-category_lst = gwas_id_df['category3'].unique()
+category_lst = gwas_id_df['category_pleiotropy'].unique()
 category_lst_len = len(category_lst)
 nb_lst = int(category_lst_len/2)
-category1_lst = gwas_id_df['category3'].unique()[:nb_lst]
-category2_lst = gwas_id_df['category3'].unique()[nb_lst:]
+category1_lst = gwas_id_df['category_pleiotropy'].unique()[:nb_lst]
+category2_lst = gwas_id_df['category_pleiotropy'].unique()[nb_lst:]
 # import pdb; pdb.set_trace()
 #%%
 # gwas_id_df['subset1'] = 'Other'
-# mask1 = gwas_id_df['category3'].isin(category1_lst)
-# gwas_id_df.loc[mask1, 'subset1'] = gwas_id_df.loc[mask1, 'category3']
+# mask1 = gwas_id_df['category_pleiotropy'].isin(category1_lst)
+# gwas_id_df.loc[mask1, 'subset1'] = gwas_id_df.loc[mask1, 'category_pleiotropy']
 #
 # gwas_id_df['subset2'] = 'Other'
-# gwas_id_df.loc[~mask1, 'subset2'] = gwas_id_df.loc[~mask1, 'category3']
+# gwas_id_df.loc[~mask1, 'subset2'] = gwas_id_df.loc[~mask1, 'category_pleiotropy']
 # import pdb; pdb.set_trace()
 #%%
 # annotation_df = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')[['subset1', 'subset2']]
-annotation_df = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')[['trait', 'category', 'category3']]
+annotation_df = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')[['trait', 'icd10_level1', 'category_pleiotropy']]
 
 # Label 1
-subset1_labels = annotation_df["category3"]
+subset1_labels = annotation_df["category_pleiotropy"]
 subset1_pal = seaborn.color_palette(palette='bright', n_colors=subset1_labels.unique().size)
 subset1_lut = dict(zip(map(str, sorted(subset1_labels.unique())), subset1_pal))
 subset1_colors = pandas.Series(subset1_labels, index=annotation_df.index).map(subset1_lut)
@@ -117,24 +118,31 @@ clustermap_args_dic['col_linkage'] = linkage
 clustermap_args_dic['row_cluster'] = False
 clustermap_args_dic['col_cluster'] = False
 clustermap_args_dic['xticklabels'] = False
+# clustermap_args_dic['fontsize'] = 8
+
 # import pdb; pdb.set_trace()
-clustermap_args_dic['yticklabels'] = annotation_df['category'].tolist()
+clustermap_args_dic['yticklabels'] = annotation_df['icd10_level1'].tolist()
 # clustermap_args_dic['cbar_pos'] = None
 # clustermap_args_dic['dendrogram_ratio'] = (0.05, 0.05)
+
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
+seaborn.set(font_scale=0.5)
+# g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize = 10)
+# plt.xlabel('Years', fontsize = 10) # x-axis label with fontsize 15
+# plt.ylabel('Years', fontsize = 10) # x-axis label with fontsize 15
 # add legends
 g.cax.set_visible(False)
-g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize = 12)
+g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize = 6)
 
 for label in subset1_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
-l1 = g.ax_col_dendrogram.legend(title='subset1', loc="upper left", bbox_to_anchor=(0.0, 1), ncol=3, bbox_transform=gcf().transFigure)
+l1 = g.ax_col_dendrogram.legend(title='subset1', loc="upper left", bbox_to_anchor=(0.0, 1), ncol=4, bbox_transform=gcf().transFigure)
 
 # for label in subset2_labels.unique():
 #     g.ax_row_dendrogram.bar(0, 0, color=subset2_lut[label], label=label, linewidth=0);
 # l2 = g.ax_row_dendrogram.legend(title='subset2', loc="upper left", bbox_to_anchor=(0.0, 0.9), ncol=3, bbox_transform=gcf().transFigure)
 
-plt.subplots_adjust(top=1.1, left=-0.10, right=0.7, bottom=0.05)
+plt.subplots_adjust(top=1.1, left=0.00, right=0.7, bottom=0.05)
 # g.fig.subplots_adjust(right=0.7)
 # plt.tight_layout()
 # png_path = os.path.join(outdir_path, "blood.png")

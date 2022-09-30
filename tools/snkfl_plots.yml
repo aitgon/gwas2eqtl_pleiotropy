@@ -39,7 +39,7 @@ rule plthtmp_disease_comorbidity_matrix:
     output:
         os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
     shell:
-        "python scripts/plthtmp_disease_comorbidity_matrix.py {input[0]} {output[0]}"
+        "python scripts/plthtmp_disease_comorbidity_matrix.py {input[0]} {input[1]} {output[0]}"
 
 rule pltbar_tissue_enrich_in_pleio:
     input:
