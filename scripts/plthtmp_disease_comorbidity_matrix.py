@@ -40,7 +40,11 @@ corr_df = corr_df.loc[corr_df.sum(axis=1) > 0, ]
 corr_df = corr_df[corr_df.columns[corr_df.sum(axis=0) > 0]]
 
 #%% filter row with at least a number of correlations >0.1 larger than 30
-mask = (corr_df >= 0.04).sum(axis=1) > 10
+corr_count_ser = (corr_df.abs() >= 0.05).sum(axis=1)
+# max number of correlation 80
+corr_count_ser = corr_count_ser.sort_values(ascending=False)[0:50]
+# mask = (corr_df >= 0.04).sum(axis=1) > 10
+mask = corr_df.index.isin(corr_count_ser.index)
 corr_df = corr_df.loc[mask]
 corr_df = corr_df[corr_df.columns[mask]]
 
@@ -62,6 +66,7 @@ subset1_colors = pandas.Series(class_labels, index=annotation_df.index).map(subs
 network_node_colors = pandas.DataFrame(subset1_colors)
 
 #%%
+# import pdb; pdb.set_trace()
 linkage = hc.linkage(sp.distance.squareform(dis_df), method='average')
 
 clustermap_args_dic = {}

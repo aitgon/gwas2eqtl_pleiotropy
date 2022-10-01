@@ -17,7 +17,7 @@ ensg2symbol_tbl = Table(
 gwas_annot_tbl = Table(
    'gwas_annot', meta,
    Column('gwas_id', String(50), primary_key=True),
-   Column('gwas_category', String(50), nullable=False),
+   Column('gwas_class', String(50), nullable=False),
    Column('gwas_trait', String(50), nullable=False),
 )
 

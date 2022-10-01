@@ -1,3 +1,4 @@
+import pdb
 
 from sqlalchemy import create_engine, select
 
@@ -37,7 +38,7 @@ meta.create_all(engine)
 #%%
 Logger.info("Select colocalization joins")
 
-sel_cols = [coloc, gwas_annot_tbl.c.gwas_category, ensg2symbol_tbl.c.symbol, rsid2cytoband_tbl.c.cytoband]
+sel_cols = [coloc, gwas_annot_tbl.c.gwas_class, ensg2symbol_tbl.c.symbol, rsid2cytoband_tbl.c.cytoband]
 sel = select(sel_cols).distinct()
 sel = sel.where(coloc.c.gwas_id == gwas_annot_tbl.c.gwas_id)
 sel = sel.where(coloc.c.egene == ensg2symbol_tbl.c.gene_id)

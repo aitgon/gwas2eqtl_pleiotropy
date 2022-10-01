@@ -28,7 +28,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 region_window_bed_path = os.path.join(PathManager.get_outdir_path(), "cmpt_pleiotropic_regions.py/region_window_100000.bed")
 
 #%% input h4_annotated
-h4_annotated_tsv_path = os.path.join(PathManager.get_outdir_path(), "annotate.py/h4_annotated.tsv")
+h4_annotated_tsv_path = os.path.join(PathManager.get_outdir_path(), "annotate_db.py/h4_annotated.tsv")
 h4_annotated_df = pandas.read_csv(h4_annotated_tsv_path, sep="\t", header=0)
 gwas_cat_lst = sorted(h4_annotated_df['gwas_subcategory'].unique().tolist())
 

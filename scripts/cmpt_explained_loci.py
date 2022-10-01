@@ -21,7 +21,7 @@ except IndexError:
     sys.exit(1)
 
 #%%
-# coloc_tsv_gz_path = os.path.join(PathManager.get_outdir_path(), "gwas413/genome/5e-08/1000000/annotate.py/annotated.tsv.gz")
+# coloc_tsv_gz_path = os.path.join(PathManager.get_outdir_path(), "gwas413/genome/5e-08/1000000/annotate_db.py/annotated.tsv.gz")
 df = pandas.read_csv(coloc_tsv_gz_path, sep="\t")
 
 #%%

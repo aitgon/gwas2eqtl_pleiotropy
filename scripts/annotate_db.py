@@ -1,5 +1,4 @@
 from gwas2eqtl_pleiotropy.Logger import Logger
-from gwas2eqtl_pleiotropy.UCSC import UCSC
 from gwas2eqtl_pleiotropy.URL import URL
 from gwas2eqtl_pleiotropy.db import meta, coloc
 from gwas2eqtl_pleiotropy.db import ensg2symbol_tbl
@@ -18,7 +17,7 @@ import mygene
 help_cmd_str = "todo"
 try:
     url_db = sys.argv[1]
-    gwas_cat_ods_path = sys.argv[2]
+    gwas_metadata = sys.argv[2]
     etissue_cat_ods_path = sys.argv[3]
     annotated_tsv_gz_path = sys.argv[4]
     if len(sys.argv) > 6:
@@ -46,12 +45,10 @@ with engine.connect() as con:
 
 #%% download gene symbols
 Logger.info("Annotate egene symbols")
-# ensg2symbol_df = UCSC().gene_id_to_symbol()
 
 # egene_lst = None
 sel = select(coloc.c.egene).distinct()
 with engine.connect() as con:
-    # egene_lst = [egene[0] for egene in con.execute(sel).fetchall()]
     fetch_res = con.execute(sel).fetchall()
 
 ensg2symbol_df = pandas.DataFrame(fetch_res).drop_duplicates()
@@ -63,14 +60,6 @@ ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_index=Tru
 ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'symbol'] = ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'egene']
 ensg2symbol_df = ensg2symbol_df.drop_duplicates(subset='egene')
 ensg2symbol_df.rename({'egene': 'gene_id'}, axis=1, inplace=True)
-
-#query_df['egene'] = query_df.index
-#query_df = query_df[['egene', 'symbol']].drop_duplicates()
-#ensg2symbol_df = ensg2symbol_df.merge(query_df, left_on='egene', right_on='egene', how='left')
-#ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'symbol'] = ensg2symbol_df.loc[ensg2symbol_df['symbol'].isna(), 'egene']
-#ensg2symbol_df.rename({'egene': 'gene_id'}, axis=1, inplace=True)
-# import pdb; pdb.set_trace()
-# ensg2symbol_df = ensg2symbol_df.merge(pandas.Series(egene_lst, name='gene_id'), left_on='gene_id', right_on='gene_id')
 
 dlt = ensg2symbol_tbl.delete()
 ins = ensg2symbol_tbl.insert()
@@ -91,17 +80,19 @@ sel = select([coloc.c.chrom, coloc.c.pos, coloc.c.rsid]).distinct()
 with engine.connect() as con:
     fetch_res = con.execute(sel).fetchall()
 rsid2cytoband_df = pandas.DataFrame(fetch_res)
+rsid2cytoband_df['chrom'] = rsid2cytoband_df['chrom'].astype(int)
+rsid2cytoband_df['pos'] = rsid2cytoband_df['pos'].astype(int)
 
-rsid2cytoband_df['chrom'] = rsid2cytoband_df['chrom'].astype(str)
-cyto_df['chrom'] = cyto_df['chrom'].astype(str)
+# rsid2cytoband_df['chrom'] = rsid2cytoband_df['chrom'].astype(str)
+# cyto_df['chrom'] = cyto_df['chrom'].astype(str)
+cyto_df = cyto_df.loc[cyto_df['chrom'].isin([str(chrom) for chrom in range(1, 23)])]
+cyto_df['chrom'] = cyto_df['chrom'].astype(int)
 for rowi, row in cyto_df.iterrows():
     chrom = row['chrom']
     start = row['start']
     end = row['end']
     cytoband = row['cytoband']
-    rsid2cytoband_df.loc[
-        (rsid2cytoband_df['chrom'] == chrom) & (start <= rsid2cytoband_df['pos']) & (
-                rsid2cytoband_df['pos'] <= end), 'cytoband'] = cytoband
+    rsid2cytoband_df.loc[(rsid2cytoband_df['chrom'] == chrom) & (start <= rsid2cytoband_df['pos']) & (rsid2cytoband_df['pos'] <= end), 'cytoband'] = cytoband
 rsid2cytoband_df['cytoband'] = rsid2cytoband_df['chrom'].astype(str) + rsid2cytoband_df['cytoband']
 rsid2cytoband_df = rsid2cytoband_df[['rsid', 'cytoband']]
 
@@ -113,9 +104,8 @@ with engine.connect() as con:
 
 #%% gwas category
 Logger.info("Annotate GWAS categories")
-gwas_annot_df = pandas.read_excel(gwas_cat_ods_path, engine="odf")
-gwas_annot_df = gwas_annot_df[['id', 'manual_category', 'trait']]
-gwas_annot_df.rename({'id': "gwas_id", 'manual_category': 'gwas_category', 'trait': 'gwas_trait'}, axis=1, inplace=True)
+gwas_annot_df = pandas.read_excel(gwas_metadata, engine="odf", usecols=['gwas_id', 'class_pleiotropy', 'trait'])
+gwas_annot_df.rename({'id': "gwas_id", 'class_pleiotropy': 'gwas_class', 'trait': 'gwas_trait'}, axis=1, inplace=True)
 gwas_annot_df.drop_duplicates(inplace=True)
 
 dlt = gwas_annot_tbl.delete()
@@ -124,9 +114,7 @@ with engine.connect() as con:
     con.execute(dlt)
     con.execute(ins, gwas_annot_df.to_dict('records'))
 
-# #%% delete table import to save space
+#%% delete table import to save space
 Logger.info("Drop colocimport to save space")
-dlt = colocimport.delete()
-with engine.connect() as con:
-    con.execute(dlt)
+colocimport.drop(engine)
 

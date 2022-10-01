@@ -1,6 +1,7 @@
 etissue_cat_ods = config['etissue_cat_ods']
 gwas_cat_ods = config['gwas_cat_ods']
 outdir = config['outdir']
+david_email = config['david_email']
 public_data_dir_path = config['public_data_dir']
 coloc_tsv_gz = config['coloc_tsv_gz']
 upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
@@ -100,7 +101,7 @@ rule plt_violin_beta_per_gwas_cat:
 #rule plt_violin_egenes_per_region:
 #    input:
 #        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.bed"),
-#        os.path.join(outdir, "annotate.py/h4_annotated.bed"),
+#        os.path.join(outdir, "annotate_db.py/h4_annotated.bed"),
 #    output:
 #        os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
 #    params:
@@ -142,16 +143,6 @@ rule pltbox_remaptf_per_rsid:
         upper_var_gwas_cat_count=upper_var_gwas_cat_count
     shell:
         "python scripts/pltbox_x_per_rsid_y_remaptf.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
-
-rule plt_vep_consequence:
-    input:
-        os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
-    output:
-        os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
-    params:
-        upper_var_gwas_cat_count=(upper_var_gwas_cat_count-1)
-    shell:
-        "python scripts/pltbar_vep_consequence.py {input[0]} {params[0]} {output[0]}"
 
 rule plt_violin_gwas_per_variant_egene_etissue:
     input:

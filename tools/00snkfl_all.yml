@@ -1,0 +1,15 @@
+gwas_cat_ods = config['gwas_cat_ods']
+outdir = config['outdir']
+public_data_dir_path = config['public_data_dir']
+david_email = config['david_email']
+
+rule all:
+    input:
+        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_50_hg38.bed"),
+
+include: "04snkfl_plots.yml"
+include: "03snkfl_analysis_pleiotropy.yml"
+include: "02snkfl_cmpt_pleiotropic_regions.yml"
+include: "01snkfl_gwas_classes.yml"

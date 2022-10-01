@@ -35,7 +35,7 @@ rule cmpt_tissue_enrich_in_gwas:
 
 rule web_db:
     input:
-        os.path.join(outdir, "annotate.py/annotated.tsv.gz"),
+        os.path.join(outdir, "annotate_db.py/annotated.tsv.gz"),
     output:
         os.path.join(outdir, "web/db.sqlite"),
     shell:
