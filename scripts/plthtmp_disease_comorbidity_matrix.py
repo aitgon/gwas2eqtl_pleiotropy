@@ -18,7 +18,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     disease_corr_tsv_path = sys.argv[1]
-    gwas_cat_ods_path = sys.argv[2]
+    gwas_metadata_ods_path = sys.argv[2]
     htmp_disease_corr_png_path = sys.argv[3]
     if len(sys.argv) > 4:
         print("""Two many arguments!
@@ -48,65 +48,20 @@ corr_df = corr_df[corr_df.columns[mask]]
 dis_df = 1 - corr_df   # distance matrix
 
 #%%
-gwas_annotation_df = pandas.read_excel(gwas_cat_ods_path, engine="odf")
-gwas_id_df = gwas_annotation_df[['id', 'trait', 'icd10_level1', 'icd10_code_level1']].drop_duplicates()
-gwas_id_df.set_index('id', inplace=True, verify_integrity=True)
-# import pdb; pdb.set_trace()
-gwas_category_df = gwas_annotation_df[['icd10_code_level1.1', 'category_pleiotropy']].dropna(axis=0).drop_duplicates()
-gwas_category_df.rename({'icd10_code_level1.1': 'icd10_code_level1'}, axis=1, inplace=True)
+gwas_metadata_df = pandas.read_excel(gwas_metadata_ods_path, engine="odf", usecols=['gwas_id', 'trait', 'class_pleiotropy'])
 
-gwas_category_df.set_index('icd10_code_level1', inplace=True, verify_integrity=True)
-gwas_id_df = gwas_id_df.merge(gwas_category_df, left_on='icd10_code_level1', right_index=True, how='inner')
-gwas_id_df = gwas_id_df.merge(dis_df, left_index=True, right_index=True)[['trait', 'icd10_level1', 'category_pleiotropy']]
-# import pdb; pdb.set_trace()
 #%%
-category_lst = gwas_id_df['category_pleiotropy'].unique()
-category_lst_len = len(category_lst)
-nb_lst = int(category_lst_len/2)
-category1_lst = gwas_id_df['category_pleiotropy'].unique()[:nb_lst]
-category2_lst = gwas_id_df['category_pleiotropy'].unique()[nb_lst:]
-# import pdb; pdb.set_trace()
-#%%
-# gwas_id_df['subset1'] = 'Other'
-# mask1 = gwas_id_df['category_pleiotropy'].isin(category1_lst)
-# gwas_id_df.loc[mask1, 'subset1'] = gwas_id_df.loc[mask1, 'category_pleiotropy']
-#
-# gwas_id_df['subset2'] = 'Other'
-# gwas_id_df.loc[~mask1, 'subset2'] = gwas_id_df.loc[~mask1, 'category_pleiotropy']
-# import pdb; pdb.set_trace()
-#%%
-# annotation_df = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')[['subset1', 'subset2']]
-annotation_df = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')[['trait', 'icd10_level1', 'category_pleiotropy']]
+gwas_metadata_df.set_index('gwas_id', inplace=True, verify_integrity=True)
+annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['trait', 'class_pleiotropy']]
 
 # Label 1
-subset1_labels = annotation_df["category_pleiotropy"]
-subset1_pal = seaborn.color_palette(palette='bright', n_colors=subset1_labels.unique().size)
-subset1_lut = dict(zip(map(str, sorted(subset1_labels.unique())), subset1_pal))
-subset1_colors = pandas.Series(subset1_labels, index=annotation_df.index).map(subset1_lut)
-
-# # Label 2
-# subset2_labels = annotation_df["subset2"]
-# subset2_pal = seaborn.color_palette(palette='tab10', n_colors=subset2_labels.unique().size)
-# subset2_lut = dict(zip(map(str, sorted(subset2_labels.unique())), subset2_pal))
-# subset2_colors = pandas.Series(subset2_labels, index=annotation_df.index).map(subset2_lut)
-
-# import pdb; pdb.set_trace()
-# network_node_colors = pandas.DataFrame(subset1_colors).join(pandas.DataFrame(subset2_colors))
+class_labels = annotation_df["class_pleiotropy"]
+class_pal = seaborn.color_palette(palette='bright', n_colors=class_labels.unique().size)
+subset1_lut = dict(zip(map(str, sorted(class_labels.unique())), class_pal))
+subset1_colors = pandas.Series(class_labels, index=annotation_df.index).map(subset1_lut)
 network_node_colors = pandas.DataFrame(subset1_colors)
 
 #%%
-# category_annot_lst = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')['subset1'].tolist()
-# lut = dict(zip(category_annot_lst, seaborn.color_palette(palette='bright', n_colors=len(category_annot_lst))))
-# row_colors = pandas.DataFrame(category_annot_lst)[0].map(lut)
-#
-# #%%
-# category_annot_lst = dis_df.merge(gwas_id_df, left_index=True, right_index=True, how='left')['subset2'].tolist()
-# lut2 = dict(zip(category_annot_lst, seaborn.color_palette(palette='bright', n_colors=len(category_annot_lst))))
-# row_colors2 = pandas.DataFrame(category_annot_lst)[0].map(lut2)
-
-#%%
-# seaborn.set(font_scale=0.2)
-# import pdb; pdb.set_trace()
 linkage = hc.linkage(sp.distance.squareform(dis_df), method='average')
 
 clustermap_args_dic = {}
@@ -118,34 +73,19 @@ clustermap_args_dic['col_linkage'] = linkage
 clustermap_args_dic['row_cluster'] = False
 clustermap_args_dic['col_cluster'] = False
 clustermap_args_dic['xticklabels'] = False
-# clustermap_args_dic['fontsize'] = 8
 
-# import pdb; pdb.set_trace()
-clustermap_args_dic['yticklabels'] = annotation_df['icd10_level1'].tolist()
-# clustermap_args_dic['cbar_pos'] = None
-# clustermap_args_dic['dendrogram_ratio'] = (0.05, 0.05)
+clustermap_args_dic['yticklabels'] = annotation_df['trait'].tolist()
 
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
 seaborn.set(font_scale=1)
-# g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize = 10)
-# plt.xlabel('Years', fontsize = 10) # x-axis label with fontsize 15
-# plt.ylabel('Years', fontsize = 10) # x-axis label with fontsize 15
-# add legends
 g.cax.set_visible(False)
 g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize = 6)
 
-for label in subset1_labels.unique():
+for label in class_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
-l1 = g.ax_col_dendrogram.legend(title='Category', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=4, bbox_transform=gcf().transFigure)
-
-# for label in subset2_labels.unique():
-#     g.ax_row_dendrogram.bar(0, 0, color=subset2_lut[label], label=label, linewidth=0);
-# l2 = g.ax_row_dendrogram.legend(title='subset2', loc="upper left", bbox_to_anchor=(0.0, 0.9), ncol=3, bbox_transform=gcf().transFigure)
+l1 = g.ax_col_dendrogram.legend(title='Class', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=4, bbox_transform=gcf().transFigure)
 
 plt.subplots_adjust(top=1, right=0.8, bottom=0.05, left=-0.1)
-# g.fig.subplots_adjust(right=0.7)
-# plt.tight_layout()
-# png_path = os.path.join(outdir_path, "blood.png")
 plt.savefig(htmp_disease_corr_png_path, dpi=600)
 plt.clf()
 plt.close()

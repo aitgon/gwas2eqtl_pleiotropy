@@ -40,6 +40,9 @@ rule all:
         os.path.join(outdir, "cmpt_disease_comorbidity_matrix.py/corr.tsv"),
         os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
 
+include: 'snkfl_plots.yml'
+include: '00snkfl_gwas_classes.yml'
+
 #os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
 # os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_egene.png"),
 # os.path.join(outdir, "annot_gwas_metadata.py/gwas413_metadata.tsv"),
@@ -48,8 +51,6 @@ rule all:
 #        os.path.join(outdir, "ms_supp_tab/ST3_gwas2eqtl_h4.xlsx"),
 #        os.path.join(outdir, "cmpt_explained_loci.py/list.tsv"),
 #        os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
-
-include: 'snkfl_plots.yml'
 
 #rule create_table_supplementary:
 #    input:
@@ -131,14 +132,6 @@ rule count_per_rsid:
     shell:
         "python scripts/cmpt_count_per_rsid.py {input[0]} {params.upper_var_gwas_cat_count} {output[0]}"
 
-rule cmpt_disease_comorbidity_matrix:
-    input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
-    output:
-        os.path.join(outdir, "cmpt_disease_comorbidity_matrix.py/corr.tsv"),
-    shell:
-        "python scripts/cmpt_disease_comorbidity_matrix.py {input[0]} {output[0]}"
-
 rule filter_h4:
     input:
         etissue_cat_ods,
@@ -178,8 +171,3 @@ rule import_sqlite:
         gunzip -c {input[0]} |sqlite3 -csv -separator $'\t' {params[0]} '.import --skip 0 /dev/stdin colocimport'
         touch {output[0]}
         """
-
-
-"""sqlite3 {params[0]} 'create table coloc (id INTEGER PRIMARY KEY AUTOINCREMENT, chrom INTEGER NOT NULL, pos INTEGER NOT NULL, rsid TEXT NOT NULL, ref TEXT NOT NULL, alt TEXT NOT NULL, egene TEXT NOT NULL, gwas_beta REAL NOT NULL, gwas_pval REAL NOT NULL, gwas_id TEXT NOT NULL, eqtl_beta REAL NOT NULL, eqtl_pval REAL NOT NULL, eqtl_id TEXT NOT NULL, "PP.H4.abf" REAL NOT NULL, nsnps INTEGER NOT NULL, "SNP.PP.H4" REAL NOT NULL, "PP.H3.abf" REAL NOT NULL, "PP.H2.abf" REAL NOT NULL, "PP.H1.abf" REAL NOT NULL, "PP.H0.abf" REAL NOT NULL, coloc_lead_pos INTEGER NOT NULL, coloc_lead_rsid TEXT NOT NULL, coloc_region TEXT NOT NULL);'
-        sqlite3 {params[0]} 'INSERT INTO coloc("chrom", "pos", "rsid", "ref", "alt", "egene", "gwas_beta", "gwas_pval", "gwas_id", "eqtl_beta", "eqtl_pval", "eqtl_id", "PP.H4.abf", "SNP.PP.H4", "nsnps", "PP.H3.abf", "PP.H2.abf", "PP.H1.abf", "PP.H0.abf", "coloc_lead_pos", "coloc_lead_rsid", "coloc_region") SELECT * FROM coloctemp;'
-        sqlite3 {params[0]} 'DROP TABLE coloctemp;'"""
