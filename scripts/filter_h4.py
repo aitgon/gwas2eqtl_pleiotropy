@@ -72,4 +72,5 @@ variants_h4_path = os.path.join(outdir_path, "variants_h4.tsv")
 variants_h4_df.to_csv(variants_h4_path, sep="\t", index=False)
 
 #%%
+h4_df.sort_values(['chrom', 'pos'], ascending=True, inplace=True)
 h4_df.to_csv(h4_tsv_gz_path, sep="\t", index=False)

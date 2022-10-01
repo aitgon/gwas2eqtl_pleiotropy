@@ -40,7 +40,7 @@ corr_df = corr_df.loc[corr_df.sum(axis=1) > 0, ]
 corr_df = corr_df[corr_df.columns[corr_df.sum(axis=0) > 0]]
 
 #%% filter row with at least a number of correlations >0.1 larger than 30
-mask = (corr_df >= 0.05).sum(axis=1) > 5
+mask = (corr_df >= 0.04).sum(axis=1) > 10
 corr_df = corr_df.loc[mask]
 corr_df = corr_df[corr_df.columns[mask]]
 
@@ -126,7 +126,7 @@ clustermap_args_dic['yticklabels'] = annotation_df['icd10_level1'].tolist()
 # clustermap_args_dic['dendrogram_ratio'] = (0.05, 0.05)
 
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
-seaborn.set(font_scale=0.5)
+seaborn.set(font_scale=1)
 # g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize = 10)
 # plt.xlabel('Years', fontsize = 10) # x-axis label with fontsize 15
 # plt.ylabel('Years', fontsize = 10) # x-axis label with fontsize 15
@@ -136,13 +136,13 @@ g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize = 6)
 
 for label in subset1_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
-l1 = g.ax_col_dendrogram.legend(title='subset1', loc="upper left", bbox_to_anchor=(0.0, 1), ncol=4, bbox_transform=gcf().transFigure)
+l1 = g.ax_col_dendrogram.legend(title='Category', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=4, bbox_transform=gcf().transFigure)
 
 # for label in subset2_labels.unique():
 #     g.ax_row_dendrogram.bar(0, 0, color=subset2_lut[label], label=label, linewidth=0);
 # l2 = g.ax_row_dendrogram.legend(title='subset2', loc="upper left", bbox_to_anchor=(0.0, 0.9), ncol=3, bbox_transform=gcf().transFigure)
 
-plt.subplots_adjust(top=1.1, left=0.00, right=0.7, bottom=0.05)
+plt.subplots_adjust(top=1, right=0.8, bottom=0.05, left=-0.1)
 # g.fig.subplots_adjust(right=0.7)
 # plt.tight_layout()
 # png_path = os.path.join(outdir_path, "blood.png")
