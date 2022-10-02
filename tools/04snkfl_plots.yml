@@ -6,9 +6,9 @@ upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
 
 rule all_plots:
     input:
-        os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
-        os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/log.txt"),
-        os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
         os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
@@ -153,28 +153,40 @@ rule plt_scttr_count_per_rsid_etissue:
     input:
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+    output:
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
     params: os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py"),
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/log.txt"),
     shell:
-        "python scripts/pltsctr_x_per_rsid_y_etissue.py {input[0]} {input[1]} {params} >{log}"
+        """python scripts/pltsctr_x_per_rsid_y_etissue.py {input[0]} {input[1]} {params} >{log}        
+        touch {output[0]}
+        """
 
 rule plt_scttr_count_per_rsid_egene:
     input:
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+    output:
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
     params: os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py"),
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
     shell:
-        "python scripts/pltsctr_x_per_rsid_y_egene.py {input[0]} {input[1]} {params} >{log}"
+        """python scripts/pltsctr_x_per_rsid_y_egene.py {input[0]} {input[1]} {params} >{log}
+        touch {output[0]}
+        """
 
 rule plt_scttr_count_per_rsid_gwas:
     input:
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
     params: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py"),
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
     shell:
-        "python scripts/pltsctr_x_per_rsid_y_gwas.py {input[0]} {input[1]} {params} >{log}"
+        """python scripts/pltsctr_x_per_rsid_y_gwas.py {input[0]} {input[1]} {params} >{log}
+        touch {output[0]}
+        """
 
 rule plt_hist_gwas_etissue_egene:
     input:
