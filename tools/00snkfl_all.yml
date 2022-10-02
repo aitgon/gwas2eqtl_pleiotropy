@@ -7,11 +7,11 @@ rule all:
         os.path.join(outdir, "filter_h4.py/h4.tsv.bgz.tbi"),
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
         os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
+        #
         # 04snkfl_plots.yml
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
-        os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
 #        os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
@@ -28,6 +28,10 @@ rule all:
 #        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "pltbar_tissue_enrich_in_pleio.py/fisher.tsv"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+        #
+        # 03snkfl_remap.yml
+        os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
+        os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
 
 include: "04snkfl_plots.yml"
 include: "03snkfl_remap.yml"

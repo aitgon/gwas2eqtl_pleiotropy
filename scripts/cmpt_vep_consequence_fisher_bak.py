@@ -1,6 +1,3 @@
-import multiprocessing
-from multiprocessing import Pool
-
 import numpy
 import pandas
 import sys
@@ -13,12 +10,11 @@ from statsmodels.stats import multitest as multitest
 #%%
 help_cmd_str = "todo"
 try:
-    upper_var_gwas_cat_count = int(sys.argv[1])
-    threads = int(sys.argv[2])
-    vep_input_path = sys.argv[3]
-    vep_output_path = sys.argv[4]
-    consequence_tsv_path = sys.argv[5]
-    if len(sys.argv) > 6:
+    vep_input_path = sys.argv[1]
+    vep_output_path = sys.argv[2]
+    upper_var_gwas_cat_count = int(sys.argv[3])
+    consequence_tsv_path = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -45,11 +41,12 @@ df = df0.explode('Consequence').drop_duplicates()
 
 out_columns = ['consequence', 'gwas_category_count', 'a_pleio_x_with_consequence', 'b_pleio_1_with_consequence', 'c_pleio_x_wout_consequence', 'd_pleio_1_wout_consequence', 'oddsr', 'p']
 out_dic = dict(zip(out_columns, [[] for i in range(len(out_columns))]))
+out_df = pandas.DataFrame(out_dic)
 
 all_df = vep_input_df[['rsid', 'gwas_category_count']].drop_duplicates()
-
-def cmpt_vep_consequence_fisher(consequence):
-    out_consequence_lst = []
+Logger.info('Consequence list: {}'.format(sorted(df['Consequence'].unique())))
+# for consequence in sorted(df['Consequence'].unique()):
+for consequence in ['downstream_gene_variant', 'upstream_gene_variant']:
     Logger.info('Consequence: ' + consequence)
     cons_df = df.loc[df['Consequence'] == consequence, ['rsid', 'gwas_category_count']].drop_duplicates()
     cons_df = all_df.merge(cons_df, on=['rsid', 'gwas_category_count'], how='outer', indicator=True)
@@ -83,17 +80,7 @@ def cmpt_vep_consequence_fisher(consequence):
         #%%
         this_row = [consequence, gwas_cat_count, aa, bb, cc, dd, oddsr, ppp]
         this_row_dic = dict(zip(out_columns, this_row))
-        out_consequence_lst.append(this_row_dic)
-        # out_df = pandas.concat([out_df, pandas.DataFrame(this_row_dic, index=[0])])
-    return out_consequence_lst
-
-Logger.info('Consequence list: {}'.format(sorted(df['Consequence'].unique())))
-# for consequence in sorted(df['Consequence'].unique()):
-# for consequence in ['downstream_gene_variant', 'upstream_gene_variant']:
-with Pool(processes=multiprocessing.cpu_count()) as p:
-    out_lst = p.map(cmpt_vep_consequence_fisher, sorted(df['Consequence'].unique()))
-
-out_df = pandas.DataFrame.from_records([record for sublst in out_lst for record in sublst])
+        out_df = pandas.concat([out_df, pandas.DataFrame(this_row_dic, index=[0])])
 
 rejected, pcorrected = multitest.fdrcorrection(out_df['p'], alpha=0.05)
 out_df['pfdr5perc'] = pcorrected

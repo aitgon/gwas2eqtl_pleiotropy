@@ -256,28 +256,9 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \begin{figure*}[!tbp]
 \centering
 %
-\begin{subfigure}[]{.32\textwidth}
-\textbf{a}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/upstream_gene_variant.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/vep.png}
 %
-\end{subfigure}
-%
-\begin{subfigure}[]{.32\textwidth}
-\textbf{b}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/intron_variant.png}
-%
-\end{subfigure}
-%
-\begin{subfigure}[]{.32\textwidth}
-\textbf{c}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/3_prime_UTR_variant.png}
-%
-\end{subfigure}
-%
-\caption{Variant effect predictor (VEP) analysis as a function of the number of GWAS catategory number for three different consequences: \textbf{a}, Upstream gene variant, \textbf{b}, intron variant and \textbf{c}, 3' UTR variant.} \label{fig:vep_consequence}
+\caption{Odds ratio compared of the variants annotated with given variant effect predictor (VEP) consequence and given GWAS category count compared with non pleiotropic variants (GWAS category count one). The significance is given for the q-value (FDR 5\%).}
 %
 \end{figure*}
 %
@@ -324,13 +305,13 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \begin{subfigure}[]{.33\textwidth}
 \textbf{a}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_rsid_y_remaptf.py/bxplt_remaptf_per_rsid_flank_50.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.33\textwidth}
 \textbf{b}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_remap_crm_gwas_categories.py/remap_crm_fisher.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png}
 \end{subfigure}
 %
 \caption{Analysis of transcription factor binding. \textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic variants (Radius 50 bp) as a function of the GWAS category count. \textbf{b}, Odds ratio of cis regulatory module-annotated vs non-annotated variants.} \label{fig:freq_tf_per_variant}
