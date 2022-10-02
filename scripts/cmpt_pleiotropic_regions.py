@@ -51,7 +51,7 @@ for i, row in df.iterrows():
         pos_pleio_latest = pos
     if chrom == chrom_pleio_latest and (pos - pos_pleio_latest) <= region_bin:
         df.loc[i, 'region_pleio_fwd'] = True
-df.to_csv("df.tsv", sep="\t", index=False)
+# df.to_csv("df.tsv", sep="\t", index=False)
 
 #%% Do it reversed
 df.sort_values(by=['chrom', 'pos'], inplace=True, ascending=[True, False])

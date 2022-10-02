@@ -1,15 +1,14 @@
-gwas_cat_ods = config['gwas_cat_ods']
 outdir = config['outdir']
-public_data_dir_path = config['public_data_dir']
-david_email = config['david_email']
 
 rule all:
     input:
         os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
-        os.path.join(outdir, "intrsct_remap_nr_gwas_categories.py/remap_nr_variant_pleio_1_flank_50_hg38.bed"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv.bgz.tbi"),
+        os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
+        os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
 
 include: "04snkfl_plots.yml"
-include: "03snkfl_analysis_pleiotropy.yml"
+include: "03snkfl_remap.yml"
 include: "02snkfl_cmpt_pleiotropic_regions.yml"
 include: "01snkfl_gwas_classes.yml"

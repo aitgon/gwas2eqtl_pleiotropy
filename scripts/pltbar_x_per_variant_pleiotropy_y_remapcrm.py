@@ -1,19 +1,20 @@
+"""At each variant pleiotropy level, this code computes and plots the Fisher
+odds ratio and p-value of CRM vs. Non-CRM variants"""
+
+import numpy
 import os
+import pandas
 import pathlib
+import seaborn
 import shlex
 import subprocess
 import sys
 
-import numpy
-import pandas
-import seaborn
-
+from gwas2eqtl_pleiotropy.Logger import Logger
+from gwas2eqtl_pleiotropy.constants import public_data_dir, annotator_config_dic, label_fontsize, tick_fontsize, dpi, seaborn_theme_dic
 from matplotlib import pyplot as plt
 from scipy.stats import fisher_exact
 from statannotations.Annotator import Annotator
-from gwas2eqtl_pleiotropy.Logger import Logger
-from gwas2eqtl_pleiotropy.constants import public_data_dir, \
-    annotator_config_dic, label_fontsize, tick_fontsize, dpi, seaborn_theme_dic
 
 seaborn.set_theme(**seaborn_theme_dic)
 
@@ -21,7 +22,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     count_per_rsid_gwas_tsv_path = sys.argv[1]
-    variant_pleio_1_flank_0_hg38_bed = sys.argv[2]
+    variant_pleio_1_flank_10_hg38_bed = sys.argv[2]
     upper_var_gwas_cat_count = int(sys.argv[3])
     remap_crm_png = sys.argv[4]
     if len(sys.argv) > 5:
@@ -45,10 +46,9 @@ out_df_columns = ['pleio_count', 'pleio_n_crm_count', 'pleio_1_crm_count', 'plei
 out_df = pandas.DataFrame(columns = out_df_columns)
 
 #%% bedtools intersect
-flank = 0
+flank = 10
 for count_pleio in range(1, upper_var_gwas_cat_count+1):
     bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
-    # intersect_basename = os.path.basename(remap_nr_pleio_1_flank_0_hg38_bed).replace('pleio_1', 'pleio_' + str(count_pleio))
     intersect_bed_path = os.path.join(outdir_path, "remap_crm_pleio_{}.bed".format(count_pleio))
     cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -loj -wb"
     cmd = cmd_stf.format(**{'bed_path': bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
@@ -66,7 +66,6 @@ for count_pleio in range(1, upper_var_gwas_cat_count+1):
         pleio_1_nocrm_count = pleio_n_nocrm_count
         pleio_1_crm_count = pleio_n_crm_count
 
-    # if count_pleio > 1:  # fisher test
     a = pleio_n_crm_count
     b = pleio_1_crm_count
     c = pleio_n_nocrm_count

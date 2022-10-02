@@ -69,7 +69,7 @@ m_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%########################################### bed files, flanking=0
 # bed files of variants splitted by gwas categories
-flank = 0
+flank = 10
 variant_bed_df = gwas_df.copy()
 variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
 variant_bed_df['start'] = variant_bed_df['pos'] - 1 - flank
@@ -82,23 +82,5 @@ for count_pleio in range(1, 6):
         variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] >= count_pleio, ]
     else:
         variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] == count_pleio,]
-    variant_pleio_i_bed_df = variant_pleio_i_bed_df.sort_values(by=['chrom', 'start', 'end'])
-    variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
-
-#%########################################### bed files, flanking=100
-flank = 50
-# bed files of variants splitted by gwas categories
-variant_bed_df = gwas_df.copy()
-variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
-variant_bed_df['start'] = variant_bed_df['pos'] - 1 - flank
-variant_bed_df['end'] = variant_bed_df['pos'] + flank
-variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_category_count', 'gwas_category_lst']]
-
-for count_pleio in range(1, 6):
-    variant_pleio_i_bed_path = os.path.join(outdir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
-    if count_pleio == upper_var_gwas_cat_count:
-        variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] >= count_pleio,]
-    else:
-        variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] == count_pleio, ]
     variant_pleio_i_bed_df = variant_pleio_i_bed_df.sort_values(by=['chrom', 'start', 'end'])
     variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
