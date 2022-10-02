@@ -71,7 +71,7 @@ rule cmpt_davidgo:
 
 rule pltbox_logpval_per_gwas_cat:
     input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/eqtl.png"),
@@ -83,7 +83,7 @@ rule pltbox_logpval_per_gwas_cat:
 
 rule plt_violin_beta_per_gwas_cat:
     input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
@@ -106,7 +106,7 @@ rule plt_violin_beta_per_gwas_cat:
 
 rule plt_violin_interactors_per_egene:
     input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(public_data_dir_path, "stringdb-static.org/download/protein.physical.links.v11.5/9606.protein.physical.links.v11.5.txt.gz"),
     output:
@@ -118,7 +118,7 @@ rule plt_violin_interactors_per_egene:
 
 rule plt_violin_gwas_per_variant_egene_etissue:
     input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png"),
@@ -129,7 +129,7 @@ rule plt_violin_gwas_per_variant_egene_etissue:
 
 rule plt_violin_etissue_per_egene_variant:
     input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
@@ -140,7 +140,7 @@ rule plt_violin_etissue_per_egene_variant:
 
 rule pltbox_egene_per_variant:
     input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
