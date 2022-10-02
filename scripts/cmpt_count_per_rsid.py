@@ -51,7 +51,7 @@ gwas_df.to_csv(tsv_path, sep="\t", index=False)
 gwas_ms_df = gwas_df.copy()
 # gwas_ms_df['cytoband'] = gwas_ms_df['cytoband'].str.split('.', expand=True)[0]
 gwas_ms_df = gwas_ms_df.drop_duplicates('cytoband', keep='first')
-gwas_ms_df = gwas_ms_df.loc[gwas_ms_df['gwas_category_count'] >= 6]
+gwas_ms_df = gwas_ms_df.loc[gwas_ms_df['gwas_category_count'] >= 5]
 # format output
 gwas_ms_df.drop(['gwas_category_count'], inplace=True, axis=1)
 gwas_ms_df['gwas_category_lst'] = gwas_ms_df['gwas_category_lst'].str.replace(',', ', ')
