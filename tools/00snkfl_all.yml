@@ -32,6 +32,9 @@ rule all:
         # 03snkfl_remap.yml
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
         os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
+        #
+        # 05snkfl_supplementary_and_web.yml
+        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz.tbi"),
 
 include: "05snkfl_supplementary_and_web.yml"
 include: "04snkfl_plots.yml"
