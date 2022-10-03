@@ -63,10 +63,10 @@ m_df['gwas_logpval'] = m_df['gwas_pval'].apply(lambda x: -numpy.log(x))
 
 #%%
 m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] = max_gwas_class_count
-order = [str(x) for x in range(1, max_gwas_class_count+1)]
+order = [str(x) for x in range(1, max(m_df['gwas_class_count'].unique())+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_class_count + 1)]
+pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_class_count'].unique()) + 1)]
 x = 'gwas_class_count'
 xlabel = "GWAS category count"
 # title = "Coloc. eQTL/GWAS variants"

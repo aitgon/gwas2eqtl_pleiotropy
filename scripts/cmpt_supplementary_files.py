@@ -78,9 +78,9 @@ etissue_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 
 st_df = pandas.merge(gwas_df, egene_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
 st_df = pandas.merge(st_df, etissue_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
-st_df = st_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_class_count', 'gwas_category_lst', 'egene_count', 'egene_symbol_lst', 'etissue_label_count', 'etissue_subcategory_lst', 'egene_lst']]
+st_df = st_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_class_count', 'gwas_class_lst', 'egene_count', 'egene_symbol_lst', 'etissue_label_count', 'etissue_subcategory_lst', 'egene_lst']]
 st_df.sort_values(['gwas_class_count', 'chrom', 'pos', 'rsid'], ascending=[False, True, True, True], inplace=True)
-st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
+st_df['gwas_class_lst'] = st_df['gwas_class_lst'].str.replace(',', ', ')
 st_df['egene_symbol_lst'] = st_df['egene_symbol_lst'].str.replace(',', ', ')
 st_df['etissue_subcategory_lst'] = st_df['etissue_subcategory_lst'].str.replace(',', ', ')
 st_df['egene_lst'] = st_df['egene_lst'].str.replace(',', ', ')
@@ -111,8 +111,8 @@ for rowi, row in st_df.iterrows():
     st_df.at[rowi, 'etissue'] = ", ".join(etissue_lst)
 
 st_df.sort_values(by=['gwas_class_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)
-st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
-st_df = st_df[['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_category_lst', 'egene_symbol', 'etissue', 'egene']]
+st_df['gwas_class_lst'] = st_df['gwas_class_lst'].str.replace(',', ', ')
+st_df = st_df[['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_class_lst', 'egene_symbol', 'etissue', 'egene']]
 st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 sheet_counter += 1
 

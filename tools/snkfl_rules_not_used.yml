@@ -1,5 +1,5 @@
 etissue_class_ods = config['etissue_class_ods']
-gwas_cat_ods = config['gwas_cat_ods']
+gwas_class_ods = config['gwas_class_ods']
 outdir = config['outdir']
 david_email = config['david_email']
 public_data_dir_path = config['public_data_dir']
@@ -8,7 +8,6 @@ upper_var_gwas_class_count = config['upper_var_gwas_class_count']
 
 rule all:
     input:
-        os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
         os.path.join(outdir, "web/db.sqlite"),
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
@@ -24,14 +23,6 @@ rule pltbar_davidgo:
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
     shell:
         "python scripts/.py {params[1]} {params[0]} {params[2]}"
-
-rule cmpt_tissue_enrich_in_gwas:
-    input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv"),
-    output:
-        os.path.join(outdir, "cmpt_tissue_enrich_in_gwas.py/tissue_enrich.tsv"),
-    shell:
-        "python scripts/cmpt_tissue_enrich_in_gwas.py {input[0]} {output[0]}"
 
 rule web_db:
     input:

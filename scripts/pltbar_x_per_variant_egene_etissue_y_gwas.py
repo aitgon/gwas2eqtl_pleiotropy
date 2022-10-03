@@ -66,7 +66,7 @@ describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
 m_df.groupby('gwas_class_count')['gwas_class_count2'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-order = [str(x) for x in range(1, max_gwas_class_count+1)]
+order = [str(x) for x in range(1, max(m_df['gwas_class_count'].unique())+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "GWAS per variant-egene-etissue"
@@ -76,10 +76,11 @@ y = "gwas_class_count2"
 x = "gwas_class_count"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_class_count + 1)]
+pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_class_count'].unique()) + 1)]
 m_df[x] = m_df[x].astype(str)
 # ax = seaborn.boxplot(x=x, y=y, data=m_df, order=order, **boxplot_kwargs)
 ax = seaborn.barplot(x=x, y=y, data=m_df, order=order, estimator=numpy.mean, palette="rocket_r")
+# import pdb; pdb.set_trace()
 annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()

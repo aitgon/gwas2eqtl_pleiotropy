@@ -56,7 +56,7 @@ for count_pleio in range(1, max_gwas_class_count+1):
     with open(intersect_bed_path, 'w') as fout:
         result = subprocess.run(shlex.split(cmd), stdout=fout)
 
-    crm_pleio_df = pandas.read_csv(intersect_bed_path, sep="\t", header=None, usecols=[0, 1, 2, 3, 4, 5, 6], names=['chrom', 'start', 'end', 'rsid', 'gwas_class_count', 'gwas_category_lst', 'crm'])
+    crm_pleio_df = pandas.read_csv(intersect_bed_path, sep="\t", header=None, usecols=[0, 1, 2, 3, 4, 5, 6], names=['chrom', 'start', 'end', 'rsid', 'gwas_class_count', 'gwas_class_lst', 'crm'])
 
     pleio_n_nocrm_count = (crm_pleio_df['crm'] == '.').sum()
     pleio_n_crm_count = (crm_pleio_df['crm'] != '.').sum()

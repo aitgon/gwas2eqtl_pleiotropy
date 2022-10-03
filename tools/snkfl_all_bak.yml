@@ -1,13 +1,13 @@
 coloc_tsv_gz = config['coloc_tsv_gz']
 david_email = config['david_email']
 etissue_class_ods = config['etissue_class_ods']
-gwas_cat_ods = config['gwas_cat_ods']
+gwas_class_ods = config['gwas_class_ods']
 outdir = config['outdir']
 public_data_dir_path = config['public_data_dir']
 upper_var_gwas_class_count = config['upper_var_gwas_class_count']
 url_db = config['url_db']
 
-"""export OUTDIR="out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000"; time snakemake --cores 3 -p -s tools/snkfl_all2.yml --config upper_var_gwas_class_count=5 url_db=sqlite:///"${OUTDIR}"/db/db.sqlite coloc_tsv_gz=../gwas2eqtl/out/concat/coloc_gwas420_pval_5e-08_r2_0.1_kb_1000_window_1000000.tsv.gz outdir="${OUTDIR}" gwas_cat_ods=config/gwas420.ods etissue_class_ods=config/etissue_class.ods --resources db=1"""
+"""export OUTDIR="out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000"; time snakemake --cores 3 -p -s tools/snkfl_all2.yml --config upper_var_gwas_class_count=5 url_db=sqlite:///"${OUTDIR}"/db/db.sqlite coloc_tsv_gz=../gwas2eqtl/out/concat/coloc_gwas420_pval_5e-08_r2_0.1_kb_1000_window_1000000.tsv.gz outdir="${OUTDIR}" gwas_class_ods=config/gwas420.ods etissue_class_ods=config/etissue_class.ods --resources db=1"""
 
 rule all:
     input:
@@ -35,7 +35,6 @@ rule all:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
         # os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_etissue.png"),
         os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remap_crm_fisher.png"),
-        os.path.join(outdir, "pltbar_tissue_enrich_in_pleio.py/fisher.tsv"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
         os.path.join(outdir, "cmpt_disease_comorbidity_matrix.py/corr.tsv"),
         os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
@@ -132,7 +131,7 @@ rule filter_h4:
 rule annotate:
     input:
         os.path.join(outdir, "db/db_imported.txt"),
-        gwas_cat_ods,
+        gwas_class_ods,
         etissue_class_ods,
     output:
         os.path.join(outdir, "db/db_annotated.txt"),

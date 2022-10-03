@@ -83,7 +83,7 @@ region_pleio_prev = False
 start = math.nan
 end = math.nan
 gwas_class_count = 0
-gwas_category_lst = math.nan
+gwas_class_lst = math.nan
 category_lst = []
 
 for i, row in df.iterrows():
@@ -92,16 +92,16 @@ for i, row in df.iterrows():
         cytoband = row['cytoband']
         start = row['pos']
         gwas_class_count = row['gwas_class_count']
-        gwas_category_lst = row['gwas_category_lst']
-        category_lst = row['gwas_category_lst'].split(",")
+        gwas_class_lst = row['gwas_class_lst']
+        category_lst = row['gwas_class_lst'].split(",")
     # end of region, set end, store category
     elif not row['region_pleio'] and region_pleio_prev:
         end = pos_prev
     # middle of region, store categories
     if row['region_pleio'] and row['gwas_class_count'] > gwas_class_count:
         gwas_class_count = row['gwas_class_count']
-        gwas_category_lst = row['gwas_category_lst']
-        category_lst = category_lst + row['gwas_category_lst'].split(",")
+        gwas_class_lst = row['gwas_class_lst']
+        category_lst = category_lst + row['gwas_class_lst'].split(",")
     # reset start and end, store region
     if not math.isnan(start) and not math.isnan(end):
         # region_lst.append([row['chrom'], start, end, gwas_subcategory_count, gwas_subcategory_lst, category_lst])
@@ -116,18 +116,18 @@ for i, row in df.iterrows():
     region_pleio_prev = row['region_pleio']
 
 #%% tsv
-regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_category_lst'])
+regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_class_lst'])
 regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
 #%##############
 #%% GWAS region pleiotropy for MS
 regions_pleio_ms_df = regions_pleio_df.copy()
-regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_class_count', 'chrom', 'start', 'gwas_category_lst'], ascending=[False, True, True, True])
+regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_class_count', 'chrom', 'start', 'gwas_class_lst'], ascending=[False, True, True, True])
 regions_pleio_ms_df = regions_pleio_ms_df.drop_duplicates('cytoband', keep='first')
 regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_class_count'] >= 6]
 # format output
 regions_pleio_ms_df.drop(['gwas_class_count'], inplace=True, axis=1)
-regions_pleio_ms_df['gwas_category_lst'] = regions_pleio_ms_df['gwas_category_lst'].str.replace(',', ', ')
+regions_pleio_ms_df['gwas_class_lst'] = regions_pleio_ms_df['gwas_class_lst'].str.replace(',', ', ')
 regions_pleio_ms_df['start']=regions_pleio_ms_df['start'].apply(lambda x : '{0:,}'.format(x))
 regions_pleio_ms_df['end']=regions_pleio_ms_df['end'].apply(lambda x : '{0:,}'.format(x))
 tsv_path = os.path.join(outdir_path, "region_window_ms_100000.tsv")

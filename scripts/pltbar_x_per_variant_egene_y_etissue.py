@@ -75,7 +75,7 @@ describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
 m_df.groupby('gwas_class_count')['etissue_class_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-order = [str(x) for x in range(1, max_gwas_class_count+1)]
+order = [str(x) for x in range(1, max(m_df['gwas_class_count'].unique())+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "eTissues per variant-eGene "
@@ -85,7 +85,7 @@ y = "etissue_class_count"
 x = "gwas_class_count"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_class_count + 1)]
+pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_class_count'].unique()) + 1)]
 
 #%%
 m_df[x] = m_df[x].astype(str)

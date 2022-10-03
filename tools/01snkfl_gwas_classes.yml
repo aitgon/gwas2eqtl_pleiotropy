@@ -1,4 +1,4 @@
-gwas_cat_ods = config['gwas_cat_ods']
+gwas_class_ods = config['gwas_class_ods']
 outdir = config['outdir']
 
 rule all_gwas_classes:
@@ -25,7 +25,7 @@ rule cmpt_disease_comorbidity_matrix:
 
 rule annot_gwas_metadata:
     input:
-        gwas_cat_ods,
+        gwas_class_ods,
     output:
         os.path.join(outdir, "annot_gwas_metadata.py/gwas_metadata.ods"),
     shell:

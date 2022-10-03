@@ -64,7 +64,7 @@ m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pval', 'egene', 'eqtl_id', 'gwas_beta', 
 m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] = max_gwas_class_count
 
 #%%
-order = [str(x) for x in range(1, max_gwas_class_count+1)]
+order = [str(x) for x in range(1, max(m_df['gwas_class_count'].unique())+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 box_pairs = [(1, i) for i in range(2, max_gwas_class_count+1) ]
@@ -87,7 +87,7 @@ describe_tsv_path = os.path.join(outdir_path, y + "_describe.tsv")
 describe_df = y_df.groupby(['gwas_class_count'])[y].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_class_count + 1)]
+pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_class_count'].unique()) + 1)]
 y_df[x] = y_df[x].astype(str)
 
 # ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, **boxplot_kwargs)
@@ -124,7 +124,7 @@ describe_tsv_path = os.path.join(outdir_path, y + "_describe.tsv")
 describe_df = y_df.groupby(['gwas_class_count'])[y].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_class_count + 1)]
+pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_class_count'].unique()) + 1)]
 y_df['gwas_class_count'] = y_df['gwas_class_count'].astype(str)
 
 # ax = seaborn.boxplot(x=x, y=y, data=y_df, order=order, **boxplot_kwargs)
