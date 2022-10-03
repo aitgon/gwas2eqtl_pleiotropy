@@ -21,7 +21,7 @@ help_cmd_str = "todo"
 try:
     h4_annot_tsv_path = sys.argv[1]
     count_per_rsid_gwas_tsv_path = sys.argv[2]
-    upper_var_gwas_cat_count = int(sys.argv[3])
+    max_gwas_class_count = int(sys.argv[3])
     vlnplt_png_path = sys.argv[4]
     if len(sys.argv) > 5:
         print("""Two many arguments!
@@ -50,50 +50,50 @@ h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
 
 #%%
 count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
-gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max()
+gwas_class_count_max_int = count_per_rsid_gwas_df['gwas_class_count'].max()
 
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 # %%
-sel_cols = ['rsid', 'egene', 'etissue_category']  # egene per variant-etissuecategory
+sel_cols = ['rsid', 'egene', 'etissue_class']  # egene per variant-etissuecategory
 
 #%%
-m2_df = m_df[['chrom', 'pos'] + sel_cols + ['egene_symbol', 'gwas_category_count']].drop_duplicates()
-m2_df.sort_values(['gwas_category_count', 'chrom', 'pos'], inplace=True, ascending=[False, True, True])
+m2_df = m_df[['chrom', 'pos'] + sel_cols + ['egene_symbol', 'gwas_class_count']].drop_duplicates()
+m2_df.sort_values(['gwas_class_count', 'chrom', 'pos'], inplace=True, ascending=[False, True, True])
 tsv_path = os.path.join(outdir_path, 'variants2egenes.tsv')
 m2_df.to_csv(tsv_path, header=True, index=False, sep='\t')
 
-#%% set upper_var_gwas_cat_count
-m_df = m_df[sel_cols + ['gwas_category_count']]
-m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
+#%% set max_gwas_class_count
+m_df = m_df[sel_cols + ['gwas_class_count']]
+m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] = max_gwas_class_count
 
-#%% keep unique rsid-etissue_category pairs with max. gwas category
-m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
+#%% keep unique rsid-etissue_class pairs with max. gwas category
+m_df.sort_values('gwas_class_count', ascending=False, inplace=True)
 # import pdb; pdb.set_trace()
-m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_category', 'egene'], keep='first')
+m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_class', 'egene'], keep='first')
 
 #%%
-m_df = m_df.groupby(['rsid', 'etissue_category', 'gwas_category_count']).count()
+m_df = m_df.groupby(['rsid', 'etissue_class', 'gwas_class_count']).count()
 m_df = m_df.reset_index()
-m_df.columns = ['rsid', 'etissue_category', 'gwas_category_count', 'egene_count']
+m_df.columns = ['rsid', 'etissue_class', 'gwas_class_count', 'egene_count']
 
 #%%
 describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
-m_df.groupby('gwas_category_count')['egene_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
+m_df.groupby('gwas_class_count')['egene_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
+order = [str(x) for x in range(1, max_gwas_class_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "eGenes per variant-eTissue"
 xlabel = "GWAS category count"
 ylabel = "eGene count mean"
 y = "egene_count"
-x = "gwas_category_count"
+x = "gwas_class_count"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
+pairs = [(str(1), str(i)) for i in range(2, max_gwas_class_count + 1)]
 m_df[x] = m_df[x].astype(str)
 # ax = seaborn.boxplot(x=x, y=y, data=m_df, order=order, **boxplot_kwargs)
 ax = seaborn.barplot(x=x, y=y, data=m_df, order=order, estimator=numpy.mean, palette="rocket_r")

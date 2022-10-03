@@ -54,12 +54,12 @@ ylabel = "eTissue count"
 count_per_rsid_df['pos'] = count_per_rsid_df['pos'].astype('int')
 
 #%% Loop over regions
-pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= 6, ['chrom', 'start', 'end', 'gwas_category_count']]
+pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_class_count'] >= 6, ['chrom', 'start', 'end', 'gwas_class_count']]
 for rowi, row in pleiotropic_regions_df.iterrows():
     chrom = row['chrom']
     start = row['start']
     end = row['end']
-    gwas_category_count = row['gwas_category_count']
+    gwas_class_count = row['gwas_class_count']
     count_per_rsid_gwas_region_df = count_per_rsid_df.copy()
     count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['chrom'] == chrom, ]
     count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['pos'] >= start, ]
@@ -79,8 +79,8 @@ for rowi, row in pleiotropic_regions_df.iterrows():
     plt.ylim(ylim)
 
     plt.tight_layout()
-    png_path = os.path.join(outdir_path, "count_per_rsid_chr{}_start{}_end{}_categories{}.png".format(chrom, start, end, gwas_category_count))
-    if gwas_category_count >= 5:
+    png_path = os.path.join(outdir_path, "count_per_rsid_chr{}_start{}_end{}_categories{}.png".format(chrom, start, end, gwas_class_count))
+    if gwas_class_count >= 5:
         plt.savefig(png_path, dpi=dpi)
     plt.clf()
     plt.close()

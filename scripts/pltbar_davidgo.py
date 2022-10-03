@@ -30,7 +30,7 @@ from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 help_cmd_str = "todo"
 try:
     davidgo_tsv_path = sys.argv[1]
-    upper_var_gwas_cat_count = int(sys.argv[2])
+    max_gwas_class_count = int(sys.argv[2])
     davidgo_png_path = sys.argv[3]
     if len(sys.argv) > 4:
         print("""Two many arguments!
@@ -48,10 +48,10 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 
 #%%
-# p_back_str = ",".join(fin_df.loc[fin_df['gwas_category_count'] == 1, "egene_lst"].str.split(',').explode().unique())
+# p_back_str = ",".join(fin_df.loc[fin_df['gwas_class_count'] == 1, "egene_lst"].str.split(',').explode().unique())
 
 # for pleio_i in range(2, 2+1):
-for pleio_i in range(2, upper_var_gwas_cat_count+1):
+for pleio_i in range(2, max_gwas_class_count+1):
     Logger.info(pleio_i)
     davidgo_pleio_tsv_path = davidgo_tsv_path + "_{}.tsv".format(pleio_i)
     fin_df = pandas.read_csv(davidgo_pleio_tsv_path, sep="\t", header=0)

@@ -1,10 +1,10 @@
-etissue_cat_ods = config['etissue_cat_ods']
+etissue_class_ods = config['etissue_class_ods']
 gwas_cat_ods = config['gwas_cat_ods']
 outdir = config['outdir']
 david_email = config['david_email']
 public_data_dir_path = config['public_data_dir']
 coloc_tsv_gz = config['coloc_tsv_gz']
-upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
+upper_var_gwas_class_count = config['upper_var_gwas_class_count']
 
 rule all:
     input:
@@ -19,7 +19,7 @@ rule pltbar_davidgo:
     output:
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
     params:
-        upper_var_gwas_cat_count,pltbar_davidgo
+        upper_var_gwas_class_count,pltbar_davidgo
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
     shell:
@@ -40,7 +40,7 @@ rule web_db:
         os.path.join(outdir, "web/db.sqlite"),
     shell:
         """
-        sqlite3 {output[0]} 'create table gwas2eqtl (id INTEGER PRIMARY KEY AUTOINCREMENT, chrom INTEGER NOT NULL, pos INTEGER NOT NULL, cytoband TEXT NOT NULL, rsid TEXT NOT NULL, ref TEXT NOT NULL, alt TEXT NOT NULL, egene TEXT NOT NULL, egene_symbol TEXT NOT NULL, eqtl_beta REAL NOT NULL, eqtl_pvalue REAL NOT NULL, eqtl_identifier TEXT NOT NULL, etissue_category TEXT NOT NULL, gwas_beta REAL NOT NULL, gwas_pvalue REAL NOT NULL, gwas_identifier TEXT NOT NULL, gwas_trait TEXT NOT NULL, gwas_category TEXT NOT NULL, SNP_PP_H4 REAL NOT NULL, PP_H4_abf REAL NOT NULL, coloc_window TEXT NOT NULL, nsnps INTEGER NOT NULL);'
+        sqlite3 {output[0]} 'create table gwas2eqtl (id INTEGER PRIMARY KEY AUTOINCREMENT, chrom INTEGER NOT NULL, pos INTEGER NOT NULL, cytoband TEXT NOT NULL, rsid TEXT NOT NULL, ref TEXT NOT NULL, alt TEXT NOT NULL, egene TEXT NOT NULL, egene_symbol TEXT NOT NULL, eqtl_beta REAL NOT NULL, eqtl_pvalue REAL NOT NULL, eqtl_identifier TEXT NOT NULL, etissue_class TEXT NOT NULL, gwas_beta REAL NOT NULL, gwas_pvalue REAL NOT NULL, gwas_identifier TEXT NOT NULL, gwas_trait TEXT NOT NULL, gwas_category TEXT NOT NULL, SNP_PP_H4 REAL NOT NULL, PP_H4_abf REAL NOT NULL, coloc_window TEXT NOT NULL, nsnps INTEGER NOT NULL);'
         gunzip -c {input[0]} |sqlite3 -csv -separator $'\t' {output[0]} '.import --skip 1 /dev/stdin gwas2eqtl'
         """
 

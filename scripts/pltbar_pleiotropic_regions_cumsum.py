@@ -33,27 +33,27 @@ regions_df = pandas.read_csv(pleio_regions_tsv_path, sep="\t")
 #%% barplot cumulated covering region
 cumsum_df = regions_df.copy()
 cumsum_df['cumsum'] = cumsum_df['end'] - cumsum_df['start']
-cumsum_df = cumsum_df[['gwas_category_count', 'cumsum']].groupby('gwas_category_count').sum().reset_index()
-cumsum_df.sort_values('gwas_category_count', ascending=False, inplace=True)
+cumsum_df = cumsum_df[['gwas_class_count', 'cumsum']].groupby('gwas_class_count').sum().reset_index()
+cumsum_df.sort_values('gwas_class_count', ascending=False, inplace=True)
 cumsum_df['cumsum'] = cumsum_df['cumsum'].cumsum()
 cumsum_df['cumsum'] = cumsum_df['cumsum']/10e6
 
 # import pdb; pdb.set_trace()
 #%%
-order = cumsum_df['gwas_category_count'].tolist()
+order = cumsum_df['gwas_class_count'].tolist()
 # xticklabels = order.copy()
 # xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Regions"
 xlabel = "GWAS category count"
 ylabel = "Cumulative sum [Mb]"
 y = "cumsum"
-x = "gwas_category_count"
+x = "gwas_class_count"
 
 #%%
 ax = seaborn.barplot(x=x, y=y, data=cumsum_df, order=order, palette="rocket")
 
 #%%
-# pairs = [('1', x) for x in out_df['gwas_category_count'] if x != "1"]
+# pairs = [('1', x) for x in out_df['gwas_class_count'] if x != "1"]
 # formatted_pvalues = out_df['signif'].tolist()[1:]
 #
 # annotator = Annotator(ax, pairs, data=out_df, x=x, y=y, order=order, size=label_fontsize)

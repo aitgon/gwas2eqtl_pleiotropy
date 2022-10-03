@@ -1,5 +1,5 @@
 outdir = config['outdir']
-etissue_cat_ods = config['etissue_cat_ods']
+etissue_class_ods = config['etissue_class_ods']
 
 
 rule all_05snkfl_supplementary_and_web:

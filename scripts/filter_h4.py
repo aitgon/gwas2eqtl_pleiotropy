@@ -57,7 +57,7 @@ eqtl_info_df = EBIeQTLinfo().df
 etissue_cat_df = pandas.read_excel(etissue_cat_ods_path, engine="odf")
 eqtl_info_df = eqtl_info_df.merge(etissue_cat_df, on=['study', 'qtl_group', 'tissue_ontology_id', 'tissue_ontology_term', 'tissue_label', 'condition_label'])
 eqtl_info_df.rename({'identifier': "eqtl_id"}, axis=1, inplace=True)
-h4_df = h4_df.merge(eqtl_info_df[['eqtl_id', 'etissue_category']].drop_duplicates(), on='eqtl_id')
+h4_df = h4_df.merge(eqtl_info_df[['eqtl_id', 'etissue_class']].drop_duplicates(), on='eqtl_id')
 
 #%% how many coloc loci?
 loci_h4_df = h4_df.sort_values(by=['PP.H4.abf', 'SNP.PP.H4'], ascending=False)

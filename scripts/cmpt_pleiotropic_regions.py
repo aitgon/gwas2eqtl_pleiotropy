@@ -46,7 +46,7 @@ for i, row in df.iterrows():
     chrom = row['chrom']
     pos = row['pos']
     # import pdb; pdb.set_trace()
-    if row['gwas_category_count'] > 1:
+    if row['gwas_class_count'] > 1:
         chrom_pleio_latest = chrom
         pos_pleio_latest = pos
     if chrom == chrom_pleio_latest and (pos - pos_pleio_latest) <= region_bin:
@@ -65,7 +65,7 @@ for i, row in df.iterrows():
     chrom = row['chrom']
     pos = row['pos']
     df.loc[i, 'region_pleio'] = False
-    if row['gwas_category_count'] > 1:  # update pos_pleio_latest
+    if row['gwas_class_count'] > 1:  # update pos_pleio_latest
         chrom_pleio_latest = chrom
         pos_pleio_latest = pos
     if chrom == chrom_pleio_latest and (pos_pleio_latest - pos) <= region_bin:
@@ -82,7 +82,7 @@ pos_prev = 0
 region_pleio_prev = False
 start = math.nan
 end = math.nan
-gwas_category_count = 0
+gwas_class_count = 0
 gwas_category_lst = math.nan
 category_lst = []
 
@@ -91,15 +91,15 @@ for i, row in df.iterrows():
     if row['region_pleio'] and not region_pleio_prev:
         cytoband = row['cytoband']
         start = row['pos']
-        gwas_category_count = row['gwas_category_count']
+        gwas_class_count = row['gwas_class_count']
         gwas_category_lst = row['gwas_category_lst']
         category_lst = row['gwas_category_lst'].split(",")
     # end of region, set end, store category
     elif not row['region_pleio'] and region_pleio_prev:
         end = pos_prev
     # middle of region, store categories
-    if row['region_pleio'] and row['gwas_category_count'] > gwas_category_count:
-        gwas_category_count = row['gwas_category_count']
+    if row['region_pleio'] and row['gwas_class_count'] > gwas_class_count:
+        gwas_class_count = row['gwas_class_count']
         gwas_category_lst = row['gwas_category_lst']
         category_lst = category_lst + row['gwas_category_lst'].split(",")
     # reset start and end, store region
@@ -116,17 +116,17 @@ for i, row in df.iterrows():
     region_pleio_prev = row['region_pleio']
 
 #%% tsv
-regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'cytoband', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
+regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_category_lst'])
 regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
 #%##############
 #%% GWAS region pleiotropy for MS
 regions_pleio_ms_df = regions_pleio_df.copy()
-regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_category_count', 'chrom', 'start', 'gwas_category_lst'], ascending=[False, True, True, True])
+regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_class_count', 'chrom', 'start', 'gwas_category_lst'], ascending=[False, True, True, True])
 regions_pleio_ms_df = regions_pleio_ms_df.drop_duplicates('cytoband', keep='first')
-regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_category_count'] >= 6]
+regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_class_count'] >= 6]
 # format output
-regions_pleio_ms_df.drop(['gwas_category_count'], inplace=True, axis=1)
+regions_pleio_ms_df.drop(['gwas_class_count'], inplace=True, axis=1)
 regions_pleio_ms_df['gwas_category_lst'] = regions_pleio_ms_df['gwas_category_lst'].str.replace(',', ', ')
 regions_pleio_ms_df['start']=regions_pleio_ms_df['start'].apply(lambda x : '{0:,}'.format(x))
 regions_pleio_ms_df['end']=regions_pleio_ms_df['end'].apply(lambda x : '{0:,}'.format(x))
@@ -143,7 +143,7 @@ regions_pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
 #%########################################### bed files
 for count_pleio in range(1, 6):
     region_pleio_i_bed_path = os.path.join(outdir_path, "region_window_{}_pleio_{}.bed".format(region_bin, count_pleio))
-    region_pleio_i_df = regions_pleio_df.loc[regions_pleio_df['gwas_category_count'] == count_pleio,]
+    region_pleio_i_df = regions_pleio_df.loc[regions_pleio_df['gwas_class_count'] == count_pleio,]
     region_pleio_i_df.to_csv(region_pleio_i_bed_path, sep="\t", index=False, header=False)
 
 

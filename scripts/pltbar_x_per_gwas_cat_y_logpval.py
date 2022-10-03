@@ -21,7 +21,7 @@ help_cmd_str = "todo"
 try:
     h4_annot_tsv_path = sys.argv[1]
     count_per_rsid_gwas_tsv_path = sys.argv[2]
-    upper_var_gwas_cat_count = int(sys.argv[3])
+    max_gwas_class_count = int(sys.argv[3])
     eqtl_pval_png_path = sys.argv[4]
     gwas_pval_png_path = sys.argv[5]
     if len(sys.argv) > 6:
@@ -51,23 +51,23 @@ h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
 
 #%%
 count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
-gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max()
+gwas_class_count_max_int = count_per_rsid_gwas_df['gwas_class_count'].max()
 
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
 
 #%%
-m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pval', 'egene', 'eqtl_id', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_category_count']].drop_duplicates()
+m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pval', 'egene', 'eqtl_id', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_class_count']].drop_duplicates()
 m_df['eqtl_logpval'] = m_df['eqtl_pval'].apply(lambda x: -numpy.log(x))
 m_df['gwas_logpval'] = m_df['gwas_pval'].apply(lambda x: -numpy.log(x))
 
 #%%
-m_df.loc[m_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
-order = [str(x) for x in range(1, upper_var_gwas_cat_count+1)]
+m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] = max_gwas_class_count
+order = [str(x) for x in range(1, max_gwas_class_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-pairs = [(str(1), str(i)) for i in range(2, upper_var_gwas_cat_count + 1)]
-x = 'gwas_category_count'
+pairs = [(str(1), str(i)) for i in range(2, max_gwas_class_count + 1)]
+x = 'gwas_class_count'
 xlabel = "GWAS category count"
 # title = "Coloc. eQTL/GWAS variants"
 
@@ -77,12 +77,12 @@ title = "eQTL significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%%
-plt_df = m_df[['gwas_category_count', 'rsid', 'egene', 'eqtl_id', y]].drop_duplicates()
+plt_df = m_df[['gwas_class_count', 'rsid', 'egene', 'eqtl_id', y]].drop_duplicates()
 plt_df[y] = plt_df[y].abs()
 
 #%%
 describe_tsv_path = os.path.join(outdir_path, y + "_describe.tsv")
-describe_df = plt_df.groupby(['gwas_category_count'])[y].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
+describe_df = plt_df.groupby(['gwas_class_count'])[y].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
 plt_df[x] = plt_df[x].astype(str)
@@ -110,12 +110,12 @@ title = "GWAS variant significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%%
-plt_df = m_df[['gwas_category_count', 'rsid', 'gwas_id', y]].drop_duplicates()
+plt_df = m_df[['gwas_class_count', 'rsid', 'gwas_id', y]].drop_duplicates()
 plt_df[y] = plt_df[y].abs()
 
 #%%
 describe_tsv_path = os.path.join(outdir_path, y + "_describe.tsv")
-describe_df = plt_df.groupby(['gwas_category_count'])[y].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
+describe_df = plt_df.groupby(['gwas_class_count'])[y].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
 plt_df[x] = plt_df[x].astype(str)

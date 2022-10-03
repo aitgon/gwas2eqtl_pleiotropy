@@ -1,7 +1,7 @@
 coloc_tsv_gz = config['coloc_tsv_gz']
-etissue_cat_ods = config['etissue_cat_ods']
+etissue_class_ods = config['etissue_class_ods']
 outdir = config['outdir']
-upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
+max_gwas_class_count = config['max_gwas_class_count']
 
 
 rule all_02snkfl_cmpt_pleiotropic_regions:
@@ -29,9 +29,9 @@ rule count_per_rsid:
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
     params:
-        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+        max_gwas_class_count=max_gwas_class_count
     shell:
-        "python scripts/cmpt_count_per_rsid.py {input[0]} {params.upper_var_gwas_cat_count} {output[0]}"
+        "python scripts/cmpt_count_per_rsid.py {input[0]} {params.max_gwas_class_count} {output[0]}"
 
 rule index:
     input:
@@ -44,7 +44,7 @@ rule index:
 
 rule filter_h4:
     input:
-        etissue_cat_ods,
+        etissue_class_ods,
         os.path.join(outdir, "db/db_annotated.txt"),
     output:
         os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
@@ -57,7 +57,7 @@ rule annotate:
     input:
         os.path.join(outdir, "db/db_imported.txt"),
         os.path.join(outdir, "annot_gwas_metadata.py/gwas_metadata.ods"),
-        etissue_cat_ods,
+        etissue_class_ods,
     output:
         os.path.join(outdir, "db/db_annotated.txt"),
     params:

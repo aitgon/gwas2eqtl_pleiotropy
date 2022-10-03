@@ -14,7 +14,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     consequence_tsv_path = sys.argv[1]
-    upper_var_gwas_cat_count = sys.argv[2]  # requires string
+    max_gwas_class_count = sys.argv[2]  # requires string
     consequence_png_path = sys.argv[3]
     if len(sys.argv) > 4:
         print("""Two many arguments!
@@ -31,7 +31,7 @@ pathlib.Path(outdir_path).mkdir(exist_ok=True, parents=True)
 
 #%%
 in_df = pandas.read_csv(consequence_tsv_path, sep="\t", header=0)
-in_df['gwas_category_count'] = in_df['gwas_category_count'].astype(int).astype(str)
+in_df['gwas_class_count'] = in_df['gwas_class_count'].astype(int).astype(str)
 
 consequence_signif_lst = in_df.loc[in_df['pfdr5perc'] < 0.05, 'consequence'].drop_duplicates().tolist()
 in_df = in_df.loc[in_df['consequence'].isin(consequence_signif_lst)]
@@ -45,13 +45,13 @@ in_df.loc[in_df['pfdr5perc'] <= 1.00e-04, 'signif'] = '****'
 
 ################################################################################
 # Draw a nested barplot by species and sex
-in_df = in_df.sort_values(['consequence', 'gwas_category_count'])
+in_df = in_df.sort_values(['consequence', 'gwas_class_count'])
 order = in_df['consequence'].unique()
-hue_order = in_df['gwas_category_count'].unique()
-g = seaborn.barplot(data=in_df, y="consequence", x="oddsr", hue="gwas_category_count", palette="rocket_r", orient='h', order=order, hue_order=hue_order)
+hue_order = in_df['gwas_class_count'].unique()
+g = seaborn.barplot(data=in_df, y="consequence", x="oddsr", hue="gwas_class_count", palette="rocket_r", orient='h', order=order, hue_order=hue_order)
 for c in g.containers:
-    gwas_category_count = c.get_label()
-    labels = in_df.loc[in_df['gwas_category_count'] == gwas_category_count, 'signif'].tolist()
+    gwas_class_count = c.get_label()
+    labels = in_df.loc[in_df['gwas_class_count'] == gwas_class_count, 'signif'].tolist()
     # set the bar label
     g.bar_label(c, labels=labels, label_type='edge', padding=5, verticalalignment='bottom')
 plt.legend(title='GWAS cat.', loc='best',title_fontsize='small')
@@ -64,7 +64,7 @@ plt.close()
 ################################################################################
 
 # import pdb; pdb.set_trace()
-# in_df.loc[in_df['gwas_category_count'] >= upper_var_gwas_cat_count, "gwas_category_count"] = upper_var_gwas_cat_count
+# in_df.loc[in_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] = max_gwas_class_count
 
 
 
@@ -75,10 +75,10 @@ plt.close()
 # for consequence in in_df['consequence'].unique():
 #
 #     #%%
-#     plt_df = in_df.loc[in_df['consequence'] == consequence, ['gwas_category_count', 'oddsr', 'p', 'signif']]
+#     plt_df = in_df.loc[in_df['consequence'] == consequence, ['gwas_class_count', 'oddsr', 'p', 'signif']]
 #
 #     #%%
-#     order = sorted(plt_df['gwas_category_count'].unique())
+#     order = sorted(plt_df['gwas_class_count'].unique())
 #     xticklabels = order.copy()
 #     xticklabels[-1] = '≥{}'.format(order[-1])
 #     title = consequence
@@ -86,7 +86,7 @@ plt.close()
 #     ylabel = "Odds ratio"
 #     # ylim = [0, 9]
 #     y = "oddsr"
-#     x = "gwas_category_count"
+#     x = "gwas_class_count"
 #
 #     #%%
 #     ax = seaborn.barplot(x=x, y=y, data=plt_df, order=order, palette="rocket_r")
@@ -95,7 +95,7 @@ plt.close()
 #     formatted_pvalues = plt_df['signif'].tolist()
 #
 #     #%%
-#     pairs = [(x, x) for x in plt_df['gwas_category_count']]
+#     pairs = [(x, x) for x in plt_df['gwas_class_count']]
 #     annotator = Annotator(ax, pairs, data=plt_df, x=x, y=y, order=order, size=label_fontsize)
 #     annotator.set_custom_annotations(formatted_pvalues)
 #     annotator.configure(**annotator_config_dic)

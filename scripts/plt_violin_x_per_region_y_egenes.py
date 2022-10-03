@@ -47,22 +47,22 @@ with open(intersect_bed_path, 'w') as fout:
 #%%
 df = pandas.read_csv(intersect_bed_path, sep='\t', header=None)
 df = df[[0, 1, 2, 3, 11, 12]].drop_duplicates()
-df.columns = ['chrom', 'start', 'end', 'gwas_category_count', 'egene', 'egene_symbol']
+df.columns = ['chrom', 'start', 'end', 'gwas_class_count', 'egene', 'egene_symbol']
 df['start'] = df['start'] + 1
 df['length'] = df['end'] - df['start']
 df.loc[df['length']==0, 'length']=1
 
 #%%
-count_df = df[['chrom', 'start', 'end', 'length', 'gwas_category_count', 'egene']].groupby(['chrom', 'start', 'end', 'length', 'gwas_category_count']).count()
+count_df = df[['chrom', 'start', 'end', 'length', 'gwas_class_count', 'egene']].groupby(['chrom', 'start', 'end', 'length', 'gwas_class_count']).count()
 # count_df['egene'] = count_df['egene']/count_df.index.get_level_values('length')
 count_df.reset_index(inplace=True)
 count_df.to_csv("t.tsv", sep='\t')
 #%%
-m_df = count_df[['gwas_category_count', 'egene']].drop_duplicates()
+m_df = count_df[['gwas_class_count', 'egene']].drop_duplicates()
 
 # import pdb; pdb.set_trace()
 #%%
-order = sorted(m_df['gwas_category_count'].unique())
+order = sorted(m_df['gwas_class_count'].unique())
 xticklabels = order.copy()
 # xticklabels[-1] = '≥{}'.format(order[-1])
 title = "eGenes per region"
@@ -73,8 +73,8 @@ y = "egene"
 #%%
 box_pairs = [(1, i) for i in order if not i==1 ]
 # import pdb; pdb.set_trace()
-ax = seaborn.violinplot(x="gwas_category_count", y=y, data=m_df, order=order, palette="rocket_r")
-test_results = add_stat_annotation(ax, data=m_df, x="gwas_category_count", y=y, order=order,
+ax = seaborn.violinplot(x="gwas_class_count", y=y, data=m_df, order=order, palette="rocket_r")
+test_results = add_stat_annotation(ax, data=m_df, x="gwas_class_count", y=y, order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)

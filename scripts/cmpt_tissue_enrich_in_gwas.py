@@ -42,7 +42,7 @@ df_raw = df_raw.loc[df_raw['SNP.PP.H4']>0.33]
 # import pdb; pdb.set_trace()
 
 #%%
-columns = ['chrom', 'pos', 'rsid', 'eqtl_identifier', 'etissue_category', 'gwas_identifier', 'gwas_trait', 'gwas_category']
+columns = ['chrom', 'pos', 'rsid', 'eqtl_identifier', 'etissue_class', 'gwas_identifier', 'gwas_trait', 'gwas_category']
 df = df_raw[columns].drop_duplicates()
 
 #%% nb loci for each gwas

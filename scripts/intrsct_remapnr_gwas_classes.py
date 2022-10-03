@@ -12,7 +12,7 @@ from gwas2eqtl_pleiotropy.constants import public_data_dir
 #%%
 help_cmd_str = "todo"
 try:
-    upper_var_gwas_cat_count = int(sys.argv[1])
+    max_gwas_class_count = int(sys.argv[1])
     threads = int(sys.argv[2])
     remap_nr_path = sys.argv[3]
     count_per_rsid_gwas_tsv_path = sys.argv[4]
@@ -29,7 +29,7 @@ except IndexError:
 
 # #%% outdir path
 # if not '__file__' in locals():
-#     __file__ = "intrsct_remapnr_gwas_categories.py"
+#     __file__ = "intrsct_remapnr_gwas_classes.py"
 
 outdir_path = os.path.join(os.path.dirname(remap_nr_pleio_1_flank_10_hg38_bed))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
@@ -51,4 +51,4 @@ def intrsct_remapnr(count_pleio):
         result = subprocess.run(shlex.split(cmd), stdout=fout)
 
 with Pool(processes=threads) as p:
-    p.map(intrsct_remapnr, range(1, upper_var_gwas_cat_count+1))
+    p.map(intrsct_remapnr, range(1, max_gwas_class_count+1))

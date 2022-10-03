@@ -23,7 +23,7 @@ help_cmd_str = "todo"
 try:
     count_per_rsid_gwas_tsv_path = sys.argv[1]
     variant_pleio_1_flank_10_hg38_bed = sys.argv[2]
-    upper_var_gwas_cat_count = int(sys.argv[3])
+    max_gwas_class_count = int(sys.argv[3])
     remap_crm_png = sys.argv[4]
     if len(sys.argv) > 5:
         print("""Two many arguments!
@@ -47,7 +47,7 @@ out_df = pandas.DataFrame(columns = out_df_columns)
 
 #%% bedtools intersect
 flank = 10
-for count_pleio in range(1, upper_var_gwas_cat_count+1):
+for count_pleio in range(1, max_gwas_class_count+1):
     bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
     intersect_bed_path = os.path.join(outdir_path, "remap_crm_pleio_{}.bed".format(count_pleio))
     cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -loj -wb"
@@ -56,7 +56,7 @@ for count_pleio in range(1, upper_var_gwas_cat_count+1):
     with open(intersect_bed_path, 'w') as fout:
         result = subprocess.run(shlex.split(cmd), stdout=fout)
 
-    crm_pleio_df = pandas.read_csv(intersect_bed_path, sep="\t", header=None, usecols=[0, 1, 2, 3, 4, 5, 6], names=['chrom', 'start', 'end', 'rsid', 'gwas_category_count', 'gwas_category_lst', 'crm'])
+    crm_pleio_df = pandas.read_csv(intersect_bed_path, sep="\t", header=None, usecols=[0, 1, 2, 3, 4, 5, 6], names=['chrom', 'start', 'end', 'rsid', 'gwas_class_count', 'gwas_category_lst', 'crm'])
 
     pleio_n_nocrm_count = (crm_pleio_df['crm'] == '.').sum()
     pleio_n_crm_count = (crm_pleio_df['crm'] != '.').sum()
@@ -85,27 +85,27 @@ out_df.loc[out_df['p'] <= 5.00e-02, 'signif'] = '*'
 out_df.loc[out_df['p'] <= 1.00e-02, 'signif'] = '**'
 out_df.loc[out_df['p'] <= 1.00e-03, 'signif'] = '***'
 out_df.loc[out_df['p'] <= 1.00e-04, 'signif'] = '****'
-out_df.rename({'pleio_count': 'gwas_category_count'}, axis=1, inplace=1)
+out_df.rename({'pleio_count': 'gwas_class_count'}, axis=1, inplace=1)
 
 #%%
-# out_df = in_df.loc[in_df['consequence'] == consequence, ['gwas_category_count', 'oddsr', 'p', 'signif']]
+# out_df = in_df.loc[in_df['consequence'] == consequence, ['gwas_class_count', 'oddsr', 'p', 'signif']]
 
 #%%
-out_df['gwas_category_count'] = [str(i) for i in out_df['gwas_category_count']]
-order = out_df['gwas_category_count'].tolist()
+out_df['gwas_class_count'] = [str(i) for i in out_df['gwas_class_count']]
+order = out_df['gwas_class_count'].tolist()
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "CRM annotation"
 xlabel = "GWAS category count"
 ylabel = "Odds ratio"
 y = "oddsr"
-x = "gwas_category_count"
+x = "gwas_class_count"
 
 #%%
 ax = seaborn.barplot(x=x, y=y, data=out_df, order=order, palette="rocket_r")
 
 #%%
-pairs = [('1', x) for x in out_df['gwas_category_count'] if x != "1"]
+pairs = [('1', x) for x in out_df['gwas_class_count'] if x != "1"]
 formatted_pvalues = out_df['signif'].tolist()[1:]
 
 annotator = Annotator(ax, pairs, data=out_df, x=x, y=y, order=order, size=label_fontsize)

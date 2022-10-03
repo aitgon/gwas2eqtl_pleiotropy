@@ -1,5 +1,5 @@
 outdir = config['outdir']
-upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
+upper_var_gwas_class_count = config['upper_var_gwas_class_count']
 
 
 rule all_03snkfl_analysis_vep:
@@ -12,7 +12,7 @@ rule plt_vep_consequence:
     output:
         os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
     params:
-        upper_var_gwas_cat_count=(upper_var_gwas_cat_count-1)
+        upper_var_gwas_class_count=(upper_var_gwas_class_count-1)
     shell:
         "python scripts/pltbar_vep_consequence.py {input[0]} {params[0]} {output[0]}"
 
@@ -23,10 +23,10 @@ rule cmpt_vep_consequence_fisher:
     output:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     params:
-        upper_var_gwas_cat_count=(upper_var_gwas_cat_count-1)
+        upper_var_gwas_class_count=(upper_var_gwas_class_count-1)
     threads: 25  # ~nb of vep consequences
     shell:
-        "python scripts/cmpt_vep_consequence_fisher.py {params.upper_var_gwas_cat_count} {threads} {input[0]} {input[1]} {output[0]}"
+        "python scripts/cmpt_vep_consequence_fisher.py {params.upper_var_gwas_class_count} {threads} {input[0]} {input[1]} {output[0]}"
 
 rule cmpt_vep:
     input:
@@ -36,6 +36,6 @@ rule cmpt_vep:
         os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
         os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
     params:
-        upper_var_gwas_cat_count=(upper_var_gwas_cat_count-1)
+        upper_var_gwas_class_count=(upper_var_gwas_class_count-1)
     shell:
-        "python scripts/cmpt_vep.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
+        "python scripts/cmpt_vep.py {input[0]} {input[1]} {params.upper_var_gwas_class_count} {output[0]} {output[1]}"
