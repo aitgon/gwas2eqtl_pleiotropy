@@ -1,0 +1,28 @@
+outdir = config['outdir']
+etissue_cat_ods = config['etissue_cat_ods']
+
+
+rule all_05snkfl_supplementary_and_web:
+    input:
+        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz.tbi"),
+
+rule tabix:
+    input:
+        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.gz"),
+    output:
+        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz"),
+        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz.tbi"),
+    params:
+        sqlite=os.path.join(outdir, "db/db.sqlite"),
+    shell:
+        """gunzip -c {input[0]} |tail -n+2 |bgzip > {output[0]} && tabix -s1 -b2 -e2 {output[0]}"""
+
+rule coloc:
+    input:
+        os.path.join(outdir, "db/db_annotated.txt"),
+    output:
+        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.gz"),
+    params:
+        sqlite=os.path.join(outdir, "db/db.sqlite"),
+    shell:
+        """python scripts/cmpt_public_web_files.py {params.sqlite} {output[0]}"""
