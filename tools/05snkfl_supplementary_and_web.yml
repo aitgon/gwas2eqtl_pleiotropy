@@ -6,7 +6,7 @@ rule all_05snkfl_supplementary_and_web:
     input:
         os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz.tbi"),
 
-rule tabix:
+rule public_web_tabix:
     input:
         os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.gz"),
     output:
@@ -17,7 +17,7 @@ rule tabix:
     shell:
         """gunzip -c {input[0]} |tail -n+2 |bgzip > {output[0]} && tabix -s1 -b2 -e2 {output[0]}"""
 
-rule coloc:
+rule public_web_coloc:
     input:
         os.path.join(outdir, "db/db_annotated.txt"),
     output:
