@@ -47,7 +47,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%% Plot parameters
 title = "Coloc. eQTL/GWAS variant"
-count_col_name = "gwas_category_count"
+count_col_name = "gwas_class_count"
 ylim = [0, 10]
 c = 'blue'
 ylabel = "GWAS cat. count"
@@ -55,12 +55,12 @@ ylabel = "GWAS cat. count"
 count_per_rsid_df['pos'] = count_per_rsid_df['pos'].astype('int')
 
 #%% Loop over regions
-pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= 7, ['chrom', 'start', 'end', 'gwas_category_count']]
+pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_class_count'] >= 7, ['chrom', 'start', 'end', 'gwas_class_count']]
 for rowi, row in pleiotropic_regions_df.iterrows():
     chrom = row['chrom']
     start = row['start']
     end = row['end']
-    gwas_category_count = row['gwas_category_count']
+    gwas_class_count = row['gwas_class_count']
     #%% scatter 16:28 528 527-28 904 206
     # chrom = 16
     # start = 28500000
@@ -86,7 +86,7 @@ for rowi, row in pleiotropic_regions_df.iterrows():
     plt.yticks(fontsize=tick_fontsize)
 
     plt.tight_layout()
-    png_path = os.path.join(outdir_path, "count_per_rsid_chr{}_start{}_end{}_categories{}.png".format(chrom, start, end, gwas_category_count))
+    png_path = os.path.join(outdir_path, "count_per_rsid_chr{}_start{}_end{}_categories{}.png".format(chrom, start, end, gwas_class_count))
     plt.savefig(png_path, dpi=dpi)
     plt.clf()
     plt.close()

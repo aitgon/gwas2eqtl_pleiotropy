@@ -49,7 +49,7 @@ label_fontsize = 28
 #%% gwas
 count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
 # bins = numpy.array(range(6))
-data_ser = count_df['gwas_category_count']
+data_ser = count_df['gwas_class_count']
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')

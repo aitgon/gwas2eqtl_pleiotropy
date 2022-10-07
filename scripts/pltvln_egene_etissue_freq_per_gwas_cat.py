@@ -19,7 +19,7 @@ try:
     gwas_count_tsv_path = sys.argv[1]
     egene_count_tsv_path = sys.argv[2]
     etissue_count_tsv_path = sys.argv[3]
-    upper_var_gwas_cat_count = int(sys.argv[4])
+    max_gwas_class_count = int(sys.argv[4])
     boxplot_gwas_egene_png_path = sys.argv[5]
     boxplot_gwas_etissue_png_path = sys.argv[6]
     if len(sys.argv) > 7:
@@ -44,17 +44,17 @@ merged_df = gwas_count_df.merge(egene_count_df, on=['chrom', 'pos', 'rsid'])
 merged_df = merged_df.merge(etissue_count_df, on=['chrom', 'pos', 'rsid'])
 
 #%% prepare comparisons
-merged_df.loc[merged_df['gwas_category_count'] >= upper_var_gwas_cat_count, 'gwas_category_count'] = upper_var_gwas_cat_count
-order = [*range(1, upper_var_gwas_cat_count+1)]
-box_pairs = [(1, i) for i in range(2, upper_var_gwas_cat_count+1)]
+merged_df.loc[merged_df['gwas_class_count'] >= max_gwas_class_count, 'gwas_class_count'] = max_gwas_class_count
+order = [*range(1, max_gwas_class_count+1)]
+box_pairs = [(1, i) for i in range(2, max_gwas_class_count+1)]
 
 #%%
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 
 #%%
-ax = seaborn.violinplot(x="gwas_category_count", y="egene_count", data=merged_df, order=order, palette="rocket_r")
-test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
+ax = seaborn.violinplot(x="gwas_class_count", y="egene_count", data=merged_df, order=order, palette="rocket_r")
+test_results = add_stat_annotation(ax, data=merged_df, x="gwas_class_count", y="egene_count", order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)
@@ -73,8 +73,8 @@ plt.clf()
 plt.close()
 
 #%%
-ax = seaborn.violinplot(x="gwas_category_count", y="etissue_label_count", data=merged_df, order=order, palette="rocket_r")
-test_results = add_stat_annotation(ax, data=merged_df, x="gwas_category_count", y="egene_count", order=order,
+ax = seaborn.violinplot(x="gwas_class_count", y="etissue_label_count", data=merged_df, order=order, palette="rocket_r")
+test_results = add_stat_annotation(ax, data=merged_df, x="gwas_class_count", y="egene_count", order=order,
                                    box_pairs=box_pairs,
                                    test='Mann-Whitney', text_format='star',
                                    loc='inside', verbose=2)

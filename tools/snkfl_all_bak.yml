@@ -1,21 +1,21 @@
 coloc_tsv_gz = config['coloc_tsv_gz']
 david_email = config['david_email']
-etissue_cat_ods = config['etissue_cat_ods']
-gwas_cat_ods = config['gwas_cat_ods']
+etissue_class_ods = config['etissue_class_ods']
+gwas_class_ods = config['gwas_class_ods']
 outdir = config['outdir']
 public_data_dir_path = config['public_data_dir']
-upper_var_gwas_cat_count = config['upper_var_gwas_cat_count']
+upper_var_gwas_class_count = config['upper_var_gwas_class_count']
 url_db = config['url_db']
 
-"""export OUTDIR="out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000"; time snakemake --cores 3 -p -s tools/snkfl_all2.yml --config upper_var_gwas_cat_count=5 url_db=sqlite:///"${OUTDIR}"/db/db.sqlite coloc_tsv_gz=../gwas2eqtl/out/concat/coloc_gwas420_pval_5e-08_r2_0.1_kb_1000_window_1000000.tsv.gz outdir="${OUTDIR}" gwas_cat_ods=config/gwas420.ods etissue_cat_ods=config/etissue_category.ods --resources db=1"""
+"""export OUTDIR="out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000"; time snakemake --cores 3 -p -s tools/snkfl_all2.yml --config upper_var_gwas_class_count=5 url_db=sqlite:///"${OUTDIR}"/db/db.sqlite coloc_tsv_gz=../gwas2eqtl/out/concat/coloc_gwas420_pval_5e-08_r2_0.1_kb_1000_window_1000000.tsv.gz outdir="${OUTDIR}" gwas_class_ods=config/gwas420.ods etissue_class_ods=config/etissue_class.ods --resources db=1"""
 
 rule all:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),
-        os.path.join(outdir, "intrsct_remapnr_gwas_categories.py/remap_nr_variant_pleio_1_flank_0_hg38.bed"),
-        os.path.join(outdir, "intrsct_remapnr_gwas_categories.py/remap_nr_variant_pleio_1_flank_50_hg38.bed"),
+        os.path.join(outdir, "intrsct_remapnr_gwas_classes.py/remap_nr_variant_pleio_1_flank_0_hg38.bed"),
+        os.path.join(outdir, "intrsct_remapnr_gwas_classes.py/remap_nr_variant_pleio_1_flank_50_hg38.bed"),
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_0.png"),
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_50.png"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
@@ -35,7 +35,6 @@ rule all:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
         # os.path.join(outdir, "pltvln_egene_etissue_freq_per_gwas_cat.py/violinplot_gwas_etissue.png"),
         os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remap_crm_fisher.png"),
-        os.path.join(outdir, "pltbar_tissue_enrich_in_pleio.py/fisher.tsv"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
         os.path.join(outdir, "cmpt_disease_comorbidity_matrix.py/corr.tsv"),
         os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
@@ -54,7 +53,7 @@ include: '01snkfl_gwas_classes.yml'
 
 #rule create_table_supplementary:
 #    input:
-#        "config/etissue_category.ods",
+#        "config/etissue_class.ods",
 #        os.path.join(outdir, "annot_gwas_metadata.py/gwas413_metadata.tsv"),
 #        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
 #        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
@@ -77,9 +76,9 @@ rule cmpt_vep_consequence_fisher:
     output:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     params:
-        upper_var_gwas_cat_count=(upper_var_gwas_cat_count-1)
+        upper_var_gwas_class_count=(upper_var_gwas_class_count-1)
     shell:
-        "python scripts/cmpt_vep_consequence_fisher.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]}"
+        "python scripts/cmpt_vep_consequence_fisher.py {input[0]} {input[1]} {params.upper_var_gwas_class_count} {output[0]}"
 
 rule cmpt_vep:
     input:
@@ -89,9 +88,9 @@ rule cmpt_vep:
         os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
         os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
     params:
-        upper_var_gwas_cat_count=(upper_var_gwas_cat_count-1)
+        upper_var_gwas_class_count=(upper_var_gwas_class_count-1)
     shell:
-        "python scripts/cmpt_vep.py {input[0]} {input[1]} {params.upper_var_gwas_cat_count} {output[0]} {output[1]}"
+        "python scripts/cmpt_vep.py {input[0]} {input[1]} {params.upper_var_gwas_class_count} {output[0]} {output[1]}"
 
 rule cmpt_pleiotropic_regions:
     input:
@@ -114,13 +113,13 @@ rule count_per_rsid:
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_50_hg38.bed"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
     params:
-        upper_var_gwas_cat_count=upper_var_gwas_cat_count
+        upper_var_gwas_class_count=upper_var_gwas_class_count
     shell:
-        "python scripts/cmpt_count_per_rsid.py {input[0]} {params.upper_var_gwas_cat_count} {output[0]}"
+        "python scripts/cmpt_count_per_rsid.py {input[0]} {params.upper_var_gwas_class_count} {output[0]}"
 
 rule filter_h4:
     input:
-        etissue_cat_ods,
+        etissue_class_ods,
         os.path.join(outdir, "db/db_annotated.txt"),
     output:
         os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
@@ -132,8 +131,8 @@ rule filter_h4:
 rule annotate:
     input:
         os.path.join(outdir, "db/db_imported.txt"),
-        gwas_cat_ods,
-        etissue_cat_ods,
+        gwas_class_ods,
+        etissue_class_ods,
     output:
         os.path.join(outdir, "db/db_annotated.txt"),
     params:

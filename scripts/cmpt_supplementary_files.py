@@ -32,7 +32,7 @@ wdir_path = os.path.join(PathManager.get_project_path(), wdir_path)
 #
 sheet_name_lst = ['ST1']
 description_lst = ['Classification of eQTL tissues and cell types. The first six were downloaded from the EBI eQTL repository. '
-                   'The 7th column "etissue_category" is used here to compute tissue diversity']
+                   'The 7th column "etissue_class" is used here to compute tissue diversity']
 #
 sheet_name_lst.append("ST2")
 description_lst.append("Metadata and classification of GWAS")
@@ -51,9 +51,9 @@ capt_df.to_excel(st_writer, sheet_name='Table descrip.', index=False, header=Tru
 
 #%% ST1
 sheet_name = 'ST1'
-etissue_category_ods_path = os.path.join(PathManager.get_project_path(), "config", "etissue_category.ods")
-st_df = pandas.read_excel(etissue_category_ods_path, index_col=None, header=0)
-st_df.drop(['Unnamed: 8', 'etissue_category.1', 'count'], axis=1, inplace=True)
+etissue_class_ods_path = os.path.join(PathManager.get_project_path(), "config", "etissue_class.ods")
+st_df = pandas.read_excel(etissue_class_ods_path, index_col=None, header=0)
+st_df.drop(['Unnamed: 8', 'etissue_class.1', 'count'], axis=1, inplace=True)
 st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 sheet_counter += 1
 
@@ -78,9 +78,9 @@ etissue_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 
 st_df = pandas.merge(gwas_df, egene_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
 st_df = pandas.merge(st_df, etissue_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
-st_df = st_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_category_count', 'gwas_category_lst', 'egene_count', 'egene_symbol_lst', 'etissue_label_count', 'etissue_subcategory_lst', 'egene_lst']]
-st_df.sort_values(['gwas_category_count', 'chrom', 'pos', 'rsid'], ascending=[False, True, True, True], inplace=True)
-st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
+st_df = st_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_class_count', 'gwas_class_lst', 'egene_count', 'egene_symbol_lst', 'etissue_label_count', 'etissue_subcategory_lst', 'egene_lst']]
+st_df.sort_values(['gwas_class_count', 'chrom', 'pos', 'rsid'], ascending=[False, True, True, True], inplace=True)
+st_df['gwas_class_lst'] = st_df['gwas_class_lst'].str.replace(',', ', ')
 st_df['egene_symbol_lst'] = st_df['egene_symbol_lst'].str.replace(',', ', ')
 st_df['etissue_subcategory_lst'] = st_df['etissue_subcategory_lst'].str.replace(',', ', ')
 st_df['egene_lst'] = st_df['egene_lst'].str.replace(',', ', ')
@@ -105,14 +105,14 @@ for rowi, row in st_df.iterrows():
     egene_symbol_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'egene_symbol'].unique()
     egene_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'egene'].unique()
     # import pdb; pdb.set_trace()
-    etissue_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'etissue_category'].unique()
+    etissue_lst = h4annot_df.loc[(h4annot_df['chrom'] >= chrom) & (h4annot_df['pos'] >= start) & (h4annot_df['pos'] <= end), 'etissue_class'].unique()
     st_df.at[rowi, 'egene'] = ", ".join(egene_lst)
     st_df.at[rowi, 'egene_symbol'] = ", ".join(egene_symbol_lst)
     st_df.at[rowi, 'etissue'] = ", ".join(etissue_lst)
 
-st_df.sort_values(by=['gwas_category_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)
-st_df['gwas_category_lst'] = st_df['gwas_category_lst'].str.replace(',', ', ')
-st_df = st_df[['chrom', 'cytoband', 'start', 'end', 'gwas_category_count', 'gwas_category_lst', 'egene_symbol', 'etissue', 'egene']]
+st_df.sort_values(by=['gwas_class_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)
+st_df['gwas_class_lst'] = st_df['gwas_class_lst'].str.replace(',', ', ')
+st_df = st_df[['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_class_lst', 'egene_symbol', 'etissue', 'egene']]
 st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 sheet_counter += 1
 

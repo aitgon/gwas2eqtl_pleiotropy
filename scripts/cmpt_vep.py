@@ -19,7 +19,7 @@ help_cmd_str = "todo"
 try:
     h4_annot_tsv_path = sys.argv[1]
     count_per_rsid_gwas_tsv_path = sys.argv[2]
-    upper_var_gwas_cat_count = int(sys.argv[3])
+    max_gwas_class_count = int(sys.argv[3])
     vep_input_path = sys.argv[4]
     vep_output_path = sys.argv[5]
     if len(sys.argv) > 6:
@@ -41,7 +41,7 @@ h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
 gwas_cat_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
 #%%
-vep_df = h4_df[['chrom', 'pos', 'rsid', 'ref', 'alt']].merge(gwas_cat_df[['chrom', 'pos', 'rsid', 'gwas_category_count']], on=['chrom', 'pos', 'rsid']).drop_duplicates()
+vep_df = h4_df[['chrom', 'pos', 'rsid', 'ref', 'alt']].merge(gwas_cat_df[['chrom', 'pos', 'rsid', 'gwas_class_count']], on=['chrom', 'pos', 'rsid']).drop_duplicates()
 
 vep_df.rename({'pos': 'start'}, axis=1, inplace=True)
 vep_df['end'] = vep_df['start']
@@ -61,7 +61,7 @@ vep_df['alleles'] = vep_df['ref'] + '/' + vep_df['alt']
 vep_df['strand'] = '+'
 
 #%%
-out_col_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_category_count']
+out_col_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_class_count']
 vep_df = vep_df[out_col_lst]
 
 #%% write vep input

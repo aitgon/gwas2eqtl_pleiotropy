@@ -23,7 +23,7 @@ help_cmd_str = "todo"
 try:
     count_per_rsid_gwas_egene_etissue_tsv_path = sys.argv[1]
     david_email = sys.argv[2]
-    upper_var_gwas_cat_count = int(sys.argv[3])
+    max_gwas_class_count = int(sys.argv[3])
     davidgo_tsv_path = sys.argv[4]
     if len(sys.argv) > 5:
         print("""Two many arguments!
@@ -42,14 +42,14 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 fin_df = pandas.read_csv(count_per_rsid_gwas_egene_etissue_tsv_path, sep="\t", header=0)
 
 #%%
-p_back_str = ",".join(fin_df.loc[fin_df['gwas_category_count'] == 1, "egene_lst"].str.split(',').explode().unique())
+p_back_str = ",".join(fin_df.loc[fin_df['gwas_class_count'] == 1, "egene_lst"].str.split(',').explode().unique())
 
-for pleio_i in range(2, upper_var_gwas_cat_count+1):
+for pleio_i in range(2, max_gwas_class_count+1):
     Logger.info(pleio_i)
-    if pleio_i == upper_var_gwas_cat_count:
-        p_input_str = ",".join(fin_df.loc[fin_df['gwas_category_count'] >= pleio_i, "egene_lst"].str.split(',').explode().unique())
+    if pleio_i == max_gwas_class_count:
+        p_input_str = ",".join(fin_df.loc[fin_df['gwas_class_count'] >= pleio_i, "egene_lst"].str.split(',').explode().unique())
     else:
-        p_input_str = ",".join(fin_df.loc[fin_df['gwas_category_count'] == pleio_i, "egene_lst"].str.split(',').explode().unique())
+        p_input_str = ",".join(fin_df.loc[fin_df['gwas_class_count'] == pleio_i, "egene_lst"].str.split(',').explode().unique())
 
     #%%
 

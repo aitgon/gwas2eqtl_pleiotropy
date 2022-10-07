@@ -15,7 +15,6 @@ eqtl_metadata_url = 'https://raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catal
 
 h4_cutoff = 0.8  # coloc cutoff
 snp_h4_cutoff = 0.5  # pp cutoff of snp
-
 region_bin = 100000  # region bin to define as pleiotropic
 
 # seaborn theme
