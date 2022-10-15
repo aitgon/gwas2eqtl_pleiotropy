@@ -43,18 +43,13 @@
 \item A very active field with many studies
 \item Many genetic variants are involved in several phenotypes
 \end{itemize}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\frametitle{Limitations of GWAS}
-
-\begin{figure}[!]
-\includegraphics[width=0.25\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/41586_2017_Article_BFnature24284_Fig1_HTML.jpg}
-\caption{GWAS for breast cancer}
-\end{figure}
-
+%
+\vfill
+%
+Limitations
+%
+\vfill
+%
 \begin{itemize}
 \item Correlation between variants, ie. LD
 \item Which cell types are causal to the disease?
@@ -63,9 +58,8 @@
 %
 \vfill
 %
-These points can be partially addressed by looking at eQTLs in different tissues
+These limitations can be partially addressed by looking at eQTLs in different tissues
 
-\let\thefootnote\relax\footnotetext{doi:10.3389/fgene.2020.00424}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -79,9 +73,6 @@ These points can be partially addressed by looking at eQTLs in different tissues
 \let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
 \end{frame}
 
-
-\section{Objectives} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Objectives}
@@ -93,11 +84,9 @@ These points can be partially addressed by looking at eQTLs in different tissues
 \end{itemize}
 \end{frame}
 
-\section{Materials and Methods}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Data and Algorithm}
+\frametitle{Data and Algorithms}
 
 \begin{itemize}
 \item IEA OpenGWAS database
@@ -167,49 +156,115 @@ These points can be partially addressed by looking at eQTLs in different tissues
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Which are the most pleiotropic variants?}
+\frametitle{How are pleiotropic variants distributed?}
 
-\begin{itemize}
-\item Distance between GWAS traits based on eQTL beta
-\item Clustering of immune diseases coherent
-\item eQTL beta of GWAS variants coherent
-\end{itemize}
-
-\begin{figure}[!]
-\includegraphics[width=0.6\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/plthtmp_disease_comorbidity_matrix.py/corr.png}
-\end{figure}
+\begin{columns}
+\begin{column}{0.32\textwidth}
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr19_start48668049_end48756272_categories8.png}
+     \end{center}
+\end{column}
+\begin{column}{0.32\textwidth}
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr19_start48668049_end48756272_categories8.png}
+     \end{center}
+\end{column}
+\begin{column}{0.32\textwidth}
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr19_start48668049_end48756272_categories8.png}
+     \end{center}
+\end{column}
+\end{columns}
+%
+\vfill
+%
+Neighboring variants show similar pleiotropy.
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Where are the pleiotropic variants?}
+
+    \begin{center}
+\includegraphics[width=0.8\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_vep_consequence.py/vep.png}
+     \end{center}
+     
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Do pleiotropic variants have more egenes?}
+\frametitle{Do pleiotropic variants associate to more egenes?}
 
-\begin{figure}[!tbp]
-\centering
-%
-\begin{subfigure}[]{.32\textwidth}
-\textbf{a}
-\\
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+\includegraphics[width=0.7\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/model_pleio_egenes.png}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}  %%<--- here
+    \begin{center}
 \includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_x_per_variant_etissue_y_egene.py/plt.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.32\textwidth}
-\textbf{b}
-\\
+     \end{center}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Do pleiotropic variants associate to more etissues?}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+\includegraphics[width=0.7\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/model_pleio_etissues.png}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}  %%<--- here
+    \begin{center}
 \includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_x_per_variant_egene_y_etissue.py/plt.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.32\textwidth}
-\textbf{c}
-\\
+     \end{center}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Do pleiotropic variants associate to more traits (after fixing egene-etissue)?}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+\includegraphics[width=0.7\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/model_pleio_gwas.png}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}  %%<--- here
+    \begin{center}
 \includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png}
-\end{subfigure}
-%
-\caption{Count of eGenes per variant-tissue (\textbf{a}), eTissues per variant-eGene (\textbf{b}) and GWAS categories per variant-eGene-eTissue (\textbf{c}).} \label{fig:gwas_egene_etisue_per_variant}
-%
-\end{figure}
+     \end{center}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Do pleiotropic variants bind more transcription factors?}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}  %%<--- here
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png}
+     \end{center}
+\end{column}
+\end{columns}
 
 \end{frame}
 
@@ -220,10 +275,23 @@ These points can be partially addressed by looking at eQTLs in different tissues
 \begin{frame}
 \frametitle{Conclusions}
 
+Characteristics of pleiotropic variants
+%
 \begin{itemize}
-\item A  colocalisation pipeline to link EBI Catalogue eQTLs and IEA OpenGWAS signals
-\item Several colocalisation signals between immune cell eQTLs and cancer loci
-\item Preliminary analyses of these colocalised signals
+\item Variant pleiotropy is correlated in regions
+\item Enrichment of variants upstream (incl. 5'UTR) and downstream of genes (incl. 3'UTR)
+\item Enrichment of transcription factor and CRM binding
+\item Increased number of associated egenes and etissues
+\end{itemize}
+%
+\vfill
+%
+Other outcomes of this study
+%
+\begin{itemize}
+\item A large analysis of GWAS/eQTL colocalisations
+\item A list of pleiotropic variants and regions
+\item Analysis of regulatory properties of pleiotropic variants
 \end{itemize}
 
 \end{frame}
@@ -234,14 +302,8 @@ These points can be partially addressed by looking at eQTLs in different tissues
 
 
 \begin{itemize}
-\item Use H1 as background dataset: H1=Causal SNP in cancer w/out eQTL
-\item Statistics of cell type enrichments
-\item Causal SNP characterization: Motif analyses
-\item Other applications:
-\begin{itemize}
-\item Pleiotropy of eQTLs: eQTLs affecting two genes or same gene in two cell-types
-\item Causality between other cell type eQTLs and diseases: Immunity and Covid-19
-\end{itemize}
+\item A web portail to share data
+\item Causality of egenes on gwas (Looking for experts ;-) )
 \end{itemize}
 
 \end{frame}
@@ -252,13 +314,17 @@ These points can be partially addressed by looking at eQTLs in different tissues
 
 \begin{itemize}
 \item L\'eopoldine Lecerf (M1)
-\item P Paul, P Rihet, M Michel
-\item S Marquet, S Spicuglia
-\item Funding:
+\item P Paul, P Rihet, M Michel, S Marquet, S Spicuglia
+\end{itemize}
+%
+\vfill
+%
+Funding
+%
 \begin{itemize}
 \item Institut Cancer et Immunologie (ICI)
 \item Agence nationale de la recherche (ANR)
-\end{itemize}
+\item GOLD
 \end{itemize}
 
 \end{frame}
