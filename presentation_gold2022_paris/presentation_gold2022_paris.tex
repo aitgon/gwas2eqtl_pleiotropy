@@ -48,8 +48,6 @@
 %
 Limitations
 %
-\vfill
-%
 \begin{itemize}
 \item Correlation between variants, ie. LD
 \item Which cell types are causal to the disease?
@@ -60,15 +58,44 @@ Limitations
 %
 These limitations can be partially addressed by looking at eQTLs in different tissues
 
+\let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Integration of GWAS and eQTL variants:  Colocalisation analysis}
+\frametitle{Expression quantitative trait loci (eQTL)}
 
-\begin{figure}[!]
-\includegraphics[width=0.6\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/doi_10.3389_fgene.2020.00424_fig4.png}
-\end{figure}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/doi_10.3389_fgene.2020.00424_fig4a.jpg}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+
+\end{column}
+\end{columns}
+
+\let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Colocalisation analysis of GWAS and eQTL variants}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/doi_10.3389_fgene.2020.00424_fig4a.jpg}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/doi_10.3389_fgene.2020.00424_fig4bc.png}
+     \end{center}
+\end{column}
+\end{columns}
 
 \let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
 \end{frame}
@@ -77,24 +104,35 @@ These limitations can be partially addressed by looking at eQTLs in different ti
 \begin{frame}
 \frametitle{Objectives}
 
-\begin{itemize}
-\item To carry out a large scale colocalization analysis between GWAS and eQTL variants
+\begin{enumerate}
+\item Large scale colocalization analysis between GWAS and eQTL variants
 \item To identify pleiotropic genetic loci
-\item To characterize the regulatory causas of this pleiotropy
-\end{itemize}
+\item To characterize the regulatory causes of trait pleiotropy
+\end{enumerate}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Data and Algorithms}
 
+\begin{columns}
+\begin{column}{0.5\textwidth}
 \begin{itemize}
-\item IEA OpenGWAS database
-\item EBI eQTLs database
-\item CRAN - Package coloc
+\item IEA OpenGWAS database$^1$: 244,881e6 associations from 42e3 GWAS datasets
+\item EBI eQTLs database$^2$: Processed gene expression and splicing QTLs from all public studies on human.
+\item CRAN - Package coloc$^3$: Genetic colocalisation analysis of two phenotypes to look for shared common genetic causal variants
 \end{itemize}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/pgen.1004383.g001.png}
+\end{center}
+\end{column}
+\end{columns}
 
-\let\thefootnote\relax\footnotetext{https://gwas.mrcieu.ac.uk}
+\let\thefootnote\relax\footnotetext{$^1$https://gwas.mrcieu.ac.uk}
+\let\thefootnote\relax\footnotetext{$^2$https://www.ebi.ac.uk/eqtl}
+\let\thefootnote\relax\footnotetext{$^3$https://cran.r-project.org/web/packages/coloc/index.html}
 \end{frame}
 
 
@@ -105,9 +143,9 @@ These limitations can be partially addressed by looking at eQTLs in different ti
 \frametitle{Large scale GWAS/eQTL colocalization analysis}
 
 \begin{itemize}
-\item Colocalization between 418 GWAS and 127 eQTL studies
-\item 143,119 colocalized GWAS/eQTL pairs with a probability above 0.8
-\item Explained GWAS loci between 0$\%$ and 77$\%$ (Average 33$\%$)
+\item Colocalization analysis of 418 GWAS and 127 eQTL studies (53e3 pairs)
+\item 143e3 shared causal variants with probability $\geq$ 0.8
+\item Percentage of explained GWAS loci: 0$\%$ - 77$\%$ (Average 33$\%$)
 \end{itemize}
 
 %\begin{figure}[!]
@@ -120,15 +158,13 @@ These limitations can be partially addressed by looking at eQTLs in different ti
 \begin{frame}
 \frametitle{Do GWAS traits cluster coherently?}
 
-\begin{itemize}
-\item Distance between GWAS traits based on eQTL beta
-\item Clustering of immune diseases coherent
-\item eQTL beta of GWAS variants coherent
-\end{itemize}
+Distance between GWAS traits based on eQTL beta
 
 \begin{figure}[!]
-\includegraphics[width=0.6\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/plthtmp_disease_comorbidity_matrix.py/corr.png}
+\includegraphics[width=0.5\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/plthtmp_disease_comorbidity_matrix.py/corr.png}
 \end{figure}
+
+Clustering coherent
 
 \end{frame}
 
@@ -186,11 +222,13 @@ Neighboring variants show similar pleiotropy.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Where are the pleiotropic variants?}
+\frametitle{Where are the pleiotropic variants?$^1$}
 
     \begin{center}
 \includegraphics[width=0.8\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_vep_consequence.py/vep.png}
      \end{center}
+varianb
+\let\thefootnote\relax\footnotetext{$^1$https://www.ensembl.org/vep}
      
 \end{frame}
 
@@ -253,7 +291,7 @@ Neighboring variants show similar pleiotropy.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Do pleiotropic variants bind more transcription factors?}
+\frametitle{Do pleiotropic variants bind more transcription factors?$^1$}
 
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -270,6 +308,7 @@ Neighboring variants show similar pleiotropy.
 
 \end{frame}
 
+\let\thefootnote\relax\footnotetext{$^1$https://remap.univ-amu.fr}
 
 \section{Conclusions, perspective and acknowledgements} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -277,7 +316,7 @@ Neighboring variants show similar pleiotropy.
 \begin{frame}
 \frametitle{Conclusions}
 
-Characteristics of pleiotropic variants
+Regulatory characteristics of pleiotropic variants
 %
 \begin{itemize}
 \item Variant pleiotropy is correlated in regions
@@ -293,7 +332,6 @@ Other outcomes of this study
 \begin{itemize}
 \item A large analysis of GWAS/eQTL colocalisations
 \item A list of pleiotropic variants and regions
-\item Analysis of regulatory properties of pleiotropic variants
 \end{itemize}
 
 \end{frame}
