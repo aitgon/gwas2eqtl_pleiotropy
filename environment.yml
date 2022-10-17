@@ -2,10 +2,9 @@ channels:
   - defaults
   - bioconda
 dependencies:
-  - bcftools
-  - tabix
+  - bioconda::bcftools
+  - bioconda::tabix
   - bioconda::bedtools
-  - bioconda::pygtftk
   - pip
   - pip:
     - -r requirements.txt

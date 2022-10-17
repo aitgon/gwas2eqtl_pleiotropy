@@ -17,10 +17,11 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    region_window_100000_tsv_path = sys.argv[1]
-    count_per_rsid_egene_tsv_path = sys.argv[2]
-    outdir_path = sys.argv[3]
-    if len(sys.argv) > 4:
+    max_gwas_class_count = int(sys.argv[1])
+    region_window_100000_tsv_path = sys.argv[2]
+    count_per_rsid_egene_tsv_path = sys.argv[3]
+    outdir_path = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -54,7 +55,7 @@ ylabel = "eGene count"
 count_per_rsid_df['pos'] = count_per_rsid_df['pos'].astype('int')
 
 #%% Loop over regions
-pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_class_count'] >= 6, ['chrom', 'start', 'end', 'gwas_class_count']]
+pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_class_count'] >= max_gwas_class_count, ['chrom', 'start', 'end', 'gwas_class_count']]
 for rowi, row in pleiotropic_regions_df.iterrows():
     chrom = row['chrom']
     start = row['start']

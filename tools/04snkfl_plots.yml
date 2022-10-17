@@ -131,10 +131,12 @@ rule plt_scttr_count_per_rsid_etissue:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
-    params: os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py"),
+    params:
+        outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py"),
+        max_gwas_class_count=max_gwas_class_count
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/log.txt"),
     shell:
-        """python scripts/pltsctr_x_per_rsid_y_etissue.py {input[0]} {input[1]} {params} >{log}        
+        """python scripts/pltsctr_x_per_rsid_y_etissue.py {params.max_gwas_class_count} {input[0]} {input[1]} {params.outdir} >{log}        
         touch {output[0]}
         """
 
@@ -144,10 +146,12 @@ rule plt_scttr_count_per_rsid_egene:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
-    params: os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py"),
+    params:
+        outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py"),
+        max_gwas_class_count=max_gwas_class_count
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
     shell:
-        """python scripts/pltsctr_x_per_rsid_y_egene.py {input[0]} {input[1]} {params} >{log}
+        """python scripts/pltsctr_x_per_rsid_y_egene.py {params.max_gwas_class_count} {input[0]} {input[1]} {params.outdir} >{log}
         touch {output[0]}
         """
 
@@ -157,10 +161,12 @@ rule plt_scttr_count_per_rsid_gwas:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
-    params: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py"),
+    params:
+        outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py"),
+        max_gwas_class_count=max_gwas_class_count
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
     shell:
-        """python scripts/pltsctr_x_per_rsid_y_gwas.py {input[0]} {input[1]} {params} >{log}
+        """python scripts/pltsctr_x_per_rsid_y_gwas.py {params.max_gwas_class_count} {input[0]} {input[1]} {params.outdir} >{log}
         touch {output[0]}
         """
 

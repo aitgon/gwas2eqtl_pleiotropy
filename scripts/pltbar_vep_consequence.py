@@ -53,7 +53,8 @@ for c in g.containers:
     gwas_class_count = c.get_label()
     labels = in_df.loc[in_df['gwas_class_count'] == gwas_class_count, 'signif'].tolist()
     # set the bar label
-    g.bar_label(c, labels=labels, label_type='edge', padding=5, verticalalignment='bottom')
+    # g.bar_label(c, labels=labels, label_type='edge', padding=5, verticalalignment='bottom')
+    g.bar_label(c, labels=labels, label_type='edge', padding=5)
 plt.legend(title='GWAS cat.', loc='best',title_fontsize='small')
 
 plt.tight_layout()
