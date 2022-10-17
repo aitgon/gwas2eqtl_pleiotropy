@@ -104,5 +104,10 @@ Go to poster_eccb22_barcelona and follow the readme.md instructions
 
 python scripts/plthtmp_disease_comorbidity_matrix.py out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/cmpt_disease_comorbidity_matrix2.py/corr3.tsv config/gwas418.ods out/gwas420/pval_5e-08/r2_0.1/kb_1000/window_1000000/plthtmp_disease_comorbidity_matrix.py/corr3.png
 
+# Presentation GOLD meeting 2022
+
+~~~
+texi2pdf presentation_gold2022_paris/presentation_gold2022_paris.tex
+~~~
 
 
