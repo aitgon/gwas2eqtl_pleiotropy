@@ -39,7 +39,7 @@
 \frametitle{Genome-wide association studies (GWAS)}
 
 \begin{itemize}
-\item Genetic loci with higher frequency in individuals with a given disease
+\item Genetic alleles with higher frequency in individuals with a given disease
 \item A very active field with many studies
 \item Many genetic variants are involved in several phenotypes
 \end{itemize}
@@ -49,7 +49,7 @@
 Limitations
 %
 \begin{itemize}
-\item Correlation between variants, ie. LD
+\item Correlation between variants
 \item Which cell types are causal to the disease?
 \item Over 90\% GWAS variants fall in non-coding regions
 \end{itemize}
@@ -145,12 +145,12 @@ These limitations can be partially addressed by looking at eQTLs in different ti
 \begin{itemize}
 \item Colocalization analysis of 418 GWAS and 127 eQTL studies (53e3 pairs)
 \item 143e3 shared causal variants with probability $\geq$ 0.8
-\item Percentage of explained GWAS loci: 0$\%$ - 77$\%$ (Average 33$\%$)
+\item Percentage of GWAS loci explained by eQTL: 0$\%$ - 77$\%$ (Average 33$\%$)
 \end{itemize}
 
-%\begin{figure}[!]
-%\includegraphics[width=0.6\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/poster_eccb22_barcelona/img/web.eps}
-%\end{figure}
+\begin{figure}[!]
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/coloc_web.png}
+\end{figure}
 
 \end{frame}
 
@@ -158,13 +158,13 @@ These limitations can be partially addressed by looking at eQTLs in different ti
 \begin{frame}
 \frametitle{Do GWAS traits cluster coherently?}
 
-Distance between GWAS traits based on eQTL beta
+Distance between GWAS traits based on eQTL/egene beta
 
 \begin{figure}[!]
 \includegraphics[width=0.5\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/plthtmp_disease_comorbidity_matrix.py/corr.png}
 \end{figure}
 
-Clustering coherent
+GWAS/eQTL colocalization analysis allows to cluster diseases coherently
 
 \end{frame}
 
@@ -219,7 +219,7 @@ Clustering coherent
 
 \small
 \begin{itemize}
-\item The cytokine locus: chr5:131,912,097-132,802,472. Genes IL3, IL4, IL5, ...
+\item The cytokine locus: chr5:131,912,097-132,802,472. Genes IRF1, IL3, IL4, IL5, ...
 \item Diseases: Allergy,Autoimmune dis.,Cancer of breast,Circulatory sys. dis.,Hypertension,Respiratory system dis.
 \item For instance: rs2522051 regulates 12 e-genes in 23 e-tissues
 \end{itemize}
@@ -232,16 +232,18 @@ Clustering coherent
 \frametitle{Where are the pleiotropic variants?$^1$}
 
     \begin{center}
-\includegraphics[width=0.8\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_vep_consequence.py/vep.png}
+\includegraphics[width=0.7\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_vep_consequence.py/vep.png}
      \end{center}
-varianb
+
+Upstream and downstream of genes and in the intron
+
 \let\thefootnote\relax\footnotetext{$^1$https://www.ensembl.org/vep}
      
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Do pleiotropic variants associate to more egenes?}
+\frametitle{Why are these variants pleiotropic? Do pleiotropic variants associate to more egenes?}
 
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -255,6 +257,8 @@ varianb
      \end{center}
 \end{column}
 \end{columns}
+
+More egenes per variant-etissue pair.
 
 \end{frame}
 
@@ -299,6 +303,8 @@ varianb
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Do pleiotropic variants bind more transcription factors?$^1$}
+
+This could explain why pleiotropic variants active in more etissues and associated to more egenes
 
 \begin{columns}
 \begin{column}{0.5\textwidth}
