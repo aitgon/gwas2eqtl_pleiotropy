@@ -7,7 +7,7 @@
 
 % Change size of footnotes
 \renewcommand{\footnotesize}{\fontsize{5pt}{5pt}\selectfont}
-\title{Analysis of gene regulatory properties underlying trait pleiotropy}
+\title{Analysis of gene regulatory properties underlying pleiotropy between complex traits}
 \subtitle{Meeting GOLD 2022}
 \author{Aitor Gonz\'alez}
 \institute{Aix Marseille Univ, INSERM, TAGC}
@@ -46,17 +46,17 @@
 %
 \vfill
 %
-Limitations
+Questions:
 %
 \begin{itemize}
-\item Correlation between variants
-\item Which cell types are causal to the disease?
-\item Over 90\% GWAS variants fall in non-coding regions
+\item Correlation between variants. Which is the causal variant?
+\item Which cell type important for disease?
+\item Over 90\% GWAS variants are non-coding. What is their role?
 \end{itemize}
 %
 \vfill
 %
-These limitations can be partially addressed by looking at eQTLs in different tissues
+Questions partially addressed by looking at eQTLs in different tissues
 
 \let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
 
@@ -82,7 +82,7 @@ These limitations can be partially addressed by looking at eQTLs in different ti
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Colocalisation analysis of GWAS and eQTL variants}
+\frametitle{Annotation of GWAS variants with gene and tissue targets using colocalization analysis}
 
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -105,9 +105,9 @@ These limitations can be partially addressed by looking at eQTLs in different ti
 \frametitle{Objectives}
 
 \begin{enumerate}
-\item Large scale colocalization analysis between GWAS and eQTL variants
-\item To identify pleiotropic genetic loci
-\item To characterize the regulatory causes of trait pleiotropy
+\item Large scale gene and tissue annotation of variants of complex traits using GWAS/eQTL colocalization analysis
+\item To identify genetic variants leading to pleiotropy of complex traits
+\item To characterize the gene regulatory mechanisms of trait pleiotropy
 \end{enumerate}
 \end{frame}
 
@@ -164,7 +164,10 @@ Distance between GWAS traits based on eQTL/egene beta
 \includegraphics[width=0.5\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/plthtmp_disease_comorbidity_matrix.py/corr.png}
 \end{figure}
 
-GWAS/eQTL colocalization analysis allows to cluster diseases coherently
+\begin{itemize}
+\item Disease clusters are coherent $\rightarrow$ Validates approche and data
+\item Definition of disease classes
+\end{itemize}
 
 \end{frame}
 
@@ -188,6 +191,18 @@ GWAS/eQTL colocalization analysis allows to cluster diseases coherently
 %%
 %\caption{Colocalized eQTL/GWAS variants involved in 5 or more GWAS categories. Genomic coordinates are given for the hg38 assembly. }\label{tab:pleitropic_variants}
 %\end{table}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{How are pleiotropic variants defined?}
+
+\begin{itemize}
+\item Manually annotate variants based on trait clustering and ICD in 129 classifications
+\item Aggregate colocalized variants based on trait classes
+\item Analysed variants in groupes based on the number of trait classes
+\end{itemize}
 
 \end{frame}
 
@@ -243,7 +258,7 @@ Upstream and downstream of genes and in the intron
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Why are these variants pleiotropic? Do pleiotropic variants associate to more egenes?}
+\frametitle{Do pleiotropic variants associate to more eQTL genes?}
 
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -264,7 +279,7 @@ More egenes per variant-etissue pair.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Do pleiotropic variants associate to more etissues?}
+\frametitle{Do pleiotropic variants associate to more eQTL tissues?}
 
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -283,28 +298,7 @@ More egenes per variant-etissue pair.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Do pleiotropic variants associate to more traits (after fixing egene-etissue)?}
-
-\begin{columns}
-\begin{column}{0.5\textwidth}
-    \begin{center}
-\includegraphics[width=0.7\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/model_pleio_gwas.png}
-     \end{center}
-\end{column}
-\begin{column}{0.5\textwidth}  %%<--- here
-    \begin{center}
-\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png}
-     \end{center}
-\end{column}
-\end{columns}
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
 \frametitle{Do pleiotropic variants bind more transcription factors?$^1$}
-
-This could explain why pleiotropic variants active in more etissues and associated to more egenes
 
 \begin{columns}
 \begin{column}{0.5\textwidth}
@@ -321,15 +315,28 @@ This could explain why pleiotropic variants active in more etissues and associat
 
 \end{frame}
 
+\begin{itemize}
+\item This could explain why pleiotropic variants active in more etissues and associated to more egenes
+\end{itemize}
+
 \let\thefootnote\relax\footnotetext{$^1$https://remap.univ-amu.fr}
 
 \section{Conclusions, perspective and acknowledgements} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Conclusions}
+\frametitle{Concluding remarks}
 
-Regulatory characteristics of pleiotropic variants
+Outcomes interesting for the GOLD population genotypes
+%
+\begin{itemize}
+\item A large set of causal GWAS variants annotated with target genes and tissues
+\item A list of pleiotropic variants and regions
+\end{itemize}
+%
+\vfill
+%
+Conclusion about regulatory characteristics of pleiotropic variants
 %
 \begin{itemize}
 \item Variant pleiotropy is correlated in regions
@@ -337,15 +344,7 @@ Regulatory characteristics of pleiotropic variants
 \item Enrichment of transcription factor and CRM binding
 \item Increased number of associated egenes and etissues
 \end{itemize}
-%
-\vfill
-%
-Other outcomes of this study
-%
-\begin{itemize}
-\item A large analysis of GWAS/eQTL colocalisations
-\item A list of pleiotropic variants and regions
-\end{itemize}
+
 
 \end{frame}
 
@@ -375,10 +374,35 @@ Other outcomes of this study
 Funding
 %
 \begin{itemize}
-\item Institut Cancer et Immunologie (ICI)
+\item Institut Cancer et Immunologie - Aix-Marseille Univ.
 \item Agence nationale de la recherche (ANR)
 \item GOLD
 \end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{Do pleiotropic variants associate to more traits (after fixing egene-etissue)?}
+
+\begin{columns}
+\begin{column}{0.5\textwidth}
+    \begin{center}
+\includegraphics[width=0.7\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/presentation_gold2022_paris/fig/model_pleio_gwas.png}
+     \end{center}
+\end{column}
+\begin{column}{0.5\textwidth}  %%<--- here
+    \begin{center}
+\includegraphics[width=\textwidth]{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png}
+     \end{center}
+\end{column}
+\end{columns}
 
 \end{frame}
 
