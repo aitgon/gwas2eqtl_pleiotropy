@@ -12,7 +12,9 @@ help_cmd_str = "todo"
 try:
     db_sqlite = sys.argv[1]
     coloc_tsv_gz_path = sys.argv[2]
-    if len(sys.argv) > 3:
+    coloc5_tsv_gz_path = sys.argv[3]
+    coloc8_tsv_gz_path = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -81,5 +83,9 @@ with engine.connect() as con:
         coloc_df.rename(dict(zip(col_name1_lst, col_name2_lst)), axis=1, inplace=True)
         if chrom == 1:  # write new
             coloc_df.to_csv(coloc_tsv_gz_path, sep='\t', index=False, header=True)
+            (coloc_df.loc[coloc_df['PP_H4_abf'] >= 0.5]).to_csv(coloc5_tsv_gz_path, sep='\t', index=False, header=True)
+            (coloc_df.loc[coloc_df['PP_H4_abf'] >= 0.8]).to_csv(coloc8_tsv_gz_path, sep='\t', index=False, header=True)
         elif chrom > 1:  # append
             coloc_df.to_csv(coloc_tsv_gz_path, sep='\t', index=False, header=False, mode='a')
+            (coloc_df.loc[coloc_df['PP_H4_abf'] >= 0.5]).to_csv(coloc5_tsv_gz_path, sep='\t', index=False, header=False, mode='a')
+            (coloc_df.loc[coloc_df['PP_H4_abf'] >= 0.8]).to_csv(coloc8_tsv_gz_path, sep='\t', index=False, header=False, mode='a')
