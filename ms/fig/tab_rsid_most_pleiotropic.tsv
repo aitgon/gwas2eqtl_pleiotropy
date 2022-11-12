@@ -1,15 +1,15 @@
-chrom	pos	rsid	gwas_category_count	gwas_category_lst
-12	111,446,804	rs3184504	11	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Crohns, Heart, InflammatoryBowel, MyocardialInfarction, Stroke, StrokeIschaemic
-12	111,569,952	rs653178	10	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Heart, InflammatoryBowel, MyocardialInfarction, Stroke, StrokeIschaemic
-12	111,427,245	rs7310615	7	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
-12	111,535,554	rs597808	7	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
-12	111,621,753	rs11065979	6	Aging, AllergicRhinitis, Allergy, Asthma, Stroke, StrokeIschaemic
-15	90,884,967	rs2071382	6	Angina, Cardiovascular, CoronaryArtery, Heart, Hypertension, Schizophrenia
-1	109,274,968	rs12740374	5	Angina, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
-1	109,275,684	rs629301	5	Angina, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
-3	141,406,344	rs1344674	5	Allergy, Asthma, CancerBreast, CancerProstate, Height
-5	132,485,305	rs17622656	5	Allergy, Asthma, Cardiovascular, Hypertension, UlcerativeColitis
-7	19,009,765	rs2107595	5	Angina, Cardiovascular, Heart, Stroke, StrokeIschaemic
-11	76,588,605	rs11236797	5	AllergicRhinitis, Asthma, Crohns, InflammatoryBowel, UlcerativeColitis
-15	90,879,313	rs8039305	5	Angina, Cardiovascular, CoronaryArtery, Heart, Hypertension
-15	90,880,313	rs6224	5	Angina, Cardiovascular, Heart, Hypertension, Schizophrenia
+chrom	cytoband	pos	rsid	gwas_category_count	gwas_category_lst
+12	q24.12	111,446,804	rs3184504	11	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Crohns, Heart, InflammatoryBowel, MyocardialInfarction, Stroke, StrokeIschaemic
+12	q24.12	111,569,952	rs653178	10	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Heart, InflammatoryBowel, MyocardialInfarction, Stroke, StrokeIschaemic
+12	q24.12	111,427,245	rs7310615	7	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
+12	q24.12	111,535,554	rs597808	7	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
+12	q24.12	111,621,753	rs11065979	6	Aging, AllergicRhinitis, Allergy, Asthma, Stroke, StrokeIschaemic
+15	q26.1	90,884,967	rs2071382	6	Angina, Cardiovascular, CoronaryArtery, Heart, Hypertension, Schizophrenia
+1	p13.3	109,274,968	rs12740374	5	Angina, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
+1	p13.3	109,275,684	rs629301	5	Angina, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
+3	q23	141,406,344	rs1344674	5	Allergy, Asthma, CancerBreast, CancerProstate, Height
+5	q31.1	132,485,305	rs17622656	5	Allergy, Asthma, Cardiovascular, Hypertension, UlcerativeColitis
+7	p21.1	19,009,765	rs2107595	5	Angina, Cardiovascular, Heart, Stroke, StrokeIschaemic
+11	q13.5	76,588,605	rs11236797	5	AllergicRhinitis, Asthma, Crohns, InflammatoryBowel, UlcerativeColitis
+15	q26.1	90,879,313	rs8039305	5	Angina, Cardiovascular, CoronaryArtery, Heart, Hypertension
+15	q26.1	90,880,313	rs6224	5	Angina, Cardiovascular, Heart, Hypertension, Schizophrenia

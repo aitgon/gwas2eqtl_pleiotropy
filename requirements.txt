@@ -1,7 +1,9 @@
 crossmap
 matplotlib
+mygene
 mysql-client
 mysql-connector-python
+numpy
 odfpy
 pandas
 pybedtools
@@ -9,6 +11,8 @@ requests
 seaborn
 snakemake
 sqlalchemy
-statannot
+statannotations
 statsmodels
+suds
 termcolor
+xlsxwriter

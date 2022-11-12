@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='eqtl2gwas_pleiotropy',
+    name='gwas2eqtl_pleiotropy',
     version='0.1.0',
     url='https://tagc.univ-amu.fr/en/users/gonzalez-aitor',
     author='Aitor González',

@@ -1,21 +1,17 @@
-import sys
-
-from eqtl2gwas_pleiotropy.PathManager import PathManager
-from eqtl2gwas_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
+from gwas2eqtl_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 from matplotlib import pyplot as plt
 
 import math
-import numpy
 import os
 import pandas
 import pathlib
+import seaborn
+import sys
 
 
-# #%% Outdir
-# if not '__file__' in locals():
-#     __file__ = "cmpt_pleiotropic_regions.py"
-# outdir_path = os.path.join(PathManager.get_outdir_path(), os.path.basename(__file__))
-# pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
+#%%
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
@@ -50,12 +46,12 @@ for i, row in df.iterrows():
     chrom = row['chrom']
     pos = row['pos']
     # import pdb; pdb.set_trace()
-    if row['gwas_category_count'] > 1:
+    if row['gwas_class_count'] > 1:
         chrom_pleio_latest = chrom
         pos_pleio_latest = pos
     if chrom == chrom_pleio_latest and (pos - pos_pleio_latest) <= region_bin:
         df.loc[i, 'region_pleio_fwd'] = True
-df.to_csv("df.tsv", sep="\t", index=False)
+# df.to_csv("df.tsv", sep="\t", index=False)
 
 #%% Do it reversed
 df.sort_values(by=['chrom', 'pos'], inplace=True, ascending=[True, False])
@@ -69,7 +65,7 @@ for i, row in df.iterrows():
     chrom = row['chrom']
     pos = row['pos']
     df.loc[i, 'region_pleio'] = False
-    if row['gwas_category_count'] > 1:  # update pos_pleio_latest
+    if row['gwas_class_count'] > 1:  # update pos_pleio_latest
         chrom_pleio_latest = chrom
         pos_pleio_latest = pos
     if chrom == chrom_pleio_latest and (pos_pleio_latest - pos) <= region_bin:
@@ -86,54 +82,70 @@ pos_prev = 0
 region_pleio_prev = False
 start = math.nan
 end = math.nan
-gwas_category_count = 0
-gwas_category_lst = math.nan
+gwas_class_count = 0
+gwas_class_lst = math.nan
 category_lst = []
 
 for i, row in df.iterrows():
     # beginning of region, set start, start category list, store category
     if row['region_pleio'] and not region_pleio_prev:
+        cytoband = row['cytoband']
         start = row['pos']
-        gwas_category_count = row['gwas_category_count']
-        gwas_category_lst = row['gwas_category_lst']
-        category_lst = row['gwas_category_lst'].split(",")
+        gwas_class_count = row['gwas_class_count']
+        gwas_class_lst = row['gwas_class_lst']
+        category_lst = row['gwas_class_lst'].split(",")
     # end of region, set end, store category
     elif not row['region_pleio'] and region_pleio_prev:
         end = pos_prev
     # middle of region, store categories
-    if row['region_pleio'] and row['gwas_category_count'] > gwas_category_count:
-        gwas_category_count = row['gwas_category_count']
-        gwas_category_lst = row['gwas_category_lst']
-        category_lst = category_lst + row['gwas_category_lst'].split(",")
+    if row['region_pleio'] and row['gwas_class_count'] > gwas_class_count:
+        gwas_class_count = row['gwas_class_count']
+        gwas_class_lst = row['gwas_class_lst']
+        category_lst = category_lst + row['gwas_class_lst'].split(",")
     # reset start and end, store region
     if not math.isnan(start) and not math.isnan(end):
         # region_lst.append([row['chrom'], start, end, gwas_subcategory_count, gwas_subcategory_lst, category_lst])
         # import pdb; pdb.set_trace()
         category_lst = sorted([*set(category_lst)])
         category_str = ','.join(category_lst)
-        region_lst.append([row['chrom'], start, end, len(category_lst), category_str])
+        region_lst.append([row['chrom'], cytoband, start, end, len(category_lst), category_str])
         start = math.nan
         end = math.nan
         gwas_subcategory_count = 0
     pos_prev = row['pos']
     region_pleio_prev = row['region_pleio']
 
-# tsv
-regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'start', 'end', 'gwas_category_count', 'gwas_category_lst'])
-# pleio_tsv_path = os.path.join(outdir_path, "region_window_{}.tsv".format(region_bin))
+#%% tsv
+regions_pleio_df = pandas.DataFrame(region_lst, columns=['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_class_lst'])
 regions_pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
-# bed
+#%##############
+#%% GWAS region pleiotropy for MS
+regions_pleio_ms_df = regions_pleio_df.copy()
+regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_class_count', 'chrom', 'start', 'gwas_class_lst'], ascending=[False, True, True, True])
+regions_pleio_ms_df = regions_pleio_ms_df.drop_duplicates('cytoband', keep='first')
+regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_class_count'] >= 6]
+# format output
+regions_pleio_ms_df.drop(['gwas_class_count'], inplace=True, axis=1)
+regions_pleio_ms_df['gwas_class_lst'] = regions_pleio_ms_df['gwas_class_lst'].str.replace(',', ', ')
+regions_pleio_ms_df['start']=regions_pleio_ms_df['start'].apply(lambda x : '{0:,}'.format(x))
+regions_pleio_ms_df['end']=regions_pleio_ms_df['end'].apply(lambda x : '{0:,}'.format(x))
+tsv_path = os.path.join(outdir_path, "region_window_ms_100000.tsv")
+regions_pleio_ms_df.to_csv(tsv_path, sep="\t", index=False)
+
+#%% bed
 regions_pleio_df['start'] = regions_pleio_df['start'] - 1
 regions_pleio_df['chrom'] = 'chr' + regions_pleio_df['chrom'].astype('str')
+regions_pleio_df.drop(['cytoband'], axis=1, inplace=True)
 pleio_bed_path = os.path.join(outdir_path, "region_window_{}.bed".format(region_bin))
 regions_pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
 
 #%########################################### bed files
 for count_pleio in range(1, 6):
     region_pleio_i_bed_path = os.path.join(outdir_path, "region_window_{}_pleio_{}.bed".format(region_bin, count_pleio))
-    region_pleio_i_df = regions_pleio_df.loc[regions_pleio_df['gwas_category_count'] == count_pleio,]
+    region_pleio_i_df = regions_pleio_df.loc[regions_pleio_df['gwas_class_count'] == count_pleio,]
     region_pleio_i_df.to_csv(region_pleio_i_bed_path, sep="\t", index=False, header=False)
+
 
 
 #%##############
@@ -141,7 +153,7 @@ for count_pleio in range(1, 6):
 plt.rcParams["figure.figsize"] = (8, 6)
 region_lenght_ser = (regions_pleio_df['end'] - regions_pleio_df['start'])
 
-ylabel = "Count"
+ylabel = "Proportion"
 title = "Lengths of pleiotropic regions"
 ylim=[1e-10, 1]
 edgecolor='k'
@@ -150,21 +162,17 @@ linewidth = 2
 hist_kwargs = {'density': False, 'edgecolor': edgecolor, 'linewidth': linewidth}
 
 #%%
-# bins = numpy.array(range(11))*100000
-# import pdb; pdb.set_trace()
-plt.hist(region_lenght_ser/1000000, **hist_kwargs)
+data_ser = region_lenght_ser/100000
+seaborn.histplot(data_ser, stat='percent', discrete=True)
 
-plt.grid(axis='y')
+plt.grid(visible=True, axis='y')
 plt.title(title, fontsize=label_fontsize)
-plt.xlabel("Region length [Mbp]", fontsize=label_fontsize)
+plt.xlabel("Region length [1e5 bp]", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yscale('log')
+# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-# fig = ax.get_figure()
-# png_path = os.path.join(outdir_path, "regions_{}_length_hist.png".format(region_bin))
 plt.savefig(png_path)
-plt.clf()
 plt.close()

@@ -2,7 +2,7 @@ import os
 import pandas
 import pathlib
 
-from eqtl2gwas_pleiotropy.PathManager import PathManager
+from gwas2eqtl_pleiotropy.PathManager import PathManager
 
 
 #%% outdir path
@@ -16,14 +16,14 @@ variant_to_region_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_v
 variant_to_region_df = pandas.read_csv(variant_to_region_tsv_path, sep="\t")
 
 while variant_to_region_df.shape[0] > 0:
-    region_pleio_count = variant_to_region_df['gwas_category_count'].max()
+    region_pleio_count = variant_to_region_df['gwas_class_count'].max()
     print(region_pleio_count)
-    egene_pleio_lst = sorted(variant_to_region_df.loc[variant_to_region_df['gwas_category_count'] == region_pleio_count, 'egene'].unique().tolist())
+    egene_pleio_lst = sorted(variant_to_region_df.loc[variant_to_region_df['gwas_class_count'] == region_pleio_count, 'egene'].unique().tolist())
     # try:
-    egene_symbol_pleio_lst = sorted(variant_to_region_df.loc[(variant_to_region_df['gwas_category_count'] == region_pleio_count) & (~variant_to_region_df['egene_symbol'].isna()), 'egene_symbol'].unique().tolist())
+    egene_symbol_pleio_lst = sorted(variant_to_region_df.loc[(variant_to_region_df['gwas_class_count'] == region_pleio_count) & (~variant_to_region_df['egene_symbol'].isna()), 'egene_symbol'].unique().tolist())
     # except:
     #     import pdb; pdb.set_trace()
-    variant_to_region_df.drop(variant_to_region_df.loc[variant_to_region_df['gwas_category_count'] == region_pleio_count].index, inplace=True)
+    variant_to_region_df.drop(variant_to_region_df.loc[variant_to_region_df['gwas_class_count'] == region_pleio_count].index, inplace=True)
 
     pleio_egene_txt_path = os.path.join(outdir_path, "egene_pleio_{}.txt".format(region_pleio_count))
     with open(pleio_egene_txt_path, "w") as output:

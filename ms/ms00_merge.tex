@@ -1,0 +1,36 @@
+%% select between bioRxiv style or submission style by commenting either line
+%\documentclassdocumentclass[twocolumn]{article}
+\documentclass[12pt, a4paper]{article}
+%\documentclass[submit]{bioRxiv}
+%\renewcommand\familydefault{\sfdefault}
+
+% Set relative path to all figures
+\newcommand*{\floatRelativePath}{out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000}%
+
+\usepackage{orcidlink}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{csvsimple}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lipsum}
+\usepackage{nameref}
+\usepackage{natbib}
+\usepackage{subcaption}
+
+%\captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Fig.}}
+
+\begin{document}
+
+\input{ms01_titlepage}
+\input{ms02_intro}
+\input{ms03_results}
+\input{ms04_discussion}
+\input{ms05_floats}
+%\include{ms06_suppl}
+
+\bibliographystyle{abbrvnat}
+\bibliography{ms_pleiotropy}
+
+
+\end{document}

@@ -1,0 +1,129 @@
+\section*{Discussion}
+
+In this article, I present the results of a colocalization pipeline for eQTLs and GWAS variants that I have applied to a large number of 413 GWAS and 127 eQTL studies.
+%
+I have taken advantage of two public resources of GWAS and eQTL studies with summary statistics to compute a large number of colocalizations between eQTLs and GWAS variants.
+%
+These results are provided as a downloadable and an interactive table that can be used to explore variants with the GWAS traits, etissues and egenes.
+%
+For a posterior probability PP.H4.abf$\ge$0.8 of common causal eQTL and GWAS variants, we found 100,526 loci.
+%
+If I focus on causal variants with PP.H4.abf$\ge$0.8 and SNP.PP.H4$\ge$0.5, then I find 4684 variants.
+
+This interactive table can be used for different applications.
+%
+For instance, egenes and etissues of colocalized eQTL variants provide potential predictions of the molecular mechanism of GWAs traits.
+%
+Colocalized loci provide predictions of potential causal variants in a given loci of GWAS.
+%
+The variant rs2107595 is in locus 7p21.1 downstream of the histone deacetylase 9 (HDAC9) is cardiovascular. Interestingly, it controls expression of lncRNA XXX that is not known in the context of cardiovascular diseases.
+
+
+I have extensively compared molecular properties of pleiotropic variants involved in several GWAS traits.
+%
+Our analysis provides a number of hints about pleiotropic variants and regions.
+%
+I have found that these pleiotropic variants are under the control of more transcription factors and regulate more egenes in more etissues.
+%
+By contrast, the eQTLs of pleiotropic variants show lower beta and less significant p-values (Fig. TODO).
+%
+This can make sense, because these variants target a larger number of egenes and etissues, and larger effects are maybe negatively selected.
+%
+It has been recently observed that eQTLs are negatively selected from essential genes (Ref bioarxiv TODO).
+%
+On the other hand, the effect on GWAS traits is more significant suggesting that the additive effect of several egenes and etissues results in stronger effects at the level of the GWAS trait (Fig TODO).
+
+
+At the molecular level, I have found that the immune system might be partly involved in pleiotropy.
+%
+Immune related gene ontology is significantly found in pleiotropic egenes (Fig 1) and etissues related to immune cells are overrepresented in pleiotropic loci (Fig 2).
+%
+The most pleiotropic locus 12q24.12 includes the SH2B3 gene that regulates cytokine signaling.
+%
+This locus has been used to explain links between inflammation and hypertension (10.1097/MNH.0000000000000196), diabetes and autoimmunity (10.4239/wjd.v5.i3.316).
+%
+There is also the 5q31.1 locus that includes important genes of the immune system such as IRF1 and IL4 and the MHC locus that was previously discussed (REF watanaba discussion TODO).
+
+% TODO Causal variants
+% If pleiotropic variants bind more transcription factors and are more frequently annotated with a CRM, then these variants are probably more likely causal variants.
+
+% TODO Relation between eQTL and GWAS and related publications.
+
+%% 6p21.3
+%% TODO
+%
+%%15q26.1
+%The next pleiotropic locus is in cytoband 15q26.1 involved in cardiovascular, hypertension and psyciatric diseases with variants rs2071382, rs8039305 and rs6224.
+%%
+%eQTLs in cytoband 15q26.1 control genes like Furin, oncogene Fes and UNC45A involved in Osteootohepatoenteric syndrome (OMIM DB).
+%%
+%eQTLs are active in a very large number of cells including blood, artery, brain and immune cells (See supplementary table).
+%
+%% 1p13.3
+%The locus in cytoband 1p13.3 is mainly related to cardiovascular diseases.
+%Interestingly, these variants are active in many tissues (Supp table h4_annotated.ods).
+%
+%The variant rs11236797 and the two others in locus 11q13.5 is mainly autoimmune.
+%All three regulate the gene EMSY-DT and are active induced pluripotent cells, LCDs and skin.
+%
+%Another pleiotropic variants rs301806
+%rs301807
+%rs301802
+%rs301817
+%rs159963
+%rs301816
+%in the cytoband 1p36.23 that are involved in allergy, cardiovascular and hypertension.
+%This variants control the gene RERE, which is a nuclear receptor corregulator and is involved in neurodevelopmental disorders.\\
+
+\section*{Methods}\label{sec:methods}
+
+\subsection*{Data sets and data exploration}
+
+I used these data sets here: eQTLs from the eQTL Catalogue \citep{2021.Alasoo.Kerimov}, GWAS variants from the IEU OpenGWAS project \citep{2021.Marcora.Lyon}, chromatin immunoprecipitation (ChIP) transcription factors peaks from the ReMap database \citep{2021.Ballester.Hammal}, and UCSC annotation data.
+%
+I explore the data using the UCSC browser (\url{http://genome.ucsc.edu}) \citep{2021.Kent.Lee}, and OMIM database (\url{https://omim.org/}).
+%
+Colocalization and analysis pipelines were implemented with Snakemake (Supplementary Figure S1) .
+%
+The colocalization and analysis pipelines can be found here: \url{https://github.com/aitgon/gwas2eqtl} and \url{https://github.com/aitgon/gwas2eqtl_pleiotropy}.
+
+\subsection*{Colocalization}
+
+My colocalization pipeline was inspired by another pipeline that is at the eQTL Catalogue Github repository ( \url{https://github.com/eQTL-Catalogue/colocalisation} ).
+%
+GWAS were downloaded from OpenGWAS and converted to hg38 coordinates.
+%
+Permuted eQTLs with FDR 0.05 in each sample were selected as lead variants.
+%
+eQTL and GWAS variants surrounded the lead variants with radius of 500,000 nt (Total window 1,000,000 nt) were retrieved.
+%
+These variants were kept if MAF was strictly greater than 0 and lower than 1, the variants were not duplicated and there was no missing data.
+%
+Colocalization between eQTL and GWAS variants was tested using the "coloc.abf" function of CRAN coloc for each window, each eQTL sample and each GWAS.
+
+\subsection*{Definition of pleiotropic regions}
+
+To define pleiotropic regions, I included "pleiotropic" variants defining as having more than 2 categories as long as the distance between the two "pleiotropic" variants is less than 100 000 bp.
+%
+Then the number of GWAS categories in Supplementary table TODO is given by the number of different variant categories in the region.
+
+\subsection*{Characterization of regulatory QTLs}
+
+\section*{Code availability}
+
+The eQTL/GWAS variant colocalization pipeline code is available at this repository: \url{https://github.com/aitgon/gwas2eqtl}.
+%
+The analysis pipeline of the eQTL/GWAS colocalization data and the source code of this manuscript is available at this repository: \url{https://github.com/aitgon/gwas2eqtl_pleiotropy}.
+
+\section*{Data availability}
+
+The raw colocalization data before filtering in a single file is available at this URL: \url{https://osf.io/hvmje}.
+%
+A website to access colocalization variants with PP.H4.abf $\geq$ 0.5 is available at this URL: TODO.
+
+\section*{Acknowledgements}
+
+Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
+%
+I thank Sandrine Marquet, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and L\'eopoldine Lecerf for a preliminary version of the pipeline developed during her internship.
+

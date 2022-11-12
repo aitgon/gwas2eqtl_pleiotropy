@@ -1,0 +1,40 @@
+outdir = config['outdir']
+max_gwas_class_count = config['max_gwas_class_count']
+
+rule all_03snkfl_analysis_vep:
+    input:
+        os.path.join(outdir, "pltbar_vep_consequence.py/vep.png"),
+
+rule plt_vep_consequence:
+    input:
+        os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
+    output:
+        os.path.join(outdir, "pltbar_vep_consequence.py/vep.png"),
+    params:
+        max_gwas_class_count=(max_gwas_class_count-1)
+    shell:
+        "python scripts/pltbar_vep_consequence.py {input[0]} {params[0]} {output[0]}"
+
+rule cmpt_vep_consequence_fisher:
+    input:
+        os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
+        os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
+    params:
+        max_gwas_class_count=(max_gwas_class_count-1)
+    threads: 25  # ~nb of vep consequences
+    shell:
+        "python scripts/cmpt_vep_consequence_fisher.py {params.max_gwas_class_count} {threads} {input[0]} {input[1]} {output[0]}"
+
+rule cmpt_vep:
+    input:
+        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
+        os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
+    params:
+        max_gwas_class_count=(max_gwas_class_count-1)
+    shell:
+        "python scripts/cmpt_vep.py {input[0]} {input[1]} {params.max_gwas_class_count} {output[0]} {output[1]}"

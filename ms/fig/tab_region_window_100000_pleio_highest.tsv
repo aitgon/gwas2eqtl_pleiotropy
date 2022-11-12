@@ -1,8 +1,19 @@
-chrom	start (hg38)	end (hg38)	Count	GWAS Category
-12	111,395,984	111,645,358	11	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Crohns, Heart, InflammatoryBowel, MyocardialInfarction, Stroke, StrokeIschaemic
-5	132,239,645	132,497,907	8	Allergy, Asthma, Cardiovascular, Crohns, Height, Hypertension, InflammatoryBowel, UlcerativeColitis
-6	31,034,839	32,478,149	8	Cancer, CancerGenitalMale, CancerHaemotological, CancerProstate, Cardiovascular, DigestiveDisease, Height, Hypertension
-15	90,861,475	90,995,690	7	Angina, Cardiovascular, CoronaryArtery, Heart, Hypertension, Schizophrenia, StrokeIschaemic
-5	177,339,176	177,379,635	6	Allergy, Crohns, InflammatoryBowel, Kidney, MultipleSclerosis, UlcerativeColitis
-6	26,267,527	26,463,347	6	BloodClotLeg, CancerBreast, Cardiovascular, Depression, EarDisease, Schizophrenia
-11	76,570,549	76,588,605	6	AllergicRhinitis, Asthma, Crohns, Eczema, InflammatoryBowel, UlcerativeColitis
+chrom	cytoband	start (hg38)	end (hg38)	Count	GWAS Category
+12	q24.12	111,395,984	111,645,358	11	AllergicRhinitis, Allergy, CancerGenitalFemale, Cardiovascular, CoronaryArtery, Crohns, Heart, InflammatoryBowel, MyocardialInfarction, Stroke, StrokeIschaemic
+5	q31.1	132,239,645	132,497,907	8	Allergy, Asthma, Cardiovascular, Crohns, Height, Hypertension, InflammatoryBowel, UlcerativeColitis
+6	p21.33	31,034,839	32,478,149	8	Cancer, CancerGenitalMale, CancerHaemotological, CancerProstate, Cardiovascular, DigestiveDisease, Height, Hypertension
+15	q26.1	90,861,475	90,995,690	7	Angina, Cardiovascular, CoronaryArtery, Heart, Hypertension, Schizophrenia, StrokeIschaemic
+5	q35.3	177,339,176	177,379,635	6	Allergy, Crohns, InflammatoryBowel, Kidney, MultipleSclerosis, UlcerativeColitis
+6	p22.2	26,267,527	26,463,347	6	BloodClotLeg, CancerBreast, Cardiovascular, Depression, EarDisease, Schizophrenia
+11	q13.5	76,570,549	76,588,605	6	AllergicRhinitis, Asthma, Crohns, Eczema, InflammatoryBowel, UlcerativeColitis
+1	p13.3	109,272,630	109,279,544	5	Angina, Cardiovascular, CoronaryArtery, Heart, MyocardialInfarction
+2	q32.1	187,235,912	191,066,738	5	Cardiovascular, Crohns, Hypertension, InflammatoryBowel, UlcerativeColitis
+3	q23	141,387,221	141,431,184	5	Allergy, Asthma, CancerBreast, CancerProstate, Height
+4	q24	105,140,377	105,185,196	5	CancerGenitalMale, CancerProstate, Crohns, InflammatoryBowel, UlcerativeColitis
+6	p25.3	382,559	396,321	5	Cancer, CancerSkin, Crohns, InflammatoryBowel, RectumAnus
+6	p22.1	29,954,963	30,173,136	5	CancerProstate, Depression, EarDisease, Genitourinary, MultipleSclerosis
+7	p21.1	19,009,765	19,013,110	5	Angina, Cardiovascular, Heart, Stroke, StrokeIschaemic
+7	p15.1	27,936,300	28,192,838	5	AllergicRhinitis, Allergy, CancerGenitalMale, CancerProstate, Crohns
+11	p15.5	1,852,842	1,874,478	5	CancerBreast, Cardiovascular, Hypertension, InflammatoryBowel, UlcerativeColitis
+17	q25.3	81,563,967	81,611,261	5	Amblyopia, Astigmatism, Cataract, EyeDisease, Myopia
+20	q13.33	63,660,477	63,852,558	5	Allergy, Asthma, Crohns, InflammatoryBowel, UlcerativeColitis
