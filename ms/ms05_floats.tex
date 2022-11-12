@@ -23,14 +23,14 @@
 \begin{table}[!tbp]
 \centering
 \scriptsize
-\hline
+%\hline
 \csvreader[separator=tab,
 tabular=ccrrp{0.4\textwidth},
 head,
 table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfseries Variant & \bfseries GWAS Categories\\\hline,
 ]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
 {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv}% specify your coloumns here
-\hline
+%\hline
 %
 \vspace{15pt}
 %
@@ -89,7 +89,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfser
 \begin{table}[!tbp]
 \centering
 \scriptsize
-\hline
+%\hline
 \csvreader[
 separator=tab,
 tabular=ccrrp{0.45\textwidth},
@@ -97,7 +97,7 @@ head,
 table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries End & \bfseries GWAS Categories\\\hline,
 ]{\floatRelativePath/cmpt_pleiotropic_regions.py/region_window_ms_100000.tsv}{}% use head of csv as column names
 {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv}% specify your coloumns here
-\hline
+%\hline
 %
 \vspace{15pt}
 \caption{Pleiotropic regions involving 5 or more GWAS categories. Genomic coordinates are given for the hg38 assembly.}\label{tab:pleiotropic_regions}
@@ -166,11 +166,11 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 %
 \begin{figure}[!tbp]
 
-\begin{subfigure}[]{.19\textwidth}
-\textbf{a}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr2_start43222246_end43961707_categories7.png}
-\end{subfigure}
+%\begin{subfigure}[]{.19\textwidth}
+%\textbf{a}
+%\\
+%\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr2_start43222246_end43961707_categories7.png}
+%\end{subfigure}
 %
 \begin{subfigure}[]{.19\textwidth}
 \textbf{b}
@@ -187,21 +187,21 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \begin{subfigure}[]{.19\textwidth}
 \textbf{d}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr12_start55721801_end56171027_categories7.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr12_start55721801_end56171027_categories6.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.19\textwidth}
 \textbf{e}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr19_start48668049_end48756272_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr19_start48668049_end48756272_categories6.png}
 \end{subfigure}
 
 
-\begin{subfigure}[]{.19\textwidth}
-\textbf{f}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr2_start43222246_end43961707_categories7.png}
-\end{subfigure}
+%\begin{subfigure}[]{.19\textwidth}
+%\textbf{f}
+%\\
+%\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr2_start43222246_end43961707_categories7.png}
+%\end{subfigure}
 %
 \begin{subfigure}[]{.19\textwidth}
 \textbf{g}
@@ -218,21 +218,21 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \begin{subfigure}[]{.19\textwidth}
 \textbf{i}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr12_start55721801_end56171027_categories7.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr12_start55721801_end56171027_categories6.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.19\textwidth}
 \textbf{j}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr19_start48668049_end48756272_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr19_start48668049_end48756272_categories6.png}
 \end{subfigure}
 
 
-\begin{subfigure}[]{.19\textwidth}
-\textbf{k}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr2_start43222246_end43961707_categories7.png}
-\end{subfigure}
+%\begin{subfigure}[]{.19\textwidth}
+%\textbf{k}
+%\\
+%\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr2_start43222246_end43961707_categories7.png}
+%\end{subfigure}
 %
 \begin{subfigure}[]{.19\textwidth}
 \textbf{l}
@@ -249,13 +249,13 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \begin{subfigure}[]{.19\textwidth}
 \textbf{n}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr12_start55721801_end56171027_categories7.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr12_start55721801_end56171027_categories6.png}
 \end{subfigure}
 %
 \begin{subfigure}[]{.19\textwidth}
 \textbf{o}
 \\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr19_start48668049_end48756272_categories8.png}
+\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr19_start48668049_end48756272_categories6.png}
 \end{subfigure}
 
 \caption{Count of GWAS categories (\textbf{a-c}), eGenes (\textbf{d-f}) and eTissues (\textbf{g-i}) in three pleiotropic genomic regions: \textbf{a,d,g}: 5:132,239,645-132,497,907 (5q31.1), \textbf{b,e,h}: 6:31,034,839-32,478,149 (6p21.33) and \textbf{c,g,i}: 12:111,395,984-111,645,358 (12q24.1). Genomic coordinates are given for the hg38 assembly.} \label{fig:region_gwas_egenes_tissues}
