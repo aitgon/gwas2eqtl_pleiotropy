@@ -35,6 +35,9 @@ rule all:
         os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz.tbi"),
         os.path.join(outdir, "cmpt_public_web_files.py/coloc5.tsv.gz"),
         os.path.join(outdir, "cmpt_public_web_files.py/coloc8.tsv.gz"),
+        #
+        # tophits
+        os.path.join(outdir, "db/db_tophits.txt"),
 
 include: "05snkfl_supplementary_and_web.yml"
 include: "04snkfl_plots.yml"

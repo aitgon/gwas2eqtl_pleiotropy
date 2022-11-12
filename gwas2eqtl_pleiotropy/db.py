@@ -47,3 +47,23 @@ coloc = Table(
    Column('coloc_lead_rsid', String(50), nullable=False),
    Column('coloc_region', String(50), nullable=False),
 )
+
+tophits = Table(
+   'tophits', meta,
+   Column('id', Integer, primary_key = True, autoincrement=True),
+   Column('chrom', Integer, nullable=False),
+   Column('pos', Integer, nullable=False),
+   Column('rsid', String(50), ForeignKey("rsid2cytoband.rsid"), nullable=False),
+   Column('nea', String(50), nullable=False),
+   Column('ea', String(50), nullable=False),
+   Column('pval', Float, nullable=False),
+   Column('beta', Float, nullable=False),
+   Column('se', Float, nullable=False),
+   Column('eaf', Float, nullable=True),
+   Column('n', Float, nullable=True),
+   Column('se', Float, nullable=False),
+   Column('gwas_id', String(50), ForeignKey("gwas_annot.gwas_id"), nullable=False),
+   __table_args__ = (
+           UniqueConstraint('chrom', 'pos', 'rsid', 'gwas_id', name='unique_cnstnt'),
+       )
+)

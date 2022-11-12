@@ -8,6 +8,7 @@ rule all_02snkfl_cmpt_pleiotropic_regions:
     input:
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
         os.path.join(outdir, "filter_h4.py/h4.tsv.bgz.tbi"),
+        os.path.join(outdir, "db/db_tophits.txt"),
 
 rule cmpt_pleiotropic_regions:
     input:
@@ -52,6 +53,18 @@ rule filter_h4:
         url_db='sqlite:///{}/db/db.sqlite'.format(outdir),
     shell:
         "python scripts/filter_h4.py {params[0]} {input[0]} {output[0]}"
+
+rule tophits:
+    input:
+        "/home/gonzalez/Repositories/gwas2eqtl/out/gwas420/tophits/ukb-d-D3_OTHERANAEMIA/pval_5e-08/r2_0.1/kb_1000/hg38.tsv",
+    output:
+        os.path.join(outdir, "db/db_tophits.txt"),
+    params:
+        url_db='sqlite:///{}/db/db.sqlite'.format(outdir),
+    resources: db=1
+    shell:
+        """python scripts/tophits2db.py {params[0]} $(dirname $(dirname $(dirname $(dirname $(dirname /home/gonzalez/Repositories/gwas2eqtl/out/gwas420/tophits/ukb-d-D3_OTHERANAEMIA/pval_5e-08/r2_0.1/kb_1000/hg38.tsv)))))
+        touch {output[0]}"""
 
 rule annotate:
     input:

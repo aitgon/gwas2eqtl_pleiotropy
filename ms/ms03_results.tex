@@ -20,11 +20,14 @@ These filters resulted in 418 GWAS (Supplementary table 2).
 %
 I developed a colocalization pipeline that explored all the 51 625 combinations of eQTL studies and GWAS (Section Methods).
 %
-In the following, I consider colocalizations only if probability PP.H4.abf $\geq$ 0.8.
+This analysis tested 139,069 unique variants and ? potential variant/GWAS/eQTL sample and e-gene colocalizations from 418 GWAS studies (OSF URL).
+%select count(*) from (select DISTINCT chrom,pos,rsid FROM coloc); 139,069
+%select count(*) from (select DISTINCT chrom,pos,rsid FROM coloc where `PP.H4.abf`>=0.8); 103,551
+%select count(*) from (select DISTINCT chrom,pos,rsid,gwas_id,eqtl_id,egene FROM coloc);
+%select count(*) from (select DISTINCT chrom,pos,rsid,gwas_id,eqtl_id,egene FROM coloc where `PP.H4.abf`>=0.8); 2,477,640
 %
-
-%%
-This analysis resulted in 30 261 unique variants and 2,479,065 potential variant colocalizations from 150 GWAS studies (OSF URL).
+I found 103,551 variants or from ? GWAS that colocalized with at least one eQTL.
+%select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.8);
 %
 %TODO add PMID to supplementary table with loci_explained_perc
 For GWAS studies with more than 10 loci, the explained of loci variate from 0\% to 77\% with an average of 33\% (Supplementary table ST6).
@@ -37,7 +40,8 @@ Selection of colocalizations with PP.H4.abf greater than 0.8 resulted in 9 758 v
 
 \subsubsection*{Which variants are the most pleiotropic?}
 
-I manually assigned the 413 GWAS to 96 categories to aggregate identical or similar traits (Supplementary table 2).
+I manually assigned the 418 GWAS to 96 categories to aggregate identical or similar traits (Supplementary table 2).
+
 %
 In the EBI eQTL Catalogue, immune cell types are annotated to great detail while other tissues are annotated at lower resolution.
 %
