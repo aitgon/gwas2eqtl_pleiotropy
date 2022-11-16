@@ -1,3 +1,4 @@
+gwas_class_ods = config['gwas_class_ods']
 outdir = config['outdir']
 etissue_class_ods = config['etissue_class_ods']
 
@@ -7,6 +8,7 @@ rule all_05snkfl_supplementary_and_web:
         os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz.tbi"),
         os.path.join(outdir, "cmpt_public_web_files.py/coloc5.tsv.gz"),
         os.path.join(outdir, "cmpt_public_web_files.py/coloc8.tsv.gz"),
+        os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
 
 rule public_web_tabix:
     input:
@@ -30,3 +32,20 @@ rule public_web_coloc:
         sqlite=os.path.join(outdir, "db/db.sqlite"),
     shell:
         """python scripts/cmpt_public_web_files.py {params.sqlite} {output[0]} {output[1]} {output[2]}"""
+
+rule create_table_supplementary:
+    input:
+        gwas_class_ods,
+        "config/etissue_class.ods",
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
+#        os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
+    output:
+        os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
+    params:
+        indir=outdir,
+    shell:
+        "python scripts/cmpt_supplementary_files.py {input[0]} {params.indir} {output[0]}"

@@ -16,7 +16,9 @@ The third criterion was to keep only well-defined medical or physiological condi
 %
 The fourth criterion was to keep only GWAS studies with at least 10,000 subjects, 2,000 controls and 2,000 cases (Supplementary table 2).
 %
-These filters resulted in 335 GWAS with 10,627 clumped leading variants and a p-value below 5e-8 (Supplementary table 2).
+These filters resulted in 418 GWAS.
+%
+Among these studies, there 10,627 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary table 2).
 % sqlite
 % select count(distinct gwas_id) from tophits; 335
 % select count(*) from (select DISTINCT chrom, pos, rsid, nea, ea from tophits) limit 50; 10627
@@ -28,9 +30,9 @@ I found eQTL colocalizations for 3,849 or 36$\%$ of the leading GWAS variants wi
 % select count(distinct coloc.egene) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8
 % select count(distinct coloc.eqtl_id) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8
 
-The largests classes of diseases by number of leading GWAS variants are autoimmune diseases (2107), cancer of breast (1976) and allergy (1321)
+The largest classes of diseases by number of leading GWAS variants are autoimmune diseases (2107), cancer of breast (1976) and allergy (1321)
 %
-and the percentage of variants with a colocalized eQTL is 37\%, 21\% and 42\%, respectively (Supplementary table ST6).
+and the percentage of variants with a colocalized eQTL is 37\%, 21\% and 42\% in these classe, respectively (Supplementary table ST6).
 %
 %/* count tophits.rsid group by gwas_annot.gwas_class where coloc.`PP.H4.abf`>=0.8*/
 %select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8 GROUP by gwas_annot.gwas_class;
