@@ -18,7 +18,7 @@ The fourth criterion was to keep only GWAS studies with at least 10,000 subjects
 %
 These filters resulted in 418 GWAS.
 %
-Among these studies, there 10,627 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary table 2).
+Among these studies, there were 10,627 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary table 2).
 % sqlite
 % select count(distinct gwas_id) from tophits; 335
 % select count(*) from (select DISTINCT chrom, pos, rsid, nea, ea from tophits) limit 50; 10627
@@ -32,55 +32,43 @@ I found eQTL colocalizations for 3,849 or 36$\%$ of the leading GWAS variants wi
 
 The largest classes of diseases by number of leading GWAS variants are autoimmune diseases (2107), cancer of breast (1976) and allergy (1321)
 %
-and the percentage of variants with a colocalized eQTL is 37\%, 21\% and 42\% in these classe, respectively (Supplementary table ST6).
+and the percentages of variants with a colocalized eQTL are 37\%, 21\% and 42\% in these classe, respectively (Supplementary table ST6).
 %
 %/* count tophits.rsid group by gwas_annot.gwas_class where coloc.`PP.H4.abf`>=0.8*/
 %select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8 GROUP by gwas_annot.gwas_class;
 %/* count tophits.rsid group by gwas_annot.gwas_class*/
 %select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id GROUP by gwas_annot.gwas_class order by gwas_annot.gwas_class;
 %
-For the autoimmune diseases, this is in agreement with previous work \citep{2021.Li.Mu.GenomeBiology.impactcelltype}.
+These results agree with previous work for autoimmune diseases \citep{2021.Li.Mu}.
 
-For the autoimmune diseases, ? of the ? leading variants had an annotation with probability PP.H4.abf$\ge$0.8.
-% sqlite
-% select count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_class='Autoimmune dis.' and gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8;
-% 778
-% grouped H4 0.8: select count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8 GROUP by  gwas_annot.gwas_class;
-%
-This is perc of the
-% grouped all: select count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid GROUP by  gwas_annot.gwas_class;%
-%
-%%TODO add PMID to supplementary table with loci_explained_perc
-%For GWAS studies with more than 10 loci, the explained of loci variate from 0\% to 77\% with an average of 33\% (Supplementary table ST6).
-%%
-%Autoimmune diseases such as inflammatory bowel disease, Crohn's disease and Ulcerative colitis showed a colocalization average of 45.4\% in agreement with previous work \citep{2021.Li.Mu.GenomeBiology.impactcelltype}.
-%%
-%Selection of colocalizations with PP.H4.abf greater than 0.8 resulted in 9 758 variants and 143 119 colocalizations (Supplementary table 3).
-
-This pipeline has resulted in 103,551 variants with or from 246 GWAS that colocalized (PP.H4.abf 0.8) with at least one eQTL.
+This pipeline has resulted in 103,551 variants from 246 GWAS that colocalized (PP.H4.abf$\geq$0.8) with at least one eQTL.
 %select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.8);
+%select count(*) from (select DISTINCT rsid FROM coloc where `PP.H4.abf`>=0.8);
 %
-This is a useful annotation ressource that I have made available through a web application (TODO).
-%
-%This analysis tested 139,069 unique variants in windows of one million nucleotides around the GWAS leading variants and ? potential variant/GWAS/eQTL sample and e-gene colocalizations from 418 GWAS studies (OSF URL).
-%select count(*) from (select DISTINCT chrom,pos,rsid FROM coloc); 139,069
-%select count(*) from (select DISTINCT chrom,pos,rsid,gwas_id,eqtl_id,egene FROM coloc); 17,595,868
-%
-%There are 103,551 variants from 246 GWAS with a least one colocalized eQTL and probability PP.H4.abf$\ge$0.8.
-%select count(DISTINCT gwas_id) from coloc where `PP.H4.abf`>=0.8; 246
-%select count(*) from (select DISTINCT chrom,pos,rsid FROM coloc where `PP.H4.abf`>=0.8); 103,551
-%
-%select count(*) from (select DISTINCT chrom,pos,rsid,gwas_id,eqtl_id,egene FROM coloc where `PP.H4.abf`>=0.8); 2,477,640
+I have developed a web application where I expose 116,736 variants from 246 GWAS that colocalize with at least one eQTL at a lower threshold value PP.H4.abf$\geq$0.5.
+% select count(*) from (select DISTINCT rsid FROM coloc where `PP.H4.abf`>=0.5);
+% select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.5);
 
 \subsection*{Pleiotropic variants colocalized with eQTLs}
 
 \subsubsection*{Which variants are the most pleiotropic?}
 
-I manually assigned the 418 GWAS to 96 categories to aggregate identical or similar traits (Supplementary table 2).
+I manually assigned the 418 GWAS to 96 categories to aggregate identical or similar traits (Supplementary table 1).
+%
+Then I verified whether GWAS traits cluster coherently within these classes.
+%
+I computed distances between GWAS traits based on the Spearman correlation of the colocalized eQTL beta of the different eQTL genes and samples.
+%
+I plot only classes with more than a minimum number of GWAS traits (Fig. \ref{fig:gwas_distance}).
+%
+GWAS traits cluster together in autoimmune diseases and circulatory system diseases.
+%
+Due to the large number of breast cancer GWAS, we have created a separeted class from cancer.
+Nevertheless a weaker specific signal is observed between the breast cancer class and other types of cancers.
 
 In the EBI eQTL Catalogue, immune cell types or neural tissues are annotated to great detail while other tissues are annotated at lower resolution.
 %
-Therefore I manually defined 36 categories to annotate eQTL samples at equivalent resolution (Supplementary table 1).
+Therefore I manually defined 36 categories to annotate eQTL samples at equivalent resolution (Supplementary table 2).
 
 These category annotations were used to investigate the variant pleiotropy for GWAS traits.
 %
@@ -88,36 +76,28 @@ Colocalized eQTL/GWAS variants were classified according to the number of GWAS c
 %
 These aggregated variants were highly pleiotropic.
 %
-For instance the variant rs2522051, which is located downstream of the IRF1 gene,
-
-re located upstream and downstream of the IRF1 gene, respectively.
-
-%Pleiotropic variants aggregate in some cytobands such as 3q23, 5q31.1, 11q13.5, 12q24.12 and 15q26.1 (Table \ref{tab:pleitropic_variants} and Supplementary table 3).
-Pleiotropic variants aggregate in some cytobands such as 5q31.1, 19q13.33, 3q23, 9p21.3 and 15q24.1 (Table \ref{tab:pleitropic_variants} and Supplementary table 3).
-
-% 5q31.1
-
-% 12q24.12
-For instance, the most pleiotropic variants in cytoband 12q24.12 are involved in allergies, cancer, cardiovascular and autoimmune diseases (Table \ref{tab:pleitropic_variants}).
+For instance the variant rs2522051 is located upstream of the IRF1 gene in cytoband 5q31.1 and it is involved in six classes of traits, namely,
+allergy, autoimmune diseases, cancer of breast, circulatory system diseases, hypertension and respiratory system diseases
+(Table \ref{tab:pleitropic_variants} and Supplementary table 3).
 %
-These variants control eGenes ALDH2, LINC01405, MAPKAPK5, SH2B3 that are involved in alcohol-related disorders (ALDH2), cancer (LINC01405), multiple congenital anomalies syndromes (MAPKAPK5),  inflammation and hematological disorders (SH2B3).
+This variant rs2522051 is active in 23 classes of cell type and tissues including adipose, brain, digestive cells, immune cells and sexual organs.
 %
-These eQTLs are active in adipose tissue, arteries, blood, colon, immune cells, skin and induced pluripotent stem cells (iPSC).
+This variant rs2522051 regulates several genes such as IL13, PDLIM4 and RAD50.
 
 \subsubsection*{What is the function of pleiotropic variants?}
 
-Then I evaluated the function of pleiotropic variants with 5, 4, 3 and 2 GWAS categories using gene ontology analysis.
-%
-I analyzed the ontology of eGenes with 5, 4, 3 and 2 GWAS categories using the DAVID web services \citep{2008.Lempicki.Huang,2008.Lempicki.Huang.NucleicAcidsResearch}.
-%
-I found that eGenes of pleiotropic variants with 3 and 2 GWAS categories were significantly enriched in functions of the immune system (Fig. \ref{s:results}{fig:geneontology}).
-For instance, eGenes in the cytoband 5q31.1 include IRF1 and IL4, which are important factors of the immune system.
-%
-IRF1 is a response protein to the presence of virus and oncogenic proteins and IL4 is required to stimulate proliferation of activated B and T-cells.
-%
-Variant rs17622656 is located in the intron of the IRF1 gene whereas variants rs736801 and rs2522051 are located upstream and downstream of the IRF1 gene, respectively.
-%
-These variants are associated with allergy, asthma, cardiovascular diseases, hypertension and ulcerative colitis and are active in a large number of tissues such as arteries, blood, brain, breast, digestive and immune system, muscle, skin, ovary, testis and thyroid.
+%Then I evaluated the function of pleiotropic variants with 5, 4, 3 and 2 GWAS categories using gene ontology analysis.
+%%
+%I analyzed the ontology of eGenes with 5, 4, 3 and 2 GWAS categories using the DAVID web services \citep{2008.Lempicki.Huang,2008.Lempicki.Huang.NucleicAcidsResearch}.
+%%
+%I found that eGenes of pleiotropic variants with 3 and 2 GWAS categories were significantly enriched in functions of the immune system (Fig. \ref{s:results}{fig:geneontology}).
+%For instance, eGenes in the cytoband 5q31.1 include IRF1 and IL4, which are important factors of the immune system.
+%%
+%IRF1 is a response protein to the presence of virus and oncogenic proteins and IL4 is required to stimulate proliferation of activated B and T-cells.
+%%
+%Variant rs17622656 is located in the intron of the IRF1 gene whereas variants rs736801 and rs2522051 are located upstream and downstream of the IRF1 gene, respectively.
+%%
+%These variants are associated with allergy, asthma, cardiovascular diseases, hypertension and ulcerative colitis and are active in a large number of tissues such as arteries, blood, brain, breast, digestive and immune system, muscle, skin, ovary, testis and thyroid.
 
 %Variants of the 3q23 cytoband are involved in allergy, cancer and height traits (Supplementary table 3).
 %%
@@ -140,11 +120,11 @@ These variants are associated with allergy, asthma, cardiovascular diseases, hyp
 
 \subsection*{Pleiotropic regions}
 
-Pleiotropic variants are aggregated in few cytobands.
+Pleiotropic variants are aggregated in genomic regions.
 %
 Therefore I computed regions that include a large number of pleiotropic variants (See Methods) (Table \ref{tab:pleiotropic_regions}).
 %
-I found 453 regions with 441 regions with 2 or more categories, 114 regions with 3 or more categories, 37 regions with 4 or more categories and 18 regions with 5 or more categories (Supplementary table 5).
+I found 13 regions with 5 or more GWAS classes, 30 regions with 4 or more GWAS classes and 80 regions with 3 or more GWAS.
 %
 75\% of regions are shorter than 100 kb, 15\% of regions are between 100 kb and 200 kb, and less than 5\% are larger than 200 kb (Fig. \ref{fig:pleiotropy_region_distribution}a).
 

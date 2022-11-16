@@ -30,34 +30,27 @@ wdir_path = os.path.join(PathManager.get_project_path(), wdir_path)
 
 #%%
 #
-sheet_name_lst = ['ST1']
-description_lst = ['Classification of eQTL tissues and cell types. The first six were downloaded from the EBI eQTL repository. '
-                   'The 7th column "etissue_class" is used here to compute tissue diversity']
-#
-sheet_name_lst.append("ST2")
+sheet_name_lst = []
+description_lst = []
+
+sheet_name_lst.append('ST1')
 description_lst.append("Metadata and classification of GWAS")
-#
+
+sheet_name_lst.append("ST2")
+description_lst.append('Classification of eQTL tissues and cell types. The first six were downloaded from the EBI eQTL repository. '
+                   'The 7th column "etissue_class" is used here to compute tissue diversity')
+
 sheet_name_lst.append("ST3")
 description_lst.append("Count and list of GWAS phenotypes, egenes and etissues for each eQTL/GWAS variant")
-#
+
 sheet_name_lst.append("ST4")
-description_lst.append("Count and list of GWAS phenotypes for each pleiotropic region")
-#
-sheet_name_lst.append("ST5")
-description_lst.append("Percentage of explained GWAS loci")
+description_lst.append("Count and list of GWAS phenotypes, egene symbols and ENSEMBL IDs and etissue classes for each pleiotropic region")
 
 capt_df = pandas.DataFrame({'Supp. Tab.': sheet_name_lst, 'Description': description_lst})
 capt_df.to_excel(st_writer, sheet_name='Table descrip.', index=False, header=True)
 
 #%% ST1
 sheet_name = 'ST1'
-etissue_class_ods_path = os.path.join(PathManager.get_project_path(), "config", "etissue_class.ods")
-st_df = pandas.read_excel(etissue_class_ods_path, index_col=None, header=0)
-st_df.drop(['Unnamed: 8', 'etissue_class.1', 'count'], axis=1, inplace=True)
-st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
-
-#%% ST2
-sheet_name = 'ST2'
 gwas_class_df = pandas.read_excel(gwas_class_ods_path)
 class_pleio_df = gwas_class_df[['icd10_code_level1.1', 'class_pleiotropy']]
 class_pleio_df = class_pleio_df.loc[~class_pleio_df.isna().any(axis=1)]
@@ -65,6 +58,13 @@ class_pleio_df.rename({'icd10_code_level1.1': 'icd10_code_level1'}, axis=1, inpl
 #
 st_df = gwas_class_df[['id', 'trait', 'icd10_code_level1']].merge(class_pleio_df, on='icd10_code_level1')
 st_df.drop(['icd10_code_level1'], axis=1, inplace=True)
+st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
+
+#%% ST2
+sheet_name = 'ST2'
+etissue_class_ods_path = os.path.join(PathManager.get_project_path(), "config", "etissue_class.ods")
+st_df = pandas.read_excel(etissue_class_ods_path, index_col=None, header=0)
+st_df.drop(['Unnamed: 8', 'etissue_class.1', 'count'], axis=1, inplace=True)
 st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 
 #%% ST3
@@ -96,9 +96,6 @@ count_per_region_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 count_per_region_df['egene_symbol'] = None
 count_per_region_df['etissue_class'] = None
 count_per_region_df['egene'] = None
-# import pdb; pdb.set_trace()
-# tsv_path = os.path.join(wdir_path, "filter_h4.py/h4.tsv")
-# h4annot_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 
 for rowi, row in count_per_region_df.iterrows():
     chrom = row['chrom']
@@ -120,14 +117,6 @@ count_per_region_df.sort_values(by=['gwas_class_count', 'chrom', 'start'], ascen
 count_per_region_df['gwas_class_lst'] = count_per_region_df['gwas_class_lst'].str.replace(',', ', ')
 count_per_region_df = count_per_region_df[['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_class_lst', 'egene_symbol', 'etissue_class', 'egene']]
 count_per_region_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
-
-# #%% ST6
-# sheet_name = 'ST6'
-# tsv_path = os.path.join(wdir_path, "cmpt_explained_loci.py/explained_perc.tsv")
-# st_df = pandas.read_csv(tsv_path, sep="\t", header=0)
-# st_df.sort_values(by=st_df.columns.tolist(), inplace=True)
-# st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
-# sheet_counter += 1
 
 #%%
 st_writer.sheets['Table descrip.'].activate()
