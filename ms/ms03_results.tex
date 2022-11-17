@@ -23,7 +23,7 @@ Among these studies, there were 10,627 clumped leading variants with a p-value b
 % select count(distinct gwas_id) from tophits; 335
 % select count(*) from (select DISTINCT chrom, pos, rsid, nea, ea from tophits) limit 50; 10627
 
-I found eQTL colocalizations for 3,849 or 36$\%$ of the leading GWAS variants with 2,348 eQTL genes and 127 eQTL samples.
+My pipeline uncovered eQTL colocalizations for 3,849 or 36$\%$ of the leading GWAS variants with 2,348 eQTL genes and 127 eQTL samples.
 % sqlite
 % select count(distinct tophits.rsid) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8; 3849
 % alternative: select count(distinct tophits.rsid) from tophits, coloc where coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8; 3849
@@ -41,11 +41,11 @@ and the percentages of variants with a colocalized eQTL are 37\%, 21\% and 42\% 
 %
 These results agree with previous work for autoimmune diseases \citep{2021.Li.Mu}.
 
-This pipeline has resulted in 103,551 variants from 246 GWAS that colocalized (PP.H4.abf$\geq$0.8) with at least one eQTL.
+This pipeline resulted in 103,551 variants from 246 GWAS that colocalized (PP.H4.abf$\geq$0.8) with at least one eQTL.
 %select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.8);
 %select count(*) from (select DISTINCT rsid FROM coloc where `PP.H4.abf`>=0.8);
 %
-I have developed a web application where I expose 116,736 variants from 246 GWAS that colocalize with at least one eQTL at a lower threshold value PP.H4.abf$\geq$0.5.
+I have also developed a web application where I expose 116,736 variants from 246 GWAS that colocalize with at least one eQTL at a lower threshold value PP.H4.abf$\geq$0.5.
 % select count(*) from (select DISTINCT rsid FROM coloc where `PP.H4.abf`>=0.5);
 % select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.5);
 
@@ -70,65 +70,33 @@ In the EBI eQTL Catalogue, immune cell types or neural tissues are annotated to 
 %
 Therefore I manually defined 36 categories to annotate eQTL samples at equivalent resolution (Supplementary table 2).
 
-These category annotations were used to investigate the variant pleiotropy for GWAS traits.
+These class annotations were used to investigate the variant pleiotropy.
 %
 Colocalized eQTL/GWAS variants were classified according to the number of GWAS categories they belong to (Table \ref{tab:pleitropic_variants} and Supplementary table 3).
 %
-These aggregated variants were highly pleiotropic.
+The aggregated variants are highly pleiotropic.
 %
-For instance the variant rs2522051 is located upstream of the IRF1 gene in cytoband 5q31.1 and it is involved in six classes of traits, namely,
-allergy, autoimmune diseases, cancer of breast, circulatory system diseases, hypertension and respiratory system diseases
+For instance the variant rs2522051 is located downstream of the IRF1 gene in cytoband 5q31.1 and it is involved in six classes of traits, namely,
+allergy, autoimmune diseases, cancer of breast, circulatory system diseases, hypertension, and respiratory system diseases
 (Table \ref{tab:pleitropic_variants} and Supplementary table 3).
 %
-This variant rs2522051 is active in 23 classes of cell type and tissues including adipose, brain, digestive cells, immune cells and sexual organs.
+This variant rs2522051 is active in 23 classes of cell types and tissues including adipose, brain, digestive cells, immune cells, and sexual organs.
 %
 This variant rs2522051 regulates several genes such as IL13, PDLIM4 and RAD50.
 
-\subsubsection*{What is the function of pleiotropic variants?}
-
-%Then I evaluated the function of pleiotropic variants with 5, 4, 3 and 2 GWAS categories using gene ontology analysis.
-%%
-%I analyzed the ontology of eGenes with 5, 4, 3 and 2 GWAS categories using the DAVID web services \citep{2008.Lempicki.Huang,2008.Lempicki.Huang.NucleicAcidsResearch}.
-%%
-%I found that eGenes of pleiotropic variants with 3 and 2 GWAS categories were significantly enriched in functions of the immune system (Fig. \ref{s:results}{fig:geneontology}).
-%For instance, eGenes in the cytoband 5q31.1 include IRF1 and IL4, which are important factors of the immune system.
-%%
-%IRF1 is a response protein to the presence of virus and oncogenic proteins and IL4 is required to stimulate proliferation of activated B and T-cells.
-%%
-%Variant rs17622656 is located in the intron of the IRF1 gene whereas variants rs736801 and rs2522051 are located upstream and downstream of the IRF1 gene, respectively.
-%%
-%These variants are associated with allergy, asthma, cardiovascular diseases, hypertension and ulcerative colitis and are active in a large number of tissues such as arteries, blood, brain, breast, digestive and immune system, muscle, skin, ovary, testis and thyroid.
-
-%Variants of the 3q23 cytoband are involved in allergy, cancer and height traits (Supplementary table 3).
-%%
-%Interestingly all these variants target the eGene ZBTB3.
-%%
-%ZBTB3 is a transcription factor that controls pro-inflammatory factors such as IRF5 (10.1016/j.jaut.2016.08.001).
-%%
-%These variants are active in tissues such as blood, esophagus, immune cell, LCLs and muscle (Supplementary table 3).
-
-%%11q13.5
-%The variants in cytoband 11q13.5 are involved in allergy and autoimmune disease (Supplementary table 3).
-%%
-%All these variants target the eGene EMSY-DT, which is a long noncoding RNA upstream of EMSY.
-%%
-%These variants are active in LCL, Skin and iPSC (Supplementary table 3).
-%
-%In summary, I have identified pleiotropic variants with gene regulatory function.
-%%
-%Some of these loci are strongly involved in the immune system.
-
 \subsection*{Pleiotropic regions}
 
-Pleiotropic variants are aggregated in genomic regions.
+Pleiotropic variants are aggregated in genomic regions, for instance, in cytobands 3q23, 5q31.1, 9p21.3, 15q24.1, and 19q13.33 for the variants involved on five or more classes (Supplementary table 3).
 %
-Therefore I computed regions that include a large number of pleiotropic variants (See Methods) (Table \ref{tab:pleiotropic_regions}).
+Therefore I computed regions that include a large number of pleiotropic variants (See Methods) (Table \ref{tab:pleiotropic_regions} and Supplementary table 4).
 %
-I found 13 regions with 5 or more GWAS classes, 30 regions with 4 or more GWAS classes and 80 regions with 3 or more GWAS.
+I found 13 regions with 5 or more trait classes, 30 regions with 4 or more trait classes and 80 regions with 3 or more trait classes (Supplementary table 4).
 %
-75\% of regions are shorter than 100 kb, 15\% of regions are between 100 kb and 200 kb, and less than 5\% are larger than 200 kb (Fig. \ref{fig:pleiotropy_region_distribution}a).
+% TODO verify this plot, is plot 2b used somewhere?
+75\% of regions involved in two or more trait classes are shorter than 100 kb, 15\% of regions are between 100 kb and 200 kb, and less than 5\% are larger than 200 kb (Fig. \ref{fig:pleiotropy_region_distribution}a).
 
-The most pleiotropic region is 12:111,395,984-111,645,358 in cytoband 12q24.12 that we discussed above (Table \ref{tab:pleiotropic_regions}).
+% TODO continue here
+The most pleiotropic region is 5:131,912,097-132,802,472 in cytoband 5q31.1 with a high concentration of cytokines genes (Table \ref{tab:pleiotropic_regions}).
 %
 The largest region is 11:13,260,511-17,396,930 in cytoband 11p15.2 with a length of 4,136,419 bp and variants involved in cardiovascular and hypertension traits (Supplementary table 5).
 %
