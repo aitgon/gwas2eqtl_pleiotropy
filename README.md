@@ -60,7 +60,8 @@ Copy input data to the config folder; eg out/config/genome/5e-08/1000000
 # Run analyses and generate MS figures
 
 ~~~
-export david_email=aitor.gonzalez@inserm.fr; snakemake --cores all -p -d ${PWD} -s tools/00snkfl_all.yml --config coloc_tsv_gz=../gwas2eqtl/out/gwas420/coloc_gwas418.tsv.gz outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000 etissue_class_ods=config/etissue_class.ods max_gwas_class_count=5 gwas_class_ods=config/gwas418.ods public_data_dir=${HOME}/Software/public david_email=${david_email}
+
+
 ~~~
 
 ~~~

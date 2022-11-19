@@ -1,3 +1,5 @@
+import numpy
+
 from gwas2eqtl_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 from matplotlib import pyplot as plt
@@ -146,24 +148,38 @@ for count_pleio in range(1, 6):
     region_pleio_i_df = regions_pleio_df.loc[regions_pleio_df['gwas_class_count'] == count_pleio,]
     region_pleio_i_df.to_csv(region_pleio_i_bed_path, sep="\t", index=False, header=False)
 
+#############################################
+# Distribution of region by length
+# % region <= 100kb, % >100kb and <=200kb, ...
+region_length_ser = (regions_pleio_df['end'] - regions_pleio_df['start'])
+data_ser = region_length_ser / 100000
 
+ax = plt.hist(data_ser, bins=range(50), density=True)
+plt.xlim(0, 10)
+plt.tight_layout()
+plt.savefig(png_path)
+plt.close()
 
 #%##############
 # histogram
 plt.rcParams["figure.figsize"] = (8, 6)
-region_lenght_ser = (regions_pleio_df['end'] - regions_pleio_df['start'])
+region_length_ser = (regions_pleio_df['end'] - regions_pleio_df['start'])
 
-ylabel = "Proportion"
-title = "Lengths of pleiotropic regions"
-ylim=[1e-10, 1]
+ylabel = "Cumulative proportion"
+title = "Length of pleiotropic regions"
+ylim=[0, 1]
 edgecolor='k'
 linewidth = 2
 
 hist_kwargs = {'density': False, 'edgecolor': edgecolor, 'linewidth': linewidth}
 
 #%%
-data_ser = region_lenght_ser/100000
-seaborn.histplot(data_ser, stat='percent', discrete=True)
+data_ser = region_length_ser / 100000
+
+# import pdb; pdb.set_trace()
+# seaborn.histplot(data_ser, stat='percent', discrete=True)
+ax = plt.hist(data_ser, bins=range(50), density=True, cumulative=True)
+plt.xlim(0, 10)
 
 plt.grid(visible=True, axis='y')
 plt.title(title, fontsize=label_fontsize)
