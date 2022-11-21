@@ -70,33 +70,19 @@ export david_email=aitor.gonzalez@inserm.fr; snakemake --cores all -p -d ${PWD} 
 
 # MS
 
-The MS template is taken from here: <https://github.com/quantixed/manuscript-templates>
+Texlive dependencies
+
+~~~
+tlmgr install orcidlink
+tlmgr install lipsum
+tlmgr install preprint
+tlmgr install csvsimple
+~~~
 
 Compilation works like this:
 
 ~~~
 rm -f ms_00_merge.tex.pdf; texi2pdf ms/ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
-~~~
-
-Download dependencies
-
-~~~
-wget -nc http://mirrors.ctan.org/fonts/ifsym/ifsym.sty -P ms
-wget -nc http://mirrors.ctan.org/macros/latex/contrib/chemgreek/chemgreek.sty -P ms
-wget -nc http://mirrors.ctan.org/macros/latex/contrib/mhchem/mhchem.sty -P ms
-wget -nc http://mirrors.ctan.org/macros/latex/contrib/siunitx/siunitx-abbreviations.cfg -P ms
-wget -nc http://mirrors.ctan.org/macros/latex/contrib/siunitx/siunitx-v2.sty -O ms/siunitx.sty
-wget -nc https://raw.githubusercontent.com/ldbc/ldbc_graphalytics_docs/master/bbding.sty -P ms
-wget -nc https://raw.githubusercontent.com/quantixed/manuscript-templates/master/bioRxiv.cls -P ms
-wget -nc https://raw.githubusercontent.com/quantixed/manuscript-templates/master/orcidlink.sty -P ms
-wget -nc https://raw.githubusercontent.com/quantixed/manuscript-templates/master/bioRxiv_logo.png -P ms
-convert ms/bioRxiv_logo.png ms/bioRxiv_logo.eps
-
-wget -nc http://mirrors.ctan.org/macros/latex/contrib/textgreek/textgreek.ins -P ms
-wget -nc http://mirrors.ctan.org/macros/latex/contrib/textgreek/textgreek.dtx -P ms
-cd ms
-latex textgreek.ins
-cd $OLDPWD
 ~~~
 
 # Poster
