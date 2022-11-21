@@ -15,7 +15,6 @@ rule all_plots:
         os.path.join(outdir, "plt_violin_x_per_region_y_egenes.py/vlnplt.png"),
         os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
         os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/eqtl.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/gwas.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
@@ -91,17 +90,6 @@ rule plt_violin_beta_per_gwas_cat:
 #        max_gwas_class_count=max_gwas_class_count
 #    shell:
 #        "python scripts/plt_violin_x_per_region_y_egenes.py {input[0]} {input[1]} {output[0]}"
-
-rule plt_violin_gwas_per_variant_egene_etissue:
-    input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-    output:
-        os.path.join(outdir, "pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png"),
-    params:
-        max_gwas_class_count=max_gwas_class_count
-    shell:
-        "python scripts/pltbar_x_per_variant_egene_etissue_y_gwas.py {input[0]} {input[1]} {params.max_gwas_class_count} {output[0]}"
 
 rule plt_violin_etissue_per_egene_variant:
     input:

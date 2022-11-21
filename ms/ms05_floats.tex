@@ -213,7 +213,10 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 %
 \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/vep.png}
 %
-\caption{Odds ratio compared of the variants annotated with given variant effect predictor (VEP) consequence and given GWAS class count compared with non pleiotropic variants (GWAS class count one). The significance is given for the q-value (FDR 5\%).}
+\caption{Odds ratio compared of the variants annotated with given variant effect
+predictor (VEP) consequence and given GWAS class count compared with non
+pleiotropic variants (GWAS class count one). The significance is given for the
+q-value (False discovery rate 5\%).}
 \label{fig:vep_consequence}
 %
 \end{figure}
@@ -239,13 +242,13 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_variant_egene_y_etissue.py/plt.png}
 \end{subfigure}
 %
-\begin{subfigure}[]{.32\textwidth}
-\textbf{c}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png}
-\end{subfigure}
+%\begin{subfigure}[]{.32\textwidth}
+%\textbf{c}
+%\\
+%\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_variant_egene_etissue_y_gwas.py/plt.png}
+%\end{subfigure}
 %
-\caption{Count of eGenes per variant-tissue (\textbf{a}), eTissues per variant-eGene (\textbf{b}) and GWAS classes per variant-eGene-eTissue (\textbf{c}).} \label{fig:gwas_egene_etisue_per_variant}
+\caption{Mean number of genes in eQTL-tissue pairs (\textbf{a}) and mean number of tissues in eQTL-gene pairs (\textbf{b}).} \label{fig:gwas_egene_etisue_per_variant}
 %
 \end{figure}
 
@@ -270,7 +273,9 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png}
 \end{subfigure}
 %
-\caption{Analysis of transcription factor binding. \textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic variants (Radius 50 bp) as a function of the GWAS class count. \textbf{b}, Odds ratio of cis regulatory module-annotated vs non-annotated variants.} \label{fig:freq_tf_per_variant}
+\caption{Analysis of transcription factor binding.
+\textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic eQTLs (Radius 50 bp) as a function of the GWAS class count.
+\textbf{b}, Odds ratio of eQTLs annotated with cis regulatory modules vs non-annotated.} \label{fig:freq_tf_per_variant}
 %
 \end{figure}
 
@@ -310,7 +315,7 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \caption{eQTL and GWAS effect size/beta (\textbf{a,b}) and eQTL and GWAS significance/p-value (\textbf{c,d}) as a function of the GWAS class count.} \label{fig:beta_pval}
 %
 \end{figure}
-%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% Fig 9: graphical conclusions

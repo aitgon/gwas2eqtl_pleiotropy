@@ -70,7 +70,6 @@ m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] =
 
 #%% keep unique rsid-etissue_class pairs with max. gwas category
 m_df.sort_values('gwas_class_count', ascending=False, inplace=True)
-# import pdb; pdb.set_trace()
 m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_class', 'egene'], keep='first')
 
 #%%
@@ -86,9 +85,9 @@ m_df.groupby('gwas_class_count')['egene_count'].apply(lambda x: x.describe()).to
 order = [str(x) for x in range(1, max(m_df['gwas_class_count'].unique())+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-title = "eGenes per variant-eTissue"
-xlabel = "GWAS category count"
-ylabel = "eGene count mean"
+title = "Genes per eQTL-tissue"
+xlabel = "GWAS class count"
+ylabel = "Gene count mean"
 y = "egene_count"
 x = "gwas_class_count"
 
