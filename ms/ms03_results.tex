@@ -1,8 +1,10 @@
 \section*{Results}\label{s:results}
 
-\subsection*{A pipeline to systematically colocalize eQTLs and GWAS variants}
+\subsection*{Systematic colocalization of variants from genome-wide associations studies and expression quantitative trait loci}
 
-To better understand the role of gene regulatory variants for variant pleiotropy, I developed a pipeline to systematically colocalize eQTLs and GWAS variants (Section Methods).
+To better understand the role of gene regulatory variants for variant pleiotropy,
+I developed a pipeline to systematically colocalize variants from genome-wide associations
+studies (GWAS) and expression quantitative trait loci (eQTL) (Section Methods).
 %
 127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many tissues and cell types \citep{2021.Alasoo.Kerimov}.
 
@@ -10,9 +12,11 @@ Public GWAS summary statistics were selected from the IEU OpenGWAS database base
 %
 The first criterion was to exclude molecular traits such as proteome or methylome.
 %	
-The second criterion was to include only the European population, because most samples from the EBI eQTL catalogue belong to the European population.
+The second criterion was to include only the European population, because most
+samples from the EBI eQTL catalogue belong to the European population.
 %
-The third criterion was to keep only well-defined medical or physiological conditions and exclude environmental traits such "employment status" or "self-reported" medical conditions.
+The third criterion was to keep only well-defined medical or physiological
+conditions and exclude environmental traits such "employment status" or "self-reported" medical conditions.
 %
 The fourth criterion was to keep only GWAS studies with at least 10,000 subjects, 2,000 controls and 2,000 cases (Supplementary table 2).
 %
@@ -227,20 +231,20 @@ I found that the odds ratio of variants annotated with CRMs vs non-annotated is 
 In summary, pleitropic eQTLs bind more unique transcription factors and are more
 likely to belong to cis-regulatory modules.
 
-\subsection*{Do pleiotropic eQTLs have stronger effect sizes?}
-
-Pleiotropic eQTLs affect simultaneously more trait classes.
+%\subsection*{Do pleiotropic eQTLs have stronger effect sizes?}
 %
-Therefore, I wonder about the relationship between pleiotropy, effect size and significance of eQTLs.
+%Pleiotropic eQTLs affect simultaneously more trait classes.
+%%
+%Therefore, I wonder about the relationship between pleiotropy, effect size and significance of eQTLs.
+%%
+%I found that the mean of the absolute eQTL effect sizes (beta) decreased between GWAS class counts 1 and 5 (Fig. \ref{fig:beta_pval}a).
+%%
+%Regarding the eQTL significance (Negative decimal logarithm of the p-values), I found decreasing mean values for GWAS class counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
 %
-I found that the mean of the absolute eQTL effect sizes (beta) decreased between GWAS class counts 1 and 5 (Fig. \ref{fig:beta_pval}a).
+%Then I carried out the same analysis for the GWAS effect size (beta) and significance (p-value).
+%%
+%I found that the mean of the absolute GWAS effect sizes (beta) decreased between GWAS class counts 1 and 5 (Fig. \ref{fig:beta_pval}b).
+%%
+%Regarding the GWAS variant significance (Negative decimal logarithm of the p-values), I found increasing mean values for GWAS class counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
 %
-Regarding the eQTL significance (Negative decimal logarithm of the p-values), I found decreasing mean values for GWAS class counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
-
-Then I carried out the same analysis for the GWAS effect size (beta) and significance (p-value).
-%
-I found that the mean of the absolute GWAS effect sizes (beta) decreased between GWAS class counts 1 and 5 (Fig. \ref{fig:beta_pval}b).
-%
-Regarding the GWAS variant significance (Negative decimal logarithm of the p-values), I found increasing mean values for GWAS class counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
-
-These observations suggest that the strength of both eQTL and GWAS effects decrease with the pleiotropy (Fig. \ref{fig:beta_pval}a,b).
+%These observations suggest that the strength of both eQTL and GWAS effects decrease with the pleiotropy (Fig. \ref{fig:beta_pval}a,b).
