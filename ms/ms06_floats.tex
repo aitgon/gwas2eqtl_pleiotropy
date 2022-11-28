@@ -116,96 +116,23 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 \caption{Percentage of colocalized eQTL/GWAS variants with different number of GWAS classes (\textbf{a}), eQTL genes
     (\textbf{b}) and eQTL tissues (\textbf{c}).} \label{fig:hist_gwas_egene_etissue}
 \end{figure}
-%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
-%% Fig 4: Scatter plots of winner regions
+%% Fig 4: Correlation between GWAS, genes and tissue counts
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 %
 \begin{figure}[!tbp]
-
-\begin{subfigure}[]{.24\textwidth}
-\textbf{a}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr5_start131912097_end132802472_categories7.png}
-\end{subfigure}
+\centering
 %
-\begin{subfigure}[]{.24\textwidth}
-\textbf{b}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr11_start65488118_end65916060_categories7.png}
-\end{subfigure}
+\includegraphics[width=0.7\textwidth]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png}
 %
-\begin{subfigure}[]{.24\textwidth}
-\textbf{c}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr12_start55721801_end56171027_categories6.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.24\textwidth}
-\textbf{d}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr19_start48668049_end48756272_categories6.png}
-\end{subfigure}
-
-\begin{subfigure}[]{.24\textwidth}
-\textbf{e}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr5_start131912097_end132802472_categories7.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.24\textwidth}
-\textbf{f}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr11_start65488118_end65916060_categories7.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.24\textwidth}
-\textbf{g}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr12_start55721801_end56171027_categories6.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.24\textwidth}
-\textbf{h}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr19_start48668049_end48756272_categories6.png}
-\end{subfigure}
-
-\begin{subfigure}[]{.24\textwidth}
-\textbf{i}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr5_start131912097_end132802472_categories7.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.24\textwidth}
-\textbf{j}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr11_start65488118_end65916060_categories7.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.24\textwidth}
-\textbf{k}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr12_start55721801_end56171027_categories6.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.24\textwidth}
-\textbf{l}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr19_start48668049_end48756272_categories6.png}
-\end{subfigure}
-
-\caption{Count of GWAS classes (\textbf{a-c}), eQTL genes (\textbf{d-f}) and eQTL tissues (\textbf{g-i}) in three
-pleiotropic genomic regions: \textbf{a,e,i}: 5:131,912,097-132,802,472 (5q31.1), \textbf{b,f,j}: 11:65,488,118-65,916,060 (11q13.1),
-    \textbf{c,g,k}: 12:55,721,801-56,171,027 (12q13.2), and \textbf{d,h,l}: 19:48,668,049-48,756,272 (19q13.33).
-    Genomic coordinates are given for the hg38 assembly.}
-\label{fig:region_gwas_egenes_tissues}
+\caption{Spearman correlation between the counts of GWAS classes, eQTL genes and eQTL tissues.}
+\label{fig:correlation_counts}
 %
 \end{figure}
-%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% Fig 5: VEP consequences
@@ -224,7 +151,7 @@ q-value with False discovery rate 5\%.}
 \label{fig:vep_consequence}
 %
 \end{figure}
-%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% Fig 6: Violin plots. eGenes, eTissues and gwas per variants
@@ -278,8 +205,8 @@ q-value with False discovery rate 5\%.}
 \end{subfigure}
 %
 \caption{Analysis of transcription factor binding.
-\textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic eQTLs (Radius 50 bp) as a function of the GWAS class count.
-\textbf{b}, Odds ratio of eQTLs annotated with cis regulatory modules vs non-annotated.} \label{fig:freq_tf_per_variant}
+\textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic eQTLs with a radius of 50 bp as a function of the GWAS class count.
+\textbf{b}, Odds ratio of eQTLs annotated as belonging to a cis regulatory modules vs non-annotated.} \label{fig:freq_tf_per_variant}
 %
 \end{figure}
 
@@ -317,7 +244,7 @@ q-value with False discovery rate 5\%.}
 %\end{subfigure}
 %
 %\caption{eQTL and GWAS effect size/beta (\textbf{a,b}) and eQTL and GWAS significance/p-value (\textbf{c,d}) as a function of the GWAS class count.} \label{fig:beta_pval}
-%%
+%%Correlation
 %\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

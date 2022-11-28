@@ -29,10 +29,11 @@ rule count_per_rsid:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
     params:
         max_gwas_class_count=max_gwas_class_count
     shell:
-        "python scripts/cmpt_count_per_rsid.py {input[0]} {params.max_gwas_class_count} {output[0]}"
+        "python scripts/cmpt_count_per_rsid.py {input[0]} {params.max_gwas_class_count} {output[0]} {output[5]}"
 
 rule index:
     input:

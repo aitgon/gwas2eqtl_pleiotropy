@@ -1,7 +1,10 @@
 import os
 import pandas
 import pathlib
+import seaborn
 import sys
+
+from matplotlib import pyplot as plt
 
 
 #%%
@@ -10,7 +13,8 @@ try:
     annotated_tsv_path = sys.argv[1]
     max_gwas_class_count = int(sys.argv[2])
     count_per_rsid_gwas_tsv_path = sys.argv[3]
-    if len(sys.argv) > 4:
+    count_per_rsid_gwas_egene_etissue_corr_png = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -66,6 +70,16 @@ m_df = m_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_class_count', 'gwas_class
 m_df.sort_values(['gwas_class_count', 'chrom', 'pos', 'rsid'], ascending=[False, True, True, True], inplace=True)
 tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas_egene_etissue.tsv")
 m_df.to_csv(tsv_path, sep="\t", index=False)
+
+m2df = m_df[['gwas_class_count', 'etissue_label_count', 'egene_count']]
+corr = m2df.corr(method='spearman')
+plt.subplots_adjust(left=0.3, right=0.8, top=0.9, bottom=0.35)
+seaborn.heatmap(corr, annot=True)
+plt.title("Count corr. GWAS, gene, tissue", fontsize=16)
+plt.savefig(count_per_rsid_gwas_egene_etissue_corr_png)
+# plt.savefig("img.png")
+plt.clf()
+plt.close()
 
 #%########################################### bed files, flanking=0
 # bed files of variants splitted by gwas categories

@@ -143,29 +143,27 @@ tissues, and the remaining 46\% in four or more tissues (Fig. \ref{fig:hist_gwas
 In conclusion, trait pleiotropy is rather rare among colocalized eQTL/GWAS variants, while, regulation of at least two
 genes in at least two tissues is rather common (Fig. \ref{fig:hist_gwas_egene_etissue}).
 
-\subsection*{Trait, eQTL gene and tissue frequency of individual eQTLs in pleiotropic regions}
+\subsection*{Relation between trait, eQTL gene and tissue counts}
 
-In Figure \ref{fig:region_gwas_egenes_tissues}, I have plotted the number of trait classes, eQTL genes and tissues of
-eQTLs in three pleiotropic regions.
+In Supplementary Figure \ref{fig:region_gwas_egenes_tissues}, I have plotted the number of trait classes, eQTL genes and tissues of
+eQTLs in four pleiotropic regions.
 %
 All three regions are very pleiotropic with very different associated trait classes such as cancer, cardiovascular and
 autoimmune diseases (Table \ref{tab:pleiotropic_regions} and Supplementary table 5).
 %
 However these plots show that the relationship between pleiotropy and the number of eQTL genes and tissues is not direct.
+%
+These plots suggest that counts of eQTL genes and tissues per variant correlate better between them than with the counts of the trait classes.
+%
+Indeed, Spearman correlation between eQTL gene and tissue counts is 0.75 while their correlation with the count of GWAS classes is 0.29 and 0.25, respectively (Fig. \ref{fig:region_gwas_egenes_tissues}).
 
-Some regions have high number of eQTL genes and intermediate number of tissues like the interleukin locus in region 5:131912097-132802472 (5q31.1),
-intermediate number of eQTL gene and variable number of tissues like the 11:65488118-65916060 locus (11q13.1),
-high number of both eQTL genes and tissues like the 12:55,721,801-56,171,027 (12q13.2) region
-and relatively low number of eQTL genes and tissue like the 19:48,668,049-48,756,272 locus (19q13.33) (Fig. \ref{fig:region_gwas_egenes_tissues}).
-
-In summary, trait pleiotropy can arise in locus with variable absolute numbers of genes and tissues.
-
+In summary, counts of eQTL genes and tissues is highly correlated, while correlation with GWAS classes is much lower.
 
 \subsection*{Where are the pleiotropic variants?}
 
 %\subsection*{What are the mechanisms of pleiotropy}
 
-In the following sections, I wonder about the the molecular mechanism of pleiotropic eQTLs.
+In the following sections, I studied different molecular mechanisms of pleiotropic eQTLs.
 %
 %I hypothesized that pleiotropy arises from bias in regulatory effects of variants.
 %%
@@ -173,24 +171,24 @@ In the following sections, I wonder about the the molecular mechanism of pleiotr
 %%
 %Another possibility is that pleiotropic variants affect more eGenes in more eTissues, which affect more GWAS traits.
 
-First, I analysed whether there are significant differences of some effect consequences between more and less pleiotropic variants.
+First, I analysed whether there are significant differences of some effect consequences between more and less pleiotropic eQTLs.
 %
-I separated variants according to the count of GWAS classes and computed the EBI variant effect predictor (VEP) consequence (\citep{2016.Cunningham.McLaren}).
+I separated eQTLs according to the count of GWAS classes and computed the EBI variant effect predictor (VEP) consequence (\citep{2016.Cunningham.McLaren}).
 %
-I found a significant larger number of upstream, 5'-UTR, downstream and 3'-UTR variants
-with 2, 3 and 4 and more classes compared to variants with one class (Fig. \ref{fig:vep_consequence}).
+I found a significant larger number of upstream, 5'-UTR, downstream and 3'-UTR eQTLs
+with 2, 3 and 4 and more classes compared to eQTLs with one class (Fig. \ref{fig:vep_consequence}).
 %
-I also found a significant larger number of intron, and non-coding transcript variants
+I also found a significant larger number of intron, and non-coding transcript eQTLs
 with 3 and 4 and more classes (Fig. \ref{fig:vep_consequence}).
 %
-These analyses suggest that more pleiotropic variants have a stronger effect on
+These analyses suggest that more pleiotropic eQTLs have a stronger effect on
 the coding sequence and splicing regions, which might explain partly their more pleiotropic function.
 
 \subsection*{Do pleiotropic eQTLs modulate more genes?}
 
-Then I hypothesized that pleiotropic variants modulate more genes even within the same tissues.
+Then I hypothesized that pleiotropic eQTLs modulate more genes even after taking into account the same tissues.
 %
-To test this hypothesis, I computed the number of eQTL genes per variant-tissue pair for different trait class counts.
+To test this hypothesis, I computed the number of eQTL genes per eQTL-tissue pair for different trait class counts.
 %
 %If the GWAS class count of a variant changed in different variant-eGene-eTissue trios, then we kept the maximal one.
 %
@@ -205,7 +203,7 @@ More target genes of eQTLs provides an explanation to the observed pleiotropy.
 
 My next hypothesis was that pleiotropic eQTL-gene pairs are active in more tissues than non-pleiotropic eQTLs.
 %
-To test this hypothesis, the tissues per eQTL-gene pair was counted for eQTL involved in different GWAS class counts.
+To test this hypothesis, the number of tissues per eQTL-gene pair was counted for eQTL involved in different GWAS class counts.
 %
 eQTLs involved in 1, 2, 3, 4, and 5 and more GWAS classes are active in an average of 2.4, 2.5, 2.8, 3.4 and 4.3 tissues, respectively (Fig. \ref{fig:gwas_egene_etisue_per_variant}a).
 %
@@ -231,14 +229,12 @@ This suggests that pleiotropic eQTL are active in more tissues (Mann–Whitney U
 
 In Fig. \ref{fig:gwas_egene_etisue_per_variant}b, I observed that pairs of eQTL-gene are active in more tissues.
 %
-To explain this observation, I hypothesized that pleiotropic eQTLs are active in more tissues,
-because genomic regions around pleiotropic variants bind more transcription factors,
-which upregulate the pleiotropic regions in more tissues.
+One explanation might be that pleiotropic eQTLs bound by more transcription factors, which in turn, upregulate the pleiotropic eQTLs in more tissues.
 %
 To test this hypothesis, I counted the number of unique transcription factors bound in a radius of 50 bp around each eQTL (Window of 100 bp).
 %
 eQTLs involved in 1, 2, 3 and 4 and more GWAS classes bind a mean number of 17,
-19, 23 and 27 transcription factors, respectively (Fig. \ref{fig:gwas_egene_etisue_per_variant}a).
+19, 23 and 27 transcription factors, respectively (Fig. \ref{fig:freq_tf_per_variant}a).
 %I found a significant larger number of transcription factors bound around pleiotropic variants (Fig. \ref{fig:freq_tf_per_variant}a).
 
 Cis-regulatory modules (CRMs) are non-coding genomic regions with a higher density of bound cis-regulatory modules \citep{2021.Ballester.Hammal}.
