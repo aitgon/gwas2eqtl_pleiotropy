@@ -6,7 +6,8 @@ To better understand the role of gene regulatory variants for variant pleiotropy
 I developed a pipeline to systematically colocalize variants from genome-wide associations
 studies (GWAS) and expression quantitative trait loci (eQTL) (Section Methods).
 %
-127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many tissues and cell types \citep{2021.Alasoo.Kerimov}.
+127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many
+tissues and cell types \citep{2021.Alasoo.Kerimov} (Supplementary table 1).
 
 GWAS traits were selected from the IEU OpenGWAS database based on four criteria \citep{2018.Parkinson.Buniello}.
 %
@@ -20,12 +21,13 @@ conditions and exclude environmental traits such "employment status" or "self-re
 %
 The fourth criterion was to keep only GWAS studies with at least 10,000 subjects, 2,000 controls and 2,000 cases.
 %
-These filters resulted in 418 GWAS traits (Supplementary table 1).
+These filters resulted in 418 GWAS traits (Supplementary table 2).
 %
-Among these studies, there were 10,627 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary table 2).
+Among these studies, there were 10,627 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary file).
 % sqlite
 % select count(distinct gwas_id) from tophits; 335
 % select count(*) from (select DISTINCT chrom, pos, rsid, nea, ea from tophits) limit 50; 10627
+% Supplementary file is db.sqlite that can go to OSF
 
 My pipeline uncovered eQTL colocalizations for 3,849 or 36$\%$ of the leading GWAS variants with 2,348 eQTL genes and 127 eQTL samples.
 % sqlite
@@ -36,7 +38,7 @@ My pipeline uncovered eQTL colocalizations for 3,849 or 36$\%$ of the leading GW
 
 The largest classes of diseases by number of leading GWAS variants are autoimmune diseases (2107), cancer of breast (1976) and allergy (1321)
 %
-and the percentages of variants with a colocalized eQTL are 37\%, 21\% and 42\% in these classe, respectively (Supplementary table ST6).
+In these diseases, the percentages of variants with a colocalized eQTL are 37\%, 21\% and 42\% in these classe, respectively (Supplementary table ST3).
 %
 %/* count tophits.rsid group by gwas_annot.gwas_class where coloc.`PP.H4.abf`>=0.8*/
 %select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8 GROUP by gwas_annot.gwas_class;
@@ -55,81 +57,95 @@ I have also developed a web application where I expose 116,736 variants from 246
 
 %\subsection*{Pleiotropic variants colocalized with eQTLs}
 
-\subsection*{Which eQTLs are the most pleiotropic?}
+\subsection*{Traits classification based on the colocalized eQTL effect size}
 
-I manually assigned the 418 GWAS to 96 classes to aggregate identical or similar traits (Supplementary table 1).
+I manually assigned the 418 GWAS to 96 classes to aggregate identical or similar traits (Supplementary table 2).
 %
 Then I verified whether GWAS traits cluster coherently within these classes.
 %
-I computed distances between GWAS traits based on the Spearman correlation of the colocalized eQTL beta of the different eQTL genes and samples.
+I computed distances between GWAS traits based on the Spearman correlation of the colocalized eQTL beta for every target gene, cell type and tissue.
 %
 I plot only classes with more than a minimum number of GWAS traits (Fig. \ref{fig:gwas_distance}).
 %
 GWAS traits cluster together in autoimmune diseases and circulatory system diseases.
 %
-Due to the large number of breast cancer GWAS, we have created a separeted class from cancer.
-Nevertheless a weaker specific signal is observed between the breast cancer class and other types of cancers.
+Due to the large number of breast cancer GWAS, we have created a separated class from cancer.
+Nevertheless, we can observe weaker correlations between the breast cancer class and other types of cancers.
 
-In the EBI eQTL Catalogue, some samples have been analysed at the cell type level while other samples are analyzed at the tissue level.
+\subsection*{Which eQTLs are the most pleiotropic?}
+
+In the EBI eQTL Catalogue, some samples have been analyzed at the cell type level and others at the tissue level.
 %
-For instance, there is much detail resolution regarding the immune cell types.
+For instance, immune cell types are analyzed at very high resolution that includes different stimulation of the same cell type.
 %
-Therefore I manually defined 36 classes to aggregate eQTL samples to equivalent resolution (Supplementary table 2).
+Therefore I manually defined 36 classes to aggregate eQTL cell types into tissues (Supplementary table 1).
 %
-For instance the different immune cell types such as monocyte, T-cell, etc are aggregated to an ImmuneCell class (Supplementary table 2).
+For instance, the different immune cell types such as monocyte, T-cell, etc are aggregated into an ImmuneCell class (Supplementary table 1).
 
 These class annotations were used to investigate the variant pleiotropy.
 %
-Colocalized eQTL/GWAS variants were classified according to the number of GWAS classes they belong to (Table \ref{tab:pleitropic_variants} and Supplementary table 3).
+Colocalized eQTL/GWAS variants were classified according to the number of GWAS classes they belong to (Table \ref{tab:pleitropic_variants} and Supplementary table 4).
 %
-The aggregated variants are highly pleiotropic.
+The most pleiotropic variants belong to 6 classes that include different traits such as autoimmune diseases, circulatory disases and cancer.
 %
-For instance the variant rs2522051 is located downstream of the IRF1 gene in cytoband 5q31.1 and it is involved in six classes of traits, namely,
-allergy, autoimmune diseases, cancer of breast, circulatory system diseases, hypertension, and respiratory system diseases
-(Table \ref{tab:pleitropic_variants} and Supplementary table 3).
+For instance, the variant rs2522051 is located downstream of the IRF1 gene in cytoband 5q31.1
 %
-This variant rs2522051 is active in 23 classes of cell types and tissues including adipose, brain, digestive cells, immune cells, and sexual organs.
+This variant rs2522051 is involved in six classes of traits, namely,
+allergy, autoimmune diseases, cancer of the breast, circulatory system diseases, hypertension, and respiratory system diseases
+(Table \ref{tab:pleitropic_variants} and Supplementary table 4).
 %
-This variant rs2522051 regulates several genes such as IL13, PDLIM4 and RAD50.
+This variant rs2522051 is active in 23 classes of tissues including adipose, brain, digestive cells, immune cells, and sexual organs.
+%
+This variant rs2522051 regulates several genes such as IL13, PDLIM4, and RAD50.
 
 \subsection*{Which genomic regions contain the most pleiotropic eQTLs?}
 
 Pleiotropic eQTLs are concentrated in genomic regions such as in cytobands 3q23,
-5q31.1, 9p21.3, 15q24.1, and 19q13.33 for eQTLs involved on five or more classes (Supplementary table 3).
+5q31.1, 9p21.3, 15q24.1, and 19q13.33 for eQTLs involved on five or more classes (Table \ref{tab:pleitropic_variants} and Supplementary table 4).
 %
-Therefore I computed regions that include at least one pleiotropic eQTL in
-sliding windows of 100,000 nt (See Methods) (Table \ref{tab:pleiotropic_regions} and Supplementary table 4).
+Therefore, I wanted to compute pleiotropic regions that include concentrations of pleiotropic eQTLs.
+%
+To compute these pleiotropic regions, I aggregated genomic regions with at least one pleiotropic eQTL in a sliding
+window of 100,000 nt (See Methods) (Table \ref{tab:pleiotropic_regions} and Supplementary table 5).
 %
 I found 13 regions with 5 or more trait classes, 30 regions with 4 or more trait
-classes and 80 regions with 3 or more trait classes (Supplementary table 4).
+classes and 80 regions with 3 or more trait classes (Supplementary table 5).
 %
 50\% of regions with at least two trait classes are shorter than 100 kb, 20\% of regions are
 between 100 kb and 200 kb, 10\% between 200 kb and 300 kb, and 20\% are larger than 300 kb (Fig. \ref{fig:pleiotropy_region_distribution}a).
 
-The most pleiotropic region is 5:131,912,097-132,802,472 in cytoband 5q31.1 which contains the interferon response factor 1 (IRF1) and interleukins IL3, IL4, IL5 and IL13 (Table \ref{tab:pleiotropic_regions}).
+The most pleiotropic region is 5:131,912,097-132,802,472 in cytoband 5q31.1 which contains the interferon response factor 1
+(IRF1) and interleukins IL3, IL4, IL5 and IL13 (Table \ref{tab:pleiotropic_regions}).
 %
 Interferons and interleukins are very important factors for the immune system and anti-viral, inflammation and cancer responses.
 %
-The largest region is 7:2,712,518-7,254,268 in cytoband 7p22.3 with a length of 4,541,751 bp and variants associated to autoimmune and respiratory diseases and height (Supplementary table 5).
+The largest region is 7:2,712,518-7,254,268 in cytoband 7p22.3 with a length of 4,541,751 bp and variants associated to
+autoimmune and respiratory diseases and height (Supplementary table 5).
 
-Pleiotropic regions with 3 or more trait classes make around 3 Mb of the genome (Fig. \ref{fig:pleiotropy_region_distribution}b).
 Very pleiotropic regions with 5 trait classes or more make around 0.6 Mb of the genome,
-regions with 4 GWAS classes make an additional 1 Mb and regions with 3 GWAS classes make an additional 1.5 Mb (Fig. \ref{fig:pleiotropy_region_distribution}b).
+regions with 4 GWAS classes make an additional 1 Mb and regions with 3 trait classes make an additional 1.5 Mb (Fig. \ref{fig:pleiotropy_region_distribution}b).
+%
+Altogether, pleiotropic regions with 3 or more trait classes make around 3 Mb of the genome (Fig. \ref{fig:pleiotropy_region_distribution}b).
 
 \subsection*{How specific are eQTLs regarding traits, genes and tissues?}
 
-Next I verified whether eQTLs tend to be specific to traits, eQTL genes and eQTL tissues.
+Next I verified whether the colocalized eQTL/GWAS variants tend to be specific to traits, eQTL genes and eQTL tissues.
 %
-74\% of eQTLs are associated to one GWAS class, 21\% are associated to 2 classes and the remaining variants associated to 3 or more trait classes make less that 4\% of eQTLs (Fig. \ref{fig:hist_gwas_egene_etissue}a).
+74\% of colocalized eQTL/GWAS variants are associated to one GWAS class, 21\% are associated to 2 classes and the remaining variants associated to
+3 or more trait classes make less that 4\% of colocalized eQTL/GWAS variants (Fig. \ref{fig:hist_gwas_egene_etissue}a).
 %
-Regarding eQTL genes, 36\% of the colocalized eQTL/GWAS variant modulate a single gene, 24\% modulate two genes, and the remaining 40\% modulate three or more genes (Fig. \ref{fig:hist_gwas_egene_etissue}b).
+Regarding eQTL genes, 36\% of the colocalized eQTL/GWAS variants modulate a single gene, 24\% modulate two genes, and the
+remaining 40\% modulate three or more genes (Fig. \ref{fig:hist_gwas_egene_etissue}b).
 %
-Concerning tissues, 27\% colocalized eQTL/GWAS variants are active in a single tissue, 16\% in two tissues, 11\% in three tissues, and the remaining 46\% in four or more tissues (Fig. \ref{fig:hist_gwas_egene_etissue}c).
+Concerning tissues, 27\% colocalized eQTL/GWAS variants are active in a single tissue, 16\% in two tissues, 11\% in three
+tissues, and the remaining 46\% in four or more tissues (Fig. \ref{fig:hist_gwas_egene_etissue}c).
 %
-In conclusion, trait pleiotropy is rather rare, while, regulation of least two gene in at least two tissues is rather common (Fig. \ref{fig:hist_gwas_egene_etissue}).
+In conclusion, trait pleiotropy is rather rare among colocalized eQTL/GWAS variants, while, regulation of at least two
+genes in at least two tissues is rather common (Fig. \ref{fig:hist_gwas_egene_etissue}).
 
-\subsection*{Trait, eQTL gene and tissue frequency of individual eQTLs in pleiotropic loci}
+\subsection*{Trait, eQTL gene and tissue frequency of individual eQTLs in pleiotropic regions}
 
+% TODO continue here
 In Figure \ref{fig:region_gwas_egenes_tissues}, I have plotted the number of trait classes, eQTL genes and tissues for regulatory variants in three pleiotropic regions.
 %
 All three regions are very pleiotropic with very different associated trait classes such as cancer, cardiovascular and autoimmune diseases.
