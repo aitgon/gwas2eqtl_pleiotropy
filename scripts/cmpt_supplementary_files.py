@@ -57,6 +57,8 @@ class_pleio_df = class_pleio_df.loc[~class_pleio_df.isna().any(axis=1)]
 class_pleio_df.rename({'icd10_code_level1.1': 'icd10_code_level1'}, axis=1, inplace=True)
 #
 st_df = gwas_class_df[['id', 'trait', 'icd10_code_level1']].merge(class_pleio_df, on='icd10_code_level1')
+st_df = st_df.drop_duplicates()
+st_df = st_df.sort_values(st_df.columns.tolist())
 st_df.drop(['icd10_code_level1'], axis=1, inplace=True)
 st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 

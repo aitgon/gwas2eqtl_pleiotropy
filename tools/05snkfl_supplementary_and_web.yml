@@ -28,10 +28,11 @@ rule public_web_coloc:
         os.path.join(outdir, "cmpt_public_web_files.py/coloc0.tsv.gz"),
         os.path.join(outdir, "cmpt_public_web_files.py/coloc5.tsv.gz"),
         os.path.join(outdir, "cmpt_public_web_files.py/coloc8.tsv.gz"),
+        os.path.join(outdir, "cmpt_public_web_files.py/coloc95.tsv.gz"),
     params:
         sqlite=os.path.join(outdir, "db/db.sqlite"),
     shell:
-        """python scripts/cmpt_public_web_files.py {params.sqlite} {output[0]} {output[1]} {output[2]}"""
+        """python scripts/cmpt_public_web_files.py {params.sqlite} {output[0]} {output[1]} {output[2]} {output[3]}"""
 
 rule create_table_supplementary:
     input:
