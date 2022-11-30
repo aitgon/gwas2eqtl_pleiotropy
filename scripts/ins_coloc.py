@@ -1,4 +1,3 @@
-import sqlalchemy
 from sqlalchemy import create_engine
 from gwas2eqtl_pleiotropy.db2 import Base
 
@@ -61,7 +60,8 @@ for gwas_id in gwas_identifier_lst:
             if df.shape[0] > 0:
                 df['rsid'] = df['rsid'].str.replace('rs', '').astype(int)
                 df['coloc_lead_rsid'] = df['coloc_lead_rsid'].str.replace('rs', '').astype(int)
-                df_index = df['chrom'].astype(str) + "_" + df['pos'].astype(str) + "_" + df['egene_id'] + "_" + df['gwas_id'] + "_" + df['eqtl_id'] + "_" + df['coloc_lead_pos'].astype(str)
+                df_index = df['chrom'].astype(str) + "_" + df['pos'].astype(str) + "_" + df['egene_id'] + "_" \
+                           + df['gwas_id'] + "_" + df['eqtl_id'] + "_" + df['coloc_lead_pos'].astype(str)
                 df.set_index(df_index, inplace=True, verify_integrity=True)
                 df.index.rename('id', inplace=True)
                 # Insert

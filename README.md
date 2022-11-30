@@ -147,3 +147,9 @@ Annotate postgres db
 ~~~
 python scripts/annotate_db2.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy config/gwas418.ods
 ~~~
+
+Load tophits
+
+~~~
+python scripts/tophits2db2.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy config/gwas418.ods /home/gonzalez/Repositories/gwas2eqtl/out/gwas420/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
+~~~

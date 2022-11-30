@@ -1,15 +1,11 @@
 from gwas2eqtl_pleiotropy.Logger import Logger
 from gwas2eqtl_pleiotropy.UCSC import UCSC
 from gwas2eqtl_pleiotropy.URL import URL
-from gwas2eqtl_pleiotropy.db import gwas_annot_tbl
+from gwas2eqtl_pleiotropy.db2 import Base
 from sqlalchemy import create_engine
 
-import os
 import pandas
-import pathlib
 import sys
-import mygene
-from gwas2eqtl_pleiotropy.db2 import Base
 
 #%%
 

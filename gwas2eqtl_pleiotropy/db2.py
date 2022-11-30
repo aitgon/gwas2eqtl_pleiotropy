@@ -45,8 +45,7 @@ class ensg2symbol(Base):
 class cytoband(Base):
    """scripts/annotate_db2.py"""
    __tablename__ = "cytoband"
-   __table_args__ = (
-   UniqueConstraint('chrom', 'start', name='_cytobad_uc'),)
+   __table_args__ = (UniqueConstraint('chrom', 'start', name='_cytobad_uc'),)
 
    id = Column('id', String(15), primary_key=True)
    chrom = Column('chrom', SmallInteger, nullable=False)
@@ -63,3 +62,20 @@ class gwas_annot(Base):
    gwas_trait = Column('gwas_trait', String(255), nullable=False, unique=True)
    gwas_class = Column('gwas_class', String(127), nullable=False)
 
+
+class tophits(Base):
+   """scripts/tophits2db2.py"""
+   __tablename__ = "tophits"
+
+   id = Column('id', String(255), primary_key=True)
+   chrom = Column('chrom', SmallInteger, nullable=False)
+   pos = Column('pos', Integer, nullable=False)
+   rsid= Column('rsid', Integer, nullable=False)
+   ref = Column('ref', String(255), nullable=False)
+   alt = Column('alt', String(255), nullable=False)
+   pval = Column('pval', Float, nullable=False)
+   beta = Column('beta', Float, nullable=False)
+   se = Column('se', Float, nullable=False)
+   eaf = Column('eaf', Float, nullable=True)
+   n = Column('n', Integer, nullable=True)
+   gwas_id = Column('gwas_id', String(63), primary_key=True)
