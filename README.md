@@ -96,4 +96,54 @@ python scripts/plthtmp_disease_comorbidity_matrix.py out/gwas420/pval_5e-08/r2_0
 texi2pdf presentation_gold2022_paris/presentation_gold2022_paris.tex
 ~~~
 
+# docker postgres
 
+Dev
+
+~~~
+cd container
+docker compose --project-name gwas2eqtl_pleiotropy_dev -f docker-compose.yml up --build --force-recreate --remove-orphans -d
+~~~
+
+Prod
+
+~~~
+cd container
+docker compose --project-name gwas2eqtl_pleiotropy_prod --env-file env_prod -f docker-compose.yml up --build --force-recreate --remove-orphans -d
+~~~
+
+Dev - 5433 - One chrom
+
+~~~
+snakemake -p -j all -s snkfl_all.yml --config postgres_port=5433 outdir=out/5433 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process CHR=22 --resources db=1
+~~~
+
+Dev - 5433 - All chrom
+
+~~~
+snakemake -p -j all -s snkfl_all.yml --config postgres_port=5433 outdir=out/5433 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process CHR=22 --resources db=1
+~~~
+
+Prod - 5434 - One chrom
+
+~~~
+snakemake -p -j all -s snkfl_all.yml --config postgres_port=5434 outdir=out/5434 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process CHR=22 --resources db=1
+~~~
+
+Prod - 5434 - All chrom
+
+~~~
+snakemake -p -j all -s snkfl_all.yml --config postgres_port=5434 outdir=out/5434 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process --resources db=1
+~~~
+
+Insert coloc
+
+~~~
+python scripts/ins_coloc.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy config/gwas418.ods  /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv  /home/gonzalez/Repositories/gwas2eqtl/out/gwas420/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
+~~~
+
+Annotate postgres db
+
+~~~
+python scripts/annotate_db2.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy config/gwas418.ods
+~~~
