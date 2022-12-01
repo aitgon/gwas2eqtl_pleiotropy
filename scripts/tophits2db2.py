@@ -32,21 +32,32 @@ Base.metadata.create_all(engine)
 gwas_id_lst = pandas.read_excel(gwas_metadata, engine="odf", usecols=['id'])['id'].to_list()
 for gwas_id in gwas_id_lst:
     tophits_path = tophits_path_strf.format(gwas_id=gwas_id)
+    # TODO this must be fixed with plink clumping
+    if not os.path.isfile(tophits_path):
+        continue
     if pathlib.Path(tophits_path).stat().st_size == 0:
         continue
-    df = pandas.read_csv(tophits_path, sep="\t", header=0)
+    df = pandas.read_csv(tophits_path, sep="\t", header=0).drop_duplicates()
     df.rename({'chr': 'chrom', 'position': 'pos', 'nea': 'ref', 'ea': 'alt', 'id': 'gwas_id', 'p': 'pval'}, inplace=True, axis=1)
     df['rsid'] = df['rsid'].str.replace('rs', '').astype(int)
-    df.index = df['chrom'].astype(str) + "_" + df['pos'].astype(str) + "_" + df['ref'] + "_" + df['alt'] + "_" + df['gwas_id']
+    # TODO this must be fixed with plink clumping
+    try:
+        df_index = df['chrom'].astype(str) + "_" + df['pos'].astype(str) + "_" + df['ref'] + "_" + df['alt'] + "_" + df['gwas_id']
+        df.set_index(df_index, verify_integrity= True)
+    except TypeError:
+        continue
+    except ValueError:
+        import pdb; pdb.set_trace()
     tophits_tbl = tophits.__dict__['__table__']
+    # delte if exists
     tophits_dlt_stmt = tophits_tbl.delete().where(tophits_tbl.c.gwas_id == gwas_id)
     with engine.connect() as con:
         con.execute(tophits_dlt_stmt)
     df.index.rename('id', inplace=True)
-    # try:
-    df.to_sql('tophits', con=engine, if_exists='append', index=True)
-    # except sqlalchemy.exc.IntegrityError:
-    #     import pdb; pdb.set_trace()
+    try:
+        df.to_sql('tophits', con=engine, if_exists='append', index=True)
+    except sqlalchemy.exc.IntegrityError:
+        import pdb; pdb.set_trace()
 
 # for gwas_id in gwas_identifier_lst:
 #     if gwas_counter % 10 == 0:
