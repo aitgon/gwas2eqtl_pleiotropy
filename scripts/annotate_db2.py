@@ -30,8 +30,10 @@ Base.metadata.create_all(engine)
 Logger.info("Annotate egene symbols")
 
 ensg2symbol_df = UCSC(database='hg38').gene_id_to_symbol()
+
 # Insert
-ensg2symbol_df.to_sql('ensg2symbol', con=engine, if_exists='replace', index=True)
+engine.execute((Base.metadata.tables['ensg2symbol']).delete())
+ensg2symbol_df.to_sql('ensg2symbol', con=engine, if_exists='append', index=True)
 
 #%% cytoband
 Logger.info("Annotate cytobands")
@@ -42,36 +44,10 @@ cyto_df.columns = ['chrom', 'start', 'end', 'cytoband']
 cyto_df['chrom'] = cyto_df['chrom'].str.replace('chr', '')
 cyto_df = cyto_df.loc[cyto_df['chrom'].isin([str(chrom) for chrom in range(1, 23)])]
 cyto_df['chrom'] = cyto_df['chrom'].astype(int)
-
 cyto_df.set_index(cyto_df['chrom'].astype(str) + cyto_df['cytoband'], inplace=True, verify_integrity=True)
-cyto_df.to_sql('cytoband', con=engine, if_exists='replace', index=True, index_label='id')
 
-# #%%
-# sel = select([coloc.c.chrom, coloc.c.pos, coloc.c.rsid]).distinct()
-# with engine.connect() as con:
-#     fetch_res = con.execute(sel).fetchall()
-# rsid2cytoband_df = pandas.DataFrame(fetch_res)
-# rsid2cytoband_df['chrom'] = rsid2cytoband_df['chrom'].astype(int)
-# rsid2cytoband_df['pos'] = rsid2cytoband_df['pos'].astype(int)
-#
-# # rsid2cytoband_df['chrom'] = rsid2cytoband_df['chrom'].astype(str)
-# # cyto_df['chrom'] = cyto_df['chrom'].astype(str)
-# cyto_df = cyto_df.loc[cyto_df['chrom'].isin([str(chrom) for chrom in range(1, 23)])]
-# cyto_df['chrom'] = cyto_df['chrom'].astype(int)
-# for rowi, row in cyto_df.iterrows():
-#     chrom = row['chrom']
-#     start = row['start']
-#     end = row['end']
-#     cytoband = row['cytoband']
-#     rsid2cytoband_df.loc[(rsid2cytoband_df['chrom'] == chrom) & (start <= rsid2cytoband_df['pos']) & (rsid2cytoband_df['pos'] <= end), 'cytoband'] = cytoband
-# rsid2cytoband_df['cytoband'] = rsid2cytoband_df['chrom'].astype(str) + rsid2cytoband_df['cytoband']
-# rsid2cytoband_df = rsid2cytoband_df[['rsid', 'cytoband']]
-#
-# dlt = rsid2cytoband_tbl.delete()
-# ins = rsid2cytoband_tbl.insert()
-# with engine.connect() as con:
-#     con.execute(dlt)
-#     con.execute(ins, rsid2cytoband_df.to_dict('records'))
+engine.execute((Base.metadata.tables['cytoband']).delete())
+cyto_df.to_sql('cytoband', con=engine, if_exists='append', index=True, index_label='id')
 
 #%% gwas category
 Logger.info("Annotate GWAS categories")
@@ -84,4 +60,6 @@ gwas_level1_class_df.rename({'icd10_code_level1.1': 'icd10_code_level1', 'class_
 gwas_annot_df = gwas_id_trait_level1_df.merge(gwas_level1_class_df, on='icd10_code_level1').drop_duplicates(inplace=False)
 gwas_annot_df.drop('icd10_code_level1', inplace=True, axis=1)
 gwas_annot_df.set_index('gwas_id', inplace=True, verify_integrity=True)
-gwas_annot_df.to_sql('gwas_annot', con=engine, if_exists='replace', index=True, index_label='gwas_id')
+
+engine.execute((Base.metadata.tables['gwas_annot']).delete())
+gwas_annot_df.to_sql('gwas_annot', con=engine, if_exists='append', index=True, index_label='gwas_id')
