@@ -44,6 +44,7 @@ class UCSC:
             ensg2symbol_df.to_csv(ensg2symbol_tsv_path, index=False, header=True, sep="\t")
 
         ensg2symbol_df = pandas.read_csv(ensg2symbol_tsv_path, sep='\t', header=0)
+        ensg2symbol_df.set_index('gene_id', inplace=True, verify_integrity=True)
 
         return ensg2symbol_df
 

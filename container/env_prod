@@ -1,0 +1,6 @@
+## ports
+POSTGRES_HOST_PORT=5436
+ADMINER_HOST_PORT=8086
+
+CONTAINER_NAME_POSTGRES=gwas2eqtl_pleiotropy_postgres_prod
+CONTAINER_NAME_ADMINER=gwas2eqtl_pleiotropy_adminer_prod
