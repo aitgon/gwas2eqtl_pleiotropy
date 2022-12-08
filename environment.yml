@@ -1,7 +1,9 @@
+name: gwas2eqtl_pleiotropy
 channels:
   - defaults
   - bioconda
 dependencies:
+  - python=3.9
   - bioconda::bcftools
   - bioconda::tabix
   - bioconda::bedtools
