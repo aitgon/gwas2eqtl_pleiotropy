@@ -1,0 +1,1 @@
+python workflow/scripts/insrt_coloc.py 0.7 0  postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy config/gwas418.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv out/gwas418/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
