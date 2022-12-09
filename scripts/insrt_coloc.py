@@ -4,7 +4,7 @@ import sys
 
 from sqlalchemy import create_engine
 from gwas2eqtl_pleiotropy.db2 import Base
-
+from sqlalchemy_utils import database_exists, create_database
 
 
 #%%
@@ -38,6 +38,14 @@ eqtl_df.sort_index(inplace=True)
 
 # Create all tables
 engine = create_engine(url)
+
+# Create database if it does not exist.
+if not database_exists(engine.url):
+    create_database(engine.url)
+else:
+    # Connect the database if exists.
+    engine.connect()
+
 Base.metadata.create_all(engine)
 
 coloc_tab = Base.metadata.tables['coloc']
