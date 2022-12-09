@@ -136,26 +136,21 @@ Prod - 5434 - All chrom
 snakemake -p -j all -s snkfl_all.yml --config postgres_port=5434 outdir=out/5434 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process --resources db=1
 ~~~
 
-Insert coloc
-
-~~~
-python scripts/ins_coloc.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy config/gwas418.ods  /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv  /home/gonzalez/Repositories/gwas2eqtl/out/gwas420/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
-~~~
 
 Annotate postgres db
 
 ~~~
-python scripts/annotate_db2.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy config/gwas418.ods
-~~~
-
-Annotate gwas
-
-~~~
-python scripts/annotate_db2.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy config/gwas418.ods
+python scripts/annotate_db2.py postgresql://postgres:postgres@0.0.0.0:5436/gwas2eqtl_pleiotropy config/gwas418.ods
 ~~~
 
 Load tophits
 
 ~~~
-python workflow/scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5437/gwas2eqtl config/gwas418.ods  ../gwas2eqtl0.2.0/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
+python scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5436/gwas2eqtl_pleiotropy config/gwas418.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
+~~~
+
+Insert coloc
+
+~~~
+python scripts/insrt_coloc.py 0.8 0.5  postgresql://postgres:postgres@0.0.0.0:5436/gwas2eqtl_pleiotropy config/gwas418.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
 ~~~
