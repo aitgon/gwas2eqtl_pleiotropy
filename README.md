@@ -1,42 +1,3 @@
-# gwas2eqtl_pleiotropy
-
-## Colocalization using gwas2eqtl
-
-The input data was generated using https://github.com/aitgon/gwas2eqtl, tag, 0.1.1), run with pval=5e-8, window 1000000
-
-~~~
-git clone git@github.com:aitgon/gwas2eqtl.git
-cd gwas2eqtl
-PYTHONPATH=.:$PYTHONPATH snakemake -j all -s workflow/Snakefile_eqtl.yml -p --rerun-incomplete  --config  public_data_dir=$HOME/Software/public process_data_dir=$HOME/Software/process region=genome eqtl_fdr=0.05 window=500000
-PYTHONPATH=.:$PYTHONPATH snakemake -j all -s workflow/Snakefile_gwas.yml -p --config gwas_ods=gwas413.ods gwas_pval=5e-8 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process image_sif=out/eqt2gwas.sif --rerun-incomplete
-snakemake -c all -s workflow/Snakefile.yml -p --config gwas_ods=gwas413.ods gwas_pval=5e-8 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process region=genome window=1000000 eqtl_fdr=0.05 image_sif=out/gwas2eqtl.sif --rerun-incomplete
-~~~
-
-The previous commands result in this file coloc413.tsv.gz that can be also foud in the OSF site
-
-These are the columns:
-
-- chrom
-- pos
-- rsid
-- ref
-- alt
-- egene
-- egene_symbol
-- eqtl_beta
-- eqtl_pvalue
-- eqtl_identifier
-- gwas_beta
-- gwas_pvalue
-- gwas_identifierpp_h4
-- PP.H4.abf
-- coloc_window
-- nsnps
-- PP.H3.abf
-- PP.H2.abf
-- PP.H1.abf
-- PP.H0.abf
-
 ## Analyse pleiotropy using this repository.
 
 Then snamake is run with:
@@ -136,21 +97,66 @@ Prod - 5434 - All chrom
 snakemake -p -j all -s snkfl_all.yml --config postgres_port=5434 outdir=out/5434 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process --resources db=1
 ~~~
 
-
-Annotate postgres db
-
-~~~
-python scripts/annotate_db2.py postgresql://postgres:postgres@0.0.0.0:5436/gwas2eqtl_pleiotropy config/gwas418.ods
-~~~
-
-Load tophits
+Insert to db
 
 ~~~
-python scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5436/gwas2eqtl_pleiotropy config/gwas418.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
+python scripts/insrt_cytoband.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy7_7
+python scripts/insrt_geneid2symbol.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy7_7
+python scripts/insrt_gwas_annot.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy7_7 config/gwas418.ods
+python scripts/insrt_pos19.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy7_7
 ~~~
 
-Insert coloc
+From the gwas2eqtl project
 
 ~~~
-python scripts/insrt_coloc.py 0.8 0.5  postgresql://postgres:postgres@0.0.0.0:5436/gwas2eqtl_pleiotropy config/gwas418.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
+python scripts/insrt_coloc.py 0.7 0.7  postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy7_7 config/gwas418.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
+python scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5435/gwas2eqtl_pleiotropy7_7 config/gwas418.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
+~~~
+
+Create web view
+
+~~~
+SELECT DISTINCT co.chrom,
+    pos19.pos19,
+    co.pos38,
+    concat_ws(''::text, co.chrom, co.cytoband) AS cytoband,
+    concat('rs', co.rsid) AS concat,
+    co.ref,
+    co.alt,
+    gw.gwas_trait,
+    gw.gwas_class,
+    co.gwas_beta,
+    en.symbol AS eqtl_gene_symbol,
+    co.eqtl_beta,
+    co.eqtl_id,
+    co.eqtl_gene_id,
+    co.gwas_id,
+    co.gwas_pval,
+    co.eqtl_pval,
+    co.pp_h4_abf,
+    co.snp_pp_h4,
+    co.coloc_variant_id AS tophits_variant_id
+   FROM (((( SELECT DISTINCT co0.chrom,
+            co0.pos AS pos38,
+            concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
+            co0.rsid,
+            co0.ref,
+            co0.alt,
+            co0.gwas_beta,
+            co0.eqtl_beta,
+            co0.eqtl_id,
+            co0.eqtl_gene_id,
+            co0.gwas_id,
+            co0.gwas_pval,
+            co0.eqtl_pval,
+            co0.pp_h4_abf,
+            co0.snp_pp_h4,
+            co0.coloc_variant_id
+           FROM coloc co0,
+            cytoband cy
+          WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co
+     LEFT JOIN ensg2symbol en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
+     LEFT JOIN gwas_annot gw ON (((gw.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
+  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
 ~~~

@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, SmallInteger, Float, UniqueConstraint
 from sqlalchemy.orm import declarative_base
+from sqlalchemy.dialects.postgresql import INT4RANGE
 
 # declarative base class
 Base = declarative_base()
@@ -34,27 +35,37 @@ class coloc(Base):
    pp_h0_abf = Column('pp_h0_abf', Float, nullable=False)
 
 
+class pos19(Base):
+   """scripts/insrt_pos19.py"""
+   __tablename__ = "pos19"
+   __table_args__ = (UniqueConstraint('chrom', 'pos', name='_pos19_uc'),)
+
+   id = Column('id', Integer, primary_key=True)
+   chrom = Column('chrom', SmallInteger, nullable=False)
+   pos = Column('pos', Integer, nullable=False)
+   pos19 = Column('pos19', Integer, nullable=True)
+
+
 class ensg2symbol(Base):
-   """scripts/annotate_db2.py"""
+   """scripts/insrt_gwas_annot.py"""
    __tablename__ = "ensg2symbol"
    gene_id = Column('gene_id', String(15), primary_key=True)
    gene_symbol = Column('symbol', String(63), nullable=False, unique=False)
 
 
 class cytoband(Base):
-   """scripts/annotate_db2.py"""
+   """scripts/insrt_cytoband.py"""
    __tablename__ = "cytoband"
-   __table_args__ = (UniqueConstraint('chrom', 'start', name='_cytobad_uc'),)
+   __table_args__ = (UniqueConstraint('chrom', 'start_end38', name='_cytobad2_uc'),)
 
    id = Column('id', String(15), primary_key=True)
    chrom = Column('chrom', SmallInteger, nullable=False)
-   start = Column('start', Integer, nullable=False)
-   end = Column('end', Integer, nullable=False)
+   start_end38 = Column('start_end38', INT4RANGE, nullable=False)
    cytoband = Column('cytoband', String(7), nullable=False)
 
 
 class gwas_annot(Base):
-   """scripts/annotate_db2.py"""
+   """scripts/insrt_gwas_annot.py"""
    __tablename__ = "gwas_annot"
 
    gwas_id = Column('gwas_id', String(63), primary_key=True)
