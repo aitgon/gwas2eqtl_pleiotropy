@@ -37,7 +37,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
 #%% Do it forward
-df.sort_values(by=['chrom', 'pos'], inplace=True, ascending=[True, True])
+df.sort_values(by=['chrom', 'pos38'], inplace=True, ascending=[True, True])
 more_than_1 = 0
 chrom_pleio_latest = 0
 pos_pleio_latest = -99999
@@ -46,17 +46,17 @@ df['region_pleio_fwd'] = False
 #%%
 for i, row in df.iterrows():
     chrom = row['chrom']
-    pos = row['pos']
+    pos38 = row['pos38']
     # import pdb; pdb.set_trace()
     if row['gwas_class_count'] > 1:
         chrom_pleio_latest = chrom
-        pos_pleio_latest = pos
-    if chrom == chrom_pleio_latest and (pos - pos_pleio_latest) <= region_bin:
+        pos_pleio_latest = pos38
+    if chrom == chrom_pleio_latest and (pos38 - pos_pleio_latest) <= region_bin:
         df.loc[i, 'region_pleio_fwd'] = True
 # df.to_csv("df.tsv", sep="\t", index=False)
 
 #%% Do it reversed
-df.sort_values(by=['chrom', 'pos'], inplace=True, ascending=[True, False])
+df.sort_values(by=['chrom', 'pos38'], inplace=True, ascending=[True, False])
 more_than_1 = 0
 chrom_pleio_latest = 0
 pos_pleio_latest = 999999999
@@ -65,18 +65,18 @@ df['region_pleio_rev'] = False
 #%%
 for i, row in df.iterrows():
     chrom = row['chrom']
-    pos = row['pos']
+    pos38 = row['pos38']
     df.loc[i, 'region_pleio'] = False
     if row['gwas_class_count'] > 1:  # update pos_pleio_latest
         chrom_pleio_latest = chrom
-        pos_pleio_latest = pos
-    if chrom == chrom_pleio_latest and (pos_pleio_latest - pos) <= region_bin:
+        pos_pleio_latest = pos38
+    if chrom == chrom_pleio_latest and (pos_pleio_latest - pos38) <= region_bin:
         if df.loc[i, 'region_pleio_fwd']:
             df.loc[i, 'region_pleio'] = True
 
 #%%
 df.drop(['region_pleio_fwd', 'region_pleio_rev'], axis=1, inplace=True)
-df.sort_values(by=['chrom', 'pos'], inplace=True, ascending=[True, True])
+df.sort_values(by=['chrom', 'pos38'], inplace=True, ascending=[True, True])
 
 #%% bed file
 region_lst = []
@@ -92,7 +92,7 @@ for i, row in df.iterrows():
     # beginning of region, set start, start category list, store category
     if row['region_pleio'] and not region_pleio_prev:
         cytoband = row['cytoband']
-        start = row['pos']
+        start = row['pos38']
         gwas_class_count = row['gwas_class_count']
         gwas_class_lst = row['gwas_class_lst']
         category_lst = row['gwas_class_lst'].split(",")
@@ -114,7 +114,7 @@ for i, row in df.iterrows():
         start = math.nan
         end = math.nan
         gwas_subcategory_count = 0
-    pos_prev = row['pos']
+    pos_prev = row['pos38']
     region_pleio_prev = row['region_pleio']
 
 #%% tsv

@@ -6,35 +6,6 @@ from sqlalchemy.dialects.postgresql import INT4RANGE
 Base = declarative_base()
 
 
-class coloc(Base):
-   """scripts/insrt_coloc.py"""
-   __tablename__ = "coloc"
-   __table_args__ = (UniqueConstraint('chrom', 'pos', 'alt', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', name='_coloc_uc'),)
-
-   id = Column('id', Integer, primary_key=True)
-   chrom = Column('chrom', SmallInteger, nullable=False)
-   pos = Column('pos', Integer, nullable=False)
-   rsid= Column('rsid', Integer, nullable=False)
-   ref = Column('ref', String(127), nullable=False)
-   alt = Column('alt', String(127), nullable=False)
-   pval = Column('gwas_pval', Float, nullable=False)
-   beta = Column('gwas_beta', Float, nullable=False)
-   eqtl_gene_id = Column('eqtl_gene_id', String(15), nullable=False)
-   gwas_id = Column('gwas_id', String(127), nullable=False)
-   eqtl_pval = Column('eqtl_pval', Float, nullable=False)
-   eqtl_beta = Column('eqtl_beta', Float, nullable=False)
-   eqtl_id = Column('eqtl_id', String(127), nullable=False)
-   pp_h4_abf = Column('pp_h4_abf', Float, nullable=False)
-   snp_pp_h4 = Column('snp_pp_h4', Float, nullable=False)
-   nsnps = Column('nsnps', SmallInteger, nullable=False)
-   coloc_variant_id = Column('coloc_variant_id', String(63), nullable=False)
-   coloc_region = Column('coloc_region', String(63), nullable=False)
-   pp_h3_abf = Column('pp_h3_abf', Float, nullable=False)
-   pp_h2_abf = Column('pp_h2_abf', Float, nullable=False)
-   pp_h1_abf = Column('pp_h1_abf', Float, nullable=False)
-   pp_h0_abf = Column('pp_h0_abf', Float, nullable=False)
-
-
 class pos19(Base):
    """scripts/insrt_pos19.py"""
    __tablename__ = "pos19"
@@ -73,21 +44,21 @@ class gwas_annot(Base):
    gwas_class = Column('gwas_class', String(127), nullable=False)
 
 
-class tophits(Base):
-   """scripts/tophits2db2.py"""
-   __tablename__ = "tophits"
-   __table_args__ = (UniqueConstraint('chrom', 'pos', 'gwas_id', name='_chrom_pos_uc'),)
+class eqtl_annot(Base):
+   """scripts/insrt_eqtl_annot.py"""
+   __tablename__ = "eqtl_annot"
 
-   id = Column('id', String(63), primary_key=True)
-   chrom = Column('chrom', SmallInteger, nullable=False)
-   pos = Column('pos', Integer, nullable=False)
-   rsid= Column('rsid', Integer, nullable=False)
-   nea = Column('nea', String(255), nullable=False)
-   ea = Column('ea', String(255), nullable=False)
-   pval = Column('pval', String(32), nullable=False)  # comma sep list of pvals
-   beta = Column('beta', String(32), nullable=False)  # comma sep list of betas
-   se = Column('se', Float, nullable=False)
-   eaf = Column('eaf', Float, nullable=True)
-   n = Column('n', Integer, nullable=False)
-   gwas_id = Column('gwas_id', String(63), primary_key=True)
-   pos19 = Column('pos19', Integer, nullable=False)
+   eqtl_id = Column('eqtl_id', String(63), primary_key=True)
+   study = Column('study', String(63), nullable=False)
+   qtl_group = Column('qtl_group', String(63), nullable=False)
+   tissue_ontology_id = Column('tissue_ontology_id', String(63), nullable=False)
+   tissue_ontology_term = Column('tissue_ontology_term', String(63), nullable=False)
+   tissue_label = Column('tissue_label', String(63), nullable=False)
+   condition_label = Column('condition_label', String(63), nullable=False)
+   quant_method = Column('quant_method', String(63), nullable=False)
+   sample_size = Column('sample_size', String(63), nullable=False)
+   ftp_path = Column('ftp_path', String(255), nullable=False)
+   etissue_class = Column('etissue_class', String(63), nullable=False)
+   ref = Column('ref', String(63), nullable=False)
+
+

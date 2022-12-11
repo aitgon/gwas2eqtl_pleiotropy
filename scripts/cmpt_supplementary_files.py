@@ -5,6 +5,7 @@ import pandas
 import pathlib
 import sys
 
+
 #%%
 help_cmd_str = "todo"
 try:
@@ -87,10 +88,10 @@ etissue_df = pandas.read_csv(tsv_path, sep="\t", header=0)
 count_per_rsid_df = pandas.merge(gwas_df, egene_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
 count_per_rsid_df = pandas.merge(count_per_rsid_df, etissue_df, on=['chrom', 'cytoband', 'pos', 'rsid'])
 count_per_rsid_df = count_per_rsid_df[['chrom', 'cytoband', 'pos', 'rsid', 'gwas_class_count', 'gwas_class_lst', 'egene_count',
-               'egene_symbol_lst', 'etissue_label_count', 'etissue_class_lst', 'egene_lst']]
+               'eqtl_gene_symbol_lst', 'etissue_label_count', 'etissue_class_lst', 'egene_lst']]
 count_per_rsid_df.sort_values(['gwas_class_count', 'chrom', 'pos', 'rsid'], ascending=[False, True, True, True], inplace=True)
 count_per_rsid_df['gwas_class_lst'] = count_per_rsid_df['gwas_class_lst'].str.replace(',', ', ')
-count_per_rsid_df['egene_symbol_lst'] = count_per_rsid_df['egene_symbol_lst'].str.replace(',', ', ')
+count_per_rsid_df['eqtl_gene_symbol_lst'] = count_per_rsid_df['eqtl_gene_symbol_lst'].str.replace(',', ', ')
 count_per_rsid_df['etissue_class_lst'] = count_per_rsid_df['etissue_class_lst'].str.replace(',', ', ')
 count_per_rsid_df['egene_lst'] = count_per_rsid_df['egene_lst'].str.replace(',', ', ')
 count_per_rsid_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
@@ -99,7 +100,7 @@ count_per_rsid_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header
 sheet_name = 'ST5'
 tsv_path = os.path.join(wdir_path, "cmpt_pleiotropic_regions.py/region_window_100000.tsv")
 count_per_region_df = pandas.read_csv(tsv_path, sep="\t", header=0)
-count_per_region_df['egene_symbol'] = None
+count_per_region_df['eqtl_gene_symbol'] = None
 count_per_region_df['etissue_class'] = None
 count_per_region_df['egene'] = None
 
@@ -107,9 +108,9 @@ for rowi, row in count_per_region_df.iterrows():
     chrom = row['chrom']
     start = row['start']
     end = row['end']
-    egene_symbol_ser = count_per_rsid_df.query('chrom=={chrom} & pos>={start} & pos<={end}'.format(chrom=chrom, start=start, end=end))['egene_symbol_lst']
-    egene_symbol_lst = sorted(egene_symbol_ser.str.split(', ').explode().unique())
-    count_per_region_df.loc[rowi, 'egene_symbol'] = ', '.join(egene_symbol_lst)
+    eqtl_gene_symbol_ser = count_per_rsid_df.query('chrom=={chrom} & pos>={start} & pos<={end}'.format(chrom=chrom, start=start, end=end))['eqtl_gene_symbol_lst']
+    eqtl_gene_symbol_lst = sorted(eqtl_gene_symbol_ser.str.split(', ').explode().unique())
+    count_per_region_df.loc[rowi, 'eqtl_gene_symbol'] = ', '.join(eqtl_gene_symbol_lst)
     #
     egene_ser = count_per_rsid_df.query('chrom=={chrom} & pos>={start} & pos<={end}'.format(chrom=chrom, start=start, end=end))['egene_lst']
     egene_lst = sorted(egene_ser.str.split(', ').explode().unique())
@@ -121,22 +122,10 @@ for rowi, row in count_per_region_df.iterrows():
 
 count_per_region_df.sort_values(by=['gwas_class_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)
 count_per_region_df['gwas_class_lst'] = count_per_region_df['gwas_class_lst'].str.replace(',', ', ')
-count_per_region_df = count_per_region_df[['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_class_lst', 'egene_symbol', 'etissue_class', 'egene']]
+count_per_region_df = count_per_region_df[['chrom', 'cytoband', 'start', 'end', 'gwas_class_count', 'gwas_class_lst', 'eqtl_gene_symbol', 'etissue_class', 'egene']]
 count_per_region_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 
 #%%
 st_writer.sheets['Table descrip.'].activate()
 # st_writer.save()
 st_writer.close()
-
-# #%% ST3
-# sheet_counter = 3
-# sheet_name = 'ST{}'.format(sheet_counter)
-# tsv_path = os.path.join(wdir_path, "filter_h4.py/h4.tsv")
-# h4_annot_df = pandas.read_csv(tsv_path, sep="\t", header=0)
-# h4_xlsx_path = os.path.join(os.path.dirname(supp_tabl_xlsx_path), "ST{}_gwas2eqtl_h4.xlsx".format(sheet_counter))
-# writer_coloc_h4 = pandas.ExcelWriter(h4_xlsx_path, engine='xlsxwriter')
-# h4_annot_df.sort_values(by=h4_annot_df.columns.tolist(), inplace=True)
-# with pandas.ExcelWriter(h4_xlsx_path) as fout_h4_annot:
-#     h4_annot_df.to_excel(fout_h4_annot, sheet_name=sheet_name, index=False)
-# sheet_counter += 1

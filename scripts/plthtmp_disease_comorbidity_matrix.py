@@ -79,18 +79,20 @@ clustermap_args_dic['row_cluster'] = False
 clustermap_args_dic['col_cluster'] = False
 clustermap_args_dic['xticklabels'] = False
 
-clustermap_args_dic['yticklabels'] = annotation_df['trait'].tolist()
+clustermap_args_dic['yticklabels'] = [s[0:40] for s in annotation_df['trait'].tolist()]
 
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
+
 seaborn.set(font_scale=1)
 g.cax.set_visible(False)
-g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize = 6)
+g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=10)
+g.ax_heatmap.set(ylabel='Trait')
 
 for label in class_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
 l1 = g.ax_col_dendrogram.legend(title='Class', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=4, bbox_transform=gcf().transFigure)
 
-plt.subplots_adjust(top=1, right=0.8, bottom=0.05, left=-0.1)
+plt.subplots_adjust(top=1., right=0.6, bottom=0.05, left=-0.15)
 plt.savefig(htmp_disease_corr_png_path, dpi=600)
 plt.clf()
 plt.close()

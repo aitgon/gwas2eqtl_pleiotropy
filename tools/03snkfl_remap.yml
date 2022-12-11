@@ -1,5 +1,10 @@
+"""
+snakemake -j all -s tools/03snkfl_remap.yml --config max_gwas_class_count=4 outdir=out/7_7 public_data_dir=/home/gonzalez/Software/public/
+"""
+
 outdir = config['outdir']
 max_gwas_class_count = config['max_gwas_class_count']
+public_data_dir = config['public_data_dir']
 
 
 rule all_03snkfl_analysis_pleiotropy:
@@ -30,7 +35,7 @@ rule pltbox_remaptf_per_rsid:
 
 rule intrsct_remap_nr_gwas_categories:
     input:
-        os.path.join(public_data_dir_path, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
     output:
@@ -40,3 +45,12 @@ rule intrsct_remap_nr_gwas_categories:
     threads: (max_gwas_class_count-1)
     shell:
         "python scripts/intrsct_remapnr_gwas_classes.py {params.max_gwas_class_count} {threads} {input[0]} {input[1]} {input[2]} {output[0]}"
+
+rule dwnld_remap_nr:
+    output:
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
+    params:
+        url="remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -nc -q -r {params.url} -P {params.public_data_dir}"""

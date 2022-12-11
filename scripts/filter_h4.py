@@ -50,7 +50,7 @@ Logger.info("End select colocalization joins")
 
 h4_df = pandas.DataFrame(result_lst)
 h4_df.drop(['id'], inplace=True, axis=1)
-h4_df.rename({'symbol': 'egene_symbol'}, axis=1, inplace=True)
+h4_df.rename({'symbol': 'eqtl_gene_symbol'}, axis=1, inplace=True)
 
 #%% Download eQTL annotations
 eqtl_info_df = EBIeQTLinfo().df

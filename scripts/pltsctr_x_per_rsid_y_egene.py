@@ -52,7 +52,7 @@ ylim = [0, 20]
 c = 'blue'
 ylabel = "eGene count"
 
-count_per_rsid_df['pos'] = count_per_rsid_df['pos'].astype('int')
+count_per_rsid_df['pos38'] = count_per_rsid_df['pos38'].astype('int')
 
 #%% Loop over regions
 pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_class_count'] >= max_gwas_class_count, ['chrom', 'start', 'end', 'gwas_class_count']]
@@ -63,12 +63,12 @@ for rowi, row in pleiotropic_regions_df.iterrows():
     gwas_class_count = row['gwas_class_count']
     count_per_rsid_gwas_region_df = count_per_rsid_df.copy()
     count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['chrom'] == chrom, ]
-    count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['pos'] >= start, ]
-    count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['pos'] <= end, ]
+    count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['pos38'] >= start, ]
+    count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['pos38'] <= end, ]
 
     #%%
-    # plt.scatter(count_per_rsid_gwas_region_df['pos'] / 1000000, count_per_rsid_gwas_region_df[count_col_name], c='blue', s=scatter_dot_size)
-    seaborn.scatterplot(x=count_per_rsid_gwas_region_df['pos'] / 1000000, y=count_per_rsid_gwas_region_df[count_col_name], s=scatter_dot_size)
+    # plt.scatter(count_per_rsid_gwas_region_df['pos38'] / 1000000, count_per_rsid_gwas_region_df[count_col_name], c='blue', s=scatter_dot_size)
+    seaborn.scatterplot(x=count_per_rsid_gwas_region_df['pos38'] / 1000000, y=count_per_rsid_gwas_region_df[count_col_name], s=scatter_dot_size)
 
     plt.grid(True)
     plt.title(title, fontsize=label_fontsize)

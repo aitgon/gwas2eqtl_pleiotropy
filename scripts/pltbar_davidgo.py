@@ -29,8 +29,8 @@ from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 
 help_cmd_str = "todo"
 try:
-    davidgo_tsv_path = sys.argv[1]
-    max_gwas_class_count = int(sys.argv[2])
+    max_gwas_class_count = int(sys.argv[1])
+    davidgo_tsv_path = sys.argv[2]
     davidgo_png_path = sys.argv[3]
     if len(sys.argv) > 4:
         print("""Two many arguments!
@@ -45,17 +45,12 @@ outdir_path = os.path.dirname(davidgo_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-
-
-#%%
-# p_back_str = ",".join(fin_df.loc[fin_df['gwas_class_count'] == 1, "egene_lst"].str.split(',').explode().unique())
-
-# for pleio_i in range(2, 2+1):
 for pleio_i in range(2, max_gwas_class_count+1):
     Logger.info(pleio_i)
     davidgo_pleio_tsv_path = davidgo_tsv_path + "_{}.tsv".format(pleio_i)
     fin_df = pandas.read_csv(davidgo_pleio_tsv_path, sep="\t", header=0)
     fin_df = fin_df.loc[fin_df['Bonferroni'] <= 0.05]
+
     if fin_df.shape[0] == 0:
         continue
     fin_df['Term'] = fin_df['Term'].str.split('~', expand=True)[1]
@@ -72,17 +67,9 @@ for pleio_i in range(2, max_gwas_class_count+1):
     # plt.xticks(fontsize=tick_fontsize, rotation=0)
     plt.ylabel("GO term", fontsize=label_fontsize)
     plt.yticks(fontsize=tick_fontsize)
-    # plt.legend(loc="upper left")
-    # patches = [matplotlib.patches.Patch(color=seaborn.color_palette()[i], label=t)
-    #            for i, t in
-    #            enumerate(label for label in fin_df['Term'].tolist())]
-    # plt.legend(handles=patches, loc="upper left")
-    # plt.legend(handles=patches, bbox_to_anchor=(0., 1.02, 1., .102), loc=3,
-    #           ncol=1, mode="expand", borderaxespad=0.)
 
     plt.tight_layout()
     png_path = davidgo_png_path + "_{}.png".format(pleio_i)
     Logger.info(png_path)
     plt.savefig(png_path, dpi=dpi)
     plt.close()
-

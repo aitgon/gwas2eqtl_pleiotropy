@@ -20,9 +20,9 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    h4_annot_tsv_path = sys.argv[1]
-    count_per_rsid_gwas_tsv_path = sys.argv[2]
-    max_gwas_class_count = int(sys.argv[3])
+    max_gwas_class_count = int(sys.argv[1])
+    url = sys.argv[2]
+    count_per_rsid_gwas_tsv_path = sys.argv[3]
     eqtl_beta_png_path = sys.argv[4]
     gwas_beta_png_path = sys.argv[5]
     if len(sys.argv) > 6:
@@ -34,10 +34,10 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-#%% Input1
-if not os.path.isfile(h4_annot_tsv_path):
-    print("input file does not exit")
-    sys.exit(1)
+# #%% Input1
+# if not os.path.isfile(h4_annot_tsv_path):
+#     print("input file does not exit")
+#     sys.exit(1)
 
 #%% Input2
 if not os.path.isfile(count_per_rsid_gwas_tsv_path):
@@ -48,17 +48,20 @@ outdir_path = os.path.dirname(eqtl_beta_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
+# h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
+sql = 'select * from colocpleio'
+# columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
+h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 
 #%%
 count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 gwas_class_count_max_int = count_per_rsid_gwas_df['gwas_class_count'].max()
 
 #%%
-m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
+m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid'])
 
 #%%
-m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pval', 'egene', 'eqtl_id', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_class_count']].drop_duplicates()
+m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pval', 'eqtl_gene_id', 'eqtl_id', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_class_count']].drop_duplicates()
 
 #%%
 m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] = max_gwas_class_count
@@ -79,7 +82,7 @@ title = "eQTL effect size"
 ylabel = "Absolute beta mean"
 
 #%%
-y_df = m_df[['gwas_class_count', 'rsid', 'egene', 'eqtl_id', y]].drop_duplicates()
+y_df = m_df[['gwas_class_count', 'rsid', 'eqtl_gene_id', 'eqtl_id', y]].drop_duplicates()
 y_df[y] = y_df[y].abs()
 
 #%%

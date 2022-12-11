@@ -1,3 +1,7 @@
+"""
+snakemake -j all -s tools/05snkfl_supplementary_and_web.yml --config etissue_class_ods=config/etissue_class.ods max_gwas_class_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/7_7
+"""
+
 gwas_class_ods = config['gwas_class_ods']
 outdir = config['outdir']
 etissue_class_ods = config['etissue_class_ods']
@@ -42,8 +46,6 @@ rule create_table_supplementary:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
-        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
-#        os.path.join(outdir, "cmpt_explained_loci.py/aggregated.tsv"),
     output:
         os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
     params:

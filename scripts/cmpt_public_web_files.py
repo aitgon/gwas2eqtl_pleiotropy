@@ -58,7 +58,7 @@ with engine.connect() as con:
                 continue
             coloc_df = pandas.DataFrame(result_lst)
             coloc_df.drop(['id'], inplace=True, axis=1)
-            coloc_df.rename({'symbol': 'egene_symbol'}, axis=1, inplace=True)
+            coloc_df.rename({'symbol': 'eqtl_gene_symbol'}, axis=1, inplace=True)
             col_name1_lst = []
             col_name1_lst.append('chrom')
             col_name1_lst.append('pos')
@@ -69,7 +69,7 @@ with engine.connect() as con:
             col_name1_lst.append('gwas_trait')
             col_name1_lst.append('gwas_class')
             col_name1_lst.append('gwas_beta')
-            col_name1_lst.append('egene_symbol')
+            col_name1_lst.append('eqtl_gene_symbol')
             col_name1_lst.append('eqtl_beta')
             col_name1_lst.append('eqtl_id')
             col_name1_lst.append('egene')

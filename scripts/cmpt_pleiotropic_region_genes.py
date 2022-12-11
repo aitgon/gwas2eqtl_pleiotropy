@@ -20,7 +20,7 @@ while variant_to_region_df.shape[0] > 0:
     print(region_pleio_count)
     egene_pleio_lst = sorted(variant_to_region_df.loc[variant_to_region_df['gwas_class_count'] == region_pleio_count, 'egene'].unique().tolist())
     # try:
-    egene_symbol_pleio_lst = sorted(variant_to_region_df.loc[(variant_to_region_df['gwas_class_count'] == region_pleio_count) & (~variant_to_region_df['egene_symbol'].isna()), 'egene_symbol'].unique().tolist())
+    eqtl_gene_symbol_pleio_lst = sorted(variant_to_region_df.loc[(variant_to_region_df['gwas_class_count'] == region_pleio_count) & (~variant_to_region_df['eqtl_gene_symbol'].isna()), 'eqtl_gene_symbol'].unique().tolist())
     # except:
     #     import pdb; pdb.set_trace()
     variant_to_region_df.drop(variant_to_region_df.loc[variant_to_region_df['gwas_class_count'] == region_pleio_count].index, inplace=True)
@@ -29,7 +29,7 @@ while variant_to_region_df.shape[0] > 0:
     with open(pleio_egene_txt_path, "w") as output:
         for item in egene_pleio_lst:
             output.write(item + "\n")
-    pleio_egene_symbol_txt_path = os.path.join(outdir_path, "egene_symbol_pleio_{}.txt".format(region_pleio_count))
-    with open(pleio_egene_symbol_txt_path, "w") as output:
-        for item in egene_symbol_pleio_lst:
+    pleio_eqtl_gene_symbol_txt_path = os.path.join(outdir_path, "eqtl_gene_symbol_pleio_{}.txt".format(region_pleio_count))
+    with open(pleio_eqtl_gene_symbol_txt_path, "w") as output:
+        for item in eqtl_gene_symbol_pleio_lst:
             output.write(item + "\n")
