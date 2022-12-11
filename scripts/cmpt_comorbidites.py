@@ -27,9 +27,9 @@ except IndexError:
 outdir_path = os.path.dirname(disease_corr_tsv_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-sql = 'select * from coloc'
+sql = 'select * from colocpleio'
 columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
-d_df = pandas.read_sql(sql, con=url, index_col='id', columns=columns).drop_duplicates()
+d_df = pandas.read_sql(sql, con=url, columns=columns).drop_duplicates()
 
 #%%
 # Logger.info("Reading {}".format(annotated_tsv_path))

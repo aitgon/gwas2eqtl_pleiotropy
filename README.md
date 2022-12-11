@@ -18,44 +18,21 @@ cd container
 docker compose --project-name gwas2eqtl_pleiotropy_prod --env-file env_prod -f docker-compose.yml up --build --force-recreate --remove-orphans -d
 ~~~
 
-Dev - 5433 - One chrom
-
-~~~
-snakemake -p -j all -s snkfl_all.yml --config postgres_port=5433 outdir=out/5433 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process CHR=22 --resources db=1
-~~~
-
-Dev - 5433 - All chrom
-
-~~~
-snakemake -p -j all -s snkfl_all.yml --config postgres_port=5433 outdir=out/5433 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process CHR=22 --resources db=1
-~~~
-
-Prod - 5434 - One chrom
-
-~~~
-snakemake -p -j all -s snkfl_all.yml --config postgres_port=5434 outdir=out/5434 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process CHR=22 --resources db=1
-~~~
-
-Prod - 5434 - All chrom
-
-~~~
-snakemake -p -j all -s snkfl_all.yml --config postgres_port=5434 outdir=out/5434 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process --resources db=1
-~~~
-
 Insert to db
 
 ~~~
-python scripts/insrt_cytoband.py postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl
-python scripts/insrt_geneid2symbol.py postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl
-python scripts/insrt_gwas_annot.py postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl config/gwas418.ods
-python scripts/insrt_pos19.py postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl
+python scripts/insrt_cytoband.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
+python scripts/insrt_geneid2symbol.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
+python scripts/insrt_gwas_annot.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/gwas418.ods
+python scripts/insrt_pos19.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
+python scripts/insrt_etissue_class.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/etissue_class.ods
 ~~~
 
 From the "gwas2eqtl" project
 
 ~~~
-python scripts/insrt_coloc.py 0.7 0.7  postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl config/gwas418.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
-python workflow/scripts/insrt_tophits.py postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl config/gwas418.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
+python workflow/scripts/insrt_coloc.py 0.75 0.5  postgresql://postgres:postgres@0.0.0.0:5435/postgres config/gwas418.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
+python workflow/scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/gwas418.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
 ~~~
 
 Create "colocweb" view
@@ -164,7 +141,7 @@ SELECT DISTINCT co.chrom,
 Then snakemake is run with:
 
 ~~~
-snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/publicsnakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public
+snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/publicsnakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_5 public_data_dir=/home/gonzalez/Software/public
 ~~~
 
 ~~~
