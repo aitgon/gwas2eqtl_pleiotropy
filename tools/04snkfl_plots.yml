@@ -28,7 +28,7 @@ rule all_plots:
 
 rule pltbar_pleiotropic_regions_cumsum:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
     output:
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
     shell:
@@ -108,7 +108,7 @@ rule pltbar_x_per_variant_etissue_y_egene:
 
 rule plt_scttr_count_per_rsid_etissue:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
@@ -123,7 +123,7 @@ rule plt_scttr_count_per_rsid_etissue:
 
 rule plt_scttr_count_per_rsid_egene:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
@@ -138,7 +138,7 @@ rule plt_scttr_count_per_rsid_egene:
 
 rule plt_scttr_count_per_rsid_gwas:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),

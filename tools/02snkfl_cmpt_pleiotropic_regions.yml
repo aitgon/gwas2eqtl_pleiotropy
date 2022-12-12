@@ -1,5 +1,5 @@
 """
-snakemake -j all -s tools/02snkfl_cmpt_pleiotropic_regions.yml --config etissue_class_ods=config/etissue_class.ods max_gwas_class_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/7_7
+snakemake -j all -s tools/02snkfl_cmpt_pleiotropic_regions.yml --config etissue_class_ods=config/etissue_class.ods max_gwas_class_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50
 """
 
 etissue_class_ods = config['etissue_class_ods']
@@ -7,18 +7,18 @@ outdir = config['outdir']
 max_gwas_class_count = config['max_gwas_class_count']
 db_url = config['db_url']
 
-wlength_lst = [1000, 3000, 10000, 30000]
+wlength_lst = [1000, 3000, 10000, 30000, 100000]
 
 rule all_02snkfl_cmpt_pleiotropic_regions:
     input:
-        expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window.tsv"), wlength=wlength_lst)
+        expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.tsv"), wlength=wlength_lst)
 
-rule cmpt_pleiotropic_regions:
+rule cmpt_pleiotropic_regions_wlength:
     input:
         gwas=os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window.tsv"),
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist.png"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist_{wlength}.png"),
     params: wlength="{wlength}"
     shell:
         "python scripts/cmpt_pleiotropic_regions.py {params.wlength} {input.gwas} {output[0]} {output[1]}"

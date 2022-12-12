@@ -30,7 +30,7 @@ tabular=ccrrp{0.4\textwidth},
 head,
 table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfseries Variant & \bfseries GWAS Categories\\\hline,
 ]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv}% specify your coloumns here
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv}% specify your coloumns here
 %\hline
 %
 \vspace{15pt}
@@ -51,15 +51,15 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfser
 %\hline
 \csvreader[
 separator=tab,
-tabular=ccrrp{0.45\textwidth},
+tabular=p{0.09\textwidth}p{0.09\textwidth}p{0.09\textwidth}p{0.09\textwidth}p{0.09\textwidth}p{0.09\textwidth}p{0.45\textwidth},
 head,
-table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries End & \bfseries GWAS Categories\\\hline,
-]{\floatRelativePath/cmpt_pleiotropic_regions.py/region_window_ms_100000.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv & \csvcolv}% specify your coloumns here
+table head=\bfseries Chrom & \bfseries Pleio RSID & \bfseries Pleio pos. & \bfseries Cytob. & \bfseries Start & \bfseries End & \bfseries GWAS Categories\\\hline,
+]{\floatRelativePath/cmpt_pleiotropic_regions.py/100000/region_window_ms.tsv}{}% use head of csv as column names
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi\ & \csvcolvii}% specify your coloumns here
 %\hline
 %
 \vspace{15pt}
-\caption{Pleiotropic regions involving 5 or more GWAS classes. Genomic coordinates are given for the hg38 assembly.}\label{tab:pleiotropic_regions}
+\caption{Pleiotropic regions involving 7 or more GWAS classes. These regions were built with a sliding window of 1e5 nt. Genomic coordinates are given for the hg38 assembly.}\label{tab:pleiotropic_regions}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,23 +68,23 @@ table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Start & \bfseries E
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-\begin{figure}[!tbp]
-\centering
-%
-\begin{subfigure}[]{.33\textwidth}
-\textbf{a}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png}
-\end{subfigure}
-%
-\begin{subfigure}[]{.33\textwidth}
-\textbf{b}
-\\
-\includegraphics[width=\textwidth]{\floatRelativePath/pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png}
-\end{subfigure}
-%
-\caption{Analysis of pleiotropic regions. \textbf{a}, Length distribution of pleiotropic regions. \textbf{b}, Cumulative sum ordered inversely with the number of GWAS classes.} \label{fig:pleiotropy_region_distribution}
-\end{figure}
+% \begin{figure}[!tbp]
+% \centering
+% %
+% \begin{subfigure}[]{.33\textwidth}
+% \textbf{a}
+% \\
+% \includegraphics[width=\textwidth]{\floatRelativePath/cmpt_pleiotropic_regions.py/regions_100000_length_hist.png}
+% \end{subfigure}
+% %
+% \begin{subfigure}[]{.33\textwidth}
+% \textbf{b}
+% \\
+% \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png}
+% \end{subfigure}
+% %
+% \caption{Analysis of pleiotropic regions. \textbf{a}, Length distribution of pleiotropic regions. \textbf{b}, Cumulative sum ordered inversely with the number of GWAS classes.} \label{fig:pleiotropy_region_distribution}
+% \end{figure}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%

@@ -1,3 +1,5 @@
+import pdb
+
 from gwas2eqtl_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 from matplotlib import pyplot as plt
@@ -31,6 +33,8 @@ except IndexError:
 outdir_path = os.path.dirname(pleio_tsv_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
+manuscript_pleio_cutoff = 7
+
 #%%
 df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
@@ -46,7 +50,7 @@ df['gwas_class_count'] = 1
 # window = 3e4
 # window = 1e5
 for chrom in sorted(df['chrom'].unique()):
-    print(chrom)
+    # print(chrom)
     df_pleio_chrom = df.loc[df['chrom'] == chrom].copy()
     df_pleio_chrom['dist'] = [0] + [df_pleio_chrom.iloc[i]['pos38'] - df_pleio_chrom.iloc[i - 1]['pos38'] for i in range(1, df_pleio_chrom.shape[0])]
     region_pleio = 0
@@ -77,16 +81,19 @@ pleio_df['start'] = pleio_df['start'].astype(int)
 pleio_df['end'] = pleio_df['end'].astype(int)
 
 
-pleio_df['name'] = None
+pleio_df['pleio_rsid'] = None
+pleio_df['pleio_pos38'] = None
+# pleio_df['name'] = None
 for i, row in pleio_df.iterrows():
     start = row['start']
     end = row['end']
-    variant_lead = (df.loc[(df['pos38'] >= start) & (df['pos38'] <= end)]).head(1)
-    region_name = \
-    (variant_lead['cytoband'] + "_" + variant_lead['pos38'].astype(str) + "_" + variant_lead['rsid']).values[0]
-    pleio_df.loc[i, 'name'] = region_name
+    variant_pleio = (df.loc[(df['pos38'] >= start) & (df['pos38'] <= end)]).head(1)
+    # region_name = \
+    # (variant_lead['cytoband'] + "_" + variant_lead['pos38'].astype(str) + "_" + variant_lead['rsid']).values[0]
+    pleio_df.loc[i, 'pleio_rsid'] = variant_pleio['rsid'].values[0]
+    pleio_df.loc[i, 'pleio_pos38'] = variant_pleio['pos38'].values[0]
 
-pleio_df = pleio_df[['chrom', 'start', 'end', 'cytoband', 'rsid', 'name', 'gwas_class_count', 'gwas_class_lst']]
+pleio_df = pleio_df[['chrom', 'start', 'end', 'cytoband', 'pleio_rsid', 'pleio_pos38', 'gwas_class_count', 'gwas_class_lst']]
 pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
 
@@ -133,31 +140,39 @@ pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 # df.sort_values(['gwas_class_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)
 # df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 #
-# #%##############
-# #%% GWAS region pleiotropy for MS
-# regions_pleio_ms_df = df.copy()
-# regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_class_count', 'chrom', 'start', 'gwas_class_lst'], ascending=[False, True, True, True])
+#%##############
+#%% GWAS region pleiotropy for MS
+# import pdb; pdb.set_trace()
+regions_pleio_ms_df = pleio_df.copy()
+
+regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_class_count', 'chrom', 'start'], ascending=[False, True, True])
 # regions_pleio_ms_df = regions_pleio_ms_df.drop_duplicates('cytoband', keep='first')
-# regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_class_count'] >= 6]
-# # format output
-# regions_pleio_ms_df.drop(['gwas_class_count'], inplace=True, axis=1)
-# regions_pleio_ms_df['gwas_class_lst'] = regions_pleio_ms_df['gwas_class_lst'].str.replace(',', ', ')
-# regions_pleio_ms_df['start'] = regions_pleio_ms_df['start'].apply(lambda x : '{0:,}'.format(x))
-# regions_pleio_ms_df['end'] = regions_pleio_ms_df['end'].apply(lambda x : '{0:,}'.format(x))
-# tsv_path = os.path.join(outdir_path, "region_window_ms_100000.tsv")
-# regions_pleio_ms_df.to_csv(tsv_path, sep="\t", index=False)
-#
-# #%% bed
-# df['start'] = df['start'] - 1
-# df['chrom'] = 'chr' + df['chrom'].astype('str')
-# df.drop(['cytoband'], axis=1, inplace=True)
-# pleio_bed_path = os.path.join(outdir_path, "region_window_{}.bed".format(region_bin))
-# df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
+regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_class_count'] >= manuscript_pleio_cutoff]
+
+# format output
+# import pdb; pdb.set_trace()
+regions_pleio_ms_df.drop(['gwas_class_count'], inplace=True, axis=1)
+regions_pleio_ms_df['gwas_class_lst'] = regions_pleio_ms_df['gwas_class_lst'].apply(lambda x: ', '.join(x))
+regions_pleio_ms_df['start'] = regions_pleio_ms_df['start'].apply(lambda x: '{0:,}'.format(x))
+regions_pleio_ms_df['end'] = regions_pleio_ms_df['end'].apply(lambda x: '{0:,}'.format(x))
+regions_pleio_ms_df['cytoband'] = regions_pleio_ms_df['cytoband'].apply(lambda x: ', '.join(x) )
+regions_pleio_ms_df = regions_pleio_ms_df[['chrom', 'pleio_rsid', 'pleio_pos38', 'cytoband', 'start', 'end', 'gwas_class_lst']]
+regions_pleio_ms_df.rename({'gwas_class_lst': 'GWAS classes'}, axis=1, inplace=True)
+
+tsv_path = os.path.join(outdir_path, "region_window_ms.tsv")
+regions_pleio_ms_df.to_csv(tsv_path, sep="\t", index=False)
+
+#%% bed
+pleio_df['start'] = pleio_df['start'] - 1
+pleio_df['chrom'] = 'chr' + pleio_df['chrom'].astype('str')
+pleio_df.drop(['cytoband'], axis=1, inplace=True)
+pleio_bed_path = os.path.join(outdir_path, "region_window_{}.bed".format(region_bin))
+pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
 #
 # #%########################################### bed files
 # for count_pleio in range(1, 6):
 #     region_pleio_i_bed_path = os.path.join(outdir_path, "region_window_{}_pleio_{}.bed".format(region_bin, count_pleio))
-#     region_pleio_i_df = df.loc[df['gwas_class_count'] == count_pleio,]
+#     region_pleio_i_df = pleio_df.loc[pleio_df['gwas_class_count'] == count_pleio,]
 #     region_pleio_i_df.to_csv(region_pleio_i_bed_path, sep="\t", index=False, header=False)
 
 #############################################
