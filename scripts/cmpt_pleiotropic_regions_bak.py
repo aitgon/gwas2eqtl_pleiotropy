@@ -34,6 +34,50 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 #%%
 df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
+
+#%%
+
+# #%% Do it forward
+# df.sort_values(by=['chrom', 'pos38'], inplace=True, ascending=[True, True])
+# more_than_1 = 0
+# chrom_pleio_latest = 0
+# pos_pleio_latest = -99999
+# df['region_pleio_fwd'] = False
+#
+# #%%
+# for i, row in df.iterrows():
+#     chrom = row['chrom']
+#     pos38 = row['pos38']
+#     # import pdb; pdb.set_trace()
+#     if row['gwas_class_count'] > 1:
+#         chrom_pleio_latest = chrom
+#         pos_pleio_latest = pos38
+#     if chrom == chrom_pleio_latest and (pos38 - pos_pleio_latest) <= region_bin:
+#         df.loc[i, 'region_pleio_fwd'] = True
+#
+# #%% Do it reversed
+# df.sort_values(by=['chrom', 'pos38'], inplace=True, ascending=[True, False])
+# more_than_1 = 0
+# chrom_pleio_latest = 0
+# pos_pleio_latest = 999999999
+# df['region_pleio_rev'] = False
+#
+# #%%
+# for i, row in df.iterrows():
+#     chrom = row['chrom']
+#     pos38 = row['pos38']
+#     df.loc[i, 'region_pleio'] = False
+#     if row['gwas_class_count'] > 1:  # update pos_pleio_latest
+#         chrom_pleio_latest = chrom
+#         pos_pleio_latest = pos38
+#     if chrom == chrom_pleio_latest and (pos_pleio_latest - pos38) <= region_bin:
+#         if df.loc[i, 'region_pleio_fwd']:
+#             df.loc[i, 'region_pleio'] = True
+
+#%%
+# df.drop(['region_pleio_fwd', 'region_pleio_rev'], axis=1, inplace=True)
+# df.sort_values(by=['chrom', 'pos38'], inplace=True, ascending=[True, True])
+
 pleio_df = pandas.DataFrame()
 df.sort_values(['chrom', 'pos38'], inplace=True)
 df['gwas_class_lst'] = df['gwas_class_lst'].str.split(',')
@@ -69,25 +113,14 @@ for chrom in sorted(df['chrom'].unique()):
 
 pleio_df.reset_index(inplace=True)
 pleio_df = pleio_df.sort_values(['gwas_class_count', 'chrom', 'pos38'], ascending=[False, True, True])
-
-df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
-
 pleio_df[['start', 'end']] = pleio_df['pos38'].str.split('-', expand=True)
 pleio_df['start'] = pleio_df['start'].astype(int)
 pleio_df['end'] = pleio_df['end'].astype(int)
 
+import pdb; pdb.set_trace()
 
-pleio_df['name'] = None
-for i, row in pleio_df.iterrows():
-    start = row['start']
-    end = row['end']
-    variant_lead = (df.loc[(df['pos38'] >= start) & (df['pos38'] <= end)]).head(1)
-    region_name = \
-    (variant_lead['cytoband'] + "_" + variant_lead['pos38'].astype(str) + "_" + variant_lead['rsid']).values[0]
-    pleio_df.loc[i, 'name'] = region_name
-
-pleio_df = pleio_df[['chrom', 'start', 'end', 'cytoband', 'rsid', 'name', 'gwas_class_count', 'gwas_class_lst']]
-pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
+# pleio_df = pleio_df[['chrom', 'start', 'end', 'cytoband', 'rsid', 'gwas_class_count', 'gwas_class_lst']]
+# pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
 
 # ########################

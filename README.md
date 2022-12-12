@@ -141,7 +141,7 @@ SELECT DISTINCT co.chrom,
 Then snakemake is run with:
 
 ~~~
-snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/publicsnakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_5 public_data_dir=/home/gonzalez/Software/public
+snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/publicsnakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_5 public_data_dir=/home/gonzalez/Software/public
 ~~~
 
 ~~~

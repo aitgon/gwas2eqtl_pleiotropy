@@ -7,20 +7,21 @@ outdir = config['outdir']
 max_gwas_class_count = config['max_gwas_class_count']
 db_url = config['db_url']
 
+wlength_lst = [1000, 3000, 10000, 30000]
 
 rule all_02snkfl_cmpt_pleiotropic_regions:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
+        expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window.tsv"), wlength=wlength_lst)
 
 rule cmpt_pleiotropic_regions:
     input:
         gwas=os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.bed"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist.png"),
+    params: wlength="{wlength}"
     shell:
-        "python scripts/cmpt_pleiotropic_regions.py {input.gwas} {output[0]} {output[1]}"
+        "python scripts/cmpt_pleiotropic_regions.py {params.wlength} {input.gwas} {output[0]} {output[1]}"
 
 rule count_per_rsid:
     output:
