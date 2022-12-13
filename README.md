@@ -145,7 +145,7 @@ snakemake -p -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL}
 ~~~
 
 ~~~
-export david_email=aitor.gonzalez@inserm.fr; snakemake --cores all -p -d ${PWD} -s tools/snkfl_vep.yml --config coloc_tsv_gz=../gwas2eqtl/out/gwas420/coloc_gwas418.tsv.gz outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000 etissue_class_ods=config/etissue_class.ods max_gwas_class_count=5 gwas_class_ods=config/gwas418.ods public_data_dir=${HOME}/Software/public david_email=${david_email}
+snakemake --cores all -p -d ${PWD} -s tools/snkfl_vep.yml --config outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 max_gwas_class_count=5 db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres
 ~~~
 
 # MS

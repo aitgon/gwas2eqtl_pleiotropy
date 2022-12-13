@@ -42,6 +42,7 @@ in_df.loc[in_df['pfdr5perc'] <= 5.00e-02, 'signif'] = '*'
 in_df.loc[in_df['pfdr5perc'] <= 1.00e-02, 'signif'] = '**'
 in_df.loc[in_df['pfdr5perc'] <= 1.00e-03, 'signif'] = '***'
 in_df.loc[in_df['pfdr5perc'] <= 1.00e-04, 'signif'] = '****'
+in_df.loc[in_df['gwas_class_count'] == max_gwas_class_count, 'gwas_class_count'] = '≥{}'.format(max_gwas_class_count)
 
 ################################################################################
 # Draw a nested barplot by species and sex
