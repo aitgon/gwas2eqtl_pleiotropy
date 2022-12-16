@@ -9,7 +9,7 @@ gwas_class_ods = config['gwas_class_ods']
 max_gwas_class_count = config['max_gwas_class_count']
 outdir = config['outdir']
 public_data_dir = config['public_data_dir']
-
+snp_pp_h4 = config['snp_pp_h4']
 
 rule all:
     input:

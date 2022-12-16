@@ -17,13 +17,13 @@ import subprocess
 #%%
 help_cmd_str = "todo"
 try:
-    # h4_annot_tsv_path = sys.argv[1]
-    max_gwas_class_count = int(sys.argv[1])
-    url = sys.argv[2]
-    count_per_rsid_gwas_tsv_path = sys.argv[3]
-    vep_input_path = sys.argv[4]
-    vep_output_path = sys.argv[5]
-    if len(sys.argv) > 6:
+    snp_pp_h4 = float(sys.argv[1])
+    max_gwas_class_count = int(sys.argv[2])
+    url = sys.argv[3]
+    count_per_rsid_gwas_tsv_path = sys.argv[4]
+    vep_input_path = sys.argv[5]
+    vep_output_path = sys.argv[6]
+    if len(sys.argv) > 7:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -36,8 +36,7 @@ outdir_path = os.path.dirname(vep_input_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-# h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
-sql = 'select * from colocpleio'
+sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 # columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
 h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 

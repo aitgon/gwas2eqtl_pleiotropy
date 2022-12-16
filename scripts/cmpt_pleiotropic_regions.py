@@ -1,10 +1,9 @@
-import pdb
 
 from gwas2eqtl_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 from matplotlib import pyplot as plt
 
-import math
+
 import os
 import pandas
 import pathlib

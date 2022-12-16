@@ -5,6 +5,7 @@ snakemake -j all -s tools/snkfl_vep.yml --config max_gwas_class_count=4 db_url='
 outdir = config['outdir']
 max_gwas_class_count = config['max_gwas_class_count']
 db_url = config['db_url']
+snp_pp_h4 = config['snp_pp_h4']
 
 rule all_03snkfl_analysis_vep:
     input:
@@ -39,7 +40,8 @@ rule cmpt_vep:
         os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
         os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
     params:
+        snp_pp_h4=snp_pp_h4,
         max_gwas_class_count=(max_gwas_class_count-2),
         db_url=db_url,
     shell:
-        "python scripts/cmpt_vep.py {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
+        "python scripts/cmpt_vep.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"

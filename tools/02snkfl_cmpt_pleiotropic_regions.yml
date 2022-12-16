@@ -6,6 +6,7 @@ etissue_class_ods = config['etissue_class_ods']
 outdir = config['outdir']
 max_gwas_class_count = config['max_gwas_class_count']
 db_url = config['db_url']
+snp_pp_h4 = config['snp_pp_h4']
 
 wlength_lst = [1000, 3000, 10000, 30000, 100000]
 
@@ -32,7 +33,8 @@ rule count_per_rsid:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
     params:
+        snp_pp_h4=snp_pp_h4,
         max_gwas_class_count=max_gwas_class_count,
         db_url=db_url,
     shell:
-        "python scripts/cmpt_count_per_rsid.py {params.max_gwas_class_count} {params.db_url} {output[0]} {output[5]}"
+        "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {output[0]} {output[5]}"

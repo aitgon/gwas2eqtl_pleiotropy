@@ -6,7 +6,6 @@ outdir = config['outdir']
 max_gwas_class_count = config['max_gwas_class_count']
 public_data_dir = config['public_data_dir']
 
-
 rule all_03snkfl_analysis_pleiotropy:
     input:
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
