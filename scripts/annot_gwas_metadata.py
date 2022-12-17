@@ -53,7 +53,7 @@ Logger.info("Downloading {}".format(url))
 gwassinfo_json_path = URL(url).download()
 metadata_df.rename({'manual_class': 'class'}, axis=1, inplace=True)
 
-#%% no select
+#%%
 metadata_mrcieu_df = pandas.read_json(gwassinfo_json_path).T
 metadata_mrcieu_df = metadata_mrcieu_df[['id', 'sample_size', 'ncontrol', 'ncase', 'consortium', 'pmid', 'year', 'author', 'nsnp']]
 gwasinfo_tsv_path = os.path.join(outdir_path, "gwasinfo.tsv")

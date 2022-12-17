@@ -10,11 +10,12 @@ from matplotlib import pyplot as plt
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_class_count = int(sys.argv[1])
-    url = sys.argv[2]
-    count_per_rsid_gwas_tsv_path = sys.argv[3]
-    count_per_rsid_gwas_egene_etissue_corr_png = sys.argv[4]
-    if len(sys.argv) > 5:
+    snp_pp_h4 = float(sys.argv[1])
+    max_gwas_class_count = int(sys.argv[2])
+    url = sys.argv[3]
+    count_per_rsid_gwas_tsv_path = sys.argv[4]
+    count_per_rsid_gwas_egene_etissue_corr_png = sys.argv[5]
+    if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -26,8 +27,7 @@ except IndexError:
 outdir_path = os.path.dirname(count_per_rsid_gwas_tsv_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-# import pdb; pdb.set_trace()
-sql = 'select * from colocpleio'
+sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 columns = ['chrom', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_class']
 coloc_df = pandas.read_sql(sql, con=url, columns=columns).drop_duplicates()
 

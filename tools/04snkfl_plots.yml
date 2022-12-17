@@ -67,10 +67,11 @@ rule pltbox_logpval_per_gwas_cat:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/eqtl.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/gwas.png"),
     params:
+        snp_pp_h4=snp_pp_h4,
         max_gwas_class_count=max_gwas_class_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_gwas_cat_y_logpval.py {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
+        "python scripts/pltbar_x_per_gwas_cat_y_logpval.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
 
 rule plt_violin_beta_per_gwas_cat:
     input:
@@ -79,10 +80,11 @@ rule plt_violin_beta_per_gwas_cat:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
     params:
+        snp_pp_h4=snp_pp_h4,
         max_gwas_class_count=max_gwas_class_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_gwas_cat_y_beta.py {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
+        "python scripts/pltbar_x_per_gwas_cat_y_beta.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
 
 rule pltbar_x_per_variant_egene_y_etissue:
     input:
@@ -90,10 +92,11 @@ rule pltbar_x_per_variant_egene_y_etissue:
     output:
         os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
     params:
+        snp_pp_h4=snp_pp_h4,
         max_gwas_class_count=max_gwas_class_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_variant_egene_y_etissue.py {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]}"
+        "python scripts/pltbar_x_per_variant_egene_y_etissue.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]}"
 
 rule pltbar_x_per_variant_etissue_y_egene:
     input:
@@ -101,10 +104,11 @@ rule pltbar_x_per_variant_etissue_y_egene:
     output:
         os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
     params:
+        snp_pp_h4=snp_pp_h4,
         max_gwas_class_count=max_gwas_class_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_variant_etissue_y_egene.py {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]}"
+        "python scripts/pltbar_x_per_variant_etissue_y_egene.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]}"
 
 rule plt_scttr_count_per_rsid_etissue:
     input:
