@@ -6,7 +6,6 @@ mysql-connector-python
 numpy
 odfpy
 pandas
-pybedtools
 requests
 seaborn
 snakemake
