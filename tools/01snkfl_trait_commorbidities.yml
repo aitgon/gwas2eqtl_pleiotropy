@@ -9,14 +9,14 @@ snp_pp_h4 = config['snp_pp_h4']
 
 rule all_gwas_classes:
     input:
-        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
+        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.svg"),
 
 rule plthtmp_disease_comorbidity_matrix:
     input:
         os.path.join(outdir, "cmpt_comorbidites.py/corr.tsv"),
         os.path.join(outdir, "annot_gwas_metadata.py/gwas_metadata.ods"),
     output:
-        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
+        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.svg"),
     shell:
         "python scripts/plthtmp_disease_comorbidity_matrix.py {input[0]} {input[1]} {output[0]}"
 

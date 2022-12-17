@@ -1,3 +1,7 @@
+**Changes in Version 0.1.3 (Dec. 17, 2022)**
+
+- ENH Compatible with gwas2eqtl v 0.1.3
+
 **Changes in Version 0.1.2 (Nov. 12, 2022)**
 
 - ENH updated manuscript

@@ -10,12 +10,13 @@ max_gwas_class_count = config['max_gwas_class_count']
 outdir = config['outdir']
 public_data_dir = config['public_data_dir']
 snp_pp_h4 = config['snp_pp_h4']
+david_email = config['david_email']
 
 rule all:
     input:
         #
         # 01snkfl_trait_commorbidities.yml
-        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.png"),
+        os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.svg"),
         #
         # 02snkfl_cmpt_pleiotropic_regions.yml
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),

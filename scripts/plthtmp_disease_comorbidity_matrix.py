@@ -66,17 +66,16 @@ subset1_colors = pandas.Series(class_labels, index=annotation_df.index).map(subs
 network_node_colors = pandas.DataFrame(subset1_colors)
 
 #%%
-# import pdb; pdb.set_trace()
-linkage = hc.linkage(sp.distance.squareform(dis_df), method='average')
+# linkage = hc.linkage(sp.distance.squareform(dis_df), method='average')
 
 clustermap_args_dic = {}
 clustermap_args_dic['cmap'] = 'mako'
 clustermap_args_dic['row_colors'] = network_node_colors
 clustermap_args_dic['col_colors'] = network_node_colors
-clustermap_args_dic['row_linkage'] = linkage
-clustermap_args_dic['col_linkage'] = linkage
-clustermap_args_dic['row_cluster'] = False
-clustermap_args_dic['col_cluster'] = False
+# clustermap_args_dic['row_linkage'] = linkage
+# clustermap_args_dic['col_linkage'] = linkage
+# clustermap_args_dic['row_cluster'] = True
+# clustermap_args_dic['col_cluster'] = True
 clustermap_args_dic['xticklabels'] = False
 
 clustermap_args_dic['yticklabels'] = [s[0:40] for s in annotation_df['trait'].tolist()]
@@ -84,10 +83,10 @@ clustermap_args_dic['yticklabels'] = [s[0:40] for s in annotation_df['trait'].to
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
 
 seaborn.set(font_scale=1)
-g.cax.set_visible(False)
+g.cax.set_visible(True)
 g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=10)
 g.ax_heatmap.set(ylabel='Trait')
-
+#
 for label in class_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
 l1 = g.ax_col_dendrogram.legend(title='Class', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=4, bbox_transform=gcf().transFigure)
