@@ -55,7 +55,7 @@ gwas_class_count_max_int = count_per_rsid_gwas_df['gwas_class_count'].max()
 
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
-m_df = m_df[['chrom', 'pos', 'rsid', 'egene', 'egene_symbol', 'gwas_class_count']].drop_duplicates()
+m_df = m_df[['chrom', 'pos', 'rsid', 'egene', 'eqtl_gene_symbol', 'gwas_class_count']].drop_duplicates()
 
 
 #%%

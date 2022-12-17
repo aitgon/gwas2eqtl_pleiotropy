@@ -1,4 +1,4 @@
-import shlex
+mport shlex
 import subprocess
 import sys
 
@@ -47,7 +47,7 @@ with open(intersect_bed_path, 'w') as fout:
 #%%
 df = pandas.read_csv(intersect_bed_path, sep='\t', header=None)
 df = df[[0, 1, 2, 3, 11, 12]].drop_duplicates()
-df.columns = ['chrom', 'start', 'end', 'gwas_class_count', 'egene', 'egene_symbol']
+df.columns = ['chrom', 'start', 'end', 'gwas_class_count', 'egene', 'eqtl_gene_symbol']
 df['start'] = df['start'] + 1
 df['length'] = df['end'] - df['start']
 df.loc[df['length']==0, 'length']=1

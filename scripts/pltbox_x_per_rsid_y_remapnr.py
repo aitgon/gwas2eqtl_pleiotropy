@@ -37,7 +37,6 @@ flank = 10
 cat_df = pandas.DataFrame({'gwas_class_count': [], 'rsid': [], 'tf': []})
 for pleio in range(1, max_gwas_class_count+1):
     pleio_path = remap_nr_pleio_1_flank_10_hg38_bed.replace('pleio_1', 'pleio_{}'.format(pleio))
-    # import pdb; pdb.set_trace()
     if os.stat(pleio_path).st_size == 0:
         continue
     df = pandas.read_csv(pleio_path, sep="\t", header=None)
@@ -47,6 +46,9 @@ for pleio in range(1, max_gwas_class_count+1):
     df = df.groupby('rsid').count().reset_index()
     df['gwas_class_count'] = pleio
     cat_df = pandas.concat([cat_df, df], axis=0)
+
+describe_tsv_path = os.path.join(os.path.dirname(tf_flank_10_png), "describe.tsv")
+cat_df.groupby('gwas_class_count')['tf'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
 order = [str(int(x)) for x in cat_df['gwas_class_count'].unique()]

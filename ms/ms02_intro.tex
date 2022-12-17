@@ -1,48 +1,47 @@
 \section*{Introduction}\label{sec:introduction}
 
 % GWAS in general
-Genome-wide association studies (GWAS) aim at associating common genetic variants with common traits.
+Genome-wide association studies (GWAS) have allowed the association of frequent genetic variants with common traits.
 %
-The number of GWAS has rapidly increased since the first GWAS around 15 years ago and has result in comprehensive databases such as the NHGRI-EBI GWAS Catalog \citep{2007...Nature,2018.Parkinson.Buniello}.
+The number of GWAS has rapidly increased since the first GWAS around 15 years ago and has resulted in comprehensive databases such as the NHGRI-EBI GWAS Catalog \citep{2007burton.barret,2018.Parkinson.Buniello}.
 %
-For instance, in 2019, NHGRI-EBI GWAS Catalog contained 5687 GWAS comprising 71673 variant-trait associations from 3567 publications \citep{2018.Parkinson.Buniello}.
+For instance, in 2019, NHGRI-EBI GWAS Catalog contained 5687 GWAS comprising 71,673 variant-trait associations from 3,567 publications \citep{2018.Parkinson.Buniello}.
 
-% Short comings of GWAS
-However interpretation of the GWAS variants is complicate because of three reasons \citep{2020.Trynka.CanoGamez}.
+% Shortcomings of GWAS
+However, the interpretation of the GWAS variants is complex because of three reasons \citep{2020.Trynka.CanoGamez}.
 %
-First, identification of the causaul variant is difficult because of linkage disequilibrium.
+First, the causal variant is hidden in regions with high linkage disequilibrium (LD).
 %
-Second, GWAS do not provide hints regarding the tissues involved in the phenotypes.
+Second, GWAS do not inform about the genes, cell types, and tissues involved in the phenotypes.
 %
-Third, GWAS variants affect often non-coding regions.
+Third, GWAS variants often affect non-coding regions, where the molecular cause is more difficult to define.
 
-% Intererest of studying GWAS
-Expression QTLs (eQTLs) are variants that change the expression of a given gene in a tissue or cell type.
+% Interest in studying GWAS
+Expression QTLs (eQTLs) are variants that change the expression of a given gene in a cell type or tissue.
 %
-eQTLs share some of the same shortcommings as GWAS variants such as inability to identify the causal variant.
+eQTLs share some of the same shortcomings as GWAS variants such as the inability to identify the causal variant in regions of high LD.
 %
-Moreover the distribution of eQTLs and GWAS variants in the genome have been suggested to be different because of negative selection \citep{2022.Pritchard.Mostafavi}.
+Moreover, the distribution of eQTLs and GWAS variants in the genome are different because of negative selection \citep{2022.Pritchard.Mostafavi}.
+%
+Nevertheless, eQTLs are still important data sets to interpret GWAS variants, because they provide gene regulatory information about the eQTL genes and cell types and tissues \citep{2021.Li.Mu}.
+%
+%In addition, colocalization analysis can help prioritize causal variants.
 
-Nevertheless eQTLs are still important data sets to interprete GWAS variants, because they provide gene regulatory information about the eQTL genes (eGenes) and tissues (eTissues) \citep{2021.Li.Mu.GenomeBiology.impactcelltype}.
+Many GWAS have allowed observing that many genetic variants are involved in different traits \citep{2019.Posthuma.Watanabe}.
 %
-In addition colocalization analysis can help prioritize causal variants.
+In that work, the analyzed loci covered 60\% of the genome, and 90\% of these loci contained associations across different traits \citep{2019.Posthuma.Watanabe}.
+%
+They also found that pleiotropic genes and variants were less tissue-specific in terms of gene expression and eQTLs \citep{2019.Posthuma.Watanabe}.
+%
+However, the question of tissue specificity of eQTLs has been analyzed in different works with conflicting conclusions \citep{2021.Li.Mu,2018.Vijayanand.Schmiedel,2017gtex.nature}.
+%
+In addition, the mechanism of pleiotropy is not well understood yet.
 
-The large number of GWAS has allowed to observe that many genetic variants are involved in different traits \citep{2019.Posthuma.Watanabe}.
+In this work, I have taken advantage of two large eQTL and GWAS data sets from the EBI eQTL Catalogue and the IEU OpenGWAS, respectively,
+to develop a global colocalization analysis based on 127 eQTL studies and 418 GWAS across many cell types, tissues, and phenotypes.
 %
-In that work, the analysed loci covered 60\% of the genome and 90\% of these loci contained associations across different traits \citep{2019.Posthuma.Watanabe}.
+I have used these eQTL/GWAS variants to investigate mechanisms of pleiotropic gene regulatory variants.
 %
-They also found that pleiotropic genes and variants where less tissue specific in terms of gene expression and eQTLs \citep{2019.Posthuma.Watanabe}.
+These eQTL/GWAS variants might be a useful resource for the annotation and prioritization of frequent variants.
 %
-However the question of tissue specificity of eQTLs has been analyzed in different works with conflicting conclusions \citep{2021.Li.Mu.GenomeBiology.impactcelltype,2018.Vijayanand.Schmiedel.Cell.ImpactGeneticPolymorphisms,2017...Nature}.
-%
-In addition, no hypothesis have been directly tested and proposed for the cause of pleiotropy.
-
-In this work, I have taken advantage of two well formatted eQTL and GWAS data sets from the EBI eQTL Catalogue and the IEU OpenGWAS to develop a global colocalization analysis that includes 127 eQTL studies and 413 GWAS.
-%
-I have developed a pipeline that takes these data and carries out colocalization analysis between all pairs of eQTLs studies and GWAS
-%
-I have used the colocalization results to investigate how gene regulatory properties of pleiotropic variant contribute to trait pleiotropy.
-%
-These results are also helpful to prioritize the causal variants and to interpret the molecular mechanisms of functional variants.
-%
-Therefore I provide the whole results as an interactive table that can be easily browsed by biologists.
+Therefore, I have developed an easy-to-use web application to expose these colocalization data.

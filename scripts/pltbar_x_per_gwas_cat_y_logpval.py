@@ -19,12 +19,13 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    h4_annot_tsv_path = sys.argv[1]
-    count_per_rsid_gwas_tsv_path = sys.argv[2]
-    max_gwas_class_count = int(sys.argv[3])
-    eqtl_pval_png_path = sys.argv[4]
-    gwas_pval_png_path = sys.argv[5]
-    if len(sys.argv) > 6:
+    snp_pp_h4 = float(sys.argv[1])
+    max_gwas_class_count = int(sys.argv[2])
+    url = sys.argv[3]
+    count_per_rsid_gwas_tsv_path = sys.argv[4]
+    eqtl_pval_png_path = sys.argv[5]
+    gwas_pval_png_path = sys.argv[6]
+    if len(sys.argv) > 7:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -33,12 +34,8 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-#%% Input1
-if not os.path.isfile(h4_annot_tsv_path):
-    print("input file does not exit")
-    sys.exit(1)
 
-#%% Input2
+#%%
 if not os.path.isfile(count_per_rsid_gwas_tsv_path):
     print("input file does not exit")
     sys.exit(1)
@@ -47,17 +44,18 @@ outdir_path = os.path.dirname(eqtl_pval_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
+sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
+h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 
 #%%
 count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 gwas_class_count_max_int = count_per_rsid_gwas_df['gwas_class_count'].max()
 
 #%%
-m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
+m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid'])
 
 #%%
-m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pval', 'egene', 'eqtl_id', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_class_count']].drop_duplicates()
+m_df = m_df[['rsid', 'eqtl_beta', 'eqtl_pval', 'eqtl_gene_id', 'eqtl_id', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_class_count']].drop_duplicates()
 m_df['eqtl_logpval'] = m_df['eqtl_pval'].apply(lambda x: -numpy.log(x))
 m_df['gwas_logpval'] = m_df['gwas_pval'].apply(lambda x: -numpy.log(x))
 
@@ -77,7 +75,7 @@ title = "eQTL significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%%
-plt_df = m_df[['gwas_class_count', 'rsid', 'egene', 'eqtl_id', y]].drop_duplicates()
+plt_df = m_df[['gwas_class_count', 'rsid', 'eqtl_gene_id', 'eqtl_id', y]].drop_duplicates()
 plt_df[y] = plt_df[y].abs()
 
 #%%

@@ -9,6 +9,6 @@ setup(
     description='Description of my package',
     packages=find_packages(),
     install_requires=['crossmap', 'matplotlib', 'mysql-client', 'mysql-connector-python', 'odfpy', 'pandas',
-                      'pybedtools', 'requests', 'seaborn', 'snakemake', 'sqlalchemy', 'statannot', 'statsmodels',
+                      'requests', 'seaborn', 'snakemake', 'sqlalchemy', 'statannot', 'statsmodels',
                       'termcolor'],
 )

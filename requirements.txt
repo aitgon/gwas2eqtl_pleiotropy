@@ -6,7 +6,6 @@ mysql-connector-python
 numpy
 odfpy
 pandas
-pybedtools
 requests
 seaborn
 snakemake
@@ -16,3 +15,5 @@ statsmodels
 suds
 termcolor
 xlsxwriter
+psycopg2-binary==2.9.5
+sqlalchemy-utils

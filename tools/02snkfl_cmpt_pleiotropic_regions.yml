@@ -1,84 +1,40 @@
-coloc_tsv_gz = config['coloc_tsv_gz']
+"""
+snakemake -j all -s tools/02snkfl_cmpt_pleiotropic_regions.yml --config etissue_class_ods=config/etissue_class.ods max_gwas_class_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50
+"""
+
 etissue_class_ods = config['etissue_class_ods']
 outdir = config['outdir']
 max_gwas_class_count = config['max_gwas_class_count']
+db_url = config['db_url']
+snp_pp_h4 = config['snp_pp_h4']
 
+wlength_lst = [1000, 3000, 10000, 30000, 100000]
 
 rule all_02snkfl_cmpt_pleiotropic_regions:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
-        os.path.join(outdir, "filter_h4.py/h4.tsv.bgz.tbi"),
+        expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.tsv"), wlength=wlength_lst)
 
-rule cmpt_pleiotropic_regions:
+rule cmpt_pleiotropic_regions_wlength:
     input:
         gwas=os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
     output:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.tsv"),
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/regions_100000_length_hist.png"),
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/region_window_100000.bed"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist_{wlength}.png"),
+    params: wlength="{wlength}"
     shell:
-        "python scripts/cmpt_pleiotropic_regions.py {input.gwas} {output[0]} {output[1]}"
+        "python scripts/cmpt_pleiotropic_regions.py {params.wlength} {input.gwas} {output[0]} {output[1]}"
 
 rule count_per_rsid:
-    input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
     output:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
     params:
-        max_gwas_class_count=max_gwas_class_count
+        snp_pp_h4=snp_pp_h4,
+        max_gwas_class_count=max_gwas_class_count,
+        db_url=db_url,
     shell:
-        "python scripts/cmpt_count_per_rsid.py {input[0]} {params.max_gwas_class_count} {output[0]}"
-
-rule index:
-    input:
-        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
-    output:
-        os.path.join(outdir, "filter_h4.py/h4.tsv.bgz"),
-        os.path.join(outdir, "filter_h4.py/h4.tsv.bgz.tbi"),
-    shell:
-        "gunzip -c {input[0]} |tail -n+2 |bgzip >{output[0]} && tabix -s1 -b2 -e2 {output[0]}"
-
-rule filter_h4:
-    input:
-        etissue_class_ods,
-        os.path.join(outdir, "db/db_annotated.txt"),
-    output:
-        os.path.join(outdir, "filter_h4.py/h4.tsv.gz"),
-    params:
-        url_db='sqlite:///{}/db/db.sqlite'.format(outdir),
-    shell:
-        "python scripts/filter_h4.py {params[0]} {input[0]} {output[0]}"
-
-rule annotate:
-    input:
-        os.path.join(outdir, "db/db_imported.txt"),
-        os.path.join(outdir, "annot_gwas_metadata.py/gwas_metadata.ods"),
-        etissue_class_ods,
-    output:
-        os.path.join(outdir, "db/db_annotated.txt"),
-    params:
-        url_db='sqlite:///{}/db/db.sqlite'.format(outdir),
-    resources: db=1
-    shell:
-        """python scripts/annotate_db.py {params[0]} {input[1]} {input[2]} {output[0]}
-        touch {output[0]}"""
-
-rule import_sqlite:
-    input:
-        coloc_tsv_gz,
-    output:
-        os.path.join(outdir, "db/db_imported.txt"),
-    params:
-        outdir=outdir,
-        url_db=os.path.join(outdir, 'db/db.sqlite'),
-    resources: db=1
-    shell:
-        """rm -f {params.outdir}/db/db.sqlite
-mkdir -p {params.outdir}/db
-gunzip -c {input[0]} |sqlite3 -csv -separator $'\t' {params.url_db} '.import --skip 0 /dev/stdin colocimport'
-touch {output[0]}
-"""
+        "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {output[0]} {output[5]}"

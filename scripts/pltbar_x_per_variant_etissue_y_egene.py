@@ -19,11 +19,12 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    h4_annot_tsv_path = sys.argv[1]
-    count_per_rsid_gwas_tsv_path = sys.argv[2]
-    max_gwas_class_count = int(sys.argv[3])
-    vlnplt_png_path = sys.argv[4]
-    if len(sys.argv) > 5:
+    snp_pp_h4 = float(sys.argv[1])
+    max_gwas_class_count = int(sys.argv[2])
+    url = sys.argv[3]
+    count_per_rsid_gwas_tsv_path = sys.argv[4]
+    vlnplt_png_path = sys.argv[5]
+    if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -32,12 +33,7 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-#%% Input1
-if not os.path.isfile(h4_annot_tsv_path):
-    print("input file does not exit")
-    sys.exit(1)
-
-#%% Input2
+#%%
 if not os.path.isfile(count_per_rsid_gwas_tsv_path):
     print("input file does not exit")
     sys.exit(1)
@@ -46,21 +42,22 @@ outdir_path = os.path.dirname(vlnplt_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-h4_df = pandas.read_csv(h4_annot_tsv_path, sep="\t")
+sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
+h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 
 #%%
 count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 gwas_class_count_max_int = count_per_rsid_gwas_df['gwas_class_count'].max()
 
 #%%
-m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos', 'rsid'])
+m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid'])
 
 # %%
-sel_cols = ['rsid', 'egene', 'etissue_class']  # egene per variant-etissuecategory
+sel_cols = ['rsid', 'eqtl_gene_id', 'etissue_class']  # eqtl_gene_id per variant-etissuecategory
 
 #%%
-m2_df = m_df[['chrom', 'pos'] + sel_cols + ['egene_symbol', 'gwas_class_count']].drop_duplicates()
-m2_df.sort_values(['gwas_class_count', 'chrom', 'pos'], inplace=True, ascending=[False, True, True])
+m2_df = m_df[['chrom', 'pos38'] + sel_cols + ['eqtl_gene_symbol', 'gwas_class_count']].drop_duplicates()
+m2_df.sort_values(['gwas_class_count', 'chrom', 'pos38'], inplace=True, ascending=[False, True, True])
 tsv_path = os.path.join(outdir_path, 'variants2egenes.tsv')
 m2_df.to_csv(tsv_path, header=True, index=False, sep='\t')
 
@@ -70,8 +67,7 @@ m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] =
 
 #%% keep unique rsid-etissue_class pairs with max. gwas category
 m_df.sort_values('gwas_class_count', ascending=False, inplace=True)
-# import pdb; pdb.set_trace()
-m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_class', 'egene'], keep='first')
+m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_class', 'eqtl_gene_id'], keep='first')
 
 #%%
 m_df = m_df.groupby(['rsid', 'etissue_class', 'gwas_class_count']).count()
@@ -86,9 +82,9 @@ m_df.groupby('gwas_class_count')['egene_count'].apply(lambda x: x.describe()).to
 order = [str(x) for x in range(1, max(m_df['gwas_class_count'].unique())+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-title = "eGenes per variant-eTissue"
-xlabel = "GWAS category count"
-ylabel = "eGene count mean"
+title = "Genes per eQTL-tissue"
+xlabel = "GWAS class count"
+ylabel = "Gene count mean"
 y = "egene_count"
 x = "gwas_class_count"
 

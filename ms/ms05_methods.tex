@@ -1,0 +1,52 @@
+\section*{Methods}\label{sec:methods}
+
+\subsection*{Data sets and data exploration}
+
+I used these data sets here: eQTLs from the eQTL Catalogue \citep{2021.Alasoo.Kerimov}, GWAS variants from the IEU OpenGWAS project \citep{2021.Marcora.Lyon}, chromatin immunoprecipitation (ChIP) transcription factors peaks from the ReMap database \citep{2021.Ballester.Hammal}, and UCSC annotation data.
+%
+I explore the data using the UCSC browser (\url{http://genome.ucsc.edu}) \citep{2021.Kent.Lee}, and OMIM database (\url{https://omim.org/}).
+%
+Colocalization and analysis pipelines were implemented with Snakemake (Supplementary Figure S1) .
+
+\subsection*{Colocalization}
+
+Full association data were downloaded from OpenGWAS and converted to hg38 coordinates using Picard and Crossmap \citep{2021.Marcora.Lyon,Picard2019toolkit,2013.Wang.Zhao}.
+%
+Top hit variants from the corresponding GWAS were download based on p-value threshold 0.8, clumping parameter r$^2$=0.1 and a 1 Mb clumping window.
+%
+eQTL and GWAS variants in a total window with diameter 1 Mb around the top hits variants.
+%
+Missing minor allele frequency variants (MAF) were retrieved from the European population in the 1000 genome database \citep{2015.Abecasis.Auton}.
+%
+Variants were kept if MAF was strictly between 0 and 1, the variants were not duplicated and there was no missing data.
+%
+Colocalization between eQTL and GWAS variants was tested using the "coloc.abf" function of CRAN coloc for each window, each eQTL sample and each GWAS.
+%
+The colocalization and analysis pipelines can be found here: \url{https://github.com/aitgon/gwas2eqtl} and \url{https://github.com/aitgon/gwas2eqtl_pleiotropy}.
+
+\subsection*{Definition of pleiotropic regions}
+
+To define pleiotropic regions, I included "pleiotropic" variants defining as having more than 2 categories as long as the distance between the two "pleiotropic" variants is less than 100 000 bp.
+%
+Then the number of GWAS categories in Supplementary table TODO is given by the number of different variant categories in the region.
+
+\subsection*{Characterization of regulatory QTLs}
+
+\section*{Code availability}
+
+The eQTL/GWAS variant colocalization pipeline code is available at this repository: \url{https://github.com/aitgon/gwas2eqtl}.
+%
+The analysis pipeline of the eQTL/GWAS colocalization data and the source code of this manuscript is available at this repository: \url{https://github.com/aitgon/gwas2eqtl_pleiotropy}.
+
+\section*{Data availability}
+
+The raw colocalization data before filtering in a single file is available at this URL: \url{https://osf.io/hvmje}.
+%
+A website to access colocalization variants with PP.H4.abf $\geq$ 0.5 is available at this URL: TODO.
+
+\section*{Acknowledgements}
+
+Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
+%
+I thank Sandrine Marquet, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and L\'eopoldine Lecerf for a preliminary version of the pipeline developed during her internship.
+
