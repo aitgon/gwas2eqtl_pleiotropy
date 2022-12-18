@@ -1,13 +1,15 @@
+import math
 import os
 import pandas
 import pathlib
 import sys
 import seaborn
+
 from gwas2eqtl_pleiotropy.Logger import Logger
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, dpi
 from matplotlib import pyplot as plt
-import scipy.spatial as sp, scipy.cluster.hierarchy as hc
 from matplotlib.pyplot import gcf
+from sqlalchemy import create_engine
 
 #%%
 seaborn.set_theme(**seaborn_theme_dic)
@@ -17,10 +19,11 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    disease_corr_tsv_path = sys.argv[1]
-    gwas_metadata_ods_path = sys.argv[2]
-    htmp_disease_corr_png_path = sys.argv[3]
-    if len(sys.argv) > 4:
+    sa_url = sys.argv[1]  # annotate
+    disease_corr_tsv_path = sys.argv[2]
+    gwas_metadata_ods_path = sys.argv[3]
+    htmp_disease_corr_png_path = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -40,9 +43,9 @@ corr_df = corr_df.loc[corr_df.sum(axis=1) > 0, ]
 corr_df = corr_df[corr_df.columns[corr_df.sum(axis=0) > 0]]
 
 #%% filter row with at least a number of correlations >0.1 larger than 30
-corr_count_ser = (corr_df.abs() >= 0.05).sum(axis=1)
+corr_count_ser = (corr_df.abs() >= 0.001).sum(axis=1)
 # max number of correlation 80
-corr_count_ser = corr_count_ser.sort_values(ascending=False)[0:50]
+corr_count_ser = corr_count_ser.sort_values(ascending=False)[0:100]
 # mask = (corr_df >= 0.04).sum(axis=1) > 10
 mask = corr_df.index.isin(corr_count_ser.index)
 corr_df = corr_df.loc[mask]
@@ -57,6 +60,19 @@ gwas_metadata_df = pandas.read_excel(gwas_metadata_ods_path, engine="odf", useco
 #%%
 gwas_metadata_df.set_index('gwas_id', inplace=True, verify_integrity=True)
 annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['trait', 'class_pleiotropy']]
+
+pmid_df = pandas.read_sql('select distinct gwas_id, pmid from colocpleio', con=create_engine(sa_url), index_col='gwas_id')
+pmid_df = pmid_df.loc[annotation_df.index.tolist(), ]
+# import pdb; pdb.set_trace()
+annotation_df = annotation_df.merge(pmid_df, left_index=True, right_index=True)
+annotation_df['pmid'].replace(math.nan, 0)
+annotation_df['pmid'] = annotation_df['pmid'].replace(math.nan, 0)
+annotation_df['pmid'] = annotation_df['pmid'].astype(int)
+annotation_df['trait'] = annotation_df['pmid'].astype(str) + '_' + annotation_df['trait']
+
+pmid_trait_mask = annotation_df['trait'].duplicated(keep='first')
+dis_df = dis_df.loc[pmid_trait_mask, pmid_trait_mask]
+annotation_df = annotation_df.loc[pmid_trait_mask, ]
 
 # Label 1
 class_labels = annotation_df["class_pleiotropy"]
@@ -79,11 +95,11 @@ clustermap_args_dic['col_colors'] = network_node_colors
 clustermap_args_dic['xticklabels'] = False
 
 clustermap_args_dic['yticklabels'] = [s[0:40] for s in annotation_df['trait'].tolist()]
-
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
 
 seaborn.set(font_scale=1)
-g.cax.set_visible(True)
+g.cax.set_visible(False)
+# import pdb; pdb.set_trace()
 g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=10)
 g.ax_heatmap.set(ylabel='Trait')
 #
@@ -91,7 +107,7 @@ for label in class_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
 l1 = g.ax_col_dendrogram.legend(title='Class', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=4, bbox_transform=gcf().transFigure)
 
-plt.subplots_adjust(top=1., right=0.6, bottom=0.05, left=-0.15)
+plt.subplots_adjust(top=1., right=0.6, bottom=0.05, left=0.)
 plt.savefig(htmp_disease_corr_png_path, dpi=600)
 plt.clf()
 plt.close()

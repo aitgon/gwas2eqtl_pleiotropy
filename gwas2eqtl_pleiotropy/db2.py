@@ -62,3 +62,29 @@ class eqtl_annot(Base):
    ref = Column('ref', String(63), nullable=False)
 
 
+class open_gwas_info(Base):
+   """scripts/insrt_open_gwas_info.py"""
+   __tablename__ = "open_gwas_info"
+
+   gwas_id = Column('gwas_id', String(127), primary_key=True)
+   note = Column('note', String(511), nullable=True)
+   group_name = Column('group_name', String(127), nullable=True)
+   mr = Column('mr', SmallInteger, nullable=True)
+   year = Column('year', SmallInteger, nullable=True)
+   author = Column('author', String(63), nullable=True)
+   sex = Column('sex', String(63), nullable=True)
+   pmid = Column('pmid', Integer, nullable=True)
+   population = Column('population', String(127), nullable=True)
+   unit = Column('unit', String(63), nullable=True)
+   sample_size = Column('sample_size', Integer, nullable=True)
+   nsnp = Column('nsnp', Integer, nullable=True)
+   build = Column('build', String(63), nullable=True)
+   trait = Column('trait', String(511), nullable=False)
+   category = Column('category', String(63), nullable=True)
+   subcategory = Column('subcategory', String(63), nullable=True)
+   ontology = Column('ontology', String(63), nullable=True)
+   consortium = Column('consortium', String(511), nullable=True)
+   ncontrol = Column('ncontrol', Integer, nullable=True)
+   ncase = Column('ncase', Integer, nullable=True)
+   priority = Column('priority', SmallInteger, nullable=True)
+   sd = Column('sd', Float, nullable=True)

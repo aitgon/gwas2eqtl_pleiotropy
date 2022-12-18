@@ -2,10 +2,10 @@
 
 \subsection*{Systematic colocalization of variants from genome-wide associations studies and expression quantitative trait loci}
 
-To better understand the role of gene regulatory variants for variant pleiotropy,
-I developed a pipeline to systematically colocalize variants from genome-wide associations
-studies (GWAS) and expression quantitative trait loci (eQTL) (Section Methods).
+To annotate traits from genome-wide associations studies (GWAS) with genes and tissues,
+I developed a pipeline that systematically colocalizes variants from GWAS and expression quantitative trait loci (eQTLs) (Section Methods).
 %
+% TODO Supplementary table 1 for newest pipeline
 127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many
 tissues and cell types \citep{2021.Alasoo.Kerimov} (Supplementary table 1).
 
@@ -19,46 +19,81 @@ samples from the EBI eQTL catalogue belong to the European population.
 The third criterion was to keep only well-defined medical or physiological
 conditions and exclude environmental traits such "employment status" or "self-reported" medical conditions.
 %
-The fourth criterion was to keep only GWAS studies with at least 10,000 subjects, 2,000 controls and 2,000 cases.
+The fourth criterion was to keep only GWAS with at least 10,000 subjects, 2,000 controls and 2,000 cases.
 %
+% TODO Supplementary table 2 for newest pipeline
 These filters resulted in 418 GWAS traits (Supplementary table 2).
 %
-Among these studies, there were 10,627 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary file).
-% sqlite
-% select count(distinct gwas_id) from tophits; 335
-% select count(*) from (select DISTINCT chrom, pos, rsid, nea, ea from tophits) limit 50; 10627
-% Supplementary file is db.sqlite that can go to OSF
+Among these studies, there were 8,580 clumped leading variants with a p-value below 5e-8 from 284 GWAS (Supplementary file).
+% select count(distinct gwas_id) from tophits; 284
+% select count(*) from (select DISTINCT chrom, pos, rsid, ea from tophits) as sel; 8,580
+% tophits goes to OSF
+% colocpleio goes to OSF
 
-My pipeline uncovered eQTL colocalizations for 3,849 or 36$\%$ of the leading GWAS variants with 2,348 eQTL genes and 127 eQTL samples.
-% sqlite
-% select count(distinct tophits.rsid) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8; 3849
-% alternative: select count(distinct tophits.rsid) from tophits, coloc where coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8; 3849
-% select count(distinct coloc.egene) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8
-% select count(distinct coloc.eqtl_id) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8
+My pipeline uncovered eQTL colocalizations for 5,484 or 64$\%$ of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples.
+% select count(*) from (select distinct tophits.rsid from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75) as sel; 5484
+% select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75) as sel;  7040
+% select count(*) from (select distinct eqtl_id from coloc where pp_h4_abf>=0.75) as sel;  127
 
 The largest classes of diseases by number of leading GWAS variants are autoimmune diseases (2107), cancer of breast (1976) and allergy (1321)
 %
 In these diseases, the percentages of variants with a colocalized eQTL are 37\%, 21\% and 42\% in these classe, respectively (Supplementary table ST3).
-%
+% TODO
+% Number of tophits rsid per GWAS class
+% select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits where tophits.gwas_id=gwas_annot.gwas_id group by gwas_class order by count desc;
+% Number of tophits rsid per GWAS class that is also preset in coloc table
+% select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits, coloc where tophits.gwas_id=gwas_annot.gwas_id and tophits.rsid=coloc.rsid group by gwas_class order by count desc;
+% OLD SQLITE
+% select count(distinct tophits.rsid),gwas_class from gwas_annot join tophits on tophits.gwas_id=gwas_annot.gwas_id group by gwas_class order by count desc limit 5;
 %/* count tophits.rsid group by gwas_annot.gwas_class where coloc.`PP.H4.abf`>=0.8*/
 %select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8 GROUP by gwas_annot.gwas_class;
 %/* count tophits.rsid group by gwas_annot.gwas_class*/
 %select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id GROUP by gwas_annot.gwas_class order by gwas_annot.gwas_class;
-%
-These results agree with previous work for autoimmune diseases \citep{2021.Li.Mu}.
+
+These results are consistent with previous colocalization analysis that found explained percentages of work for autoimmune diseases \citep{2021.Li.Mu}.....
+% TODO
+% Discuss 25% in Chun et al 2017, Nature Genetics
+% Discuss 41% (eQTL + sQTLs) in Mu et al 2021, Genome Biology
+% Discuss 23% in Chen et al 2016, Cell. Genetic Drivers of Epigenetic and Transcriptional Variation in Human Immune Cells
 
 This pipeline resulted in 103,551 variants from 246 GWAS that colocalized (PP.H4.abf$\geq$0.8) with at least one eQTL.
-%select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.8);
-%select count(*) from (select DISTINCT rsid FROM coloc where `PP.H4.abf`>=0.8);
+% TODO
+%select count(coloc.rsid) from (select DISTINCT gwas_id FROM coloc where pp_h4_abf>=0.8);
+%select count(*) from (select distinct rsid from coloc where pp_h4_abf>=0.8) as sel;
 %
-I have also developed a web application where I expose 116,736 variants from 246 GWAS that colocalize with at least one eQTL at a lower threshold value PP.H4.abf$\geq$0.5.
-% select count(*) from (select DISTINCT rsid FROM coloc where `PP.H4.abf`>=0.5);
-% select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.5);
+This might be a useful resource to annotate GWAS variants with genes and biosamples.
+Therefore I have developed a web application where I expose 116,736??? variants from 246??? GWAS that colocalize with at least one eQTL at a threshold value PP.H4.abf$\geq$0.75.
+% TODO
+% select count(*) from (select DISTINCT chrom,pos38,alt FROM colocweb) as sel;
+% select count(*) from (select DISTINCT gwas_id FROM coloc) as sel;
 
-%\subsection*{Pleiotropic variants colocalized with eQTLs}
-
+% Work with PP.H4.abf`>=0.75 and SNP.PP.H4>=0.5
 \subsection*{Traits classification based on the colocalized eQTL effect size}
 
+In the previous colocalization analysis, we found many eQTLs that are associated to very different traits.
+%
+To systematically identify pleiotropic eQTLs, I manually annotated the GWAS traits in different classes.
+
+% TODO Check if I aggregate different coloc windows or not.
+I also computed trait distances based on the spearman correlation of eQTL effect size for distinct eQTLs given by
+distinct chromosome, position, alternative allele, eQTL gene and eQTL biosample.
+%
+From this point on I defined colocalization with parameters PP.H4.abf>=0.75 and SNP.PP.H4>=0.5.
+%
+The argument for selecting a cutoff SNP.PP.H4>=0.5 is given below.
+%
+I plotted these trait distances as a hierarchically-clustered heatmap.
+%
+I plotted only trait classes with more than a minimum number of traits (Fig. \ref{fig:gwas_distance}).
+%
+Due to the large number of datasets, I have create a separate class for some cancers such as breast and skin.
+%
+This analysis shows a coherent clustering of traits belonging to autoimmune, circulatory system diseases and cancers (Fig. \ref{fig:gwas_distance}).
+%
+
+Nevertheless, we can observe weaker correlations between the breast cancer class and other types of cancers.
+
+% TODO create supplementary table 2
 I manually assigned the 418 GWAS to 96 classes to aggregate identical or similar traits (Supplementary table 2).
 %
 Then I verified whether GWAS traits cluster coherently within these classes.

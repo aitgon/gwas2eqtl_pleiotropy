@@ -20,6 +20,7 @@ python scripts/insrt_geneid2symbol.py postgresql://postgres:postgres@0.0.0.0:543
 python scripts/insrt_gwas_annot.py postgresql://postgres:postgres@0.0.0.0:5436/postgres config/gwas418.ods
 python scripts/insrt_pos19.py postgresql://postgres:postgres@0.0.0.0:5436/postgres
 python scripts/insrt_etissue_class.py postgresql://postgres:postgres@0.0.0.0:5436/postgres config/etissue_class.ods
+python scripts/insrt_open_gwas_info.py postgresql://postgres:postgres@0.0.0.0:5436/postgres ~/Software/publicp
 ~~~
 
 Create "colocweb" view

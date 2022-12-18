@@ -1,5 +1,3 @@
-import sqlalchemy
-
 from gwas2eqtl_pleiotropy.Logger import Logger
 from gwas2eqtl_pleiotropy.db2 import Base
 from sqlalchemy import create_engine
@@ -9,7 +7,6 @@ import sys
 
 
 #%%
-
 help_cmd_str = "todo"
 try:
     url = sys.argv[1]
