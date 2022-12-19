@@ -21,11 +21,13 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    count_per_rsid_gwas_tsv_path = sys.argv[1]
-    variant_pleio_1_flank_10_hg38_bed = sys.argv[2]
-    max_gwas_class_count = int(sys.argv[3])
-    remap_crm_png = sys.argv[4]
-    if len(sys.argv) > 5:
+    max_gwas_class_count = int(sys.argv[1])
+    count_per_rsid_gwas_tsv_path = sys.argv[2]
+    variant_pleio_1_flank_10_hg38_bed = sys.argv[3]
+    remap_crm_path = sys.argv[4]
+    remap_count_tsv = sys.argv[5]
+    remap_crm_png = sys.argv[6]
+    if len(sys.argv) > 7:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -40,7 +42,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 #%% input dir cmpt_count_per_rsid
 indir_path = os.path.dirname(count_per_rsid_gwas_tsv_path)
 
-remap_crm_path = os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz")
+# remap_crm_path = os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz")
 
 out_df_columns = ['pleio_count', 'pleio_n_crm_count', 'pleio_1_crm_count', 'pleio_n_nocrm_count', 'pleio_1_nocrm_count', 'oddsr', 'p']
 out_df = pandas.DataFrame(columns = out_df_columns)
@@ -56,7 +58,8 @@ for count_pleio in range(1, max_gwas_class_count+1):
     with open(intersect_bed_path, 'w') as fout:
         result = subprocess.run(shlex.split(cmd), stdout=fout)
 
-    crm_pleio_df = pandas.read_csv(intersect_bed_path, sep="\t", header=None, usecols=[0, 1, 2, 3, 4, 5, 6], names=['chrom', 'start', 'end', 'rsid', 'gwas_class_count', 'gwas_class_lst', 'crm'])
+    crm_pleio_df = pandas.read_csv(intersect_bed_path, sep="\t", header=None, usecols=[0, 1, 2, 3, 4, 5, 6],
+                                   names=['chrom', 'start', 'end', 'rsid', 'gwas_class_count', 'gwas_class_lst', 'crm'])
 
     pleio_n_nocrm_count = (crm_pleio_df['crm'] == '.').sum()
     pleio_n_crm_count = (crm_pleio_df['crm'] != '.').sum()
@@ -77,6 +80,8 @@ for count_pleio in range(1, max_gwas_class_count+1):
     out_df = pandas.concat([out_df, pandas.DataFrame(
         dict(zip(out_df_columns, out_row_lst)), index=[count_pleio])], axis=0)
 
+out_df.to_csv(remap_count_tsv, sep="\t", index=False)
+
 ####################################################################
 
 #%% set signif symbols
@@ -95,8 +100,8 @@ out_df['gwas_class_count'] = [str(i) for i in out_df['gwas_class_count']]
 order = out_df['gwas_class_count'].tolist()
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
-title = "CRM annotation"
-xlabel = "GWAS category count"
+title = "CRM annotation enrichm."
+xlabel = "GWAS class count"
 ylabel = "Odds ratio"
 y = "oddsr"
 x = "gwas_class_count"

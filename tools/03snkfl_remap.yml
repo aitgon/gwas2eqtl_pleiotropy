@@ -1,5 +1,5 @@
 """
-snakemake -j all -s tools/03snkfl_remap.yml --config max_gwas_class_count=4 outdir=out/7_7 public_data_dir=/home/gonzalez/Software/public/
+snakemake --cores all -p -d ${PWD} -s tools/03snkfl_remap.yml --config public_data_dir=/home/gonzalez/Software/public outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 max_gwas_class_count=4 db_url=postgresql://postgres:postgres@0.0.0.0:5436/postgres snp_pp_h4=0.50 -p --rerun-incomplete
 """
 
 outdir = config['outdir']
@@ -15,12 +15,14 @@ rule pltbar_remap_crm_gwas_categories:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"),
     output:
+        os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10_count.tsv"),
         os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
     params:
         max_gwas_class_count=max_gwas_class_count
     shell:
-        "python scripts/pltbar_x_per_variant_pleiotropy_y_remapcrm.py {input[0]} {input[1]} {params.max_gwas_class_count} {output[0]}"
+        "python scripts/pltbar_x_per_variant_pleiotropy_y_remapcrm.py {params.max_gwas_class_count} {input[0]} {input[1]} {input[2]} {output[0]} {output[1]}"
 
 rule pltbox_remaptf_per_rsid:
     input:
@@ -28,7 +30,7 @@ rule pltbox_remaptf_per_rsid:
     output:
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
     params:
-        max_gwas_class_count=(max_gwas_class_count-1)
+        max_gwas_class_count=max_gwas_class_count
     shell:
         "python scripts/pltbox_x_per_rsid_y_remapnr.py {params.max_gwas_class_count} {input[0]} {output[0]}"
 
@@ -50,6 +52,15 @@ rule dwnld_remap_nr:
         os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
     params:
         url="remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -nc -q -r {params.url} -P {params.public_data_dir}"""
+
+rule dwnld_remap_crm:
+    output:
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"),
+    params:
+        url="remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz",
         public_data_dir=public_data_dir,
     shell:
         """wget -nc -q -r {params.url} -P {params.public_data_dir}"""

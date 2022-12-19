@@ -27,10 +27,6 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-# #%% outdir path
-# if not '__file__' in locals():
-#     __file__ = "intrsct_remapnr_gwas_classes.py"
-
 outdir_path = os.path.join(os.path.dirname(remap_nr_pleio_1_flank_10_hg38_bed))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
