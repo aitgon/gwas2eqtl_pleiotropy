@@ -9,34 +9,7 @@ etissue_class_ods = config['etissue_class_ods']
 
 rule all_05snkfl_supplementary_and_web:
     input:
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz.tbi"),
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc5.tsv.gz"),
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc8.tsv.gz"),
         os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
-
-rule public_web_tabix:
-    input:
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.gz"),
-    output:
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz"),
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc.tsv.bgz.tbi"),
-    params:
-        sqlite=os.path.join(outdir, "db/db.sqlite"),
-    shell:
-        """gunzip -c {input[0]} |tail -n+2 |bgzip > {output[0]} && tabix -s1 -b2 -e2 {output[0]}"""
-
-rule public_web_coloc:
-    input:
-        os.path.join(outdir, "db/db_annotated.txt"),
-    output:
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc0.tsv.gz"),
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc5.tsv.gz"),
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc8.tsv.gz"),
-        os.path.join(outdir, "cmpt_public_web_files.py/coloc95.tsv.gz"),
-    params:
-        sqlite=os.path.join(outdir, "db/db.sqlite"),
-    shell:
-        """python scripts/cmpt_public_web_files.py {params.sqlite} {output[0]} {output[1]} {output[2]} {output[3]}"""
 
 rule create_table_supplementary:
     input:

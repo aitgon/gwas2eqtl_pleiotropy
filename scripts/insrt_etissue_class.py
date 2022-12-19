@@ -1,6 +1,6 @@
 from gwas2eqtl_pleiotropy.Logger import Logger
 from psycopg2.extras import NumericRange
-from gwas2eqtl_pleiotropy.db2 import Base
+from gwas2eqtl_pleiotropy.db import Base
 from sqlalchemy import create_engine
 
 import pandas

@@ -1,10 +1,9 @@
 import multiprocessing
-from multiprocessing import Pool
-
 import numpy
 import pandas
 import sys
 
+from multiprocessing import Pool
 from gwas2eqtl_pleiotropy.Logger import Logger
 from scipy.stats import fisher_exact
 from statsmodels.stats import multitest as multitest
@@ -30,24 +29,29 @@ except IndexError:
 
 #%%
 vep_input_column_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_class_count']
-vep_input_df = pandas.read_csv(vep_input_path, sep=" ", header=None, names=vep_input_column_lst)
+vep_input_df = pandas.read_csv(vep_input_path, sep="\t", header=None, names=vep_input_column_lst)
 columns = ['#Uploaded_variation', 'Location', 'Allele', 'Gene', 'Feature', 'Feature_type', 'Consequence', 'cDNA_position', 'CDS_position', 'Protein_position', 'Amino_acids', 'Codons', 'Existing_variation', 'Extra']
 vep_output_df = pandas.read_csv(vep_output_path, sep="\t", comment='#', header=None, names=columns)
-
 
 #%%
 df0 = vep_input_df.merge(vep_output_df, left_on='rsid', right_on='#Uploaded_variation', how='left')
 df0 = df0[['rsid', 'gwas_class_count', 'Consequence']].drop_duplicates()
-
-#%%
 df0['Consequence'] = df0['Consequence'].str.split(',')
+
 df = df0.explode('Consequence').drop_duplicates()
+
+# Keep most severe VEP
+vep_serverity_order_df = pandas.read_excel('/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/config/vep_severity_order.ods', engine='odf')
+vep_serverity_order_df['severity'] = vep_serverity_order_df.index
+df = df.merge(vep_serverity_order_df[['SO term', 'severity']], left_on='Consequence', right_on='SO term')
+df.sort_values('severity', inplace=True, ascending=True)
+df = df.drop_duplicates(subset=['rsid', 'gwas_class_count', 'Consequence'], keep='first')
 
 out_columns = ['consequence', 'gwas_class_count', 'a_pleio_x_with_consequence', 'b_pleio_1_with_consequence', 'c_pleio_x_wout_consequence', 'd_pleio_1_wout_consequence', 'oddsr', 'p']
 out_dic = dict(zip(out_columns, [[] for i in range(len(out_columns))]))
 
 all_df = vep_input_df[['rsid', 'gwas_class_count']].drop_duplicates()
-
+# import pdb; pdb.set_trace()
 def cmpt_vep_consequence_fisher(consequence):
     out_consequence_lst = []
     Logger.info('Consequence: ' + consequence)

@@ -36,12 +36,12 @@ rule cmpt_vep_consequence_fisher:
 rule cmpt_vep:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join("/home/gonzalez/Software/vep-cache/homo_sapiens/108_GRCh38/info.txt")
     output:
         os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
         os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
     params:
         snp_pp_h4=snp_pp_h4,
-        max_gwas_class_count=(max_gwas_class_count-2),
         db_url=db_url,
     shell:
-        "python scripts/cmpt_vep.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
+        "python scripts/cmpt_vep.py {params.snp_pp_h4} {params.db_url} {input[0]} {input[1]} {output[0]} {output[1]}"

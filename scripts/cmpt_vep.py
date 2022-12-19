@@ -18,9 +18,9 @@ import subprocess
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_class_count = int(sys.argv[2])
-    url = sys.argv[3]
-    count_per_rsid_gwas_tsv_path = sys.argv[4]
+    url = sys.argv[2]
+    count_per_rsid_gwas_tsv_path = sys.argv[3]
+    vep_cache_info = sys.argv[4]
     vep_input_path = sys.argv[5]
     vep_output_path = sys.argv[6]
     if len(sys.argv) > 7:
@@ -63,15 +63,17 @@ vep_df.loc[vep_df['alt-ref'] < 0, 'end'] = vep_df.loc[vep_df['alt-ref'] < 0, 'st
 vep_df['alleles'] = vep_df['ref'] + '/' + vep_df['alt']
 vep_df['strand'] = '+'
 
-#%%
+#%% prepare vep input
 out_col_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_class_count']
 vep_df = vep_df[out_col_lst]
+vep_df.sort_values(vep_df.columns.tolist(), inplace=True)
 
 #%% write vep input
-vep_df.to_csv(vep_input_path, sep=" ", index=False, header=False)
+vep_df.to_csv(vep_input_path, sep="\t", index=False, header=False)
 
 #%% run vep command
-import pdb; pdb.set_trace()
-cmd_str = "vep --offline  --plugin TSSDistance --force_overwrite -i {vep_input} --output_file {vep_output}".format(vep_input=vep_input_path, vep_output=vep_output_path)
+dir_cache = "/".join(vep_cache_info.split('/')[:-3])
+cmd_str = "vep --offline --dir_cache {dir_cache} --plugin TSSDistance --force_overwrite -i {vep_input} " \
+          "--output_file {vep_output}".format(vep_input=vep_input_path, dir_cache=dir_cache, vep_output=vep_output_path)
 Logger.info(cmd_str)
 output = subprocess.run(shlex.split(cmd_str), capture_output=True)

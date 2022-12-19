@@ -43,9 +43,9 @@ corr_df = corr_df.loc[corr_df.sum(axis=1) > 0, ]
 corr_df = corr_df[corr_df.columns[corr_df.sum(axis=0) > 0]]
 
 #%% filter row with at least a number of correlations >0.1 larger than 30
-corr_count_ser = (corr_df.abs() >= 0.001).sum(axis=1)
+corr_count_ser = (corr_df.abs() >= 0.05).sum(axis=1)
 # max number of correlation 80
-corr_count_ser = corr_count_ser.sort_values(ascending=False)[0:100]
+corr_count_ser = corr_count_ser.sort_values(ascending=False)[0:50]
 # mask = (corr_df >= 0.04).sum(axis=1) > 10
 mask = corr_df.index.isin(corr_count_ser.index)
 corr_df = corr_df.loc[mask]
@@ -70,7 +70,9 @@ annotation_df['pmid'] = annotation_df['pmid'].replace(math.nan, 0)
 annotation_df['pmid'] = annotation_df['pmid'].astype(int)
 annotation_df['trait'] = annotation_df['pmid'].astype(str) + '_' + annotation_df['trait']
 
-pmid_trait_mask = annotation_df['trait'].duplicated(keep='first')
+pmid_trait_dupli_mask = annotation_df['trait'].duplicated(keep='first')
+pmid_trait_uniq_mask = ~annotation_df['trait'].duplicated(keep=False)
+pmid_trait_mask = pmid_trait_dupli_mask + pmid_trait_uniq_mask
 dis_df = dis_df.loc[pmid_trait_mask, pmid_trait_mask]
 annotation_df = annotation_df.loc[pmid_trait_mask, ]
 
@@ -100,7 +102,7 @@ g = seaborn.clustermap(dis_df, **clustermap_args_dic)
 seaborn.set(font_scale=1)
 g.cax.set_visible(False)
 # import pdb; pdb.set_trace()
-g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=10)
+g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=8)
 g.ax_heatmap.set(ylabel='Trait')
 #
 for label in class_labels.unique():

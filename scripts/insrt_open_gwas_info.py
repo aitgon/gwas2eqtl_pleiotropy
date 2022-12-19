@@ -1,4 +1,4 @@
-from gwas2eqtl_pleiotropy.db2 import Base
+from gwas2eqtl_pleiotropy.db import Base
 from sqlalchemy import create_engine
 
 import pandas

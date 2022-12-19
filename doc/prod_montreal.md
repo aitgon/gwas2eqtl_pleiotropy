@@ -12,6 +12,8 @@ python workflow/scripts/insrt_coloc.py 0.75 0  postgresql://postgres:postgres@0.
 python workflow/scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5436/postgres config/gwas418.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
 ~~~
 
+python scripts/insrt_vep_consequence.py postgresql://postgres:postgres@0.0.0.0:5436/postgres
+
 Insert to db
 
 ~~~
@@ -97,8 +99,9 @@ SELECT DISTINCT co.chrom,
     co.snp_pp_h4,
     co.coloc_variant_id AS tophits_variant_id,
     co.nsnps,
-    eqtl_annot.etissue_class
-   FROM (((( SELECT DISTINCT co0.chrom,
+    eqtl_annot.etissue_class,
+    op.pmid
+   FROM (((((( SELECT DISTINCT co0.chrom,
             co0.pos AS pos38,
             concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
             concat('rs', co0.rsid) AS rsid,
@@ -120,10 +123,10 @@ SELECT DISTINCT co.chrom,
           WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co
      LEFT JOIN ensg2symbol en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
      LEFT JOIN gwas_annot gw ON (((gw.gwas_id)::text = (co.gwas_id)::text)))
-     LEFT JOIN pos19 ON ((co.pos38 = pos19.pos))
-     LEFT JOIN eqtl_annot ON ((co.eqtl_id = eqtl_annot.eqtl_id))
-)
-  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id
+     LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
+     LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
+  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
 Then snakemake is run with:
@@ -133,7 +136,7 @@ snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db
 ~~~
 
 ~~~
-snakemake --cores all -p -d ${PWD} -s tools/snkfl_vep.yml --config outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 max_gwas_class_count=5 db_url=postgresql://postgres:postgres@0.0.0.0:5436/postgres
+snakemake --cores all -p -d ${PWD} -s tools/snkfl_vep.yml --config outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 max_gwas_class_count=4 db_url=postgresql://postgres:postgres@0.0.0.0:5436/postgres snp_pp_h4=0.5 -p
 ~~~
 
 # MS
