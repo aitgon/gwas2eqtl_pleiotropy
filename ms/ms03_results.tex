@@ -9,7 +9,6 @@
 To annotate traits from genome-wide associations studies (GWAS) with genes and tissues,
 I developed a pipeline that systematically colocalizes variants from GWAS and expression quantitative trait loci (eQTLs) (Section Methods).
 %
-% TODO Supplementary table 1 for newest pipeline
 127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many
 tissues and cell types \citep{2021.Alasoo.Kerimov} (Supplementary table 1).
 
@@ -25,51 +24,40 @@ conditions and exclude environmental traits such "employment status" or "self-re
 %
 The fourth criterion was to keep only GWAS with at least 10,000 subjects, 2,000 controls and 2,000 cases.
 %
-% TODO Supplementary table 2 for newest pipeline
 These filters resulted in 418 GWAS traits (Supplementary table 2).
 %
-Among these studies, there were 8,580 clumped leading variants with a p-value below 5e-8 from 284 GWAS (Supplementary file).
+These studies resulted in 8,580 clumped leading variants with a p-value below 5e-8 from 284 GWAS (Supplementary file).
 % select count(distinct gwas_id) from tophits; 284
 % select count(*) from (select DISTINCT chrom, pos, rsid, ea from tophits) as sel; 8,580
 % tophits goes to OSF
 % colocpleio goes to OSF
 
 My pipeline uncovered eQTL colocalizations for 5,484 or 64$\%$ of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples.
-% select count(*) from (select distinct tophits.rsid from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75) as sel; 5484
+% select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75) as sel; 5484
 % select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75) as sel;  7040
 % select count(*) from (select distinct eqtl_id from coloc where pp_h4_abf>=0.75) as sel;  127
 
-The largest classes of diseases by number of leading GWAS variants are autoimmune diseases (2107), cancer of breast (1976) and allergy (1321)
+The largest classes of diseases by number of leading GWAS variants are cancer of breast (1976), allergy (1288), and autoimmune diseases (1216).
 %
-In these diseases, the percentages of variants with a colocalized eQTL are 37\%, 21\% and 42\% in these classe, respectively (Supplementary table ST3).
-% TODO
+In these disease classes, the percentages of variants with a colocalized eQTL are 58\%, 61\% and 68\%, respectively (Supplementary table ST3).
+% Supplementary ST3
 % Number of tophits rsid per GWAS class
 % select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits where tophits.gwas_id=gwas_annot.gwas_id group by gwas_class order by count desc;
 % Number of tophits rsid per GWAS class that is also preset in coloc table
 % select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits, coloc where tophits.gwas_id=gwas_annot.gwas_id and tophits.rsid=coloc.rsid group by gwas_class order by count desc;
-% OLD SQLITE
-% select count(distinct tophits.rsid),gwas_class from gwas_annot join tophits on tophits.gwas_id=gwas_annot.gwas_id group by gwas_class order by count desc limit 5;
-%/* count tophits.rsid group by gwas_annot.gwas_class where coloc.`PP.H4.abf`>=0.8*/
-%select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8 GROUP by gwas_annot.gwas_class;
-%/* count tophits.rsid group by gwas_annot.gwas_class*/
-%select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id GROUP by gwas_annot.gwas_class order by gwas_annot.gwas_class;
 
-These results are consistent with previous colocalization analysis that found explained percentages of work for autoimmune diseases \citep{2021.Li.Mu}.....
-% TODO
+These results is much higher than previous colocalization analyses for autoimmune diseases by previous authors that
+found 23-41\% depending on the study \citep{2016.Soranzo.Chen,2017.Cotsapas.Chun,2021.Li.Mu}.
 % Discuss 25% in Chun et al 2017, Nature Genetics
 % Discuss 41% (eQTL + sQTLs) in Mu et al 2021, Genome Biology
 % Discuss 23% in Chen et al 2016, Cell. Genetic Drivers of Epigenetic and Transcriptional Variation in Human Immune Cells
 
-This pipeline resulted in 103,551 variants from 246 GWAS that colocalized (PP.H4.abf$\geq$0.8) with at least one eQTL.
+These data is a useful resource to annotate GWAS variants with genes and biosamples.
+Therefore I have developed a web application where I expose 138,301 variants from 293 GWAS that colocalize with at least
+one eQTL at a threshold value PP.H4.abf$\geq$0.75.
 % TODO
-%select count(coloc.rsid) from (select DISTINCT gwas_id FROM coloc where pp_h4_abf>=0.8);
-%select count(*) from (select distinct rsid from coloc where pp_h4_abf>=0.8) as sel;
-%
-This might be a useful resource to annotate GWAS variants with genes and biosamples.
-Therefore I have developed a web application where I expose 116,736??? variants from 246??? GWAS that colocalize with at least one eQTL at a threshold value PP.H4.abf$\geq$0.75.
-% TODO
-% select count(*) from (select DISTINCT chrom,pos38,alt FROM colocweb) as sel;
-% select count(*) from (select DISTINCT gwas_id FROM coloc) as sel;
+% select count(*) from (select DISTINCT chrom,pos38,alt FROM colocweb) as sel; 138301
+% select count(*) from (select DISTINCT gwas_id FROM colocweb) as sel; 293
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -82,19 +70,24 @@ In the previous colocalization analysis, we found many eQTLs that are associated
 %
 To systematically identify pleiotropic eQTLs, I manually annotated the GWAS traits in different classes.
 
-% TODO Check if I aggregate different coloc windows or not.
-I also computed trait distances based on the spearman correlation of eQTL effect size for distinct eQTLs given by
-distinct chromosome, position, alternative allele, eQTL gene and eQTL biosample.
+Then I wanted to verify if different traits cluster coherently in different trait classes.
 %
-From this point on I defined colocalization with parameters PP.H4.abf>=0.75 and SNP.PP.H4>=0.5.
+As trait distance, I used the the spearman correlation of the eQTL splitted by
+chromosome, position, alternative allele, eQTL gene and eQTL biosample.
 %
-The argument for selecting a cutoff SNP.PP.H4>=0.5 is given below.
+To avoid non resolve eQTLs, I set a cutoff SNP.PP.H4>=0.5 in addition to the cutoff PP.H4.abf>=0.75.
+%
+The cutoff SNP.PP.H4>=0.5 was chosen, it allow to group pleiotropic eQTLs in a reasonable number of regions (See below).
 %
 I plotted these trait distances as a hierarchically-clustered heatmap.
 %
-I plotted only trait classes with more than a minimum number of traits (Fig. \ref{fig:gwas_distance}).
+Only trait classes with more than a minimum number of traits were plotted (Fig. \ref{fig:gwas_distance}).
 %
 Due to the large number of datasets, I have create a separate class for some cancers such as breast and skin.
+%
+In the OpenGWAS, some traits are redundant because the come from the same reference.
+%
+I plotted non-rendundant GWAS traits.
 %
 This analysis shows a coherent clustering of traits belonging to autoimmune, circulatory system diseases, cancers and allergies (Fig. \ref{fig:gwas_distance}).
 %
@@ -102,7 +95,6 @@ Breast and skin cancer are found in two different cluster with some shared signa
 %
 Multiple sclerosis cluster with autoimmune diseases of the digestive system.
 
-% TODO create supplementary table 2
 I manually assigned the 418 GWAS to 112 classes to aggregate identical or similar traits (Supplementary table 2).
 
 In the EBI eQTL Catalogue, some samples have been analyzed at the cell type level and others at the tissue level.
@@ -119,6 +111,7 @@ For instance, the different immune cell types such as monocyte, T-cell, etc are 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% TODO CONTINUE
 These trait class annotations were used to investigate pleiotropy of eQTLs.
 %
 Different trait classes of eQTLs were aggregated and sorted according to the number of GWAS classes the eQTLs belong to (Table \ref{tab:pleitropic_variants} and Supplementary table 4).
