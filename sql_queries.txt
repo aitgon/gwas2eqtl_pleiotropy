@@ -28,19 +28,36 @@ where coloc.gwas_id=tophits.gwas_id and coloc.chrom=tophits.chrom and coloc.pos=
 
 52
 
-select gwas_id,count(sel) from (
-select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id from tophits
-) as sel group by gwas_id order by count(sel) desc limit 5
+select gwas_id,gwas_trait,count(sel) from (
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id,gwas_annot.gwas_trait from tophits,gwas_annot where gwas_annot.gwas_id=tophits.gwas_id
+) as sel group by gwas_id,gwas_trait order by count(sel) desc limit 20
 
-ebi-a-GCST007236	1114
-ukb-b-14177	481
-ukb-b-13352	458
-ukb-b-17241	377
-ebi-a-GCST004988	368
+gwas_id	gwas_trait	count
+ebi-a-GCST007236	Breast cancer	1114
+ukb-b-14177	Vascular/heart problems diagnosed by doctor: High blood pressure	481
+ukb-b-13352	Vascular/heart problems diagnosed by doctor: None of the above	458
+ukb-b-17241	Blood clot, DVT, bronchitis, emphysema, asthma, rhinitis, eczema, allergy diagnosed by doctor: Hayfever, allergic rhinitis or eczema	377
+ebi-a-GCST004988	Breast cancer	368
+ebi-a-GCST006085	Prostate cancer	362
+ieu-b-85	Prostate cancer	343
+ieu-a-1126	Breast cancer (Combined Oncoarray; iCOGS; GWAS meta analysis)	342
+ieu-a-294	Inflammatory bowel disease	328
+ebi-a-GCST003043	Inflammatory bowel disease	318
+ukb-b-20296	Blood clot, DVT, bronchitis, emphysema, asthma, rhinitis, eczema, allergy diagnosed by doctor: Asthma	308
+ebi-a-GCST007800	Asthma (childhood onset)	303
+ieu-a-12	Crohn's disease	292
+ebi-a-GCST002318	Rheumatoid arthritis	289
+ebi-a-GCST003044	Crohn's disease	288
+ukb-a-437	Vascular/heart problems diagnosed by doctor: High blood pressure	286
+ukb-a-435	Vascular/heart problems diagnosed by doctor: None of the above	266
+ieu-a-1127	ER+ Breast cancer (Combined Oncoarray; iCOGS; GWAS meta analysis)	265
+ebi-a-GCST004131	Inflammatory bowel disease	263
+ukb-a-447	Blood clot  DVT  bronchitis  emphysema  asthma  rhinitis  eczema  allergy diagnosed by doctor: Hayfever  allergic rhinitis or eczema	251
 
-select gwas_id,count(sel) from (
-select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id from tophits,coloc
-where tophits.chrom=coloc.chrom and tophits.pos=coloc.pos and tophits.ea=coloc.alt and tophits.gwas_id=coloc.gwas_id and coloc.pp_h4_abf>=0.75) as sel group by gwas_id order by count(sel) desc limit 5
+select gwas_id,gwas_trait,count(sel) from (
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id,gwas_annot.gwas_trait from tophits,gwas_annot,coloc
+where gwas_annot.gwas_id=tophits.gwas_id and tophits.chrom=coloc.chrom and tophits.pos=coloc.pos and tophits.ea=coloc.alt and tophits.gwas_id=coloc.gwas_id and coloc.snp_pp_h4>=0.5 and coloc.pp_h4_abf>=0.75
+) as sel group by gwas_id,gwas_trait order by count(sel) desc limit 20
 
 ebi-a-GCST007236	661
 ukb-b-14177	409
@@ -49,5 +66,13 @@ ieu-a-294	282
 ebi-a-GCST004988	278
 
 
-
+select sel.gwas_id,sel.gwas_trait,count(sel) from 
+(
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id,gwas_annot.gwas_trait from tophits,gwas_annot where gwas_annot.gwas_id=tophits.gwas_id 
+) sel,
+(
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id,gwas_annot.gwas_trait from tophits,gwas_annot where gwas_annot.gwas_id=tophits.gwas_id
+) sel1
+where sel.gwas_id=sel1.gwas_id
+group by sel.gwas_id,sel.gwas_trait order by count(sel) desc limit 5
 
