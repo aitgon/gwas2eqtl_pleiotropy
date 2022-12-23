@@ -1,0 +1,53 @@
+select count(*) from (
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id from tophits, coloc
+where coloc.rsid=tophits.rsid and coloc.pp_h4_abf>=0.75
+) as sel
+
+10937
+
+select count(*) from (
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id from tophits, coloc
+where coloc.chrom=tophits.chrom and coloc.pos=tophits.pos and coloc.alt=tophits.ea and coloc.pp_h4_abf>=0.75
+) as sel
+
+10932
+
+ebi-a-GCST002318 rheumatoid arthritis
+
+select count(*) from (
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id from tophits
+where tophits.gwas_id='ebi-a-GCST002318'
+) as sel
+
+289
+
+select count(*) from (
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id from tophits, coloc
+where coloc.gwas_id=tophits.gwas_id and coloc.chrom=tophits.chrom and coloc.pos=tophits.pos and coloc.alt=tophits.ea and tophits.gwas_id='ebi-a-GCST002318' and coloc.pp_h4_abf>=0.75
+) as sel
+
+52
+
+select gwas_id,count(sel) from (
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id from tophits
+) as sel group by gwas_id order by count(sel) desc limit 5
+
+ebi-a-GCST007236	1114
+ukb-b-14177	481
+ukb-b-13352	458
+ukb-b-17241	377
+ebi-a-GCST004988	368
+
+select gwas_id,count(sel) from (
+select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id from tophits,coloc
+where tophits.chrom=coloc.chrom and tophits.pos=coloc.pos and tophits.ea=coloc.alt and tophits.gwas_id=coloc.gwas_id and coloc.pp_h4_abf>=0.75) as sel group by gwas_id order by count(sel) desc limit 5
+
+ebi-a-GCST007236	661
+ukb-b-14177	409
+ukb-b-13352	381
+ieu-a-294	282
+ebi-a-GCST004988	278
+
+
+
+

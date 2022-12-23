@@ -26,14 +26,15 @@ The fourth criterion was to keep only GWAS with at least 10,000 subjects, 2,000 
 %
 These filters resulted in 418 GWAS traits (Supplementary table 2).
 %
-These studies resulted in 8,580 clumped leading variants with a p-value below 5e-8 from 284 GWAS (Supplementary file).
-% select count(distinct gwas_id) from tophits; 284
-% select count(*) from (select DISTINCT chrom, pos, rsid, ea from tophits) as sel; 8,580
+These studies resulted in 10,621 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary file).
+% select count(distinct gwas_id) from tophits; 335
+% select count(*) from (select DISTINCT chrom, pos, rsid, ea from tophits) as sel; 10621
 % tophits goes to OSF
 % colocpleio goes to OSF
 
 My pipeline uncovered eQTL colocalizations for 5,484 or 64$\%$ of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples.
-% select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75) as sel; 5484
+% select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid from tophits inner join coloc
+% on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75) as sel; 5484
 % select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75) as sel;  7040
 % select count(*) from (select distinct eqtl_id from coloc where pp_h4_abf>=0.75) as sel;  127
 
