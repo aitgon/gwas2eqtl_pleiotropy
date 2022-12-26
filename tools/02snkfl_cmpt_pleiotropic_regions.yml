@@ -12,7 +12,8 @@ wlength_lst = [1000, 3000, 10000, 30000, 100000]
 
 rule all_02snkfl_cmpt_pleiotropic_regions:
     input:
-        expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.tsv"), wlength=wlength_lst)
+        expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.tsv"), wlength=wlength_lst),
+        os.path.join(outdir, "cmpt_perc_explained.py/perc_explained.tsv"),
 
 rule cmpt_pleiotropic_regions_wlength:
     input:
@@ -38,3 +39,11 @@ rule count_per_rsid:
         db_url=db_url,
     shell:
         "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {output[0]} {output[5]}"
+
+rule cmpt_perc_explained:
+    output:
+        os.path.join(outdir, "cmpt_perc_explained.py/perc_explained.tsv"),
+    params:
+        db_url=db_url,
+    shell:
+        "python scripts/cmpt_perc_explained.py {params.db_url} {output[0]}"

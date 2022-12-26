@@ -20,6 +20,7 @@ rule all:
         #
         # 02snkfl_cmpt_pleiotropic_regions.yml
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_perc_explained.py/perc_explained.tsv"),
         #
         # 03snkfl_remap.yml
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),

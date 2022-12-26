@@ -17,6 +17,21 @@ class pos19(Base):
    pos19 = Column('pos19', Integer, nullable=True)
 
 
+class gwascatalog(Base):
+   """scripts/insrt_pos19.py"""
+   __tablename__ = "gwascatalog"
+   __table_args__ = (UniqueConstraint('pmid', 'study', 'trait', 'mapped_trait', 'accession', name='_gwascatalog_uc'),)
+
+   id = Column('id', Integer, primary_key=True)
+   pmid = Column('pmid', Integer, nullable=False)
+   study = Column('study', String(511), nullable=False)
+   trait = Column('trait', String(511), nullable=False)
+   mapped_trait = Column('mapped_trait', String(511), nullable=True)
+   mapped_trait_uri = Column('mapped_trait_uri', String(1024), nullable=True)
+   accession = Column('accession', String(15), nullable=False)
+
+
+
 class ensg2symbol(Base):
    """scripts/insrt_gwas_annot.py"""
    __tablename__ = "ensg2symbol"
@@ -63,7 +78,7 @@ class eqtl_annot(Base):
 
 
 class open_gwas_info(Base):
-   """scripts/insrt_open_gwas_info.py"""
+   """scripts/insrt_gwasmrcieu.py"""
    __tablename__ = "open_gwas_info"
 
    gwas_id = Column('gwas_id', String(127), primary_key=True)

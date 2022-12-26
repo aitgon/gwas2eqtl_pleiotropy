@@ -76,3 +76,28 @@ select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.gwas_id,gwas_annot.
 where sel.gwas_id=sel1.gwas_id
 group by sel.gwas_id,sel.gwas_trait order by count(sel) desc limit 5
 
+
+Tophits loci
+
+select distinct tophits.chrom,tophits.pos,tophits.rsid,tophits.nea,tophits.ea,tophits.gwas_id,gwas_annot.gwas_trait
+from tophits,gwas_annot
+where tophits.gwas_id='ebi-a-GCST002318' and tophits.gwas_id=gwas_annot.gwas_id
+order by chrom,pos,ea
+
+Explained tophits loci
+
+select distinct tophits.chrom,tophits.pos,tophits.rsid,tophits.nea,tophits.ea,tophits.gwas_id,gwas_annot.gwas_trait
+from tophits, coloc, gwas_annot
+where coloc.gwas_id=tophits.gwas_id and coloc.chrom=tophits.chrom and coloc.pos=tophits.pos and coloc.alt=tophits.ea and tophits.gwas_id=gwas_annot.gwas_id and tophits.gwas_id='ebi-a-GCST002318' and coloc.pp_h4_abf>=0.75 order by chrom,pos,ea
+
+Non-explained tophits loci
+
+select distinct tophits.chrom,tophits.pos,tophits.rsid,tophits.nea,tophits.ea,tophits.gwas_id,gwas_annot.gwas_trait
+from tophits,gwas_annot
+where tophits.gwas_id='ebi-a-GCST002318' and tophits.gwas_id=gwas_annot.gwas_id
+except
+select distinct tophits.chrom,tophits.pos,tophits.rsid,tophits.nea,tophits.ea,tophits.gwas_id,gwas_annot.gwas_trait
+from tophits, coloc, gwas_annot
+where coloc.gwas_id=tophits.gwas_id and coloc.chrom=tophits.chrom and coloc.pos=tophits.pos and coloc.alt=tophits.ea and tophits.gwas_id=gwas_annot.gwas_id and tophits.gwas_id='ebi-a-GCST002318' and coloc.pp_h4_abf>=0.75 order by chrom,pos,ea
+
+
