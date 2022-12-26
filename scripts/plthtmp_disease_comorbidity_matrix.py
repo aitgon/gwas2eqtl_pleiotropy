@@ -15,7 +15,6 @@ from sqlalchemy import create_engine
 seaborn.set_theme(**seaborn_theme_dic)
 
 
-
 #%%
 help_cmd_str = "todo"
 try:
@@ -55,11 +54,11 @@ corr_df = corr_df[corr_df.columns[mask]]
 dis_df = 1 - corr_df   # distance matrix
 
 #%%
-gwas_metadata_df = pandas.read_excel(gwas_metadata_ods_path, engine="odf", usecols=['gwas_id', 'trait', 'class_pleiotropy'])
+gwas_metadata_df = pandas.read_excel(gwas_metadata_ods_path, engine="odf", usecols=['gwas_id', 'trait', 'category_manual'])
 
 #%%
 gwas_metadata_df.set_index('gwas_id', inplace=True, verify_integrity=True)
-annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['trait', 'class_pleiotropy']]
+annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['trait', 'category_manual']]
 
 pmid_df = pandas.read_sql('select distinct gwas_id, pmid from colocpleio', con=create_engine(sa_url), index_col='gwas_id')
 pmid_df = pmid_df.loc[annotation_df.index.tolist(), ]
@@ -76,8 +75,12 @@ pmid_trait_mask = pmid_trait_dupli_mask + pmid_trait_uniq_mask
 dis_df = dis_df.loc[pmid_trait_mask, pmid_trait_mask]
 annotation_df = annotation_df.loc[pmid_trait_mask, ]
 
+dataset_a = (annotation_df.index).to_series().str.split('-', expand=True)[0]
+dataset_b = (annotation_df.index).to_series().str.split('-', expand=True)[1]
+annotation_df['trait'] = dataset_a + '_' + dataset_b + '_' + annotation_df['trait']
+# import pdb; pdb.set_trace()
 # Label 1
-class_labels = annotation_df["class_pleiotropy"]
+class_labels = annotation_df["category_manual"]
 class_pal = seaborn.color_palette(palette='bright', n_colors=class_labels.unique().size)
 subset1_lut = dict(zip(map(str, sorted(class_labels.unique())), class_pal))
 subset1_colors = pandas.Series(class_labels, index=annotation_df.index).map(subset1_lut)
@@ -107,7 +110,7 @@ g.ax_heatmap.set(ylabel='Trait')
 #
 for label in class_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
-l1 = g.ax_col_dendrogram.legend(title='Class', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=4, bbox_transform=gcf().transFigure)
+l1 = g.ax_col_dendrogram.legend(title='Class', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=3, bbox_transform=gcf().transFigure)
 
 plt.subplots_adjust(top=1., right=0.6, bottom=0.05, left=0.)
 plt.savefig(htmp_disease_corr_png_path, dpi=600)
