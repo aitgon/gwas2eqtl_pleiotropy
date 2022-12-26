@@ -149,3 +149,4 @@ Compilation works like this:
 rm -f ms_00_merge.tex.pdf; singularity exec -u ../singularity/out/latex.sif texi2pdf ms/ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
 ~~~
 
+python scripts/query_ontology_ols.py config/gwas417.ods out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/annot_gwas_metadata.py/gwas_ontology.ods
