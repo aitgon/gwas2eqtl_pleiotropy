@@ -56,7 +56,9 @@ class gwas_annot(Base):
 
    gwas_id = Column('gwas_id', String(63), primary_key=True)
    gwas_trait = Column('gwas_trait', String(255), nullable=False)
-   gwas_class = Column('gwas_class', String(127), nullable=False)
+   gwas_ontology_label = Column('gwas_ontology_label', String(127), nullable=False)
+   gwas_ontology_id = Column('gwas_ontology_id', String(15), nullable=False)
+   gwas_category = Column('gwas_category', String(127), nullable=False)
 
 
 class eqtl_annot(Base):
@@ -73,12 +75,13 @@ class eqtl_annot(Base):
    quant_method = Column('quant_method', String(63), nullable=False)
    sample_size = Column('sample_size', String(63), nullable=False)
    ftp_path = Column('ftp_path', String(255), nullable=False)
-   etissue_class = Column('etissue_class', String(63), nullable=False)
+   etissue_category_id = Column('etissue_category_id', String(15), nullable=False)
+   etissue_category_term = Column('etissue_category_term', String(63), nullable=False)
    ref = Column('ref', String(63), nullable=False)
 
 
 class open_gwas_info(Base):
-   """scripts/insrt_gwasmrcieu.py"""
+   """scripts/insrt_open_gwas.py"""
    __tablename__ = "open_gwas_info"
 
    gwas_id = Column('gwas_id', String(127), primary_key=True)

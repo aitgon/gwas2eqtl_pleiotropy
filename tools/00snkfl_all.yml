@@ -1,12 +1,12 @@
 """
-snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public 
+snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas418.ods max_gwas_category_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public 
 """
 
 david_email = config['david_email']
 db_url = config['db_url']
-etissue_class_ods = config['etissue_class_ods']
-gwas_class_ods = config['gwas_class_ods']
-max_gwas_class_count = config['max_gwas_class_count']
+etissue_category_ods = config['etissue_category_ods']
+gwas_category_ods = config['gwas_category_ods']
+max_gwas_category_count = config['max_gwas_category_count']
 outdir = config['outdir']
 public_data_dir = config['public_data_dir']
 snp_pp_h4 = config['snp_pp_h4']

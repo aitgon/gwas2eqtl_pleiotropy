@@ -1,10 +1,10 @@
 """
-snakemake -j all -s tools/05snkfl_supplementary_and_web.yml --config etissue_class_ods=config/etissue_class.ods max_gwas_class_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/7_7
+snakemake -j all -s tools/05snkfl_supplementary_and_web.yml --config etissue_category_ods=config/etissue_category.ods max_gwas_category_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/7_7
 """
 
-gwas_class_ods = config['gwas_class_ods']
+gwas_category_ods = config['gwas_category_ods']
 outdir = config['outdir']
-etissue_class_ods = config['etissue_class_ods']
+etissue_category_ods = config['etissue_category_ods']
 
 
 rule all_05snkfl_supplementary_and_web:
@@ -13,8 +13,8 @@ rule all_05snkfl_supplementary_and_web:
 
 rule create_table_supplementary:
     input:
-        gwas_class_ods,
-        etissue_class_ods,
+        gwas_category_ods,
+        etissue_category_ods,
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
     output:

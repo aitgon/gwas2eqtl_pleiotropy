@@ -1,7 +1,6 @@
-from statannot import add_stat_annotation
-
 from gwas2eqtl_pleiotropy.UCSC import UCSC
 from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize
+from statannot import add_stat_annotation
 
 import matplotlib.pyplot as plt
 import os

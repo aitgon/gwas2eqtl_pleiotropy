@@ -80,10 +80,10 @@ dataset_b = (annotation_df.index).to_series().str.split('-', expand=True)[1]
 annotation_df['trait'] = dataset_a + '_' + dataset_b + '_' + annotation_df['trait']
 # import pdb; pdb.set_trace()
 # Label 1
-class_labels = annotation_df["category_manual"]
-class_pal = seaborn.color_palette(palette='bright', n_colors=class_labels.unique().size)
-subset1_lut = dict(zip(map(str, sorted(class_labels.unique())), class_pal))
-subset1_colors = pandas.Series(class_labels, index=annotation_df.index).map(subset1_lut)
+category_labels = annotation_df["category_manual"]
+category_pal = seaborn.color_palette(palette='bright', n_colors=category_labels.unique().size)
+subset1_lut = dict(zip(map(str, sorted(category_labels.unique())), category_pal))
+subset1_colors = pandas.Series(category_labels, index=annotation_df.index).map(subset1_lut)
 network_node_colors = pandas.DataFrame(subset1_colors)
 
 #%%
@@ -108,7 +108,7 @@ g.cax.set_visible(False)
 g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=8)
 g.ax_heatmap.set(ylabel='Trait')
 #
-for label in class_labels.unique():
+for label in category_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
 l1 = g.ax_col_dendrogram.legend(title='Class', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=3, bbox_transform=gcf().transFigure)
 

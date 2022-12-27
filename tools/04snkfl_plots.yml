@@ -1,12 +1,13 @@
 """
-snakemake -j 1 -s tools/04snkfl_plots.yml --config db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' david_email=${DAVID_EMAIL} max_gwas_class_count=4 outdir=out/7_7 public_data_dir=/home/gonzalez/Software/public/ -p
+snakemake -j 1 -s tools/04snkfl_plots.yml --config db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' david_email=${DAVID_EMAIL} max_gwas_category_count=4 outdir=out/7_7 public_data_dir=/home/gonzalez/Software/public/ -p
 """
 
 david_email = config['david_email']
 db_url = config['db_url']
-max_gwas_class_count = config['max_gwas_class_count']
+max_gwas_category_count = config['max_gwas_category_count']
 outdir = config['outdir']
 public_data_dir = config['public_data_dir']
+snp_pp_h4 = config['snp_pp_h4']
 
 
 rule all_plots:
@@ -40,7 +41,7 @@ rule pltbar_pleiotropic_regions_cumsum:
 #    output:
 #        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
 #    params:
-#        max_gwas_class_count,
+#        max_gwas_category_count,
 #        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
 #        os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
 #    shell:
@@ -53,7 +54,7 @@ rule cmpt_davidgo:
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_3.tsv"),
     params:
         david_email,
-        max_gwas_class_count,
+        max_gwas_category_count,
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
     shell:
@@ -68,10 +69,10 @@ rule pltbox_logpval_per_gwas_cat:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/gwas.png"),
     params:
         snp_pp_h4=snp_pp_h4,
-        max_gwas_class_count=max_gwas_class_count,
+        max_gwas_category_count=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_gwas_cat_y_logpval.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
+        "python scripts/pltbar_x_per_gwas_cat_y_logpval.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
 
 rule plt_violin_beta_per_gwas_cat:
     input:
@@ -81,10 +82,10 @@ rule plt_violin_beta_per_gwas_cat:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
     params:
         snp_pp_h4=snp_pp_h4,
-        max_gwas_class_count=max_gwas_class_count,
+        max_gwas_category_count=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_gwas_cat_y_beta.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
+        "python scripts/pltbar_x_per_gwas_cat_y_beta.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]} {output[1]}"
 
 rule pltbar_x_per_variant_egene_y_etissue:
     input:
@@ -93,10 +94,10 @@ rule pltbar_x_per_variant_egene_y_etissue:
         os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
     params:
         snp_pp_h4=snp_pp_h4,
-        max_gwas_class_count=max_gwas_class_count,
+        max_gwas_category_count=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_variant_egene_y_etissue.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]}"
+        "python scripts/pltbar_x_per_variant_egene_y_etissue.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]}"
 
 rule pltbar_x_per_variant_etissue_y_egene:
     input:
@@ -105,10 +106,10 @@ rule pltbar_x_per_variant_etissue_y_egene:
         os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
     params:
         snp_pp_h4=snp_pp_h4,
-        max_gwas_class_count=max_gwas_class_count,
+        max_gwas_category_count=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_variant_etissue_y_egene.py {params.snp_pp_h4} {params.max_gwas_class_count} {params.db_url} {input[0]} {output[0]}"
+        "python scripts/pltbar_x_per_variant_etissue_y_egene.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]}"
 
 rule plt_scttr_count_per_rsid_etissue:
     input:
@@ -118,10 +119,10 @@ rule plt_scttr_count_per_rsid_etissue:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
     params:
         outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py"),
-        max_gwas_class_count=max_gwas_class_count
+        max_gwas_category_count=max_gwas_category_count
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/log.txt"),
     shell:
-        """python scripts/pltsctr_x_per_rsid_y_etissue.py {params.max_gwas_class_count} {input[0]} {input[1]} {params.outdir} >{log}        
+        """python scripts/pltsctr_x_per_rsid_y_etissue.py {params.max_gwas_category_count} {input[0]} {input[1]} {params.outdir} >{log}        
         touch {output[0]}
         """
 
@@ -133,10 +134,10 @@ rule plt_scttr_count_per_rsid_egene:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
     params:
         outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py"),
-        max_gwas_class_count=max_gwas_class_count
+        max_gwas_category_count=max_gwas_category_count
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
     shell:
-        """python scripts/pltsctr_x_per_rsid_y_egene.py {params.max_gwas_class_count} {input[0]} {input[1]} {params.outdir} >{log}
+        """python scripts/pltsctr_x_per_rsid_y_egene.py {params.max_gwas_category_count} {input[0]} {input[1]} {params.outdir} >{log}
         touch {output[0]}
         """
 
@@ -148,10 +149,10 @@ rule plt_scttr_count_per_rsid_gwas:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
     params:
         outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py"),
-        max_gwas_class_count=max_gwas_class_count
+        max_gwas_category_count=max_gwas_category_count
     log: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
     shell:
-        """python scripts/pltsctr_x_per_rsid_y_gwas.py {params.max_gwas_class_count} {input[0]} {input[1]} {params.outdir} >{log}
+        """python scripts/pltsctr_x_per_rsid_y_gwas.py {params.max_gwas_category_count} {input[0]} {input[1]} {params.outdir} >{log}
         touch {output[0]}
         """
 
