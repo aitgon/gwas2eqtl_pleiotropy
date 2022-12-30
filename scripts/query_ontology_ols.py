@@ -47,17 +47,28 @@ for query_term in mygwas_df['query_term'].unique():
     obo_label = None
     obo_iri = None
     if len(ols_df['response']['docs']) > 0:
-        if 'obo_id' in ols_df['response']['docs'][0]:
-            obo_id = ols_df['response']['docs'][0]['obo_id']
-            obo_label = ols_df['response']['docs'][0]['label']
-            obo_iri = ols_df['response']['docs'][0]['iri']
-        elif len(ols_df['response']['docs']) > 1:
-            if 'obo_id' in ols_df['response']['docs'][1]:
-                obo_id = ols_df['response']['docs'][1]['obo_id']
-                obo_label = ols_df['response']['docs'][1]['label']
-                obo_iri = ols_df['response']['docs'][1]['iri']
+        for doc in ols_df['response']['docs']:
+            if doc['ontology_name'] == query_ontology:
+                if 'obo_id' in doc:
+                    obo_id = doc['obo_id']
+                elif 'id' in doc:
+                    obo_id = doc['id']
+                obo_label = doc['label']
+                obo_iri = doc['iri']
+        # elif 'id' in ols_df['response']['docs'][0]:
+        #     obo_id = ols_df['response']['docs'][0]['id']
+        #     obo_label = ols_df['response']['docs'][0]['label']
+        #     obo_iri = ols_df['response']['docs'][0]['iri']
+        # elif len(ols_df['response']['docs']) > 1:
+        #     if 'obo_id' in ols_df['response']['docs'][1]:
+        #         obo_id = ols_df['response']['docs'][1]['obo_id']
+        #         obo_label = ols_df['response']['docs'][1]['label']
+        #         obo_iri = ols_df['response']['docs'][1]['iri']
     mygwas_df.loc[query_mask, 'ontology_id'] = obo_id
-    mygwas_df.loc[query_mask, 'ontology_term'] = obo_label.lower()
+    try:
+        mygwas_df.loc[query_mask, 'ontology_term'] = obo_label.lower()
+    except:
+        import pdb; pdb.set_trace()
     mygwas_df.loc[query_mask, 'ontology_iri'] = obo_iri
     if not obo_id is None:
         obo_id2 = obo_id.replace(':', '_')
