@@ -38,7 +38,7 @@ mygwas_df['ontology_id'] = None
 mygwas_df['ontology_term'] = None
 mygwas_df['ontology_iri'] = None
 
-for query_term in mygwas_df['query_term'].unique():
+for query_term in sorted(mygwas_df['query_term'].unique()):
     query_mask = mygwas_df['query_term'] == query_term
     query_ontology = mygwas_df.loc[query_mask, 'query_ontology'].unique()[0]
     ols_url = "https://www.ebi.ac.uk/ols/api/search?q={query_term}&query_ontology={query_ontology}".format(query_term=urllib.parse.quote(query_term), query_ontology=query_ontology)
@@ -55,24 +55,15 @@ for query_term in mygwas_df['query_term'].unique():
                     obo_id = doc['id']
                 obo_label = doc['label']
                 obo_iri = doc['iri']
-        # elif 'id' in ols_df['response']['docs'][0]:
-        #     obo_id = ols_df['response']['docs'][0]['id']
-        #     obo_label = ols_df['response']['docs'][0]['label']
-        #     obo_iri = ols_df['response']['docs'][0]['iri']
-        # elif len(ols_df['response']['docs']) > 1:
-        #     if 'obo_id' in ols_df['response']['docs'][1]:
-        #         obo_id = ols_df['response']['docs'][1]['obo_id']
-        #         obo_label = ols_df['response']['docs'][1]['label']
-        #         obo_iri = ols_df['response']['docs'][1]['iri']
+                break
+    if obo_id.startswith("snomed:class"):
+        obo_id = obo_id.split('/')[-1]
     mygwas_df.loc[query_mask, 'ontology_id'] = obo_id
-    try:
-        mygwas_df.loc[query_mask, 'ontology_term'] = obo_label.lower()
-    except:
-        import pdb; pdb.set_trace()
+    mygwas_df.loc[query_mask, 'ontology_term'] = obo_label.lower()
     mygwas_df.loc[query_mask, 'ontology_iri'] = obo_iri
     if not obo_id is None:
         obo_id2 = obo_id.replace(':', '_')
-        print(query_term, obo_id, obo_label, obo_id2 in pgs_cat_df['id'].tolist())
+        print(query_term, obo_id, obo_label, obo_id2 in pgs_cat_df['id'].tolist(), obo_iri)
         if obo_id2 in pgs_cat_df['id'].tolist():
             cat_str = ';'.join(pgs_cat_df.loc[pgs_cat_df['id'] == obo_id2, 'category_label'].tolist())
             mygwas_df.loc[query_mask, 'category'] = cat_str
