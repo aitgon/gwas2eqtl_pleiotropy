@@ -3,6 +3,7 @@ import pandas
 import pathlib
 import sys
 import urllib
+from gwas2eqtl_pleiotropy.Logger import Logger
 
 
 #%%
@@ -63,14 +64,12 @@ for query_term in sorted(mygwas_df['query_term'].unique()):
     mygwas_df.loc[query_mask, 'ontology_iri'] = obo_iri
     if not obo_id is None:
         obo_id2 = obo_id.replace(':', '_')
-        print(query_term, obo_id, obo_label, obo_id2 in pgs_cat_df['id'].tolist(), obo_iri)
+        Logger.info("{} | {} | {} | {}".format(query_term, obo_label, obo_id, obo_iri))
         if obo_id2 in pgs_cat_df['id'].tolist():
             cat_str = ';'.join(pgs_cat_df.loc[pgs_cat_df['id'] == obo_id2, 'category_label'].tolist())
             mygwas_df.loc[query_mask, 'category'] = cat_str
 
-# import pdb; pdb.set_trace()
-
-mygwas_df = mygwas_df[['id', 'trait', 'ontology_term', 'ontology_id', 'ontology_iri', 'query_ontology', 'query_term']]
-mygwas_df.sort_values(['ontology_term', 'trait', 'id'], inplace=True)
+# mygwas_df = mygwas_df[['id', 'trait', 'query_ontology', 'query_term', 'ontology_id', 'ontology_term', 'ontology_iri']]
+mygwas_df.sort_values('id', inplace=True)
 with pandas.ExcelWriter(gwas_annot_ods_path) as fout:
     mygwas_df.to_excel(fout, index=False)
