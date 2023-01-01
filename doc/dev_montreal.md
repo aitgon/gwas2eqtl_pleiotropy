@@ -61,7 +61,8 @@ SELECT DISTINCT co.chrom,
     co.snp_pp_h4,
     co.coloc_variant_id AS tophits_variant_id,
     co.nsnps,
-    eqtl_annot.etissue_category_term
+    eqtl_annot.etissue_category_term,
+    gw.gwas_category
    FROM (((((( SELECT DISTINCT co0.chrom,
             co0.pos AS pos38,
             concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
@@ -145,7 +146,7 @@ SELECT DISTINCT co.chrom,
 Optional for the annotation
 
 ~~~
-python scripts/query_ontology_ols.py config/gwas417.ods out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/query_ontology_ols.py/gwas_ontology.ods
+python scripts/query_ontology_ols.py config/gwas417_query_precise.ods out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/query_ontology_ols.py/gwas417_query_precise_ontology.ods
 ~~~
 
 Then snakemake is run with:
