@@ -28,10 +28,66 @@ Insert to db
 ~~~
 python scripts/insrt_cytoband.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_geneid2symbol.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
-python scripts/insrt_gwas_annot.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/gwas417.ods
+python scripts/insrt_gwas_annot.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/gwas417_query_precise.ods
 python scripts/insrt_pos19.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_etissue_category.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/etissue_category.ods
 python scripts/insrt_open_gwas.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
+~~~
+
+Create "colocpleio" view
+
+~~~
+SELECT DISTINCT co.chrom,
+    pos19.pos19,
+    co.pos38,
+    co.cytoband,
+    co.rsid,
+    co.ref,
+    co.alt,
+    gw.gwas_trait,
+    gw.gwas_ontology_term,
+    gw.gwas_ontology_id,
+    op.batch,
+    op.pmid,
+    co.gwas_beta,
+    en.symbol AS eqtl_gene_symbol,
+    co.eqtl_beta,
+    co.eqtl_id,
+    co.eqtl_gene_id,
+    co.gwas_id,
+    co.gwas_pval,
+    co.eqtl_pval,
+    co.pp_h4_abf,
+    co.snp_pp_h4,
+    co.coloc_variant_id AS tophits_variant_id,
+    co.nsnps,
+    eqtl_annot.etissue_category_term
+   FROM (((((( SELECT DISTINCT co0.chrom,
+            co0.pos AS pos38,
+            concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
+            co0.rsid,
+            co0.ref,
+            co0.alt,
+            co0.gwas_beta,
+            co0.eqtl_beta,
+            co0.eqtl_id,
+            co0.eqtl_gene_id,
+            co0.gwas_id,
+            co0.gwas_pval,
+            co0.eqtl_pval,
+            co0.pp_h4_abf,
+            co0.snp_pp_h4,
+            co0.coloc_variant_id,
+            co0.nsnps
+           FROM coloc co0,
+            cytoband cy
+          WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co
+     LEFT JOIN ensg2symbol en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
+     LEFT JOIN gwas_annot gw ON (((gw.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
+     LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
+  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
 Create "colocweb" view
@@ -45,6 +101,8 @@ SELECT DISTINCT co.chrom,
     co.ref,
     co.alt,
     gw.gwas_trait,
+    gw.gwas_ontology_term,
+    gw.gwas_ontology_id,
     gw.gwas_category,
     co.gwas_beta,
     en.symbol AS eqtl_gene_symbol,
@@ -81,60 +139,6 @@ SELECT DISTINCT co.chrom,
      LEFT JOIN ensg2symbol en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
      LEFT JOIN gwas_annot gw ON (((gw.gwas_id)::text = (co.gwas_id)::text)))
      LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
-  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
-~~~
-
-Create "colocpleio" view
-
-~~~
-SELECT DISTINCT co.chrom,
-    pos19.pos19,
-    co.pos38,
-    co.cytoband,
-    co.rsid,
-    co.ref,
-    co.alt,
-    gw.gwas_trait,
-    gw.gwas_category,
-    co.gwas_beta,
-    en.symbol AS eqtl_gene_symbol,
-    co.eqtl_beta,
-    co.eqtl_id,
-    co.eqtl_gene_id,
-    co.gwas_id,
-    co.gwas_pval,
-    co.eqtl_pval,
-    co.pp_h4_abf,
-    co.snp_pp_h4,
-    co.coloc_variant_id AS tophits_variant_id,
-    co.nsnps,
-    eqtl_annot.etissue_category_term,
-    op.pmid
-   FROM (((((( SELECT DISTINCT co0.chrom,
-            co0.pos AS pos38,
-            concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
-            co0.rsid,
-            co0.ref,
-            co0.alt,
-            co0.gwas_beta,
-            co0.eqtl_beta,
-            co0.eqtl_id,
-            co0.eqtl_gene_id,
-            co0.gwas_id,
-            co0.gwas_pval,
-            co0.eqtl_pval,
-            co0.pp_h4_abf,
-            co0.snp_pp_h4,
-            co0.coloc_variant_id,
-            co0.nsnps
-           FROM coloc co0,
-            cytoband cy
-          WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co
-     LEFT JOIN ensg2symbol en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
-     LEFT JOIN gwas_annot gw ON (((gw.gwas_id)::text = (co.gwas_id)::text)))
-     LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text)))
-     LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
-     LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
   ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 

@@ -27,7 +27,7 @@ except IndexError:
 
 #%%
 url = "http://gwas-api.mrcieu.ac.uk/gwasinfo"
-json_path = os.path.join(public_data_dir, url.replace('http://', ''))
+json_path = os.path.join(public_data_dir, url.replace('http://', '') + ".json")
 pathlib.Path(os.path.dirname(json_path)).mkdir(exist_ok=True, parents=True)
 if not os.path.isfile(json_path):
     with open(json_path, "wb") as f:  # opening a file handler to create new file
@@ -42,9 +42,8 @@ if sqlalchemy.inspect(engine).has_table("open_gwas_info"):
     open_gwas_info.__table__.drop(engine)
 Base.metadata.create_all(engine)
 
-# Delete and insert
-engine.execute((Base.metadata.tables['open_gwas_info']).delete())
-
+#%%
+df['batch'] = df.index.to_series().str.split('-', expand=True)[0] + '-' + df.index.to_series().str.split('-', expand=True)[1]
 df.rename({'id': 'gwas_id'}, axis=1, inplace=True)
 df.set_index('gwas_id', verify_integrity=True, inplace=True, drop=True)
 df.to_sql('open_gwas_info', con=engine, if_exists='append', index=True)

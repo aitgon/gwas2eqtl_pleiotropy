@@ -56,7 +56,7 @@ class gwas_annot(Base):
 
    gwas_id = Column('gwas_id', String(63), primary_key=True)
    gwas_trait = Column('gwas_trait', String(255), nullable=False)
-   gwas_ontology_label = Column('gwas_ontology_label', String(127), nullable=False)
+   gwas_ontology_term = Column('gwas_ontology_term', String(127), nullable=False)
    gwas_ontology_id = Column('gwas_ontology_id', String(15), nullable=False)
    gwas_category = Column('gwas_category', String(127), nullable=False)
 
@@ -85,6 +85,7 @@ class open_gwas_info(Base):
    __tablename__ = "open_gwas_info"
 
    gwas_id = Column('gwas_id', String(127), primary_key=True)
+   batch = Column('batch', String(7), nullable=False)
    note = Column('note', String(511), nullable=True)
    group_name = Column('group_name', String(127), nullable=True)
    mr = Column('mr', SmallInteger, nullable=True)
