@@ -10,9 +10,9 @@ To annotate traits from genome-wide associations studies (GWAS) with genes and t
 I developed a pipeline that systematically colocalizes variants from GWAS and expression quantitative trait loci (eQTLs) (Section Methods).
 %
 127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many
-tissues and cell types \citep{2021.Alasoo.Kerimov} (Supplementary table 1).
+tissues and cell types \cite{2021.Alasoo.Kerimov} (Supplementary table 1).
 
-GWAS traits were selected from the IEU OpenGWAS database based on four criteria \citep{2018.Parkinson.Buniello}.
+GWAS traits were selected from the IEU OpenGWAS database based on four criteria \cite{2018.Parkinson.Buniello}.
 %
 The first criterion was to exclude molecular traits such as proteome or methylome.
 %	
@@ -50,7 +50,7 @@ In these disease classes, the percentages of variants with a colocalized eQTL ar
 % select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits, coloc where tophits.gwas_id=gwas_annot.gwas_id and tophits.rsid=coloc.rsid group by gwas_class order by count desc;
 
 These results is much higher than previous colocalization analyses for autoimmune diseases by previous authors that
-found 23-41\% depending on the study \citep{2016.Soranzo.Chen,2017.Cotsapas.Chun,2021.Li.Mu}.
+found 23-41\% depending on the study \cite{2016.Soranzo.Chen,2017.Cotsapas.Chun,2021.Li.Mu}.
 % Discuss 25% in Chun et al 2017, Nature Genetics
 % Discuss 41% (eQTL + sQTLs) in Mu et al 2021, Genome Biology
 % Discuss 23% in Chen et al 2016, Cell. Genetic Drivers of Epigenetic and Transcriptional Variation in Human Immune Cells
@@ -245,7 +245,7 @@ In the following sections, I studied different molecular mechanisms of pleiotrop
 
 First, I analysed whether there are significant differences of some effect consequences between more and less pleiotropic eQTLs.
 %
-I separated eQTLs according to the count of GWAS classes and computed the EBI variant effect predictor (VEP) consequence (\citep{2016.Cunningham.McLaren}).
+I separated eQTLs according to the count of GWAS classes and computed the EBI variant effect predictor (VEP) consequence (\cite{2016.Cunningham.McLaren}).
 %
 I found a significant larger number of upstream, 5'-UTR, downstream and 3'-UTR eQTLs
 with 2, 3 and 4 and more classes compared to eQTLs with one class (Fig. \ref{fig:vep_consequence}).
@@ -321,7 +321,7 @@ eQTLs involved in 1, 2, 3 and 4 and more GWAS classes bind a mean number of 17,
 19, 23 and 27 transcription factors, respectively (Fig. \ref{fig:freq_tf_per_variant}a).
 %I found a significant larger number of transcription factors bound around pleiotropic variants (Fig. \ref{fig:freq_tf_per_variant}a).
 
-Cis-regulatory modules (CRMs) are non-coding genomic regions with a higher density of bound cis-regulatory modules \citep{2021.Ballester.Hammal}.
+Cis-regulatory modules (CRMs) are non-coding genomic regions with a higher density of bound cis-regulatory modules \cite{2021.Ballester.Hammal}.
 %
 I found that the odds ratio of variants annotated with CRMs vs non-annotated is significantly (Fisher's exact test) higher for variants with 2 and 3 GWAS class counts compared to class count 1 (Fig. \ref{fig:freq_tf_per_variant}b).
 

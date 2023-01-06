@@ -92,4 +92,10 @@ __pycache__
 .Rproj.user
 .snakemake/
 texput.log
-
+ms/ms00_merge.bcf
+ms/ms00_merge.dvi
+ms/ms00_merge.run.xml
+ms/ms00_merge_bak2.tex
+ms/sample.bib
+ms00_merge-blx.bib
+ms00_merge.bcf

@@ -2,9 +2,9 @@
 snakemake -j all -s tools/snkfl_vep.yml --config max_gwas_category_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public
 """
 
-outdir = config['outdir']
-max_gwas_category_count = config['max_gwas_category_count']
 db_url = config['db_url']
+max_gwas_category_count = config['max_gwas_category_count']
+outdir = config['outdir']
 snp_pp_h4 = config['snp_pp_h4']
 
 rule all_03snkfl_analysis_vep:
