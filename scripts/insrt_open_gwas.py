@@ -30,8 +30,9 @@ url = "http://gwas-api.mrcieu.ac.uk/gwasinfo"
 json_path = os.path.join(public_data_dir, url.replace('http://', '') + ".json")
 pathlib.Path(os.path.dirname(json_path)).mkdir(exist_ok=True, parents=True)
 if not os.path.isfile(json_path):
-    with open(json_path, "wb") as f:  # opening a file handler to create new file
-        f.write((requests.get(url)).content)  # writing content to file
+    with open(json_path, "wb") as fout:  # opening a file handler to create new file
+        content_json = (requests.get(url)).content
+        fout.write(content_json)  # writing content to file
 
 #%% no select
 df = pandas.read_json(json_path).T

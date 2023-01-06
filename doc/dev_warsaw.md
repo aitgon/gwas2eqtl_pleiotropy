@@ -17,8 +17,8 @@ cd ..
 From the "gwas2eqtl" project
 
 ~~~
-python workflow/scripts/insrt_coloc.py 0.75 0  postgresql://postgres:postgres@0.0.0.0:5435/postgres ../gwas2eqtl_pleiotropy/config/gwas417.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv /home/gonzalez/Repositories/gwas2eqtl/out/gwas417/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
-python workflow/scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5435/postgres ../gwas2eqtl_pleiotropy/config/gwas417.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas417/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
+python workflow/scripts/insrt_coloc.py 0.75 0  postgresql://postgres:postgres@0.0.0.0:5435/postgres ../gwas2eqtl_pleiotropy/config/gwas417.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
+python workflow/scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5435/postgres ../gwas2eqtl_pleiotropy/config/gwas417.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
 ~~~
 
 python scripts/insrt_vep_consequence.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
@@ -146,17 +146,17 @@ SELECT DISTINCT co.chrom,
 Optional for the annotation
 
 ~~~
-python scripts/query_ontology_ols.py config/gwas417_query_precise.ods out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/query_ontology_ols.py/gwas417_query_precise_ontology.ods
+python scripts/query_ontology_ols.py config/gwas417_query_precise.ods out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/query_ontology_ols.py/gwas417_query_precise_ontology.ods
 ~~~
 
 Then snakemake is run with:
 
 ~~~
-snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas417_query_precise.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.5 -p
+snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas417_query_precise.ods max_gwas_class_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.5 -p
 ~~~
 
 ~~~
-snakemake -j all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process  snp_pp_h4=0.5 -p
+snakemake --cores all -p -d ${PWD} -s tools/snkfl_vep.yml --config outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 max_gwas_class_count=4 db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres snp_pp_h4=0.5 -p
 ~~~
 
 # MS
@@ -165,4 +165,4 @@ snakemake -j all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:po
 rm -f ms_00_merge.tex.pdf; texi2pdf ms/ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
 ~~~
 
-python scripts/query_ontology_ols.py config/gwas417.ods out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/annot_gwas_metadata.py/gwas_ontology.ods
+python scripts/query_ontology_ols.py config/gwas417.ods out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/annot_gwas_metadata.py/gwas_ontology.ods
