@@ -42,9 +42,9 @@ corr_df = corr_df.loc[corr_df.sum(axis=1) > 0, ]
 corr_df = corr_df[corr_df.columns[corr_df.sum(axis=0) > 0]]
 
 #%% filter row with at least a number of correlations >0.1 larger than 30
-corr_count_ser = (corr_df.abs() >= 0.025).sum(axis=1)
+corr_count_ser = (corr_df.abs() >= 0.01).sum(axis=1)
 # max number of correlation 80
-corr_count_ser = corr_count_ser.sort_values(ascending=False)[0:80]
+corr_count_ser = corr_count_ser.sort_values(ascending=False)[0:30]
 
 mask = corr_df.index.isin(corr_count_ser.index)
 corr_df = corr_df.loc[mask]
