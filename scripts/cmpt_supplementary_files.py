@@ -102,16 +102,16 @@ for rowi, row in count_per_region_df.iterrows():
     start = row['start']
     end = row['end']
     eqtl_gene_symbol_ser = count_per_rsid_gwas_egene_etissue_df.query('chrom=={chrom} & pos38>={start} & pos38<={end}'.format(chrom=chrom, start=start, end=end))['eqtl_gene_symbol_lst']
-    eqtl_gene_symbol_lst = sorted(eqtl_gene_symbol_ser.str.split(', ').explode().unique())
+    eqtl_gene_symbol_lst = sorted(eqtl_gene_symbol_ser.str.split(';').explode().unique())
     count_per_region_df.loc[rowi, 'eqtl_gene_symbol'] = ', '.join(eqtl_gene_symbol_lst)
     #
     egene_ser = count_per_rsid_gwas_egene_etissue_df.query('chrom=={chrom} & pos38>={start} & pos38<={end}'.format(chrom=chrom, start=start, end=end))['egene_lst']
-    egene_lst = sorted(egene_ser.str.split(', ').explode().unique())
+    egene_lst = sorted(egene_ser.str.split(';').explode().unique())
     count_per_region_df.loc[rowi, 'egene'] = ', '.join(egene_lst)
     #
     # import pdb; pdb.set_trace()
     etissue_category_ser = count_per_rsid_gwas_egene_etissue_df.query('chrom=={chrom} & pos38>={start} & pos38<={end}'.format(chrom=chrom, start=start, end=end))['etissue_category_term_lst']
-    etissue_category_term_lst = sorted(etissue_category_ser.str.split(', ').explode().unique())
+    etissue_category_term_lst = sorted(etissue_category_ser.str.split(';').explode().unique())
     count_per_region_df.loc[rowi, 'etissue_category_term'] = ', '.join(etissue_category_term_lst)
 
 count_per_region_df.sort_values(by=['gwas_category_count', 'chrom', 'start'], ascending=[False, True, True], inplace=True)

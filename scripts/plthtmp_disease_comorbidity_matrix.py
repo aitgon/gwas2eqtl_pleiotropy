@@ -42,8 +42,8 @@ corr_df = corr_df.loc[corr_df.sum(axis=1) > 0, ]
 corr_df = corr_df[corr_df.columns[corr_df.sum(axis=0) > 0]]
 
 #%% filter row with at least a number of correlations >0.1 larger than 30
-corr_count_ser = (corr_df.abs() >= 0.01).sum(axis=1)
-# max number of correlation 80
+corr_count_ser = (corr_df.abs() >= 0.005).sum(axis=1)
+# max number of correlation
 corr_count_ser = corr_count_ser.sort_values(ascending=False)[0:30]
 
 mask = corr_df.index.isin(corr_count_ser.index)
@@ -113,7 +113,7 @@ g = seaborn.clustermap(dis_df, **clustermap_args_dic)
 seaborn.set(font_scale=1)
 g.cax.set_visible(False)
 # import pdb; pdb.set_trace()
-g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=8)
+g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=12)
 g.ax_heatmap.set(ylabel='Trait')
 #
 for label in category_labels.unique():

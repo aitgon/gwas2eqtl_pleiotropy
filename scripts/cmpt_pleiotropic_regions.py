@@ -41,7 +41,7 @@ df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
 pleio_df = pandas.DataFrame()
 df.sort_values(['chrom', 'pos38'], inplace=True)
-df['gwas_category_lst'] = df['gwas_category_lst'].str.split(',')
+df['gwas_category_lst'] = df['gwas_category_lst'].str.split(';')
 df['gwas_category_count'] = 1
 
 ########################
@@ -153,10 +153,10 @@ regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_category
 # format output
 # import pdb; pdb.set_trace()
 regions_pleio_ms_df.drop(['gwas_category_count'], inplace=True, axis=1)
-regions_pleio_ms_df['gwas_category_lst'] = regions_pleio_ms_df['gwas_category_lst'].apply(lambda x: ', '.join(x))
+regions_pleio_ms_df['gwas_category_lst'] = regions_pleio_ms_df['gwas_category_lst'].apply(lambda x: '; '.join(x))
 regions_pleio_ms_df['start'] = regions_pleio_ms_df['start'].apply(lambda x: '{0:,}'.format(x))
 regions_pleio_ms_df['end'] = regions_pleio_ms_df['end'].apply(lambda x: '{0:,}'.format(x))
-regions_pleio_ms_df['cytoband'] = regions_pleio_ms_df['cytoband'].apply(lambda x: ', '.join(x) )
+regions_pleio_ms_df['cytoband'] = regions_pleio_ms_df['cytoband'].apply(lambda x: '; '.join(x) )
 regions_pleio_ms_df = regions_pleio_ms_df[['chrom', 'pleio_rsid', 'pleio_pos38', 'cytoband', 'start', 'end', 'gwas_category_lst']]
 regions_pleio_ms_df.rename({'gwas_category_lst': 'GWAS categoryes'}, axis=1, inplace=True)
 

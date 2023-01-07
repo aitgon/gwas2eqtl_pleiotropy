@@ -32,27 +32,22 @@ sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 columns = ['chrom', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_category_term']
 coloc_df = pandas.read_sql(sql, con=url, columns=columns).drop_duplicates()
 
-
-#%%
-# coloc_df = pandas.read_csv(annotated_tsv_path, sep="\t")
-# coloc_df['chrom'] = coloc_df['chrom'].astype(int)
-
 #%% etissue pleiotropy
-etissue_df = coloc_df[['chrom', 'cytoband', 'pos38', 'rsid', 'etissue_category_term']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos38', 'rsid']).agg({'etissue_category_term': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
+etissue_df = coloc_df[['chrom', 'cytoband', 'pos38', 'rsid', 'etissue_category_term']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos38', 'rsid']).agg({'etissue_category_term': ['size', (lambda x: (";".join(sorted(x))))]}).reset_index()
 etissue_df.columns = ['chrom', 'cytoband', 'pos38', 'rsid', 'etissue_label_count', 'etissue_category_term_lst']
 etissue_df = etissue_df.sort_values(by=['etissue_label_count', 'chrom', 'pos38', 'etissue_category_term_lst', 'rsid'], ascending=[False, True, True, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_etissue.tsv")
 etissue_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%% eqtl_gene_id pleiotropy
-egene_df = coloc_df[['chrom', 'cytoband', 'pos38', 'rsid', 'eqtl_gene_id', 'eqtl_gene_symbol']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos38', 'rsid']).agg({'eqtl_gene_id': ['size', (lambda x: (",".join(sorted(x))))], 'eqtl_gene_symbol': (lambda x: (",".join(sorted([str(i) for i in x]))))}).reset_index()
+egene_df = coloc_df[['chrom', 'cytoband', 'pos38', 'rsid', 'eqtl_gene_id', 'eqtl_gene_symbol']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos38', 'rsid']).agg({'eqtl_gene_id': ['size', (lambda x: (";".join(sorted(x))))], 'eqtl_gene_symbol': (lambda x: (",".join(sorted([str(i) for i in x]))))}).reset_index()
 egene_df.columns = ['chrom', 'cytoband', 'pos38', 'rsid', 'egene_count', 'egene_lst', 'eqtl_gene_symbol_lst']
 egene_df = egene_df.sort_values(by=['egene_count', 'chrom', 'pos38', 'egene_lst', 'eqtl_gene_symbol_lst', 'rsid'], ascending=[False, True, True, True, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_egene.tsv")
 egene_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%% gwas pleiotropy
-gwas_df = coloc_df[['chrom', 'cytoband', 'pos38', 'rsid', 'gwas_category']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos38', 'rsid']).agg({'gwas_category': ['size', (lambda x: (",".join(sorted(x))))]}).reset_index()
+gwas_df = coloc_df[['chrom', 'cytoband', 'pos38', 'rsid', 'gwas_category']].drop_duplicates().groupby(['chrom', 'cytoband', 'pos38', 'rsid']).agg({'gwas_category': ['size', (lambda x: (";".join(sorted(x))))]}).reset_index()
 gwas_df.columns = ['chrom', 'cytoband', 'pos38', 'rsid', 'gwas_category_count', 'gwas_category_lst']
 gwas_df = gwas_df.sort_values(by=['gwas_category_count', 'chrom', 'pos38', 'gwas_category_lst', 'rsid'], ascending=[False, True, True, True, True])
 tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas.tsv")
@@ -60,7 +55,6 @@ gwas_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%% gwas variant pleiotropy for MS
 gwas_ms_df = gwas_df.copy()
-# gwas_ms_df['cytoband'] = gwas_ms_df['cytoband'].str.split('.', expand=True)[0]
 gwas_ms_df = gwas_ms_df.drop_duplicates('cytoband', keep='first')
 gwas_ms_df = gwas_ms_df.loc[gwas_ms_df['gwas_category_count'] >= manuscript_pleio_cutoff]
 # format output
