@@ -36,6 +36,16 @@ python scripts/insrt_entrezgene2ensg2symbol.py postgresql://postgres:postgres@0.
 python scripts/insrt_entrezgene2pubmed_count.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 ~~~
 
+Create "ensg2pubmed_count" view
+
+~~~
+SELECT entrezgene2ensg2symbol.gene_id,
+    entrezgene2pubmed_count.pubmed_count
+   FROM entrezgene2ensg2symbol,
+    entrezgene2pubmed_count
+  WHERE (entrezgene2ensg2symbol.entrezgene = entrezgene2pubmed_count.entrezgene);
+~~~
+
 Create "colocpleio" view
 
 ~~~
@@ -64,7 +74,8 @@ SELECT DISTINCT co.chrom,
     co.coloc_variant_id AS tophits_variant_id,
     co.nsnps,
     eqtl_annot.etissue_category_term,
-    gw.gwas_category
+    gw.gwas_category,
+    en2.pubmed_count
    FROM (((((( SELECT DISTINCT co0.chrom,
             co0.pos AS pos38,
             concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
@@ -90,6 +101,7 @@ SELECT DISTINCT co.chrom,
      LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text)))
      LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
      LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
+     LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text))
   ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
