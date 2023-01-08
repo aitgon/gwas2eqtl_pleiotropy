@@ -50,6 +50,15 @@ class cytoband(Base):
    cytoband = Column('cytoband', String(7), nullable=False)
 
 
+class entrezgene2ensg2symbol(Base):
+   """scripts/insrt_cytoband.py"""
+   __tablename__ = "entrezgene2ensg2symbol"
+
+   entrezgene = Column('entrezgene', Integer, primary_key=True)
+   gene_id = Column('gene_id', String(15), nullable=False)
+   gene_symbol = Column('gene_symbol', String(63), nullable=False, unique=True)
+
+
 class gwas_annot(Base):
    """scripts/insrt_gwas_annot.py"""
    __tablename__ = "gwas_annot"
