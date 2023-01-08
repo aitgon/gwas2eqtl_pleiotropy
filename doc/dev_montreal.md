@@ -32,6 +32,8 @@ python scripts/insrt_gwas_annot.py postgresql://postgres:postgres@0.0.0.0:5435/p
 python scripts/insrt_pos19.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_etissue_category.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/etissue_category.ods
 python scripts/insrt_open_gwas.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
+python scripts/insrt_entrezgene2ensg2symbol.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
+python scripts/insrt_entrezgene2pubmed_count.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 ~~~
 
 Create "colocpleio" view

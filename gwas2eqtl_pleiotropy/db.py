@@ -51,12 +51,20 @@ class cytoband(Base):
 
 
 class entrezgene2ensg2symbol(Base):
-   """scripts/insrt_cytoband.py"""
+   """scripts/insrt_entrezgene2ensg2symbol.py"""
    __tablename__ = "entrezgene2ensg2symbol"
 
    entrezgene = Column('entrezgene', Integer, primary_key=True)
    gene_id = Column('gene_id', String(15), nullable=False)
    gene_symbol = Column('gene_symbol', String(63), nullable=False, unique=True)
+
+
+class entrezgene2pubmed_count(Base):
+   """scripts/insrt_entrezgene2pubmed_count.py"""
+   __tablename__ = "entrezgene2pubmed_count"
+
+   entrezgene = Column('entrezgene', Integer, primary_key=True)
+   pubmed_count = Column('pubmed_count', Integer, nullable=False)
 
 
 class gwas_annot(Base):
