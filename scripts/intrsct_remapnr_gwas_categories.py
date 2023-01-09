@@ -12,7 +12,7 @@ from gwas2eqtl_pleiotropy.constants import public_data_dir
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_class_count = int(sys.argv[1])
+    max_gwas_category_count = int(sys.argv[1])
     threads = int(sys.argv[2])
     remap_nr_path = sys.argv[3]
     count_per_rsid_gwas_tsv_path = sys.argv[4]
@@ -47,4 +47,4 @@ def intrsct_remapnr(count_pleio):
         result = subprocess.run(shlex.split(cmd), stdout=fout)
 
 with Pool(processes=threads) as p:
-    p.map(intrsct_remapnr, range(1, max_gwas_class_count+1))
+    p.map(intrsct_remapnr, range(1, max_gwas_category_count+1))

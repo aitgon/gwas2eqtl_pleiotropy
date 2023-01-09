@@ -1,23 +1,20 @@
-import sys
-
-import seaborn
-
-from gwas2eqtl_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
 from gwas2eqtl_pleiotropy.constants import tick_fontsize, label_fontsize, scatter_dot_size, dpi
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 
 import os
 import pandas
 import pathlib
+import seaborn
+import sys
 
 plt.rcParams["figure.figsize"] = (8, 6)
-from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_class_count = int(sys.argv[1])
+    max_gwas_category_count = int(sys.argv[1])
     region_window_100000_tsv_path = sys.argv[2]
     count_per_rsid_egene_tsv_path = sys.argv[3]
     outdir_path = sys.argv[4]
@@ -55,12 +52,12 @@ ylabel = "eGene count"
 count_per_rsid_df['pos38'] = count_per_rsid_df['pos38'].astype('int')
 
 #%% Loop over regions
-pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_class_count'] >= max_gwas_class_count, ['chrom', 'start', 'end', 'gwas_class_count']]
+pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= max_gwas_category_count, ['chrom', 'start', 'end', 'gwas_category_count']]
 for rowi, row in pleiotropic_regions_df.iterrows():
     chrom = row['chrom']
     start = row['start']
     end = row['end']
-    gwas_class_count = row['gwas_class_count']
+    gwas_category_count = row['gwas_category_count']
     count_per_rsid_gwas_region_df = count_per_rsid_df.copy()
     count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['chrom'] == chrom, ]
     count_per_rsid_gwas_region_df = count_per_rsid_gwas_region_df.loc[count_per_rsid_gwas_region_df['pos38'] >= start, ]
@@ -79,7 +76,7 @@ for rowi, row in pleiotropic_regions_df.iterrows():
     plt.yticks(fontsize=tick_fontsize)
 
     plt.tight_layout()
-    png_path = os.path.join(outdir_path, "count_per_rsid_chr{}_start{}_end{}_categories{}.png".format(chrom, start, end, gwas_class_count))
+    png_path = os.path.join(outdir_path, "count_per_rsid_chr{}_start{}_end{}_categories{}.png".format(chrom, start, end, gwas_category_count))
     plt.savefig(png_path, dpi=dpi)
     plt.clf()
     plt.close()

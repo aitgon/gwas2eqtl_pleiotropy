@@ -44,7 +44,7 @@ h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 gwas_cat_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
 
 #%%
-vep_df = h4_df[['chrom', 'pos38', 'rsid', 'ref', 'alt']].merge(gwas_cat_df[['chrom', 'pos38', 'rsid', 'gwas_class_count']], on=['chrom', 'pos38', 'rsid']).drop_duplicates()
+vep_df = h4_df[['chrom', 'pos38', 'rsid', 'ref', 'alt']].merge(gwas_cat_df[['chrom', 'pos38', 'rsid', 'gwas_category_count']], on=['chrom', 'pos38', 'rsid']).drop_duplicates()
 
 vep_df.rename({'pos38': 'start'}, axis=1, inplace=True)
 vep_df['end'] = vep_df['start']
@@ -64,7 +64,7 @@ vep_df['alleles'] = vep_df['ref'] + '/' + vep_df['alt']
 vep_df['strand'] = '+'
 
 #%% prepare vep input
-out_col_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_class_count']
+out_col_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_category_count']
 vep_df = vep_df[out_col_lst]
 vep_df.sort_values(vep_df.columns.tolist(), inplace=True)
 

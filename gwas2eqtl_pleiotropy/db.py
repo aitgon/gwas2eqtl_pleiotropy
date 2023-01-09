@@ -50,13 +50,32 @@ class cytoband(Base):
    cytoband = Column('cytoband', String(7), nullable=False)
 
 
+class entrezgene2ensg2symbol(Base):
+   """scripts/insrt_entrezgene2ensg2symbol.py"""
+   __tablename__ = "entrezgene2ensg2symbol"
+
+   entrezgene = Column('entrezgene', Integer, primary_key=True)
+   gene_id = Column('gene_id', String(15), nullable=False)
+   gene_symbol = Column('gene_symbol', String(63), nullable=False, unique=True)
+
+
+class entrezgene2pubmed_count(Base):
+   """scripts/insrt_entrezgene2pubmed_count.py"""
+   __tablename__ = "entrezgene2pubmed_count"
+
+   entrezgene = Column('entrezgene', Integer, primary_key=True)
+   pubmed_count = Column('pubmed_count', Integer, nullable=False)
+
+
 class gwas_annot(Base):
    """scripts/insrt_gwas_annot.py"""
    __tablename__ = "gwas_annot"
 
    gwas_id = Column('gwas_id', String(63), primary_key=True)
    gwas_trait = Column('gwas_trait', String(255), nullable=False)
-   gwas_class = Column('gwas_class', String(127), nullable=False)
+   gwas_ontology_term = Column('gwas_ontology_term', String(127), nullable=False)
+   gwas_ontology_id = Column('gwas_ontology_id', String(15), nullable=False)
+   gwas_category = Column('gwas_category', String(127), nullable=False)
 
 
 class eqtl_annot(Base):
@@ -73,15 +92,17 @@ class eqtl_annot(Base):
    quant_method = Column('quant_method', String(63), nullable=False)
    sample_size = Column('sample_size', String(63), nullable=False)
    ftp_path = Column('ftp_path', String(255), nullable=False)
-   etissue_class = Column('etissue_class', String(63), nullable=False)
+   etissue_category_id = Column('etissue_category_id', String(15), nullable=False)
+   etissue_category_term = Column('etissue_category_term', String(63), nullable=False)
    ref = Column('ref', String(63), nullable=False)
 
 
 class open_gwas_info(Base):
-   """scripts/insrt_gwasmrcieu.py"""
+   """scripts/insrt_open_gwas.py"""
    __tablename__ = "open_gwas_info"
 
    gwas_id = Column('gwas_id', String(127), primary_key=True)
+   batch = Column('batch', String(7), nullable=False)
    note = Column('note', String(511), nullable=True)
    group_name = Column('group_name', String(127), nullable=True)
    mr = Column('mr', SmallInteger, nullable=True)

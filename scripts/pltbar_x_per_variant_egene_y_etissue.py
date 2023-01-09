@@ -19,7 +19,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_class_count = int(sys.argv[2])
+    max_gwas_category_count = int(sys.argv[2])
     url = sys.argv[3]
     count_per_rsid_gwas_tsv_path = sys.argv[4]
     vlnplt_png_path = sys.argv[5]
@@ -48,43 +48,43 @@ h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 
 #%%
 count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
-gwas_class_count_max_int = count_per_rsid_gwas_df['gwas_class_count'].max()
+gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max()
 
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid'])
 
 # %%
-sel_cols = ['rsid', 'eqtl_gene_id', 'etissue_class']  # tissue per variant-eqtl_gene_id
+sel_cols = ['rsid', 'eqtl_gene_id', 'etissue_category_term']  # tissue per variant-eqtl_gene_id
 
-#%% set max_gwas_class_count
-m_df = m_df[sel_cols + ['gwas_class_count']]
-m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] = max_gwas_class_count
+#%% set max_gwas_category_count
+m_df = m_df[sel_cols + ['gwas_category_count']]
+m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
 
-#%% keep unique rsid-etissue_class pairs with max. gwas category
-m_df.sort_values('gwas_class_count', ascending=False, inplace=True)
-m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_class', 'eqtl_gene_id'], keep='first')
+#%% keep unique rsid-etissue_category_term pairs with max. gwas category
+m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
+m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_category_term', 'eqtl_gene_id'], keep='first')
 
 #%%
-m_df = m_df.groupby(['rsid', 'eqtl_gene_id', 'gwas_class_count']).count()
+m_df = m_df.groupby(['rsid', 'eqtl_gene_id', 'gwas_category_count']).count()
 m_df = m_df.reset_index()
-m_df.columns = ['rsid', 'eqtl_gene_id', 'gwas_class_count', 'etissue_class_count']
+m_df.columns = ['rsid', 'eqtl_gene_id', 'gwas_category_count', 'etissue_category_term_count']
 
 #%%
 describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
-m_df.groupby('gwas_class_count')['etissue_class_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
+m_df.groupby('gwas_category_count')['etissue_category_term_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-order = [str(x) for x in range(1, max(m_df['gwas_class_count'].unique())+1)]
+order = [str(x) for x in range(1, max(m_df['gwas_category_count'].unique())+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Tissues per eQTL-gene "
-xlabel = "GWAS class count"
+xlabel = "GWAS category count"
 ylabel = "Tissue count mean"
-y = "etissue_class_count"
-x = "gwas_class_count"
+y = "etissue_category_term_count"
+x = "gwas_category_count"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_class_count'].unique()) + 1)]
+pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_category_count'].unique()) + 1)]
 
 #%%
 m_df[x] = m_df[x].astype(str)

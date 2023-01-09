@@ -3,6 +3,7 @@ import pandas
 import pathlib
 import sys
 import urllib
+from gwas2eqtl_pleiotropy.Logger import Logger
 
 
 #%%
@@ -33,42 +34,42 @@ for rowi, row in pgs_all_metadata_df.iterrows():
     pgs_cat_df = pandas.concat([pgs_cat_df, category_label_df], axis=0)
 
 #%%
-mygwas_df = pandas.read_excel(gwas_metadata_ods, engine='odf', usecols=['id', 'trait', 'ontology', 'query'])
+mygwas_df = pandas.read_excel(gwas_metadata_ods, engine='odf', usecols=['id', 'trait', 'query_ontology', 'query_term'])
 mygwas_df['ontology_id'] = None
-mygwas_df['ontology_label'] = None
-mygwas_df['ontology_uri'] = None
+mygwas_df['ontology_term'] = None
+mygwas_df['ontology_iri'] = None
 
-for query in mygwas_df['query'].unique():
-    query_mask = mygwas_df['query'] == query
-    ontology = mygwas_df.loc[query_mask, 'ontology'].unique()[0]
-    ols_url = "https://www.ebi.ac.uk/ols/api/search?q={query}&ontology={ontology}".format(query=urllib.parse.quote(query), ontology=ontology)
+for query_term in sorted(mygwas_df['query_term'].unique()):
+    query_mask = mygwas_df['query_term'] == query_term
+    query_ontology = mygwas_df.loc[query_mask, 'query_ontology'].unique()[0]
+    ols_url = "https://www.ebi.ac.uk/ols/api/search?q={query_term}&query_ontology={query_ontology}".format(query_term=urllib.parse.quote(query_term), query_ontology=query_ontology)
     ols_df = pandas.read_json(ols_url)
     obo_id = None
     obo_label = None
     obo_iri = None
     if len(ols_df['response']['docs']) > 0:
-        if 'obo_id' in ols_df['response']['docs'][0]:
-            obo_id = ols_df['response']['docs'][0]['obo_id']
-            obo_label = ols_df['response']['docs'][0]['label']
-            obo_iri = ols_df['response']['docs'][0]['iri']
-        elif len(ols_df['response']['docs']) > 1:
-            if 'obo_id' in ols_df['response']['docs'][1]:
-                obo_id = ols_df['response']['docs'][1]['obo_id']
-                obo_label = ols_df['response']['docs'][1]['label']
-                obo_iri = ols_df['response']['docs'][1]['iri']
+        for doc in ols_df['response']['docs']:
+            if doc['ontology_name'] == query_ontology:
+                if 'obo_id' in doc:
+                    obo_id = doc['obo_id']
+                elif 'id' in doc:
+                    obo_id = doc['id']
+                obo_label = doc['label']
+                obo_iri = doc['iri']
+                break
+    if obo_id.startswith("snomed:class"):
+        obo_id = obo_id.split('/')[-1]
     mygwas_df.loc[query_mask, 'ontology_id'] = obo_id
-    mygwas_df.loc[query_mask, 'ontology_label'] = obo_label
-    mygwas_df.loc[query_mask, 'ontology_uri'] = obo_iri
+    mygwas_df.loc[query_mask, 'ontology_term'] = obo_label.lower()
+    mygwas_df.loc[query_mask, 'ontology_iri'] = obo_iri
     if not obo_id is None:
         obo_id2 = obo_id.replace(':', '_')
-        print(query, obo_id, obo_label, obo_id2 in pgs_cat_df['id'].tolist())
+        Logger.info("{} | {} | {} | {}".format(query_term, obo_label, obo_id, obo_iri))
         if obo_id2 in pgs_cat_df['id'].tolist():
             cat_str = ';'.join(pgs_cat_df.loc[pgs_cat_df['id'] == obo_id2, 'category_label'].tolist())
             mygwas_df.loc[query_mask, 'category'] = cat_str
 
-# import pdb; pdb.set_trace()
-
-mygwas_df = mygwas_df[['id', 'trait', 'ontology_label', 'ontology_id', 'ontology_uri', 'category']]
-mygwas_df.sort_values(['ontology_label', 'trait', 'id'], inplace=True)
+# mygwas_df = mygwas_df[['id', 'trait', 'query_ontology', 'query_term', 'ontology_id', 'ontology_term', 'ontology_iri']]
+mygwas_df.sort_values('id', inplace=True)
 with pandas.ExcelWriter(gwas_annot_ods_path) as fout:
     mygwas_df.to_excel(fout, index=False)
