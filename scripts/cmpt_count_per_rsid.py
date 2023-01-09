@@ -40,31 +40,40 @@ gwas_df = coloc_df[variant_def_lst + ['gwas_category']].drop_duplicates()
 agg_dic = {'gwas_category': lambda x: x.tolist()}
 gwas_df = gwas_df.groupby(variant_def_lst).agg(agg_dic).reset_index()
 gwas_df['gwas_category_count'] = gwas_df['gwas_category'].apply(len)
-gwas_df['gwas_category_count'].unique()
+
+#%% per rsid, aggregate gwas categories
+gwas_ontology_df = coloc_df[variant_def_lst + ['gwas_ontology_term']].drop_duplicates()
+agg_dic = {'gwas_ontology_term': lambda x: x.tolist()}
+gwas_ontology_df = gwas_ontology_df.groupby(variant_def_lst).agg(agg_dic).reset_index()
+gwas_ontology_df['gwas_ontology_term_count'] = gwas_ontology_df['gwas_ontology_term'].apply(len)
 
 #%% per rsid, aggregate eqtl genes
 egene_df = coloc_df[variant_def_lst + ['eqtl_gene_id', 'eqtl_gene_symbol']].drop_duplicates()
-agg_dic = {'eqtl_gene_id': ['size', (lambda x: (";".join(sorted(x))))], 'eqtl_gene_symbol': lambda x: ";".join(sorted([str(i) for i in x]))}
+agg_dic = {'eqtl_gene_id': lambda x: x.tolist(), 'eqtl_gene_symbol': lambda x: x.tolist()}
 egene_df = egene_df.groupby(variant_def_lst).agg(agg_dic).reset_index()
-
-#%% per rsid, aggregate eqtl gene pubmed count
-gene_pubmed_df = coloc_df[variant_def_lst + ['eqtl_gene_id', 'eqtl_gene_symbol', 'pubmed_count']].drop_duplicates()
-gene_pubmed_df['pubmed_count'] = gene_pubmed_df['pubmed_count'].fillna(0)
-gene_pubmed_df.sort_values('pubmed_count', ascending=False, inplace=True)
-gene_pubmed_df.drop_duplicates(variant_def_lst, inplace=True)
+egene_df['eqtl_gene_id_count'] = egene_df['eqtl_gene_id'].apply(len)
 
 #%% per rsid, aggregate eqtl tissues
 etissue_df = coloc_df[variant_def_lst + ['etissue_category_term']].drop_duplicates()
-agg_dic = {'etissue_category_term': ['size', lambda x: ";".join(sorted(x))]}
+agg_dic = {'etissue_category_term': lambda x: x.tolist()}
 etissue_df = etissue_df.groupby(variant_def_lst).agg(agg_dic).reset_index()
+etissue_df['etissue_category_term_count'] = etissue_df['etissue_category_term'].apply(len)
+
+#%% per rsid, aggregate eqtl gene pubmed count
+gene_pubmed_marker_df = coloc_df[variant_def_lst + ['eqtl_gene_id', 'eqtl_gene_symbol', 'pubmed_count']].drop_duplicates()
+gene_pubmed_marker_df.rename({'eqtl_gene_id': 'eqtl_gene_marker_id', 'eqtl_gene_symbol': 'eqtl_gene_marker_symbol'}, axis=1, inplace=True)
+gene_pubmed_marker_df['pubmed_count'] = gene_pubmed_marker_df['pubmed_count'].fillna(0)
+gene_pubmed_marker_df.sort_values('pubmed_count', ascending=False, inplace=True)
+gene_pubmed_marker_df.drop_duplicates(variant_def_lst, inplace=True)
 
 #%% merge all aggregation columns
-m_df = pandas.merge(gwas_df, egene_df, on=variant_def_lst)
-m_df = pandas.merge(m_df, gene_pubmed_df, on=variant_def_lst)
+m_df = pandas.merge(gwas_df, gwas_ontology_df, on=variant_def_lst)
+
+m_df = pandas.merge(m_df, egene_df, on=variant_def_lst)
 m_df = pandas.merge(m_df, etissue_df, on=variant_def_lst)
+m_df = pandas.merge(m_df, gene_pubmed_marker_df, on=variant_def_lst)
 import pdb; pdb.set_trace()
-m_df = m_df[['chrom', 'cytoband', 'pos38', 'rsid', 'gwas_category_count', 'gwas_category_lst', 'egene_count', 'eqtl_gene_symbol_lst', 'etissue_label_count', 'etissue_category_term_lst', 'egene_lst']]
-m_df.sort_values(['gwas_category_count', 'chrom', 'pos38', 'rsid'], ascending=[False, True, True, True], inplace=True)
+m_df.sort_values(['gwas_category_count', 'gwas_ontology_term_count', 'chrom', 'pos38', 'rsid'], ascending=[False, False, True, True, True], inplace=True)
 tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas_egene_etissue.tsv")
 m_df.to_csv(tsv_path, sep="\t", index=False)
 
