@@ -26,16 +26,17 @@
 \scriptsize
 %\hline
 \csvreader[separator=tab,
-tabular=ccrrp{0.4\textwidth},
+tabular=crclcp{0.4\textwidth},
 head,
-table head=\bfseries Chrom. & \bfseries Cytoband & \bfseries Pos (hg38) & \bfseries Variant & \bfseries GWAS Categories\\\hline,
+table head=\bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Cytoband & \bfseries RSID & \bfseries Marker & \bfseries GWAS Categories\\\hline,
 ]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv}% specify your coloumns here
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
 %\hline
 %
 \vspace{15pt}
 %
-\caption{Colocalized eQTL/GWAS variants involved in 5 or more GWAS classes. Genomic coordinates are given for the hg38 assembly. }\label{tab:pleitropic_variants}
+\caption{eQTLs involved in four GWAS categories. The gene marker is the eQTL gene with highest PubMed publication count.}
+\label{tab:pleitropic_variants}
 \end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
