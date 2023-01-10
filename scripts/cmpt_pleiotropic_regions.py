@@ -19,8 +19,7 @@ help_cmd_str = "todo"
 try:
     wlength = int(sys.argv[1])
     manuscript_pleio_cutoff = int(sys.argv[2])
-    manuscript_pleio_cutoff = int(sys.argv[2])
-    count_per_rsid_gwas_tsv_path = sys.argv[3]
+    count_per_rsid_gwas_egene_etissue_ods = sys.argv[3]
     pleio_tsv_path = sys.argv[4]
     png_path = sys.argv[5]
     if len(sys.argv) > 6:
@@ -34,10 +33,8 @@ except IndexError:
 outdir_path = os.path.dirname(pleio_tsv_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-
-
 #%%
-df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
+df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods, engine='odf')
 
 pleio_df = pandas.DataFrame()
 df.sort_values(['chrom', 'pos38'], inplace=True)
@@ -50,9 +47,9 @@ df['gwas_category_count'] = 1
 # window = 1e4
 # window = 3e4
 # window = 1e5
-for chrom in sorted(df['chrom'].unique()):
-    # print(chrom)
+for chrom in sorted(df['chrom'].unique()):  # problem split by chromosome
     df_pleio_chrom = df.loc[df['chrom'] == chrom].copy()
+    import pdb; pdb.set_trace()
     df_pleio_chrom['dist'] = [0] + [df_pleio_chrom.iloc[i]['pos38'] - df_pleio_chrom.iloc[i - 1]['pos38'] for i in range(1, df_pleio_chrom.shape[0])]
     region_pleio = 0
     df_pleio_chrom['region_pleio'] = region_pleio
@@ -75,7 +72,7 @@ for chrom in sorted(df['chrom'].unique()):
 pleio_df.reset_index(inplace=True)
 pleio_df = pleio_df.sort_values(['gwas_category_count', 'chrom', 'pos38'], ascending=[False, True, True])
 
-df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
+# df = pandas.read_csv(count_per_rsid_gwas_egene_etissue_ods, sep="\t")
 
 pleio_df[['start', 'end']] = pleio_df['pos38'].str.split('-', expand=True)
 pleio_df['start'] = pleio_df['start'].astype(int)
