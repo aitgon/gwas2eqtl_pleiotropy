@@ -1,3 +1,5 @@
+import pdb
+from itertools import chain
 
 from gwas2eqtl_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
@@ -9,6 +11,7 @@ import pandas
 import pathlib
 import seaborn
 import sys
+import ast
 
 
 #%%
@@ -35,10 +38,14 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
 df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods, engine='odf')
+df['gwas_category_lst'] = df['gwas_category_lst'].apply(lambda x: ast.literal_eval(x))
+df['egene_lst']= df['egene_lst'].apply(lambda x: ast.literal_eval(x))
+df['eqtl_gene_symbol_lst'] = df['eqtl_gene_symbol_lst'].apply(lambda x: ast.literal_eval(x))
+df['etissue_category_term_lst'] = df['etissue_category_term_lst'].apply(lambda x: ast.literal_eval(x))
 
-pleio_df = pandas.DataFrame()
+region_df = pandas.DataFrame()
 df.sort_values(['chrom', 'pos38'], inplace=True)
-df['gwas_category_lst'] = df['gwas_category_lst'].str.split(';')
+# df['gwas_category_lst'] = df['gwas_category_lst'].str.split(';')
 df['gwas_category_count'] = 1
 
 ########################
@@ -48,51 +55,60 @@ df['gwas_category_count'] = 1
 # window = 3e4
 # window = 1e5
 for chrom in sorted(df['chrom'].unique()):  # problem split by chromosome
-    df_pleio_chrom = df.loc[df['chrom'] == chrom].copy()
-    import pdb; pdb.set_trace()
-    df_pleio_chrom['dist'] = [0] + [df_pleio_chrom.iloc[i]['pos38'] - df_pleio_chrom.iloc[i - 1]['pos38'] for i in range(1, df_pleio_chrom.shape[0])]
-    region_pleio = 0
-    df_pleio_chrom['region_pleio'] = region_pleio
-    for i, row in df_pleio_chrom.iloc[1:].iterrows():
+    df_chrom = df.loc[df['chrom'] == chrom].copy()
+
+    # compute distance between consecutive eQTLs
+    df_chrom['dist'] = [0] + [df_chrom.iloc[i]['pos38'] - df_chrom.iloc[i - 1]['pos38'] for i in range(1, df_chrom.shape[0])]
+    region_pleio = 0  # init region pleio label
+    df_chrom['region_pleio'] = region_pleio
+    for i, row in df_chrom.iloc[1:].iterrows():  # Set or increase region label according to distance and wlength
         if row['dist'] <= wlength:
-            df_pleio_chrom.loc[i, 'region_pleio'] = region_pleio
+            df_chrom.loc[i, 'region_pleio'] = region_pleio
         else:
             region_pleio = region_pleio + 1
-            df_pleio_chrom.loc[i, 'region_pleio'] = region_pleio
+            df_chrom.loc[i, 'region_pleio'] = region_pleio
 
-    df_pleio_chrom.drop('dist', inplace=True, axis=1)
-    df_pleio_chrom_grouped = df_pleio_chrom.groupby(['chrom', 'region_pleio']).agg({'cytoband': lambda x: sorted(x.unique()),
+    df_chrom.drop('dist', inplace=True, axis=1)
+    df_chrom_groupby = df_chrom.groupby(['chrom', 'region_pleio'])
+    df_chrom_groupby.agg(start=('pos38', min), end=('pos38', max))
+    df_chrom_region = df_chrom_groupby.agg(start=('pos38', min), end=('pos38', max),
+                         gwas_category_lst=('gwas_category_lst', lambda x: set(chain.from_iterable(x))),
+                         eqtl_gene_symbol_lst=('eqtl_gene_symbol_lst', lambda x: set(chain.from_iterable(x))),
+                         etissue_category_term_lst=('etissue_category_term_lst', lambda x: set(chain.from_iterable(x))),
+                         )
+    df_pleio_chrom_grouped = df_chrom_groupby.agg({'cytoband': lambda x: sorted(x.unique()),
                                                  'pos38': lambda x: str(min(x)) + "-" + str(max(x)),
                                                  'rsid': lambda x: sorted(x.unique()),
                                                  'gwas_category_lst': lambda x: sorted(set(x.sum()))
-                                                           })
+                                                   })
     df_pleio_chrom_grouped['gwas_category_count'] = df_pleio_chrom_grouped['gwas_category_lst'].apply(lambda x: len(x))
-    pleio_df = pandas.concat([pleio_df, df_pleio_chrom_grouped], axis=0, verify_integrity=False)
+    region_df = pandas.concat([region_df, df_chrom_region], axis=0, verify_integrity=False)
+    import pdb; pdb.set_trace()
 
-pleio_df.reset_index(inplace=True)
-pleio_df = pleio_df.sort_values(['gwas_category_count', 'chrom', 'pos38'], ascending=[False, True, True])
+region_df.reset_index(inplace=True)
+region_df = region_df.sort_values(['gwas_category_count', 'chrom', 'pos38'], ascending=[False, True, True])
 
 # df = pandas.read_csv(count_per_rsid_gwas_egene_etissue_ods, sep="\t")
 
-pleio_df[['start', 'end']] = pleio_df['pos38'].str.split('-', expand=True)
-pleio_df['start'] = pleio_df['start'].astype(int)
-pleio_df['end'] = pleio_df['end'].astype(int)
+region_df[['start', 'end']] = region_df['pos38'].str.split('-', expand=True)
+region_df['start'] = region_df['start'].astype(int)
+region_df['end'] = region_df['end'].astype(int)
 
 
-pleio_df['pleio_rsid'] = None
-pleio_df['pleio_pos38'] = None
+region_df['pleio_rsid'] = None
+region_df['pleio_pos38'] = None
 # pleio_df['name'] = None
-for i, row in pleio_df.iterrows():
+for i, row in region_df.iterrows():
     start = row['start']
     end = row['end']
     variant_pleio = (df.loc[(df['pos38'] >= start) & (df['pos38'] <= end)]).head(1)
     # region_name = \
     # (variant_lead['cytoband'] + "_" + variant_lead['pos38'].astype(str) + "_" + variant_lead['rsid']).values[0]
-    pleio_df.loc[i, 'pleio_rsid'] = variant_pleio['rsid'].values[0]
-    pleio_df.loc[i, 'pleio_pos38'] = variant_pleio['pos38'].values[0]
+    region_df.loc[i, 'pleio_rsid'] = variant_pleio['rsid'].values[0]
+    region_df.loc[i, 'pleio_pos38'] = variant_pleio['pos38'].values[0]
 
-pleio_df = pleio_df[['chrom', 'start', 'end', 'cytoband', 'pleio_rsid', 'pleio_pos38', 'gwas_category_count', 'gwas_category_lst']]
-pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
+region_df = region_df[['chrom', 'start', 'end', 'cytoband', 'pleio_rsid', 'pleio_pos38', 'gwas_category_count', 'gwas_category_lst']]
+region_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 
 
 # ########################
@@ -141,7 +157,7 @@ pleio_df.to_csv(pleio_tsv_path, sep="\t", index=False, header=True)
 #%##############
 #%% GWAS region pleiotropy for MS
 # import pdb; pdb.set_trace()
-regions_pleio_ms_df = pleio_df.copy()
+regions_pleio_ms_df = region_df.copy()
 
 regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_category_count', 'chrom', 'start'], ascending=[False, True, True])
 # regions_pleio_ms_df = regions_pleio_ms_df.drop_duplicates('cytoband', keep='first')
@@ -161,11 +177,11 @@ tsv_path = os.path.join(outdir_path, "region_window_ms.tsv")
 regions_pleio_ms_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%% bed
-pleio_df['start'] = pleio_df['start'] - 1
-pleio_df['chrom'] = 'chr' + pleio_df['chrom'].astype('str')
-pleio_df.drop(['cytoband'], axis=1, inplace=True)
+region_df['start'] = region_df['start'] - 1
+region_df['chrom'] = 'chr' + region_df['chrom'].astype('str')
+region_df.drop(['cytoband'], axis=1, inplace=True)
 pleio_bed_path = os.path.join(outdir_path, "region_window_{}.bed".format(region_bin))
-pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
+region_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
 #
 # #%########################################### bed files
 # for count_pleio in range(1, 6):
@@ -176,7 +192,7 @@ pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
 #############################################
 # Distribution of region by length
 # % region <= 100kb, % >100kb and <=200kb, ...
-region_length_ser = (pleio_df['end'] - pleio_df['start'])
+region_length_ser = (region_df['end'] - region_df['start'])
 data_ser = region_length_ser / wlength
 
 ax = plt.hist(data_ser, bins=range(50), density=True)
@@ -188,7 +204,7 @@ plt.close()
 #%##############
 # histogram
 plt.rcParams["figure.figsize"] = (8, 6)
-region_length_ser = (pleio_df['end'] - pleio_df['start'])
+region_length_ser = (region_df['end'] - region_df['start'])
 
 ylabel = "Cumulative proportion"
 title = "Length of pleiotropic regions"
