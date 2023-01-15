@@ -21,7 +21,7 @@ from gwas2eqtl_pleiotropy.Logger import Logger
 
 help_cmd_str = "todo"
 try:
-    count_per_rsid_gwas_egene_etissue_tsv_path = sys.argv[1]
+    count_per_rsid_gwas_egene_etissue_ods_path = sys.argv[1]
     david_email = sys.argv[2]
     max_gwas_category_count = int(sys.argv[3])
     davidgo_tsv_path = sys.argv[4]
@@ -37,9 +37,9 @@ except IndexError:
 outdir_path = os.path.dirname(davidgo_tsv_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-
 #%%
-fin_df = pandas.read_csv(count_per_rsid_gwas_egene_etissue_tsv_path, sep="\t", header=0)
+# fin_df = pandas.read_csv(count_per_rsid_gwas_egene_etissue_ods_path, sep="\t", header=0)
+fin_df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods_path, engine='odf')
 
 #%%
 p_back_str = ",".join(fin_df.loc[fin_df['gwas_category_count'] == 1, "egene_lst"].str.split(';').explode().unique())

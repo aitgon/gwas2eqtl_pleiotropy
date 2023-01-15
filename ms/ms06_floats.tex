@@ -28,7 +28,7 @@
 \csvreader[separator=tab,
 tabular=crclcp{0.4\textwidth},
 head,
-table head=\bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Cytoband & \bfseries RSID & \bfseries Marker & \bfseries GWAS Categories\\\hline,
+table head=\bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Cytoband & \bfseries RSID & \bfseries Marker eQTL gene& \bfseries GWAS Categories\\\hline,
 ]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
 {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
 %\hline
@@ -54,11 +54,11 @@ The gene marker is the eQTL gene with the highest PubMed publication count.}
 %\hline
 \csvreader[
 separator=tab,
-tabular=p{0.02\textwidth}p{0.09\textwidth}p{0.09\textwidth}p{0.05\textwidth}p{0.09\textwidth}p{0.09\textwidth}p{0.45\textwidth},
+tabular=p{0.05\textwidth}p{0.1\textwidth}p{0.1\textwidth}p{0.1\textwidth}p{0.1\textwidth}p{0.5\textwidth},
 head,
-table head=\bfseries Chr. & \bfseries Start & \bfseries End & \bfseries Cytob. & \bfseries Pleio RSID & \bfseries Pleio pos. & \bfseries GWAS Categories\\\hline,
+table head=\bfseries Chr. & \bfseries Start & \bfseries End & \bfseries Cytob. & \bfseries Marker eQTL gene & \bfseries GWAS Categories\\\hline,
 ]{\floatRelativePath/cmpt_pleiotropic_regions.py/100000/region_window_ms.tsv}{}% use head of csv as column names
-{\csvcoli\ & \csvcolv\ & \csvcolvi\ & \csvcoliv\ & \csvcolii\ & \csvcoliii\ & \csvcolvii}% specify your coloumns here
+{\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
 %\hline
 %
 \vspace{15pt}

@@ -1,3 +1,5 @@
+"""Scatter of egene count vs variant rsid"""
+
 from matplotlib import pyplot as plt
 from gwas2eqtl_pleiotropy.constants import tick_fontsize, label_fontsize, scatter_dot_size, dpi
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
@@ -15,8 +17,8 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     max_gwas_category_count = int(sys.argv[1])
-    region_window_100000_tsv_path = sys.argv[2]
-    count_per_rsid_egene_tsv_path = sys.argv[3]
+    region_window_100000_ods_path = sys.argv[2]
+    count_per_rsid_gwas_ods_path = sys.argv[3]
     outdir_path = sys.argv[4]
     if len(sys.argv) > 5:
         print("""Two many arguments!
@@ -31,11 +33,13 @@ except IndexError:
 basename_str = "count_per_rsid_egene.tsv"
 # indir_path = os.path.join(PathManager.get_project_path(), "out", "cmpt_count_per_rsid.py")
 # tsv_path = os.path.join(indir_path, basename_str)
-count_per_rsid_df = pandas.read_csv(count_per_rsid_egene_tsv_path, sep="\t")
+# count_per_rsid_df = pandas.read_csv(count_per_rsid_egene_tsv_path, sep="\t")
+count_per_rsid_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine='odf')
 
 #%% input regions
 # region_window_100000_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_pleiotropic_regions.py", "region_window_100000.tsv")
-region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t")
+# region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t")
+region_window_100000_df = pandas.read_excel(region_window_100000_ods_path, engine='odf')
 
 # #%% Output
 # if not '__file__' in locals():

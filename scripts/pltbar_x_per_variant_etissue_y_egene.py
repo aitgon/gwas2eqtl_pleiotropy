@@ -22,7 +22,7 @@ try:
     snp_pp_h4 = float(sys.argv[1])
     max_gwas_category_count = int(sys.argv[2])
     url = sys.argv[3]
-    count_per_rsid_gwas_tsv_path = sys.argv[4]
+    count_per_rsid_gwas_ods_path = sys.argv[4]
     vlnplt_png_path = sys.argv[5]
     if len(sys.argv) > 6:
         print("""Two many arguments!
@@ -34,7 +34,7 @@ except IndexError:
     sys.exit(1)
 
 #%%
-if not os.path.isfile(count_per_rsid_gwas_tsv_path):
+if not os.path.isfile(count_per_rsid_gwas_ods_path):
     print("input file does not exit")
     sys.exit(1)
 
@@ -46,7 +46,8 @@ sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 
 #%%
-count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
+# count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_ods_path, sep="\t")
+count_per_rsid_gwas_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine='odf')
 gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max()
 
 #%%

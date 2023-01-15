@@ -29,7 +29,7 @@ tlmgr install csvsimple
 Compilation works like this:
 
 ~~~
-rm -f ms_00_merge.tex.pdf; texi2pdf ms/ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
+rm -f ms_00_merge.tex.pdf; texi2pdf ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
 ~~~
 
 # Poster

@@ -12,41 +12,39 @@ wlength_lst = [1000, 3000, 10000, 30000, 100000]
 
 rule all_02snkfl_cmpt_pleiotropic_regions:
     input:
-        expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.tsv"), wlength=wlength_lst),
+        expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.ods"), wlength=wlength_lst),
         os.path.join(outdir, "cmpt_perc_explained.py/perc_explained.tsv"),
 
 rule cmpt_pleiotropic_regions_wlength:
     input:
-        gwas=os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.ods"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist_{wlength}.png"),
     params:
         wlength="{wlength}",
         manuscript_pleio_cutoff=(int(max_gwas_category_count) + 2),
     shell:
-        "python scripts/cmpt_pleiotropic_regions.py {params.wlength} {params.manuscript_pleio_cutoff} {input.gwas} {output[0]} {output[1]}"
+        "python scripts/cmpt_pleiotropic_regions.py {params.wlength} {params.manuscript_pleio_cutoff} {input[0]} {output[0]} {output[1]}"
 
 rule count_per_rsid:
     output:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
     params:
         snp_pp_h4=snp_pp_h4,
         max_gwas_category_count=max_gwas_category_count,
         manuscript_pleio_cutoff=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.manuscript_pleio_cutoff} {params.db_url} {output[0]} {output[5]}"
+        "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.manuscript_pleio_cutoff} {params.db_url} {output[0]} {output[1]}"
 
 rule cmpt_perc_explained:
     output:
         os.path.join(outdir, "cmpt_perc_explained.py/perc_explained.tsv"),
     params:
+        snp_pp_h4=snp_pp_h4,
         db_url=db_url,
     shell:
-        "python scripts/cmpt_perc_explained.py {params.db_url} {output[0]}"
+        "python scripts/cmpt_perc_explained.py {params.snp_pp_h4} {params.db_url} {output[0]}"

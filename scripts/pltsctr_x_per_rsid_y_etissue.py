@@ -1,11 +1,10 @@
-import sys
+"""Scatter of etissue category count vs variant rsid"""
 
-import seaborn
-
-from gwas2eqtl_pleiotropy.PathManager import PathManager
 from matplotlib import pyplot as plt
 from gwas2eqtl_pleiotropy.constants import tick_fontsize, label_fontsize, scatter_dot_size, dpi
 
+import sys
+import seaborn
 import os
 import pandas
 import pathlib
@@ -18,8 +17,8 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     max_gwas_category_count = int(sys.argv[1])
-    region_window_100000_tsv_path = sys.argv[2]
-    count_per_rsid_etissue_tsv_path = sys.argv[3]
+    region_window_100000_ods_path = sys.argv[2]
+    count_per_rsid_gwas_ods_path = sys.argv[3]
     outdir_path = sys.argv[4]
     if len(sys.argv) > 5:
         print("""Two many arguments!
@@ -34,11 +33,13 @@ except IndexError:
 # basename_str = "count_per_rsid_etissue.tsv"
 # indir_path = os.path.join(PathManager.get_project_path(), "out", "cmpt_count_per_rsid.py")
 # tsv_path = os.path.join(indir_path, basename_str)
-count_per_rsid_df = pandas.read_csv(count_per_rsid_etissue_tsv_path, sep="\t")
+# count_per_rsid_df = pandas.read_csv(count_per_rsid_etissue_tsv_path, sep="\t")
+count_per_rsid_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine='odf')
 
 #%% input regions
 # region_window_100000_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_pleiotropic_regions.py", "region_window_100000.tsv")
-region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t")
+# region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t")
+region_window_100000_df = pandas.read_excel(region_window_100000_ods_path, engine='odf')
 
 # #%% Output
 # if not '__file__' in locals():
@@ -47,7 +48,7 @@ region_window_100000_df = pandas.read_csv(region_window_100000_tsv_path, sep="\t
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 title = "Coloc. eQTL/GWAS variant"
-count_col_name = "etissue_label_count"
+count_col_name = "etissue_category_term_count"
 ylim = [0, 40]
 c = 'blue'
 ylabel = "eTissue count"
@@ -55,7 +56,8 @@ ylabel = "eTissue count"
 count_per_rsid_df['pos38'] = count_per_rsid_df['pos38'].astype('int')
 
 #%% Loop over regions
-pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= max_gwas_category_count, ['chrom', 'start', 'end', 'gwas_category_count']]
+pleiotropic_regions_df = region_window_100000_df.loc[
+    region_window_100000_df['gwas_category_count'] >= max_gwas_category_count, ['chrom', 'start', 'end', 'gwas_category_count']]
 for rowi, row in pleiotropic_regions_df.iterrows():
     chrom = row['chrom']
     start = row['start']
@@ -68,6 +70,7 @@ for rowi, row in pleiotropic_regions_df.iterrows():
 
     #%%
     # plt.scatter(count_per_rsid_gwas_region_df['pos38'] / 1000000, count_per_rsid_gwas_region_df[count_col_name], c='blue', s=scatter_dot_size)
+
     seaborn.scatterplot(x=count_per_rsid_gwas_region_df['pos38'] / 1000000,
                         y=count_per_rsid_gwas_region_df[count_col_name], s=scatter_dot_size)
 

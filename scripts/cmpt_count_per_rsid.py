@@ -75,8 +75,17 @@ m_df = pandas.merge(m_df, egene_df, on=variant_def_lst)
 m_df = pandas.merge(m_df, etissue_df, on=variant_def_lst)
 m_df = pandas.merge(m_df, gene_pubmed_marker_df, on=variant_def_lst)
 m_df.sort_values(['gwas_category_count', 'gwas_ontology_term_count', 'chrom', 'pos38', 'rsid'], ascending=[False, False, True, True, True], inplace=True)
-columns = ['chrom', 'cytoband', 'pos38', 'rsid', 'alt', 'eqtl_gene_marker_symbol', 'pubmed_count', 'gwas_category_count', 'gwas_ontology_term_count', 'gwas_category_lst', 'gwas_ontology_term', 'egene_lst', 'eqtl_gene_symbol_lst', 'egene_count', 'etissue_category_term_lst', 'etissue_category_term_count', 'eqtl_gene_marker_id']
+columns = ['chrom', 'cytoband', 'pos38', 'rsid', 'alt', 'eqtl_gene_marker_symbol',
+           'pubmed_count', 'gwas_category_count', 'gwas_ontology_term_count',
+           'gwas_category_lst', 'gwas_ontology_term', 'egene_lst', 'eqtl_gene_symbol_lst', 'egene_count', 'etissue_category_term_lst', 'etissue_category_term_count', 'eqtl_gene_marker_id']
 m_df = m_df[columns]
+
+m_df['gwas_category_lst'] = m_df['gwas_category_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
+m_df['gwas_ontology_term'] = m_df['gwas_ontology_term'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
+m_df['egene_lst'] = m_df['egene_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
+m_df['eqtl_gene_symbol_lst'] = m_df['eqtl_gene_symbol_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
+m_df['etissue_category_term_lst'] = m_df['etissue_category_term_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
+
 with pandas.ExcelWriter(count_per_rsid_gwas_egene_etissue_ods, engine="odf") as writer:
     m_df.to_excel(writer, index=False)
 
@@ -87,9 +96,10 @@ ms_df = ms_df.loc[ms_df['gwas_category_count'] >= manuscript_pleio_cutoff]
 columns = ['chrom', 'pos38', 'cytoband', 'rsid', 'eqtl_gene_marker_symbol', 'gwas_category_lst']
 ms_df = ms_df[columns]
 # format output
-ms_df['gwas_category_lst'] = ms_df['gwas_category_lst'].apply(lambda x: '; '.join(x))
+# ms_df['gwas_category_lst'] = ms_df['gwas_category_lst'].apply(lambda x: '; '.join(x))
 ms_df['pos38'] = ms_df['pos38'].apply(lambda x : '{0:,}'.format(x))
 ms_df['rsid'] = 'rs' + ms_df['rsid'].astype(str)
+ms_df['gwas_category_lst'] = ms_df['gwas_category_lst'].str.replace(';', '; ')
 tsv_path = os.path.join(outdir_path, "count_per_rsid_gwas_ms.tsv")
 ms_df.to_csv(tsv_path, sep="\t", index=False)
 
@@ -105,20 +115,21 @@ plt.savefig(count_per_rsid_gwas_egene_etissue_corr_png)
 plt.clf()
 plt.close()
 
-# #%########################################### bed files, flanking=0
-# # bed files of variants splitted by gwas categories
-# flank = 10
-# variant_bed_df = gwas_df.copy()
-# variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
-# variant_bed_df['start'] = variant_bed_df['pos38'] - 1 - flank
-# variant_bed_df['end'] = variant_bed_df['pos38'] + flank
-# variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_category_count', 'gwas_category_lst']]
-#
-# for count_pleio in range(1, 6):
-#     variant_pleio_i_bed_path = os.path.join(outdir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
-#     if count_pleio == max_gwas_category_count:
-#         variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] >= count_pleio, ]
-#     else:
-#         variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] == count_pleio,]
-#     variant_pleio_i_bed_df = variant_pleio_i_bed_df.sort_values(by=['chrom', 'start', 'end'])
-#     variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
+#%########################################### bed files, flanking=0
+# bed files of variants splitted by gwas categories
+flank = 10
+variant_bed_df = gwas_df.copy()
+variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
+variant_bed_df['start'] = variant_bed_df['pos38'] - 1 - flank
+variant_bed_df['end'] = variant_bed_df['pos38'] + flank
+variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_category_count', 'gwas_category_lst']]
+
+for count_pleio in range(1, max_gwas_category_count+1):
+    # print(count_pleio)
+    variant_pleio_i_bed_path = os.path.join(outdir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
+    if count_pleio == max_gwas_category_count:
+        variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] >= count_pleio, ]
+    else:
+        variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] == count_pleio,]
+    variant_pleio_i_bed_df = variant_pleio_i_bed_df.sort_values(by=['chrom', 'start', 'end'])
+    variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)

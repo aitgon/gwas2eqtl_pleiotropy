@@ -9,9 +9,10 @@ from gwas2eqtl_pleiotropy.Logger import Logger
 #%%
 help_cmd_str = "todo"
 try:
-    url = sys.argv[1]
-    perc_explained_tsv_path = sys.argv[2]
-    if len(sys.argv) > 3:
+    snp_pp_h4 = float(sys.argv[1])
+    url = sys.argv[2]
+    perc_explained_tsv_path = sys.argv[3]
+    if len(sys.argv) > 4:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -30,7 +31,7 @@ concat_df = pandas.DataFrame()
 
 for gwas_id in sorted(tophits_df['gwas_id'].unique()):
     Logger.info(gwas_id)
-    sql = "select distinct chrom,pos38,alt,gwas_id,gwas_trait from colocpleio where colocpleio.gwas_id='{}'".format(gwas_id)
+    sql = "select distinct chrom,pos38,alt,gwas_id,gwas_trait from colocpleio where colocpleio.gwas_id='{}' and snp_pp_h4>={}".format(gwas_id, snp_pp_h4)
     coloc_df = pandas.read_sql(sql, con=url)
     tophits_gwas_df = tophits_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
     tophits_gwas_coloc_df = coloc_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))

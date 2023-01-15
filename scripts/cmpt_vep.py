@@ -19,7 +19,7 @@ help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
     url = sys.argv[2]
-    count_per_rsid_gwas_tsv_path = sys.argv[3]
+    count_per_rsid_gwas_ods_path = sys.argv[3]
     vep_cache_info = sys.argv[4]
     vep_input_path = sys.argv[5]
     vep_output_path = sys.argv[6]
@@ -41,7 +41,8 @@ sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 
 #%%
-gwas_cat_df = pandas.read_csv(count_per_rsid_gwas_tsv_path, sep="\t")
+# gwas_cat_df = pandas.read_csv(count_per_rsid_gwas_ods_path, sep="\t")
+gwas_cat_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine='odf')
 
 #%%
 vep_df = h4_df[['chrom', 'pos38', 'rsid', 'ref', 'alt']].merge(gwas_cat_df[['chrom', 'pos38', 'rsid', 'gwas_category_count']], on=['chrom', 'pos38', 'rsid']).drop_duplicates()
