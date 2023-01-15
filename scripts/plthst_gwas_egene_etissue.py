@@ -1,7 +1,6 @@
 #%%
 import sys
 import matplotlib.pyplot as plt
-import numpy
 import os
 import pandas
 import pathlib
@@ -16,13 +15,13 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    gwas_count_tsv_path = sys.argv[1]
-    egene_count_tsv_path = sys.argv[2]
-    etissue_count_tsv_path = sys.argv[3]
-    hist_rsid_gwas_path = sys.argv[4]
-    hist_rsid_egene_path = sys.argv[5]
-    hist_rsid_etissue_path = sys.argv[6]
-    if len(sys.argv) > 7:
+    count_per_rsid_gwas_egene_etissue_ods = sys.argv[1]
+    # egene_count_tsv_path = sys.argv[2]
+    # etissue_count_tsv_path = sys.argv[3]
+    hist_rsid_gwas_path = sys.argv[2]
+    hist_rsid_egene_path = sys.argv[3]
+    hist_rsid_etissue_path = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -34,6 +33,8 @@ except IndexError:
 pathlib.Path(os.path.dirname(hist_rsid_gwas_path)).mkdir(parents=True, exist_ok=True)
 pathlib.Path(os.path.dirname(hist_rsid_egene_path)).mkdir(parents=True, exist_ok=True)
 pathlib.Path(os.path.dirname(hist_rsid_etissue_path)).mkdir(parents=True, exist_ok=True)
+
+count_df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods, engine='odf')
 
 #%%
 ylabel = "Percent"
@@ -47,7 +48,7 @@ stat = 'percent'
 label_fontsize = 28
 
 #%% gwas
-count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
+# count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
 # bins = numpy.array(range(6))
 data_ser = count_df['gwas_category_count']
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
@@ -70,7 +71,7 @@ with open(hist_rsid_gwas_path + ".txt", 'w') as fout:
     fout.write('\n'.join([str(h.get_height()) for h in shplt.patches]))
 
 #%% egene
-count_df = pandas.read_csv(egene_count_tsv_path, sep="\t", header=0)
+# count_df = pandas.read_csv(egene_count_tsv_path, sep="\t", header=0)
 data_ser = count_df['egene_count']
 # plt.hist(data_ser, **hist_kwargs)
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
@@ -86,7 +87,6 @@ plt.ylim(ylim)
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-# png_path = os.path.join(outdir_path, "hist_egene.png")
 plt.savefig(hist_rsid_egene_path, dpi=dpi)
 plt.close()
 
@@ -94,8 +94,8 @@ with open(hist_rsid_egene_path + ".txt", 'w') as fout:
     fout.write('\n'.join([str(h.get_height()) for h in shplt.patches]))
 
 #%% etissue
-count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
-data_ser = count_df['etissue_label_count']
+# count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
+data_ser = count_df['etissue_category_term_count']
 # plt.hist(data_ser, **hist_kwargs)
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 

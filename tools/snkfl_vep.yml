@@ -19,7 +19,7 @@ rule plt_vep_consequence:
     output:
         os.path.join(outdir, "pltbar_vep_consequence.py/vep.png"),
     params:
-        max_gwas_category_count=(max_gwas_category_count-2)
+        max_gwas_category_count=(max_gwas_category_count-1)
     shell:
         "python scripts/pltbar_vep_consequence.py {input[0]} {params[0]} {output[0]}"
 
@@ -37,7 +37,7 @@ rule cmpt_vep_consequence_fisher:
 
 rule cmpt_vep:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
         os.path.join("/home/gonzalez/Software/vep-cache/homo_sapiens/108_GRCh38/info.txt")
     output:
         os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),

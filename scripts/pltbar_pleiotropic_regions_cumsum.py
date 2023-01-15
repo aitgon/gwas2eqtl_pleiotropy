@@ -13,7 +13,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    pleio_regions_tsv_path = sys.argv[1]
+    count_per_rsid_gwas_ods_path = sys.argv[1]
     png_path = sys.argv[2]
     if len(sys.argv) > 3:
         print("""Two many arguments!
@@ -28,7 +28,8 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
 # count_per_rsid_gwas_tsv_path = os.path.join(PathManager.get_outdir_path(), "cmpt_count_per_rsid.py", "count_per_rsid_gwas.tsv")
-regions_df = pandas.read_csv(pleio_regions_tsv_path, sep="\t")
+# regions_df = pandas.read_csv(pleio_regions_tsv_path, sep="\t")
+regions_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine='odf')
 
 #%% barplot cumulated covering region
 cumsum_df = regions_df.copy()

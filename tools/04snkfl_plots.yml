@@ -29,7 +29,7 @@ rule all_plots:
 
 rule pltbar_pleiotropic_regions_cumsum:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
     output:
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
     shell:
@@ -49,7 +49,7 @@ rule pltbar_pleiotropic_regions_cumsum:
 
 rule cmpt_davidgo:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_3.tsv"),
     params:
@@ -63,7 +63,8 @@ rule cmpt_davidgo:
 
 rule pltbox_logpval_per_gwas_cat:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/eqtl.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/gwas.png"),
@@ -76,7 +77,8 @@ rule pltbox_logpval_per_gwas_cat:
 
 rule plt_violin_beta_per_gwas_cat:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
@@ -89,7 +91,8 @@ rule plt_violin_beta_per_gwas_cat:
 
 rule pltbar_x_per_variant_egene_y_etissue:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
         os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
     params:
@@ -101,7 +104,8 @@ rule pltbar_x_per_variant_egene_y_etissue:
 
 rule pltbar_x_per_variant_etissue_y_egene:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
         os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
     params:
@@ -113,8 +117,9 @@ rule pltbar_x_per_variant_etissue_y_egene:
 
 rule plt_scttr_count_per_rsid_etissue:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
     params:
@@ -128,8 +133,9 @@ rule plt_scttr_count_per_rsid_etissue:
 
 rule plt_scttr_count_per_rsid_egene:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
     params:
@@ -143,8 +149,9 @@ rule plt_scttr_count_per_rsid_egene:
 
 rule plt_scttr_count_per_rsid_gwas:
     input:
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
     params:
@@ -158,12 +165,13 @@ rule plt_scttr_count_per_rsid_gwas:
 
 rule plt_hist_gwas_etissue_egene:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
+#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
     output:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
     shell:
-        "python scripts/plthst_gwas_egene_etissue.py {input[0]} {input[1]} {input[2]} {output[0]} {output[1]} {output[2]}"
+        "python scripts/plthst_gwas_egene_etissue.py {input[0]} {output[0]} {output[1]} {output[2]}"
