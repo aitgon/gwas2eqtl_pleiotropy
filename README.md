@@ -41,5 +41,13 @@ python scripts/plthtmp_disease_comorbidity_matrix.py out/gwas420/pval_5e-08/r2_0
 # Presentation GOLD meeting 2022
 
 ~~~
-texi2pdf presentation_gold2022_paris/presentation_gold2022_paris.tex
+cd presentation_230120_gold2022_paris
+texi2pdf presentation_gold2022_paris.tex
+~~~
+
+# Presentation Internal Seminar 20 jan 2023
+
+~~~
+cd presentation_230120_internal_seminar
+texi2pdf intern_sem.tex
 ~~~
