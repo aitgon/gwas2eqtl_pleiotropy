@@ -49,5 +49,5 @@ texi2pdf presentation_gold2022_paris.tex
 
 ~~~
 cd presentation_230120_internal_seminar
-texi2pdf intern_sem.tex
+texi2pdf intern_sem_230120.tex	
 ~~~
