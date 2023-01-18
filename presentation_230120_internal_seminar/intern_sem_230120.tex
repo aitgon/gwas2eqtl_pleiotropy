@@ -1,7 +1,6 @@
 \documentclass{beamer}
 \usetheme{Boadilla}
 
-
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{csvsimple}
@@ -47,29 +46,34 @@
     \section{Introduction} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    The associations to diseases are heterougeneously distributed in the genome, Watanabe & Posthuma
+%    This is based on loci associated to multiple traits
     \begin{frame}
         \frametitle{Genome-wide association studies (GWAS)}
 
         \begin{itemize}
-            \item Genetic alleles with higher frequency in individuals with a given disease
-            \item A very active field with many studies
-            \item Many genetic variants are involved in several phenotypes
+            \item Association test of effect allele on case individuals
+            \item High-throughput genetics: 3000 unique loci for over 250 disease/trait outcomes\footnote{Loos 2020. 10.1038/s41467-020-19653-5}
+            \item Of the 1,707.0 Mb genome, 90.0\% is associated to different GWAS categories
         \end{itemize}
 %
         \vfill
-%
+%          However, how do we know if these variants are active in a tissue,
+%         or whether these variants false positives due to linkage disequilibrium,
+%         or how these variants act molecularly
         Questions:
 %
         \begin{itemize}
             \item Correlation between variants. Which is the causal variant?
-            \item Which cell type important for disease?
-            \item Over 90\% GWAS variants are non-coding. What is their role?
+            \item Which cell types important for disease?
+            \item In which tissues are these variants active?
         \end{itemize}
 %
         \vfill
 %
         Questions partially addressed by looking at eQTLs in different tissues
 
+        \blfootnote{}
         \blfootnote{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
     \end{frame}
 
