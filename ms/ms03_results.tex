@@ -27,18 +27,22 @@ The fourth criterion was to keep only GWAS with at least 10,000 subjects, 2,000 
 These filters resulted in 418 GWAS traits (Supplementary table 2).
 %
 These studies resulted in 10,621 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary file).
-% select count(distinct gwas_id) from tophits; 335
+% select count(distinct gwas_id) from tophits
+% 335
 % select count(*) from (select DISTINCT chrom, pos, rsid, ea from tophits) as sel; 10621
 % tophits goes to OSF
 % colocpleio goes to OSF
 
 My pipeline uncovered eQTL colocalizations for 5,484 or 64$\%$ of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples.
-% select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid from tophits inner join coloc
-% on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75) as sel; 5484
+% select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid
+% from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
+% 5484
+% select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid
+% from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
+% 2441
 % select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75) as sel;  7040
+% select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel;  5620
 % select count(*) from (select distinct eqtl_id from coloc where pp_h4_abf>=0.75) as sel;  127
-
-
 
 The largest classes of diseases by number of leading GWAS variants are cancer of breast (1976), allergy (1288), and autoimmune diseases (1216).
 %
@@ -59,7 +63,12 @@ These data is a useful resource to annotate GWAS variants with genes and biosamp
 Therefore I have developed a web application where I expose 138,301 variants from 293 GWAS that colocalize with at least
 one eQTL at a threshold value PP.H4.abf$\geq$0.75.
 % TODO
-% select count(*) from (select DISTINCT chrom,pos38,alt FROM colocweb) as sel; 138301
+%select count(*) from (select DISTINCT chrom,pos,alt FROM coloc
+%where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0) as sel
+%138301
+%select count(*) from (select DISTINCT chrom,pos,alt FROM coloc
+%where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
+%5343
 % select count(*) from (select DISTINCT gwas_id FROM colocweb) as sel; 293
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

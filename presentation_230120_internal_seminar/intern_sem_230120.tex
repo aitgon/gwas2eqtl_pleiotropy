@@ -62,7 +62,7 @@
 %          However, how do we know if these variants are active in a tissue,
 %         or whether these variants false positives due to linkage disequilibrium,
 %         or how these variants act molecularly
-        Questions:
+        Questions:\footnote{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
 %
         \begin{itemize}
             \item Correlation between variants. Which is the causal variant?
@@ -74,8 +74,6 @@
 %
         Questions partially addressed by looking at eQTLs in different tissues
 
-        \blfootnote{}
-        \blfootnote{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,18 +81,10 @@
         \frametitle{Expression quantitative trait loci (eQTLs)}
 %eQTLs are variants that modify gene expression in a given tissue.
 %        eQTLs give a potential mechanism (the gene target) and a tissue.
-        \begin{columns}
-            \begin{column}{0.5\textwidth}
-                \begin{center}
-                    \includegraphics[width=\textwidth]{../presentation_230120_gold2022_paris/fig/doi_10.3389_fgene.2020.00424_fig4a.jpg}
-                \end{center}
-            \end{column}
-            \begin{column}{0.5\textwidth}
 
-            \end{column}
-        \end{columns}
-%
-        \vfill
+        \begin{center}
+            \includegraphics[width=\textwidth]{../presentation_230120_gold2022_paris/fig/doi_10.3389_fgene.2020.00424_fig4a.jpg}
+        \end{center}
 %
 %        To my knowledge, it is unknown where are the most pleiotropice Eqtls in the genome.
 %        This is important because this would give hints to putatitve pleiotropi genes (unknown or unknown) that are regulated by these pleiotropic eQTLs?
@@ -108,7 +98,7 @@
         \frametitle{Objectives}
 
         \begin{enumerate}
-            \item To look for pleiotropic eQTLs in the genome
+            \item To identify pleiotropic eQTLs in the genome
             \item To characterise their genomic regions, target genes and the cause of their pleiotropy
         \end{enumerate}
     \end{frame}
@@ -118,17 +108,17 @@
         \frametitle{Strategy}
 
         \begin{enumerate}
-            \item Annotate eQTLs with GWAS traits using colocalization analysis
-            \item Annotate GWAS traits in categories
-            \item Aggregate trait categories of eQTLs: Pleiotropic eQTLs
+            \item Annotate eQTLs with GWAS traits (Colocalization analysis)
+            \item Define categories for GWAS traits
+            \item Aggregate categories of eQTLs: Pleiotropic eQTLs
             \item Aggregate pleiotropic eQTLs in genome regions
-            \item Analyse pleiotropic eQTLs and regions
+            \item Explore properties pleiotropic eQTLs and regions
         \end{enumerate}
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Annotation of GWAS variants with gene and tissue targets using colocalization analysis}
+        \frametitle{Colocalization to annotate eQTLs with GWAS traits}
 
         \begin{columns}
             \begin{column}{0.5\textwidth}
@@ -148,26 +138,40 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Data and Algorithms}
+        \frametitle{IEA OpenGWAS database\footnote{https://gwas.mrcieu.ac.uk}}
 
-        \begin{columns}
-            \begin{column}{0.5\textwidth}
-                \begin{itemize}
-                    \item IEA OpenGWAS database\footnote{https://gwas.mrcieu.ac.uk}: 418 GWAS datasets
-                    \item EBI eQTLs database\footnote{https://www.ebi.ac.uk/eqtl}: Processed eQTLs from 127 studies in human.
-                    \item CRAN - Package coloc\footnote{https://cran.r-project.org/web/packages/coloc/index.html}: Colocalisation analysis of GWAS/eQTL with one causal variant
-                \end{itemize}
-            \end{column}
-            \begin{column}{0.5\textwidth}
-                \begin{center}
-                    \includegraphics[width=\textwidth]{../presentation_230120_gold2022_paris/fig/pgen.1004383.g001.png}
-                \end{center}
-            \end{column}
-        \end{columns}
+        \begin{itemize}
+            \item 418 GWAS
+            \item Physiological and disease traits
+            \item UK biobank, GWAS catalog, Other datasets
+        \end{itemize}
 
-%        \let\thefootnote\relax\footnotetext{$^1$https://gwas.mrcieu.ac.uk}
-%        \let\thefootnote\relax\footnotetext{$^2$https://www.ebi.ac.uk/eqtl}
-%        \let\thefootnote\relax\footnotetext{$^3$https://cran.r-project.org/web/packages/coloc/index.html}
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{EBI eQTLs database\footnote{https://www.ebi.ac.uk/eqtl}}
+
+        \begin{itemize}
+            \item 127 studies in human from different datasets
+            \item Tissues, cell types, stimulated conditions, ...
+            \item GTEX, DICE, ...
+        \end{itemize}
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{CRAN - Package coloc\footnote{https://cran.r-project.org/web/packages/coloc/index.html}}
+
+        \begin{itemize}
+            \item Colocalisation analysis of GWAS/eQTL with one causal variant
+        \end{itemize}
+
+        \begin{center}
+            \includegraphics[width=\textwidth]{../presentation_230120_gold2022_paris/fig/pgen.1004383.g001.png}
+        \end{center}
+
     \end{frame}
 
     \section{Results}
@@ -181,24 +185,15 @@
 
         \begin{itemize}
             \item Colocalization between 293 GWAS and 127 eQTL studies
+            \item 25\% of 10 k leading SNPs (SNP.PP.H4$\geq$0.5), colocalized with at least one eQTL
+            \item At SNP.PP.H4$\geq$0.5, 5 k eQTLs and 5 k target genes
             \item 138e3 colocalized variants with probability $\geq$ 0.75
             \item Percentage of GWAS loci explained by eQTL: 0$\%$ - 77$\%$ (Average 33$\%$)
         \end{itemize}
 
         \begin{figure}[!]
-            \includegraphics[width=\textwidth]{../presentation_230120_gold2022_paris/fig/coloc_web.png}
+            \includegraphics[width=0.5\textwidth]{fig/histogram_explained.png}\label{fig:perc_explained}
         \end{figure}
-
-    \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \begin{frame}
-        \frametitle{Web portail}
-
-%These data can be useful to interpret disease variants
-%        Therefore I have developed a small web portail
-
-        TODO
 
     \end{frame}
 
@@ -261,9 +256,9 @@
 
     \end{frame}
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Winner (Most pleiotroic) eQTLs?}
+        \frametitle{Most pleiotroic eQTLs}
 
         \begin{itemize}
             \item Example eQTLs involved in four GWAS categories in different cytobands
@@ -285,9 +280,9 @@
 
     \end{frame}
 
-    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Winner (Most pleiotroic) regions?}
+        \frametitle{Most pleiotroic regions}
 
 % full size table is table
         \begin{table}[!tbp]
@@ -306,6 +301,54 @@
             \vspace{15pt}
             \caption{Pleiotropic regions involving 6 or more GWAS classes. These regions were built with a sliding window of 1e5 nt. Genomic coordinates are given for the hg38 assembly.}\label{tab:pleiotropic_regions}
         \end{table}
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{The IRF1/IL4 locus}
+
+        \begin{figure}[!]
+            \includegraphics[width=0.95\textwidth]{fig/il4}
+        \end{figure}
+
+        \begin{itemize}
+            \item Sevaral immune genes
+            \item GWAS categories: allergic disease; autoimmune disease; body height; breast cancer; cancer; cardiovascular disease; hypertensive disorder; respiratory system disease; skin disease
+            \item eQTL biosamples: adipose tissue;aorta;blood;brain;breast; ...
+        \end{itemize}
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{The CDKN2A/P16 locus}
+
+        \begin{figure}[!]
+            \includegraphics[width=0.95\textwidth]{fig/cdk2na}
+        \end{figure}
+
+        \begin{itemize}
+            \item Cell cycle regulator
+            \item GWAS categories: cancer;cardiovascular disease;hypertensive disorder;joint disease;respiratory system disease;skin cancer
+            \item eQTL biosamples: adipose tissue;blood;brain;colon;immune system; ...
+        \end{itemize}
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{The TP53 locus}
+
+        \begin{figure}[!]
+            \includegraphics[width=0.95\textwidth]{fig/cdk2na}
+        \end{figure}
+
+        \begin{itemize}
+            \item Cell cycle regulator
+            \item GWAS categories: cancer;cardiovascular disease;hypertensive disorder;joint disease;respiratory system disease;skin cancer
+            \item eQTL biosamples: adipose tissue;adrenal gland;aorta;blood;brain; ...
+        \end{itemize}
 
     \end{frame}
 
@@ -418,33 +461,32 @@
 
     \end{frame}
 
-    \section{Conclusions, perspective and acknowledgements} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Web access}
+
+%These data can be useful to interpret disease variants
+%        Therefore I have developed a small web portail
+
+        \begin{figure}[!]
+            \includegraphics[width=\textwidth]{fig/web_portal.png}\label{fig:coloc_web}
+        \end{figure}
+
+    \end{frame}
+
+    \section{Concluding remarks} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
         \frametitle{Conclusion}
 
         \begin{itemize}
-            \item A list of pleiotrtA large set of causal GWAS variants annotated with target genes and tissues
-            \item A list of pleiotropic variants and regions
-        \end{itemize}
-
-        Outcomes interesting for the GOLD population genotypes
-%
-        \begin{itemize}
-            \item A large set of causal GWAS variants annotated with target genes and tissues
-            \item A list of pleiotropic variants and regions
-        \end{itemize}
-%
-        \vfill
-%
-        What are the gene regulatory properties underlying pleiotropy between complex traits?
-%
-        \begin{itemize}
-            \item Variant pleiotropy is correlated in regions
-            \item Enrichment of variants upstream (incl. 5'UTR) and downstream of genes (incl. 3'UTR)
-            \item Enrichment of transcription factor and CRM binding
+            \item A large set of GWAS variants annotated with putative target genes and tissues
+            \item A list of pleiotropic eQTLs and regions
+            \item Pleiotropic eQTL region include immune and cell cycle regulators
+            \item Enrichment of 5' UTR and transcript (missense) variants
             \item Increased number of associated egenes and etissues
+            \item A web site to access the data
         \end{itemize}
 
     \end{frame}
@@ -454,8 +496,8 @@
         \frametitle{Perspectives}
 
         \begin{itemize}
-            \item Causality of eQTL genes on GWAS
-            \item Study loci in more
+            \item Verify causality of eQTL genes on GWAS
+            \item Analyze pleiotropic loci in more detail
         \end{itemize}
 
     \end{frame}
