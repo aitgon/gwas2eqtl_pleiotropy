@@ -281,6 +281,52 @@
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+    \frametitle{How are pleiotropic variants distributed?}
+
+    \begin{columns}
+        \begin{column}{0.32\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr5_start132239645_end132497907_categories9.png}
+            \end{center}
+        \end{column}
+        \begin{column}{0.32\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr5_start132239645_end132497907_categories9.png}
+            \end{center}
+        \end{column}
+        \begin{column}{0.32\textwidth}
+            \begin{center}
+                \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr5_start132239645_end132497907_categories9.png}
+            \end{center}
+        \end{column}
+    \end{columns}
+
+    \begin{center}
+        \includegraphics[width=\textwidth]{../presentation_230120_gold2022_paris/fig/chr5_131912097_132802472.png}
+    \end{center}
+
+    \small
+    \begin{itemize}
+        \item The cytokine locus: chr5:131,912,097-132,802,472. Genes IRF1, IL3, IL4, IL5, ...
+        \item Diseases: Allergy,Autoimmune dis.,Cancer of breast,Circulatory sys. dis.,Hypertension,Respiratory system dis.
+        \item For instance: rs2522051 regulates 12 e-genes in 23 e-tissues
+    \end{itemize}
+    \normalsize
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Does trait categories correlate with eQTL and biosample counts?}
+
+        \begin{figure}[!]
+            \includegraphics[width=0.5\textwidth]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr}\label{fig:count_per_rsid_gwas_egene_etissue_corr}
+        \end{figure}
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
         \frametitle{Most pleiotroic regions}
 
@@ -304,21 +350,21 @@
 
     \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \begin{frame}
-        \frametitle{The IRF1/IL4 locus}
-
-        \begin{figure}[!]
-            \includegraphics[width=0.95\textwidth]{fig/il4}
-        \end{figure}
-
-        \begin{itemize}
-            \item Sevaral immune genes
-            \item GWAS categories: allergic disease; autoimmune disease; body height; breast cancer; cancer; cardiovascular disease; hypertensive disorder; respiratory system disease; skin disease
-            \item eQTL biosamples: adipose tissue;aorta;blood;brain;breast; ...
-        \end{itemize}
-
-    \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    \begin{frame}
+%        \frametitle{The IRF1/IL4 locus}
+%
+%        \begin{figure}[!]
+%            \includegraphics[width=0.95\textwidth]{fig/il4}
+%        \end{figure}
+%
+%        \begin{itemize}
+%            \item Sevaral immune genes
+%            \item GWAS categories: allergic disease; autoimmune disease; body height; breast cancer; cancer; cardiovascular disease; hypertensive disorder; respiratory system disease; skin disease
+%            \item eQTL biosamples: adipose tissue;aorta;blood;brain;breast; ...
+%        \end{itemize}
+%
+%    \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
@@ -352,42 +398,6 @@
 
     \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\begin{frame}
-%    \frametitle{How are pleiotropic variants distributed?}
-%
-%    \begin{columns}
-%        \begin{column}{0.32\textwidth}
-%            \begin{center}
-%                \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_gwas.py/count_per_rsid_chr5_start131912097_end132802472_categories7.png}
-%            \end{center}
-%        \end{column}
-%        \begin{column}{0.32\textwidth}
-%            \begin{center}
-%                \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_egene.py/count_per_rsid_chr5_start131912097_end132802472_categories7.png}
-%            \end{center}
-%        \end{column}
-%        \begin{column}{0.32\textwidth}
-%            \begin{center}
-%                \includegraphics[width=\textwidth]{\floatRelativePath/pltsctr_x_per_rsid_y_etissue.py/count_per_rsid_chr5_start131912097_end132802472_categories7.png}
-%            \end{center}
-%        \end{column}
-%    \end{columns}
-%
-%    \begin{center}
-%        \includegraphics[width=\textwidth]{../presentation_230120_gold2022_paris/fig/chr5_131912097_132802472.png}
-%    \end{center}
-%
-%    \small
-%    \begin{itemize}
-%        \item The cytokine locus: chr5:131,912,097-132,802,472. Genes IRF1, IL3, IL4, IL5, ...
-%        \item Diseases: Allergy,Autoimmune dis.,Cancer of breast,Circulatory sys. dis.,Hypertension,Respiratory system dis.
-%        \item For instance: rs2522051 regulates 12 e-genes in 23 e-tissues
-%    \end{itemize}
-%    \normalsize
-%
-%\end{frame}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
         \frametitle{Where are the pleiotropic variants?\footnote{https://www.ensembl.org/vep}}
@@ -404,7 +414,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Do pleiotropic variants associate to more eQTL genes?}
+        \frametitle{Are pleiotropic variants associated to more eQTL genes?}
 
         \begin{columns}
             \begin{column}{0.5\textwidth}
@@ -423,7 +433,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Do pleiotropic variants associate to more eQTL tissues?}
+        \frametitle{Are pleiotropic variants associated to more eQTL tissues?}
 
         \begin{columns}
             \begin{column}{0.5\textwidth}
