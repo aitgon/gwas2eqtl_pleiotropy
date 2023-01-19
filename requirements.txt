@@ -3,7 +3,7 @@ matplotlib
 mygene
 mysql-client
 mysql-connector-python
-numpy
+numpy==1.23.4
 odfpy
 pandas
 requests
@@ -17,3 +17,6 @@ termcolor
 xlsxwriter
 psycopg2-binary==2.9.5
 sqlalchemy-utils
+
+
+
