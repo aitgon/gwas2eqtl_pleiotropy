@@ -58,6 +58,7 @@
         \end{itemize}
 %
         \vfill
+
 %          However, how do we know if these variants are active in a tissue,
 %         or whether these variants false positives due to linkage disequilibrium,
 %         or how these variants act molecularly
@@ -80,7 +81,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
         \frametitle{Expression quantitative trait loci (eQTLs)}
-
+%eQTLs are variants that modify gene expression in a given tissue.
+%        eQTLs give a potential mechanism (the gene target) and a tissue.
         \begin{columns}
             \begin{column}{0.5\textwidth}
                 \begin{center}
@@ -91,8 +93,37 @@
 
             \end{column}
         \end{columns}
+%
+        \vfill
+%
+%        To my knowledge, it is unknown where are the most pleiotropice Eqtls in the genome.
+%        This is important because this would give hints to putatitve pleiotropi genes (unknown or unknown) that are regulated by these pleiotropic eQTLs?
+        Pleiotropy of eQTLs in genome is currently unknown
 
         \blfootnote{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Objectives}
+
+        \begin{enumerate}
+            \item To look for pleiotropic eQTLs in the genome
+            \item To characterise their genomic regions, target genes and the cause of their pleiotropy
+        \end{enumerate}
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Strategy}
+
+        \begin{enumerate}
+            \item Annotate eQTLs with GWAS traits using colocalization analysis
+            \item Annotate GWAS traits in categories
+            \item Aggregate trait categories of eQTLs: Pleiotropic eQTLs
+            \item Aggregate pleiotropic eQTLs in genome regions
+            \item Analyse pleiotropic eQTLs and regions
+        \end{enumerate}
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,18 +144,6 @@
         \end{columns}
 
         \blfootnote{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
-    \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \begin{frame}
-        \frametitle{Objectives}
-
-        \begin{enumerate}
-            \item Large scale gene and tissue annotation of variants of complex traits using GWAS/eQTL colocalization analysis
-            \item To identify pleiotropic eQTLs and eQTL-containing genomic regions
-            \item To characterize the properties of pleiotropic eQTLs
-            \item To share colocalizations with experimentalists
-        \end{enumerate}
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -151,12 +170,14 @@
 %        \let\thefootnote\relax\footnotetext{$^3$https://cran.r-project.org/web/packages/coloc/index.html}
     \end{frame}
 
-
     \section{Results}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
         \frametitle{Large scale GWAS/eQTL colocalization analysis}
+
+%In this project, I have carried a large colocalization analysis between ~300 GWAS traits and 127 eQTL studies belonging to different tissues and mainly primary cell types.
+%In addition, by colocalizing statistically eQTLs and GWAS, we can to some extent, break, linkage disequilibrium
 
         \begin{itemize}
             \item Colocalization between 293 GWAS and 127 eQTL studies
@@ -172,7 +193,20 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
+        \frametitle{Web portail}
+
+%These data can be useful to interpret disease variants
+%        Therefore I have developed a small web portail
+
+        TODO
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
         \frametitle{Do GWAS traits cluster coherently?}
+
+%        To evaluate the coherence of the colocalization data, I have computed distances between traits based on the Spearman correlation of the betas of the eqtl-gene-tissue
 
         GWAS distance based on correlation of beta of colocalized eQTL gene and tissue
 
@@ -184,6 +218,11 @@
             \item Categories are coherent
             \item Help categorize GWAS traits
         \end{itemize}
+
+%        In this heatmap, we can see that similar traits cluster together
+%One difficulty for analysing pleiotropy is to distinguish similar traits for really different traits.
+%In the previous heatmap, we have seen that traits cluster around coherent categories
+%To look for real pleiotropic eQTLs I have manually annotated traits in different categories, such as cardiovascular disease, allergic, autoimmune, ....
 
     \end{frame}
 
@@ -228,7 +267,7 @@
 
         \begin{itemize}
             \item Example eQTLs involved in four GWAS categories in different cytobands
-            \item The gene marker is the eQTL gene with the highest PubMed publication count
+            \item The representative gene is the eQTL gene with the highest PubMed publication count
         \end{itemize}
 
 % full size table is table
@@ -241,7 +280,7 @@
             table head=\bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Cytoband & \bfseries RSID & \bfseries Known eQTL gene & \bfseries GWAS Categories\\\hline,
             ]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
                 {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
-            \vspace{15pt}
+            \vspace{15pt}\label{tab:pleitropic_variants}
         \end{table}
 
     \end{frame}
@@ -383,7 +422,12 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Concluding remarks}
+        \frametitle{Conclusion}
+
+        \begin{itemize}
+            \item A list of pleiotrtA large set of causal GWAS variants annotated with target genes and tissues
+            \item A list of pleiotropic variants and regions
+        \end{itemize}
 
         Outcomes interesting for the GOLD population genotypes
 %
@@ -403,17 +447,15 @@
             \item Increased number of associated egenes and etissues
         \end{itemize}
 
-
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
         \frametitle{Perspectives}
 
-
         \begin{itemize}
-            \item A web portail to share data
-            \item Causality of eQTL genes on GWAS (Looking for experts ;-) )
+            \item Causality of eQTL genes on GWAS
+            \item Study loci in more
         \end{itemize}
 
     \end{frame}
