@@ -19,7 +19,7 @@
 % reset footnote counter for each frame in beamer class
 \AtBeginEnvironment{frame}{\setcounter{footnote}{0}}
 
-\title{Analysis of pleiotropy of eQTLs}
+\title{Discovery and analysis of pleiotropic eQTLs}
 \subtitle{Internal Seminar}
 \author{Aitor Gonz\'alez}
 \institute{Aix Marseille Univ, INSERM, TAGC}
@@ -49,24 +49,56 @@
 %    The associations to diseases are heterougeneously distributed in the genome, Watanabe & Posthuma
 %    This is based on loci associated to multiple traits
     \begin{frame}
-        \frametitle{Genome-wide association studies (GWAS)}
+        \frametitle{GWAS and pleiotropy}
 
         \begin{itemize}
-            \item Association test of effect allele on case individuals
-            \item High-throughput genetics: 3000 unique loci for over 250 disease/trait outcomes\footnote{Loos 2020. 10.1038/s41467-020-19653-5}
-            \item Of the 1,707.0 Mb genome, 90.0\% is associated to different GWAS categories
+            \item Genome-wise association studies: Association test in the population of variants on common traits, eg. height or Crohn's disease
+            \item Used for frequent variants and common quantitative or qualitative traits
+            \item High-throughput genetics: 3000 unique loci for over thousands of disease/trait outcomes\footnote{Loos 2020. 10.1038/s41467-020-19653-5}
+            \item Of the 1,707.0 Mb genome, 90.0\% is associated to different GWAS categories\footnote{Watanabe et al 2019. 10.1038/s41588-019-0481-0}
         \end{itemize}
 %
-        \vfill
+%         \vfill
 
 %          However, how do we know if these variants are active in a tissue,
 %         or whether these variants false positives due to linkage disequilibrium,
 %         or how these variants act molecularly
-        Questions:\footnote{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
+%         Questions:\footnote{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
+% %
+%         \begin{itemize}
+%             \item Correlation between variants. Which is the causal variant?
+%             \item Which genes are important for disease?
+%             \item In which tissues are these variants active?
+%         \end{itemize}
+% %
+%         \vfill
+% %
+%         Questions partially addressed by looking at eQTLs in different tissues
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    The associations to diseases are heterougeneously distributed in the genome, Watanabe & Posthuma
+%    This is based on loci associated to multiple traits
+    \begin{frame}
+        \frametitle{Questions regarding pleiotropy analysis\footnote{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}}
+
+%         \begin{itemize}
+%             \item Association test of effect allele of individuals on traits
+%             \item High-throughput genetics: 3000 unique loci for over 250 disease/trait outcomes\footnote{Loos 2020. 10.1038/s41467-020-19653-5}
+%             \item Of the 1,707.0 Mb genome, 90.0\% is associated to different GWAS categories\footnote{Watanabe et al 2019. 10.1038/s41588-019-0481-0}
+%         \end{itemize}
+% %
+%         \vfill
+
+%          However, how do we know if these variants are active in a tissue,
+%         or whether these variants false positives due to linkage disequilibrium,
+%         or how these variants act molecularly
+
 %
         \begin{itemize}
             \item Correlation between variants. Which is the causal variant?
-            \item Which cell types important for disease?
+            \item Which genes are important for disease?
             \item In which tissues are these variants active?
         \end{itemize}
 %
@@ -99,7 +131,7 @@
 
         \begin{enumerate}
             \item To identify pleiotropic eQTLs in the genome
-            \item To characterise their genomic regions, target genes and the cause of their pleiotropy
+            \item To characterise the causes of their pleiotropy
         \end{enumerate}
     \end{frame}
 
@@ -141,9 +173,9 @@
         \frametitle{IEA OpenGWAS database\footnote{https://gwas.mrcieu.ac.uk}}
 
         \begin{itemize}
-            \item 418 GWAS
-            \item Physiological and disease traits
             \item UK biobank, GWAS catalog, Other datasets
+            \item Physiological and disease traits
+            \item 418 GWAS, based on sample size and traits
         \end{itemize}
 
     \end{frame}
@@ -153,9 +185,9 @@
         \frametitle{EBI eQTLs database\footnote{https://www.ebi.ac.uk/eqtl}}
 
         \begin{itemize}
-            \item 127 studies in human from different datasets
-            \item Tissues, cell types, stimulated conditions, ...
             \item GTEX, DICE, ...
+            \item Tissues, cell types, stimulated conditions, ...
+            \item 127 studies in human from different datasets
         \end{itemize}
 
     \end{frame}
@@ -169,12 +201,29 @@
         \end{itemize}
 
         \begin{center}
-            \includegraphics[width=\textwidth]{../presentation_230120_gold2022_paris/fig/pgen.1004383.g001.png}
+            \includegraphics[width=0.5\textwidth]{../presentation_230120_gold2022_paris/fig/pgen.1004383.g001.png}
         \end{center}
 
     \end{frame}
 
     \section{Results}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Colocalization of GWAS and eQTLs}
+
+%In this project, I have carried a large colocalization analysis between ~300 GWAS traits and 127 eQTL studies belonging to different tissues and mainly primary cell types.
+%In addition, by colocalizing statistically eQTLs and GWAS, we can to some extent, break, linkage disequilibrium
+
+        \begin{itemize}
+            \item Colocalization between 293 GWAS and 127 eQTL studies
+        \end{itemize}
+
+        \begin{figure}[!]
+            \includegraphics[width=\textwidth]{fig/web_portal.png}\label{fig:coloc_web}
+        \end{figure}
+
+    \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
@@ -185,10 +234,10 @@
 
         \begin{itemize}
             \item Colocalization between 293 GWAS and 127 eQTL studies
-            \item 25\% of 10 k leading SNPs (SNP.PP.H4$\geq$0.5), colocalized with at least one eQTL
-            \item At SNP.PP.H4$\geq$0.5, 5 k eQTLs and 5 k target genes
+            \item 25\%\footnote{SNP.PP.H4$\geq$0.5} of 10,000 leading SNPs, colocalized with at least one eQTL
+            \item 5,000 eQTLs and 5,000 target genes\footnote{SNP.PP.H4$\geq$0.5}
             \item 138e3 colocalized variants with probability $\geq$ 0.75
-            \item Percentage of GWAS loci explained by eQTL: 0$\%$ - 77$\%$ (Average 33$\%$)
+            \item Percentage of GWAS loci explained by eQTL: histogram
         \end{itemize}
 
         \begin{figure}[!]
@@ -249,8 +298,9 @@
         \frametitle{How are pleiotropic eQTLs defined?}
 
         \begin{itemize}
-            \item Uniformly annotate GWAS traits based on clustering and EBI ontologies
-            \item Aggregate colocalised eQTLs based on the number of trait categories
+            \item Annotate GWAS traits uniformly with ontologies
+            \item Annotate normalized trait name in higher-level categories, eg cardiovascular
+            \item Group categories of each eQTL
             \item Analyse eQTLs in groups based on the number of trait categories
         \end{itemize}
 
@@ -261,7 +311,7 @@
         \frametitle{Most pleiotroic eQTLs}
 
         \begin{itemize}
-            \item Example eQTLs involved in four GWAS categories in different cytobands
+            \item Example pleiotropic eQTLs in different cytobands
             \item The representative gene is the eQTL gene with the highest PubMed publication count
         \end{itemize}
 
@@ -376,7 +426,7 @@
 
         \begin{itemize}
             \item Cell cycle regulator
-            \item GWAS categories: cancer;cardiovascular disease;hypertensive disorder;joint disease;respiratory system disease;skin cancer
+            \item Trait categories: cancer;cardiovascular disease;hypertensive disorder;joint disease;respiratory system disease;skin cancer
             \item eQTL biosamples: adipose tissue;blood;brain;colon;immune system; ...
         \end{itemize}
 
@@ -387,34 +437,34 @@
         \frametitle{The TP53 locus}
 
         \begin{figure}[!]
-            \includegraphics[width=0.95\textwidth]{fig/cdk2na}
+            \includegraphics[width=0.95\textwidth]{fig/tp53}
         \end{figure}
 
         \begin{itemize}
             \item Cell cycle regulator
-            \item GWAS categories: cancer;cardiovascular disease;hypertensive disorder;joint disease;respiratory system disease;skin cancer
+            \item Trait categories: cancer;cardiovascular disease;hypertensive disorder;joint disease;respiratory system disease;skin cancer
             \item eQTL biosamples: adipose tissue;adrenal gland;aorta;blood;brain; ...
         \end{itemize}
 
     \end{frame}
 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     \begin{frame}
+%         \frametitle{Where are the pleiotropic variants?\footnote{https://www.ensembl.org/vep}}
+%
+%         \begin{center}
+%             \includegraphics[width=0.7\textwidth]{fig/vep.png}
+%         \end{center}
+%
+%         In the transcripts
+%
+% %        \let\thefootnote\relax\footnotetext{$^1$https://www.ensembl.org/vep}
+%
+%     \end{frame}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Where are the pleiotropic variants?\footnote{https://www.ensembl.org/vep}}
-
-        \begin{center}
-            \includegraphics[width=0.7\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/vep.png}
-        \end{center}
-
-        In the transcripts
-
-%        \let\thefootnote\relax\footnotetext{$^1$https://www.ensembl.org/vep}
-
-    \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    \begin{frame}
-        \frametitle{Are pleiotropic variants associated to more eQTL genes?}
+        \frametitle{Are pleiotropic eQTLs associated to more eQTL genes?}
 
         \begin{columns}
             \begin{column}{0.5\textwidth}
@@ -433,7 +483,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Are pleiotropic variants associated to more eQTL tissues?}
+        \frametitle{Are pleiotropic eQTLs associated to more eQTL tissues?}
 
         \begin{columns}
             \begin{column}{0.5\textwidth}
@@ -452,7 +502,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Do pleiotropic variants bind more transcription factors?\footnote{https://remap.univ-amu.fr}}
+        \frametitle{Do pleiotropic eQTLs bind more transcription factors?\footnote{https://remap.univ-amu.fr}}
 
         \begin{columns}
             \begin{column}{0.5\textwidth}
@@ -474,6 +524,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
         \frametitle{Web access}
+
+        \url{https://gwas2eqtl.tagc.univ-amu.fr/gwas2eqtl/}
 
 %These data can be useful to interpret disease variants
 %        Therefore I have developed a small web portail
