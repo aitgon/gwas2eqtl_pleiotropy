@@ -15,8 +15,8 @@ rule create_table_supplementary:
     input:
         gwas_category_ods,
         etissue_category_ods,
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.tsv"),
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
     output:
         os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
     params:

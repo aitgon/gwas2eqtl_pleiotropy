@@ -64,7 +64,8 @@ st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 #%% ST2
 sheet_name = 'ST2'
 gwas_category_df = pandas.read_excel(gwas_category_ods_path)
-gwas_category_df.drop(['query', 'category'], axis=1, inplace=True)
+import pdb; pdb.set_trace()
+gwas_category_df.drop(['query_ontology', 'query_term', 'category'], axis=1, inplace=True)
 # import pdb; pdb.set_trace()
 # category_pleio_df = gwas_category_df[['icd10_code_level1.1', 'category_pleiotropy']]
 # category_pleio_df = category_pleio_df.loc[~category_pleio_df.isna().any(axis=1)]

@@ -5,6 +5,7 @@ snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db
 david_email = config['david_email']
 db_url = config['db_url']
 etissue_category_ods = config['etissue_category_ods']
+gwas_trait_ods = config['gwas_trait_ods']
 gwas_category_ods = config['gwas_category_ods']
 max_gwas_category_count = config['max_gwas_category_count']
 outdir = config['outdir']
@@ -41,9 +42,12 @@ rule all:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
+        #
+        # 04snkfl_plots.yml
+        os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
 
 
-#include: "05snkfl_supplementary_and_web.yml"
+include: "05snkfl_supplementary_and_web.yml"
 include: "04snkfl_plots.yml"
 include: "03snkfl_remap.yml"
 include: "02snkfl_cmpt_pleiotropic_regions.yml"

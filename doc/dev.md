@@ -1,9 +1,10 @@
-Updated Dec 27, 2022
+Updated Feb 5, 2023
 
-Annotate GWAS with disease ontologies
+Annotate GWAS trait with disease trait and category ontologies
 
 ~~~
-python scripts/query_ontology_ols.py config/gwas417.ods out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/query_ontology.py/gwas_ontology.ods
+python scripts/query_ontology_ols.py config/gwas417_trait_query.ods out/gwas417/query_ontology.py/gwas_trait_ontology.ods
+python scripts/query_ontology_ols.py config/gwas417_category_query.ods out/gwas417/query_ontology.py/gwas_category_ontology.ods
 ~~~
 
 Docker up
@@ -21,6 +22,13 @@ python workflow/scripts/insrt_coloc.py 0.75 0  postgresql://postgres:postgres@0.
 python workflow/scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5435/postgres ../gwas2eqtl_pleiotropy/config/gwas417_query_precise.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
 ~~~
 
+Insert GWAS trait and category ontologies
+
+~~~
+python scripts/insrt_opengwas2trait_ontology.py postgresql://postgres:postgres@0.0.0.0:5435/postgres out/gwas417/query_ontology.py/gwas_trait_ontology.ods
+python scripts/insrt_opengwas2category_ontology.py postgresql://postgres:postgres@0.0.0.0:5435/postgres out/gwas417/query_ontology.py/gwas_category_ontology.ods
+~~~
+
 python scripts/insrt_vep_consequence.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 
 Insert to db
@@ -28,7 +36,7 @@ Insert to db
 ~~~
 python scripts/insrt_cytoband.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_geneid2symbol.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
-python scripts/insrt_gwas_annot.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/gwas417_query_precise.ods
+#python scripts/insrt_gwas_annot.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/gwas417_query_precise.ods
 python scripts/insrt_pos19.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_etissue_category.py postgresql://postgres:postgres@0.0.0.0:5435/postgres config/etissue_category.ods
 python scripts/insrt_open_gwas.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
@@ -56,9 +64,11 @@ SELECT DISTINCT co.chrom,
     co.rsid,
     co.ref,
     co.alt,
-    gw.gwas_trait,
-    gw.gwas_ontology_term,
-    gw.gwas_ontology_id,
+    gwtron.gwas_trait,
+    gwtron.gwas_ontology_term as gwas_trait_ontology_term,
+    gwtron.gwas_ontology_id as gwas_trait_ontology_id,
+    gwcaon.gwas_ontology_term as gwas_category_ontology_term,
+    gwcaon.gwas_ontology_id as gwas_category_ontology_id,
     op.batch,
     op.pmid,
     co.gwas_beta,
@@ -74,9 +84,8 @@ SELECT DISTINCT co.chrom,
     co.coloc_variant_id AS tophits_variant_id,
     co.nsnps,
     eqtl_annot.etissue_category_term,
-    gw.gwas_category,
     en2.pubmed_count
-   FROM (((((( SELECT DISTINCT co0.chrom,
+   FROM (((((((( SELECT DISTINCT co0.chrom,
             co0.pos AS pos38,
             concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
             co0.rsid,
@@ -97,12 +106,13 @@ SELECT DISTINCT co.chrom,
             cytoband cy
           WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co
      LEFT JOIN ensg2symbol en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
-     LEFT JOIN gwas_annot gw ON (((gw.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN opengwas2trait_ontology gwtron ON (((gwtron.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN opengwas2category_ontology gwcaon ON (((gwcaon.gwas_id)::text = (co.gwas_id)::text)))
      LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text)))
      LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
      LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
-     LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text))
-  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
+     LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text)))
+  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
 Create "colocweb" view
@@ -157,16 +167,20 @@ SELECT DISTINCT co.chrom,
   ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
-Optional for the annotation
+Optional for the annotation (trash)
 
-~~~
+~~~ (trash)
 python scripts/query_ontology_ols.py config/gwas417_query_precise.ods out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/query_ontology_ols.py/gwas417_query_precise_ontology.ods
 ~~~
 
 Then snakemake is run with:
 
+~~~(trash)
+snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas417_query_precise.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50
 ~~~
-snakemake --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas417_query_precise.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50
+
+~~~
+snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_trait_ods=out/gwas417/query_ontology.py/gwas_trait_ontology.ods  gwas_category_ods=out/gwas417/query_ontology.py/gwas_category_ontology.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50
 ~~~
 
 ~~~

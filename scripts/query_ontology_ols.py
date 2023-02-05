@@ -1,9 +1,15 @@
+"""Reads ODS with "id", "query_ontology", "query_term" columns
+and queries OLS to add columns "ontology_id", "ontology_term", "ontology_iri"
+I use it to normalize GWAS trait names and categories
+"""
+
+from gwas2eqtl_pleiotropy.Logger import Logger
+
 import os
 import pandas
 import pathlib
 import sys
 import urllib
-from gwas2eqtl_pleiotropy.Logger import Logger
 
 
 #%%
