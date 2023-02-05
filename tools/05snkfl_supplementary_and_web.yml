@@ -2,6 +2,7 @@
 snakemake -j all -s tools/05snkfl_supplementary_and_web.yml --config etissue_category_ods=config/etissue_category.ods max_gwas_category_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/7_7
 """
 
+gwas_trait_ods = config['gwas_trait_ods']
 gwas_category_ods = config['gwas_category_ods']
 outdir = config['outdir']
 etissue_category_ods = config['etissue_category_ods']
@@ -13,6 +14,7 @@ rule all_05snkfl_supplementary_and_web:
 
 rule create_table_supplementary:
     input:
+        gwas_trait_ods,
         gwas_category_ods,
         etissue_category_ods,
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
@@ -22,4 +24,4 @@ rule create_table_supplementary:
     params:
         indir=outdir,
     shell:
-        "python scripts/cmpt_supplementary_files.py {input[0]} {input[1]} {input[2]} {input[3]} {output[0]}"
+        "python scripts/cmpt_supplementary_files.py {input[0]} {input[1]} {input[2]} {input[3]} {input[4]} {output[0]}"

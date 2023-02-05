@@ -167,17 +167,7 @@ SELECT DISTINCT co.chrom,
   ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
-Optional for the annotation (trash)
-
-~~~ (trash)
-python scripts/query_ontology_ols.py config/gwas417_query_precise.ods out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/query_ontology_ols.py/gwas417_query_precise_ontology.ods
-~~~
-
 Then snakemake is run with:
-
-~~~(trash)
-snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas417_query_precise.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50
-~~~
 
 ~~~
 snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_trait_ods=out/gwas417/query_ontology.py/gwas_trait_ontology.ods  gwas_category_ods=out/gwas417/query_ontology.py/gwas_category_ontology.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50
@@ -190,7 +180,6 @@ snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgr
 # MS
 
 ~~~
-rm -f ms_00_merge.tex.pdf; texi2pdf ms/ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
+cd ms
+rm -f ms_00_merge.tex.pdf; texi2pdf ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
 ~~~
-
-python scripts/query_ontology_ols.py config/gwas417.ods out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/annot_gwas_metadata.py/gwas_ontology.ods
