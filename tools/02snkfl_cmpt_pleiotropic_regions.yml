@@ -13,7 +13,7 @@ wlength_lst = [1000, 3000, 10000, 30000, 100000]
 rule all_02snkfl_cmpt_pleiotropic_regions:
     input:
         expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.ods"), wlength=wlength_lst),
-        os.path.join(outdir, "cmpt_perc_explained.py/perc_explained.tsv"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
 
 rule cmpt_pleiotropic_regions_wlength:
     input:
@@ -42,9 +42,9 @@ rule count_per_rsid:
 
 rule cmpt_perc_explained:
     output:
-        os.path.join(outdir, "cmpt_perc_explained.py/perc_explained.tsv"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
     params:
         snp_pp_h4=snp_pp_h4,
         db_url=db_url,
     shell:
-        "python scripts/cmpt_perc_explained.py {params.snp_pp_h4} {params.db_url} {output[0]}"
+        "python scripts/cmpt_perc_tophits_eqtl.py {params.snp_pp_h4} {params.db_url} {output[0]}"
