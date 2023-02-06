@@ -5,6 +5,7 @@ snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db
 david_email = config['david_email']
 db_url = config['db_url']
 etissue_category_ods = config['etissue_category_ods']
+gwas_trait_ods = config['gwas_trait_ods']
 gwas_category_ods = config['gwas_category_ods']
 max_gwas_category_count = config['max_gwas_category_count']
 outdir = config['outdir']
@@ -19,8 +20,11 @@ rule all:
         os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.svg"),
         #
         # 02snkfl_cmpt_pleiotropic_regions.yml
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
-        os.path.join(outdir, "cmpt_perc_explained.py/perc_explained.tsv"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_incl_mhc.png"),
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_excl_mhc.png"),
         #
         # 03snkfl_remap.yml
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
@@ -41,9 +45,12 @@ rule all:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
+        #
+        # 04snkfl_plots.yml
+        os.path.join(outdir, "ms_supp_tab/supplementary_tables.xlsx"),
 
 
-#include: "05snkfl_supplementary_and_web.yml"
+include: "05snkfl_supplementary_and_web.yml"
 include: "04snkfl_plots.yml"
 include: "03snkfl_remap.yml"
 include: "02snkfl_cmpt_pleiotropic_regions.yml"

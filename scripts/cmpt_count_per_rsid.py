@@ -29,24 +29,24 @@ outdir_path = os.path.dirname(count_per_rsid_gwas_egene_etissue_ods)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
-columns = ['chrom', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_category_term', 'pubmed_count']
+columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_category_term', 'pubmed_count']
 coloc_df = pandas.read_sql(sql, con=url, columns=columns).drop_duplicates()
 
 #%% definition of variant for aggregation
-variant_def_lst = ['chrom', 'cytoband', 'pos38', 'rsid', 'alt']
+variant_def_lst = ['chrom', 'cytoband', 'pos19', 'pos38', 'rsid', 'ref', 'alt']
 
 #%% per rsid, aggregate gwas categories
-gwas_df = coloc_df[variant_def_lst + ['gwas_category']].drop_duplicates()
-agg_dic = {'gwas_category': lambda x: x.tolist()}
+gwas_df = coloc_df[variant_def_lst + ['gwas_category_ontology_term']].drop_duplicates()
+agg_dic = {'gwas_category_ontology_term': lambda x: x.tolist()}
 gwas_df = gwas_df.groupby(variant_def_lst).agg(agg_dic).reset_index()
-gwas_df['gwas_category_count'] = gwas_df['gwas_category'].apply(len)
-gwas_df.rename({'gwas_category': 'gwas_category_lst'}, axis=1, inplace=True)
+gwas_df['gwas_category_count'] = gwas_df['gwas_category_ontology_term'].apply(len)
+gwas_df.rename({'gwas_category_ontology_term': 'gwas_category_lst'}, axis=1, inplace=True)
 
 #%% per rsid, aggregate gwas categories
-gwas_ontology_df = coloc_df[variant_def_lst + ['gwas_ontology_term']].drop_duplicates()
-agg_dic = {'gwas_ontology_term': lambda x: x.tolist()}
+gwas_ontology_df = coloc_df[variant_def_lst + ['gwas_trait_ontology_term']].drop_duplicates()
+agg_dic = {'gwas_trait_ontology_term': lambda x: x.tolist()}
 gwas_ontology_df = gwas_ontology_df.groupby(variant_def_lst).agg(agg_dic).reset_index()
-gwas_ontology_df['gwas_ontology_term_count'] = gwas_ontology_df['gwas_ontology_term'].apply(len)
+gwas_ontology_df['gwas_trait_count'] = gwas_ontology_df['gwas_trait_ontology_term'].apply(len)
 
 #%% per rsid, aggregate eqtl genes
 egene_df = coloc_df[variant_def_lst + ['eqtl_gene_id', 'eqtl_gene_symbol']].drop_duplicates()
@@ -74,14 +74,14 @@ m_df = pandas.merge(gwas_df, gwas_ontology_df, on=variant_def_lst)
 m_df = pandas.merge(m_df, egene_df, on=variant_def_lst)
 m_df = pandas.merge(m_df, etissue_df, on=variant_def_lst)
 m_df = pandas.merge(m_df, gene_pubmed_marker_df, on=variant_def_lst)
-m_df.sort_values(['gwas_category_count', 'gwas_ontology_term_count', 'chrom', 'pos38', 'rsid'], ascending=[False, False, True, True, True], inplace=True)
-columns = ['chrom', 'cytoband', 'pos38', 'rsid', 'alt', 'eqtl_gene_marker_symbol',
-           'pubmed_count', 'gwas_category_count', 'gwas_ontology_term_count',
-           'gwas_category_lst', 'gwas_ontology_term', 'egene_lst', 'eqtl_gene_symbol_lst', 'egene_count', 'etissue_category_term_lst', 'etissue_category_term_count', 'eqtl_gene_marker_id']
+m_df.sort_values(['gwas_category_count', 'gwas_trait_count', 'chrom', 'pos38', 'rsid'], ascending=[False, False, True, True, True], inplace=True)
+columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'ref', 'alt', 'eqtl_gene_marker_symbol',
+           'pubmed_count', 'gwas_category_count', 'gwas_trait_count',
+           'gwas_category_lst', 'gwas_trait_ontology_term', 'egene_lst', 'eqtl_gene_symbol_lst', 'egene_count', 'etissue_category_term_lst', 'etissue_category_term_count', 'eqtl_gene_marker_id']
 m_df = m_df[columns]
 
 m_df['gwas_category_lst'] = m_df['gwas_category_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
-m_df['gwas_ontology_term'] = m_df['gwas_ontology_term'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
+m_df['gwas_trait_ontology_term'] = m_df['gwas_trait_ontology_term'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
 m_df['egene_lst'] = m_df['egene_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
 m_df['eqtl_gene_symbol_lst'] = m_df['eqtl_gene_symbol_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
 m_df['etissue_category_term_lst'] = m_df['etissue_category_term_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))

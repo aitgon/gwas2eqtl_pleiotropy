@@ -1,11 +1,7 @@
-import requests
-
-from gwas2eqtl_pleiotropy.Logger import Logger
-import urllib.request
 import os
 import pandas
-
 import pathlib
+import requests
 import sys
 
 from gwas2eqtl_pleiotropy.constants import public_data_dir
@@ -13,9 +9,10 @@ from gwas2eqtl_pleiotropy.constants import public_data_dir
 #%%
 help_cmd_str = "todo"
 try:
-    config_ods = sys.argv[1]
-    gwas_annot_ods_path = sys.argv[2]
-    if len(sys.argv) > 3:
+    gwas_trait_ods = sys.argv[1]
+    gwas_category_ods = sys.argv[2]
+    gwas_annot_ods_path = sys.argv[3]
+    if len(sys.argv) > 4:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -29,7 +26,8 @@ outdir_path = os.path.dirname(gwas_annot_ods_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-config_df = pandas.read_excel(config_ods, engine='odf')
+gwas_trait_df = pandas.read_excel(gwas_trait_ods, engine='odf')
+gwas_category_df = pandas.read_excel(gwas_category_ods, engine='odf')
 
 #%%
 url = "http://gwas-api.mrcieu.ac.uk/gwasinfo"
@@ -48,7 +46,11 @@ mrcieu_df.to_csv(gwasinfo_tsv_path, sep="\t", header=True, index=False)
 mrcieu_df.rename({'id': 'gwas_id'}, axis=1, inplace=True)
 
 #%%
-config_df.rename({'id': 'gwas_id'}, axis=1, inplace=True)
-gwas_annot_df = config_df.merge(mrcieu_df, on='gwas_id')
+gwas_trait_df.drop(['query_ontology', 'query_term', 'ontology_iri', 'category'], axis=1, inplace=True)
+gwas_trait_df.rename({'id': 'gwas_id', 'ontology_id': 'gwas_trait_ontology_id', 'ontology_term': 'gwas_trait_ontology_term'}, axis=1, inplace=True)
+gwas_category_df.drop(['query_ontology', 'query_term', 'ontology_iri', 'category'], axis=1, inplace=True)
+gwas_category_df.rename({'id': 'gwas_id', 'ontology_id': 'gwas_category_ontology_id', 'ontology_term': 'gwas_category_ontology_term'}, axis=1, inplace=True)
+gwas_annot_df = gwas_trait_df.merge(gwas_category_df, on=['gwas_id', 'trait'])
+gwas_annot_df = gwas_annot_df.merge(mrcieu_df, on=['gwas_id'])
 with pandas.ExcelWriter(gwas_annot_ods_path) as fout:
     gwas_annot_df.to_excel(fout, index=False)

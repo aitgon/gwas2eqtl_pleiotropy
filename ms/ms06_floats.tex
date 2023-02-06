@@ -7,9 +7,27 @@
 \begin{figure}[!tbp]
     \centering
 %
+    \includegraphics[width=\textwidth]{\floatRelativePath/plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_excl_mhc.png}
+%
+    \caption{Histogram showing the percentage of GWAS with the percentage of their tophits colocalized with eQTLs.
+    I have excluded tophits in in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000,
+    because this locus is not included in the colocalization pipeline.}
+    \label{fig:hist_perc_tophits_eqtl_excl_mhc}
+%
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Fig 1: Comorbidity matrix
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{figure}[!tbp]
+    \centering
+%
     \includegraphics[width=\textwidth]{\floatRelativePath/plthtmp_disease_comorbidity_matrix.py/corr_inkscape.png}
 %
-    \caption{Trait distance based on the Spearman correlation of colocalized eQTL beta values for different gene and samples.}
+    \caption{Trait distance based on the Spearman correlation of colocalized eQTL beta values for different genes and samples.}
     \label{fig:gwas_distance}
 %
 \end{figure}
@@ -28,7 +46,7 @@
     \csvreader[separator=tab,
     tabular=crclcp{0.4\textwidth},
     head,
-    table head=\bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Cytoband & \bfseries RSID & \bfseries Marker eQTL gene& \bfseries GWAS Categories\\\hline,
+    table head=\bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Cytoband & \bfseries RSID & \bfseries Gene marker& \bfseries GWAS Categories\\\hline,
     ]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
         {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
 %\hline
@@ -36,8 +54,8 @@
     \vspace{15pt}
 %
     \caption{Example eQTLs involved in four GWAS categories in different cytobands.
-    The whole list is given in the Supplementary files.
-    The gene marker is the eQTL gene with the highest PubMed publication count.}
+    The gene marker is the eQTL gene with the highest PubMed publication count.
+    The whole list is given in the Supplementary table ST2.}
     \label{tab:pleitropic_variants}
 \end{table}
 

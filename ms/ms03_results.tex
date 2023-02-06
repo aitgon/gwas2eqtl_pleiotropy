@@ -33,7 +33,9 @@ These studies resulted in 10,621 clumped leading variants with a p-value below 5
 % tophits goes to OSF
 % colocpleio goes to OSF
 
-My pipeline uncovered eQTL colocalizations for 5,484 or 64$\%$ of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples.
+I excluded colocalization in the MHC locus in chromosome 6 between position 25,000,000 and 35,000,000.
+%
+My pipeline uncovered eQTL colocalizations for 5,484 of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples.
 % select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid
 % from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
 % 5484
@@ -43,6 +45,15 @@ My pipeline uncovered eQTL colocalizations for 5,484 or 64$\%$ of the leading GW
 % select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75) as sel;  7040
 % select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel;  5620
 % select count(*) from (select distinct eqtl_id from coloc where pp_h4_abf>=0.75) as sel;  127
+%
+The histogram shows three group of GWAS (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}).
+%
+Around 25\% of GWAS had no tophits colocalized with eQTLs.
+%
+On the other extreme, 7.5\% of GWAS had all 100\% tophits colocalized with eQTLs.
+%
+The other GWAS had between 10\% and 50\% of tophits colocalized with eQTLs.
+
 
 The largest classes of diseases by number of leading GWAS variants are cancer of breast (1976), allergy (1288), and autoimmune diseases (1216).
 %

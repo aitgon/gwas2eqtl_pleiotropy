@@ -52,7 +52,7 @@ corr_df = corr_df[corr_df.columns[mask]]
 
 #%% create distance matrix
 dis_df = 1 - corr_df   # distance matrix
-gwas_metadata_df = pandas.read_sql('select distinct gwas_id, gwas_ontology_term, batch, pmid , gwas_category from colocpleio', con=create_engine(sa_url))
+gwas_metadata_df = pandas.read_sql('select distinct gwas_id, gwas_trait_ontology_term, batch, pmid , gwas_category_ontology_term from colocpleio', con=create_engine(sa_url))
 
 #%%
 # gwas_metadata_df = pandas.read_excel(gwas_metadata_ods_path, engine="odf", usecols=['gwas_id', 'trait', 'gwas_category'])
@@ -63,7 +63,7 @@ gwas_metadata_df = pandas.read_sql('select distinct gwas_id, gwas_ontology_term,
 #%%
 gwas_metadata_df.set_index('gwas_id', inplace=True, verify_integrity=True)
 # annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['trait', 'gwas_category']]
-annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['batch', 'pmid', 'gwas_ontology_term', 'gwas_category']]
+annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['batch', 'pmid', 'gwas_trait_ontology_term', 'gwas_category_ontology_term']]
 
 # pmid_df = pandas.read_sql('select distinct gwas_id, pmid from colocpleio', con=create_engine(sa_url), index_col='gwas_id')
 # pmid_df = pmid_df.loc[annotation_df.index.tolist(), ]
@@ -73,12 +73,12 @@ annotation_df['pmid'] = annotation_df['pmid'].replace(math.nan, 0)
 annotation_df['pmid'] = annotation_df['pmid'].astype(int)
 
 #%%
-annotation_df = annotation_df.drop_duplicates(['pmid', 'gwas_ontology_term'])
+annotation_df = annotation_df.drop_duplicates(['pmid', 'gwas_trait_ontology_term'])
 dis_df = dis_df.loc[annotation_df.index]
 dis_df = dis_df[annotation_df.index]
 
 #%%
-annotation_df['trait'] = annotation_df['batch'] + '_' + annotation_df['pmid'].astype(str) + '_' + annotation_df['gwas_ontology_term']
+annotation_df['trait'] = annotation_df['batch'] + '_' + annotation_df['pmid'].astype(str) + '_' + annotation_df['gwas_trait_ontology_term']
 
 # pmid_trait_dupli_mask = annotation_df['trait'].duplicated(keep='first')
 # pmid_trait_uniq_mask = ~annotation_df['trait'].duplicated(keep=False)
@@ -91,7 +91,7 @@ annotation_df['trait'] = annotation_df['batch'] + '_' + annotation_df['pmid'].as
 # annotation_df['trait'] = dataset_a + '_' + dataset_b + '_' + annotation_df['trait']
 # import pdb; pdb.set_trace()
 # Label 1
-category_labels = annotation_df["gwas_category"]
+category_labels = annotation_df["gwas_category_ontology_term"]
 category_pal = seaborn.color_palette(palette='bright', n_colors=category_labels.unique().size)
 subset1_lut = dict(zip(map(str, sorted(category_labels.unique())), category_pal))
 subset1_colors = pandas.Series(category_labels, index=annotation_df.index).map(subset1_lut)

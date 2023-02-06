@@ -17,6 +17,39 @@ class pos19(Base):
    pos19 = Column('pos19', Integer, nullable=True)
 
 
+class opengwas2trait_ontology(Base):
+   """scripts/insrt_opengwas2trait_ontology.py"""
+   __tablename__ = "opengwas2trait_ontology"
+
+   gwas_id = Column('gwas_id', String(63), primary_key=True)
+   gwas_trait = Column('gwas_trait', String(255), nullable=False)
+   gwas_ontology_term = Column('gwas_ontology_term', String(127), nullable=False)
+   gwas_ontology_id = Column('gwas_ontology_id', String(15), nullable=False)
+   gwas_ontology_iri = Column('gwas_ontology_iri', String(127), nullable=False)
+
+
+class opengwas2category_ontology(Base):
+   """scripts/insrt_opengwas2category_ontology.py"""
+   __tablename__ = "opengwas2category_ontology"
+
+   gwas_id = Column('gwas_id', String(63), primary_key=True)
+   gwas_trait = Column('gwas_trait', String(255), nullable=False)
+   gwas_ontology_term = Column('gwas_ontology_term', String(127), nullable=False)
+   gwas_ontology_id = Column('gwas_ontology_id', String(15), nullable=False)
+   gwas_ontology_iri = Column('gwas_ontology_iri', String(127), nullable=False)
+
+
+class gwas_annot(Base):
+   """scripts/insrt_gwas_annot.py"""
+   __tablename__ = "gwas_annot"
+
+   gwas_id = Column('gwas_id', String(63), primary_key=True)
+   gwas_trait = Column('gwas_trait', String(255), nullable=False)
+   gwas_ontology_term = Column('gwas_ontology_term', String(127), nullable=False)
+   gwas_ontology_id = Column('gwas_ontology_id', String(15), nullable=False)
+   gwas_category = Column('gwas_category', String(127), nullable=False)
+
+
 class gwascatalog(Base):
    """scripts/insrt_pos19.py"""
    __tablename__ = "gwascatalog"
@@ -65,17 +98,6 @@ class entrezgene2pubmed_count(Base):
 
    entrezgene = Column('entrezgene', Integer, primary_key=True)
    pubmed_count = Column('pubmed_count', Integer, nullable=False)
-
-
-class gwas_annot(Base):
-   """scripts/insrt_gwas_annot.py"""
-   __tablename__ = "gwas_annot"
-
-   gwas_id = Column('gwas_id', String(63), primary_key=True)
-   gwas_trait = Column('gwas_trait', String(255), nullable=False)
-   gwas_ontology_term = Column('gwas_ontology_term', String(127), nullable=False)
-   gwas_ontology_id = Column('gwas_ontology_id', String(15), nullable=False)
-   gwas_category = Column('gwas_category', String(127), nullable=False)
 
 
 class eqtl_annot(Base):
