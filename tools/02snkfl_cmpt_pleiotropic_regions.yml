@@ -14,6 +14,8 @@ rule all_02snkfl_cmpt_pleiotropic_regions:
     input:
         expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.ods"), wlength=wlength_lst),
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_incl_mhc.png"),
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_excl_mhc.png"),
 
 rule cmpt_pleiotropic_regions_wlength:
     input:
@@ -40,7 +42,16 @@ rule count_per_rsid:
     shell:
         "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.manuscript_pleio_cutoff} {params.db_url} {output[0]} {output[1]}"
 
-rule cmpt_perc_explained:
+rule plthst_perc_tophits_eqtl:
+    input:
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
+    output:
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_incl_mhc.png"),
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_excl_mhc.png"),
+    shell:
+        "python scripts/plthst_perc_tophits_eqtl.py {input[0]} {output[0]} {output[1]}"
+
+rule cmpt_perc_tophits_eqtl:
     output:
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
     params:

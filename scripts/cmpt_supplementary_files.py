@@ -10,10 +10,11 @@ try:
     gwas_trait_ods = sys.argv[1]
     gwas_category_ods = sys.argv[2]
     etissue_category_ods = sys.argv[3]
-    count_per_rsid_gwas_egene_etissue_ods = sys.argv[4]
-    region_window_100000_ods = sys.argv[5]
-    supp_tabl_xlsx_path = sys.argv[6]
-    if len(sys.argv) > 7:
+    perc_tophits_eqtl_tsv = sys.argv[4]
+    count_per_rsid_gwas_egene_etissue_ods = sys.argv[5]
+    region_window_100000_ods = sys.argv[6]
+    supp_tabl_xlsx_path = sys.argv[7]
+    if len(sys.argv) > 8:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -42,7 +43,8 @@ description_lst.append('Classification of eQTL tissues and cell types. The first
 sheet_name_lst.append('ST2')
 description_lst.append("Metadata and classification of GWAS")
 
-# ST3 ST3_gwas_trait_perc_explained_loci
+sheet_name_lst.append('ST3')
+description_lst.append("Percentage of tophits per GWAS that colocalized with at least one eQTL.")
 
 sheet_name_lst.append("ST4")
 description_lst.append("Count and list of GWAS phenotypes, egenes and etissues for each eQTL/GWAS variant")
@@ -84,6 +86,9 @@ st_df = gwas_trait_df.merge(gwas_category_df, on=['gwas_id', 'gwas_trait'])
 st_df.to_excel(st_writer, sheet_name=sheet_name, index=False, header=True)
 
 #%% ST3 ST3_gwas_trait_perc_explained_loci
+sheet_name = 'ST3'
+perc_tophits_eqtl_df = pandas.read_csv(perc_tophits_eqtl_tsv, sep="\t", index_col='gwas_id')
+perc_tophits_eqtl_df.to_excel(st_writer, sheet_name=sheet_name, index=True, header=True)
 
 #%% ST4
 sheet_name = 'ST4'

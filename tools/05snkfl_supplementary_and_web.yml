@@ -10,18 +10,19 @@ etissue_category_ods = config['etissue_category_ods']
 
 rule all_05snkfl_supplementary_and_web:
     input:
-        os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/supplementary_tables.xlsx"),
 
 rule create_table_supplementary:
     input:
         gwas_trait_ods,
         gwas_category_ods,
         etissue_category_ods,
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
     output:
-        os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/supplementary_tables.xlsx"),
     params:
         indir=outdir,
     shell:
-        "python scripts/cmpt_supplementary_files.py {input[0]} {input[1]} {input[2]} {input[3]} {input[4]} {output[0]}"
+        "python scripts/cmpt_supplementary_files.py {input[0]} {input[1]} {input[2]} {input[3]} {input[4]} {input[5]} {output[0]}"

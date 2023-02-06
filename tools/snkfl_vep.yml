@@ -38,7 +38,7 @@ rule cmpt_vep_consequence_fisher:
 rule cmpt_vep:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
-        os.path.join("/home/gonzalez/Software/vep-cache/homo_sapiens/107_GRCh38/info.txt"),
+        os.path.join("/home/gonzalez/Software/vep-cache/homo_sapiens/108_GRCh38/info.txt"),
     output:
         os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
         os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),

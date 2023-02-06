@@ -22,7 +22,9 @@ rule all:
         # 02snkfl_cmpt_pleiotropic_regions.yml
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
-        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_explained.tsv"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_incl_mhc.png"),
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_excl_mhc.png"),
         #
         # 03snkfl_remap.yml
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
@@ -45,7 +47,7 @@ rule all:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
         #
         # 04snkfl_plots.yml
-        os.path.join(outdir, "ms_supp_tab/supplementary_table.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/supplementary_tables.xlsx"),
 
 
 include: "05snkfl_supplementary_and_web.yml"
