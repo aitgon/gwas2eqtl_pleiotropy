@@ -85,10 +85,10 @@
 \begin{document}
 
 %%% Start of article front matter
-\begin{frontmatter}
+    \begin{frontmatter}
 
-\begin{fmbox}
-\dochead{Research}
+        \begin{fmbox}
+            \dochead{Research}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -96,7 +96,7 @@
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \title{Pleiotropy of expression quantitative trait loci increases with the number of regulated genes, active cell types and tissues and bound transcription factors}
+            \title{Pleiotropy of expression quantitative trait loci increases with the number of regulated genes, active cell types and tissues and bound transcription factors}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -112,12 +112,12 @@
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \author[
-      addressref={aff1},                   % id's of addresses, e.g. {aff1,aff2}
-      corref={aff1},                       % id of corresponding address, if any
+            \author[
+                addressref={aff1},                   % id's of addresses, e.g. {aff1,aff2}
+                corref={aff1},                       % id of corresponding address, if any
 % noteref={n1},                        % id's of article notes, if any
-      email={aitor.gonzalez@univ-amu.fr}   % email address
-    ]{\inits{A.G.}\fnm{Aitor} \snm{González}}
+                email={aitor.gonzalez@univ-amu.fr}   % email address
+            ]{\inits{A.G.}\fnm{Aitor} \snm{González}}
 %\author[
 %  addressref={aff1,aff2},
 %  email={john.RS.Smith@cambridge.co.uk}
@@ -132,12 +132,12 @@
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \address[id=aff1]{%                           % unique id
+            \address[id=aff1]{%                           % unique id
 %  \orgdiv{Department of Science},             % department, if any
-      \orgname{Aix Marseille Univ, INSERM, TAGC},          % university, etc
-      \city{Marseille},                              % city
-      \cny{France}                                    % country
-    }
+                \orgname{Aix Marseille Univ, INSERM, TAGC},          % university, etc
+                \city{Marseille},                              % city
+                \cny{France}                                    % country
+            }
 %\address[id=aff2]{%
 %  \orgdiv{Institute of Biology},
 %  \orgname{National University of Sciences},
@@ -161,7 +161,7 @@
 %\note[id=n1]{Equal contributor} % note, connected to author
 %\end{artnotes}
 
-\end{fmbox}% comment this for two column layout
+        \end{fmbox}% comment this for two column layout
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                           %%
@@ -174,36 +174,36 @@
 %%                                           %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{abstractbox}
+        \begin{abstractbox}
 
-      \begin{abstract} % abstract
+            \begin{abstract} % abstract
 
-        \parttitle{Background} %if any
-        %
-        Pleiotropic genetic variants affecting several traits are relatively common in the genome as shown by the increasing number of genome-wide association studies (GWAS).
+                \parttitle{Background} %if any
+                %
+                Pleiotropic genetic variants affecting several traits are relatively common in the genome as shown by the increasing number of genome-wide association studies (GWAS).
 %
-        Complex disease variants are often located in non-coding regions and are likely gene regulatory variants.
+                Complex disease variants are often located in non-coding regions and are likely gene regulatory variants.
 %
-        In this work, I investigate the link between frequent expression quantitative trait loci and pleiotropy.
+                In this work, I investigate the link between frequent expression quantitative trait loci and pleiotropy.
 
-        \parttitle{Results} %if any
+                \parttitle{Results} %if any
 % Verify numbers
-        First I have computed the colocalization probability of 417 GWAS and 127 eQTL studies and I have observed 10,334 GWAS/eQTL pairs with at least one colocalized variants with a probability above 0.8.
+                First I have computed the colocalization probability of 417 GWAS and 127 eQTL studies and I have observed 10,334 GWAS/eQTL pairs with at least one colocalized variants with a probability above 0.8.
 %SELECT count(DISTINCT concat(`gwas_id`, `eqtl_id`)) FROM `gwas2eqtl_modelgwas2eqtl` where `PP_H4_abf`>=0.8; 10334
 %Pourcentage of GWAS
 %
-        I have categorized the GWAS traits into 96 traits and categories to define pleiotropic as belonging at least to two of these categories.
+                I have categorized the GWAS traits into 96 traits and categories to define pleiotropic as belonging at least to two of these categories.
 %
-        Pleiotropic variants are associated to more eQTL genes (eGenes) and more eQTL tissues (etissues) but egenes do also correlate with more traits.
+                Pleiotropic variants are associated to more eQTL genes (eGenes) and more eQTL tissues (etissues) but egenes do also correlate with more traits.
 %
-        These observations could be partially explained, because pleitropic variants are enriched in splicing and missense variants and bind more transcription factors.
+                These observations could be partially explained, because pleitropic variants are enriched in splicing and missense variants and bind more transcription factors.
 %
-        These variants with the GWAS traits, egenes and etissues can be explored in a public website.
+                These variants with the GWAS traits, egenes and etissues can be explored in a public website.
 
-        \parttitle{Conclusions} %if any
-        In conclusion, our work suggest that pleiotropy of gene regulatory variants arise from an increase of bound transcription factors, target egenes and etissues and severity of molecular effect consequences.
-        %
-      \end{abstract}
+                \parttitle{Conclusions} %if any
+                In conclusion, our work suggest that pleiotropy of gene regulatory variants arise from an increase of bound transcription factors, target egenes and etissues and severity of molecular effect consequences.
+                %
+            \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -213,12 +213,12 @@
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-      \begin{keyword}
-        \kwd{genetic variants}
-        \kwd{expression quantitative trait loci}
-        \kwd{complex diseases}
-        \kwd{pleiotropy}
-      \end{keyword}
+            \begin{keyword}
+                \kwd{genetic variants}
+                \kwd{expression quantitative trait loci}
+                \kwd{complex diseases}
+                \kwd{pleiotropy}
+            \end{keyword}
 
 % MSC classifications codes, if any
 %\begin{keyword}[class=AMS]
@@ -227,11 +227,11 @@
 %\kwd[; secondary ]{}
 %\end{keyword}
 
-\end{abstractbox}
+        \end{abstractbox}
 %
 %\end{fmbox}% uncomment this for two column layout
 
-\end{frontmatter}
+    \end{frontmatter}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                            %%
@@ -258,15 +258,15 @@
 %%%%%%%%%%%%%%%%
 %% Background %%
 
-  \input{ms02_intro}
-  \input{ms03_results}
-  \input{ms04_discussion}
-  \input{ms05_methods}
+    \input{ms02_intro}
+    \input{ms03_results}
+    \input{ms04_discussion}
+    \input{ms05_methods}
 %  \input{ms06_floats}
 
 
-  \section*{Appendix}
-  Text for this section\ldots
+    \section*{Appendix}
+    Text for this section\ldots
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                          %%
@@ -274,12 +274,12 @@
 %%                                          %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-  \begin{backmatter}
+    \begin{backmatter}
 
-    \section*{Acknowledgements}%% if any
-    Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
+        \section*{Acknowledgements}%% if any
+        Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
 %
-    I thank Sandrine Marquet, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and L\'eopoldine Lecerf for a preliminary version of the pipeline developed during her internship.
+        I thank Sandrine Marquet, Marie Michel, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and Léopoldine Lecerf for a preliminary version of the colocalization pipeline developed during her internship.
 
 %    \section*{Funding}%% if any
 %    Text for this section\ldots
@@ -287,20 +287,20 @@
 %    \section*{Abbreviations}%% if any
 %    Text for this section\ldots
 
-    \section*{Availability of data and materials}%% if any
-    Text for this section\ldots
+        \section*{Availability of data and materials}%% if any
+        Text for this section\ldots
 
 %    \section*{Ethics approval and consent to participate}%% if any
 %    Text for this section\ldots
 
-    \section*{Competing interests}
-    The authors declare that they have no competing interests.
+        \section*{Competing interests}
+        The authors declare that they have no competing interests.
 
 %    \section*{Consent for publication}%% if any
 %    Text for this section\ldots
 
-    \section*{Authors' contributions}
-    Text for this section \ldots
+        \section*{Authors' contributions}
+        Text for this section \ldots
 
 %    \section*{Authors' information}%% if any
 %    Text for this section\ldots
@@ -321,8 +321,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % if your bibliography is in bibtex format, use those commands:
-\bibliographystyle{bmc-mathphys} % Style BST file (bmc-mathphys, vancouver, spbasic).
-\bibliography{bmc_article}      % Bibliography file (usually '*.bib' )
+        \bibliographystyle{bmc-mathphys} % Style BST file (bmc-mathphys, vancouver, spbasic).
+        \bibliography{bmc_article}      % Bibliography file (usually '*.bib' )
 % for author-year bibliography (bmc-mathphys or spbasic)
 % a) write to bib file (bmc-mathphys only)
 % @settings{label, options="nameyear"}
@@ -348,14 +348,14 @@
 %%
 %% Do not use \listoffigures as most will included as separate files
 
-    \section*{Figures}
+        \section*{Figures}
 
-    \begin{figure}[h!]
-      \caption{Histogram showing the percentage of GWAS with the percentage of their tophits colocalized with eQTLs.
-      I have excluded tophits in in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000,
-        because this locus is not included in the colocalization pipeline.}
-      \label{fig:hist_perc_tophits_eqtl_excl_mhc}
-    \end{figure}
+        \begin{figure}[h!]
+            \caption{Histogram showing the percentage of GWAS with the percentage of their tophits colocalized with eQTLs.
+            I have excluded tophits in in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000,
+                because this locus is not included in the colocalization pipeline.}
+            \label{fig:hist_perc_tophits_eqtl_excl_mhc}
+        \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                               %%
@@ -365,28 +365,58 @@
 
 %% Use of \listoftables is discouraged.
 %%
-\section*{Tables}
+        \section*{Tables}
 
-    \begin{table}[h!]
-      \centering
-      \scriptsize
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Tab 1: Winner eQTLs
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+        \begin{table}[h!]
+            \centering
+            \scriptsize
 %\hline
-      \csvreader[separator=tab,
-      tabular=crclcp{0.4\textwidth},
-      head,
-      table head=\\\hline\bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Cytoband & \bfseries RSID & \bfseries Gene marker& \bfseries GWAS Categories\\\hline,
-  late after last line=\\\hline,
-      ]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
-        {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
+            \csvreader[separator=tab,
+            tabular=crclcp{0.4\textwidth},
+            head,
+            table head=\\\hline\bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Cytoband & \bfseries RSID & \bfseries Gene marker& \bfseries GWAS Categories\\\hline,
+            late after last line=\\\hline,
+            ]{\floatRelativePath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
+                {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
 %\hline
 %
-      \vspace{15pt}
+            \vspace{15pt}
 %
-      \caption{Example eQTLs involved in four GWAS categories in different cytobands.
-      The gene marker is the eQTL gene with the highest PubMed publication count.
-      The whole list is given in the Supplementary table ST2.}
-      \label{tab:pleitropic_variants}
-    \end{table}
+            \caption{Example eQTLs involved in four GWAS categories in different cytobands.
+            The gene marker is the eQTL gene with the highest PubMed publication count.
+            The whole list is given in the Supplementary table ST2.}
+            \label{tab:pleitropic_variants}
+        \end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Tab 2: Winner regions
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% full size table is table
+\begin{table}[!tbp]
+    \centering
+    \scriptsize
+%\hline
+    \csvreader[
+        separator=tab,
+        tabular=p{0.05\textwidth}p{0.1\textwidth}p{0.1\textwidth}p{0.1\textwidth}p{0.1\textwidth}p{0.5\textwidth},
+        head,
+        table head=\bfseries Chr. & \bfseries Start & \bfseries End & \bfseries Cytob. & \bfseries Marker eQTL gene & \bfseries GWAS Categories\\\hline,
+    ]{\floatRelativePath/cmpt_pleiotropic_regions.py/100000/region_window_ms.tsv}{}% use head of csv as column names
+    {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
+%\hline
+%
+    \vspace{15pt}
+    \caption{Pleiotropic regions involving 6 or more GWAS classes. These regions were built with a sliding window of 1e5 nt. Genomic coordinates are given for the hg38 assembly.}\label{tab:pleiotropic_regions}
+\end{table}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                               %%
@@ -394,14 +424,22 @@
 %%                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section*{Additional Files}
-  \subsection*{Additional file 1 --- Sample additional file title}
-    Additional file descriptions text (including details of how to
-    view the file, if it is in a non-standard format or the file extension).  This might
-    refer to a multi-page table or a figure.
+        \section*{Additional Files}
+        \subsection*{Additional file 1: Table S1.}
+        Classification of eQTL tissues and cell types. The first six were downloaded from the EBI eQTL repository.
+        The 7th column "etissue\_category\_term" is used here to compute tissue diversity.
 
-  \subsection*{Additional file 2 --- Sample additional file title}
-    Additional file descriptions text.
+        \subsection*{Additional file 2: Table S2.}
+        Metadata and classification of GWAS.
 
-\end{backmatter}
+        \subsection*{Additional file 3: Table S3.}
+        Percentage of tophits per GWAS that colocalized with at least one eQTL.
+
+        \subsection*{Additional file 4: Table S4.}
+        Count and list of GWAS phenotypes, egenes and etissues for each eQTL/GWAS variant.
+
+        \subsection*{Additional file 5: Table S5.}
+        Count and list of GWAS phenotypes, egene symbols and ENSEMBL IDs and etissue classes for each pleiotropic region.
+
+    \end{backmatter}
 \end{document}
