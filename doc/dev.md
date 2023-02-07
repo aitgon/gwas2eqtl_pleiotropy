@@ -125,10 +125,8 @@ SELECT DISTINCT co.chrom,
     co.rsid,
     co.ref,
     co.alt,
-    gw.gwas_trait,
-    gw.gwas_ontology_term,
-    gw.gwas_ontology_id,
-    gw.gwas_category,
+    gwtron.gwas_trait,
+    gwcaon.gwas_ontology_term as gwas_class,
     co.gwas_beta,
     en.symbol AS eqtl_gene_symbol,
     co.eqtl_beta,
@@ -141,16 +139,16 @@ SELECT DISTINCT co.chrom,
     co.snp_pp_h4,
     co.coloc_variant_id AS tophits_variant_id,
     co.nsnps
-   FROM (((( SELECT DISTINCT co0.chrom,
+   FROM (((((((( SELECT DISTINCT co0.chrom,
             co0.pos AS pos38,
             concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
-            concat('rs', co0.rsid) AS rsid,
+            co0.rsid,
             co0.ref,
             co0.alt,
             co0.gwas_beta,
             co0.eqtl_beta,
             co0.eqtl_id,
-            co0.eqtl_gene_id,Collections
+            co0.eqtl_gene_id,
             co0.gwas_id,
             co0.gwas_pval,
             co0.eqtl_pval,
@@ -162,9 +160,13 @@ SELECT DISTINCT co.chrom,
             cytoband cy
           WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co
      LEFT JOIN ensg2symbol en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
-     LEFT JOIN gwas_annot gw ON (((gw.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN opengwas2trait_ontology gwtron ON (((gwtron.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN opengwas2category_ontology gwcaon ON (((gwcaon.gwas_id)::text = (co.gwas_id)::text)))
+     LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text)))
      LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
-  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gw.gwas_trait, en.symbol, co.eqtl_id;
+     LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
+     LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text)))
+  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
 Then snakemake is run with:
