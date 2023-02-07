@@ -19,7 +19,7 @@ From the "gwas2eqtl" project
 
 ~~~
 python workflow/scripts/insrt_coloc.py 0.75 0  postgresql://postgres:postgres@0.0.0.0:5435/postgres ../gwas2eqtl_pleiotropy/config/gwas417_query_category.ods /home/gonzalez/Software/public/raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv /home/gonzalez/Repositories/gwas2eqtl/out/gwas417/coloc/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/window_1000000/{eqtl_id}.tsv
-python workflow/scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5435/postgres ../gwas2eqtl_pleiotropy/config/gwas417_query_precise.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
+python workflow/scripts/insrt_tophits.py postgresql://postgres:postgres@0.0.0.0:5435/postgres ../gwas2eqtl_pleiotropy/config/gwas_trait_ontology.ods  /home/gonzalez/Repositories/gwas2eqtl/out/gwas418/tophits/{gwas_id}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv
 ~~~
 
 Insert GWAS trait and category ontologies
@@ -150,7 +150,7 @@ SELECT DISTINCT co.chrom,
             co0.gwas_beta,
             co0.eqtl_beta,
             co0.eqtl_id,
-            co0.eqtl_gene_id,
+            co0.eqtl_gene_id,Collections
             co0.gwas_id,
             co0.gwas_pval,
             co0.eqtl_pval,
