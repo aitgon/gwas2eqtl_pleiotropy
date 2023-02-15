@@ -13,7 +13,7 @@ try:
     snp_pp_h4 = float(sys.argv[1])
     max_gwas_category_count = int(sys.argv[2])
     manuscript_pleio_cutoff = int(sys.argv[3])
-    url = sys.argv[4]
+    sa_url = sys.argv[4]
     count_per_rsid_gwas_egene_etissue_ods = sys.argv[5]
     count_per_rsid_gwas_egene_etissue_corr_png = sys.argv[6]
     if len(sys.argv) > 7:
@@ -30,7 +30,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_category_term', 'pubmed_count']
-coloc_df = pandas.read_sql(sql, con=url, columns=columns).drop_duplicates()
+coloc_df = pandas.read_sql(sql, con=sa_url, columns=columns).drop_duplicates()
 
 #%% definition of variant for aggregation
 variant_def_lst = ['chrom', 'cytoband', 'pos19', 'pos38', 'rsid', 'ref', 'alt']

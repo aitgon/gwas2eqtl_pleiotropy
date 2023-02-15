@@ -1,5 +1,10 @@
 Updated Feb 5, 2023
 
+Install
+
+~~~
+~~~
+
 Annotate GWAS trait with disease trait and category ontologies
 
 ~~~
