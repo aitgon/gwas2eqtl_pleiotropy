@@ -182,17 +182,26 @@ SELECT DISTINCT co.chrom,
 
 Then snakemake is run with:
 
-~~~
-snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_trait_ods=out/gwas417/query_ontology.py/gwas_trait_ontology.ods  gwas_category_ods=out/gwas417/query_ontology.py/gwas_category_ontology.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50
-~~~
+snp_pp_h4 0.25 0.5 0.75
 
 ~~~
+snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_trait_ods=out/gwas417/query_ontology.py/gwas_trait_ontology.ods  gwas_category_ods=out/gwas417/query_ontology.py/gwas_category_ontology.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_25 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.25
+
 snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process  snp_pp_h4=0.5 -p
+
+snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_75 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process  snp_pp_h4=0.75 -p
 ~~~
 
 # MS
 
 ~~~
 cd ms
-rm -f ms_00_merge.tex.pdf; texi2pdf ms00_merge.tex; rm -f *.aux *.dvi *.log *.out
+rm -f ms00_bmc_article_75_25.tex.pdf; texi2pdf ms00_bmc_article_75_25.tex; rm -f *.aux *.dvi *.log *.out
+rm -f ms00_fig_suppl_75_25.tex.pdf; texi2pdf ms00_fig_suppl_75_25.tex; rm -f *.aux *.dvi *.log *.out
+
+rm -f ms00_bmc_article.tex.pdf; texi2pdf ms00_bmc_article.tex; rm -f *.aux *.dvi *.log *.out
+rm -f ms00_fig_suppl.tex.pdf; texi2pdf ms00_fig_suppl.tex; rm -f *.aux *.dvi *.log *.out
+
+rm -f ms00_bmc_article_75_75.tex.pdf; texi2pdf ms00_bmc_article_75_75.tex; rm -f *.aux *.dvi *.log *.out
+rm -f ms00_fig_suppl_75_75.tex.pdf; texi2pdf ms00_fig_suppl_75_75.tex; rm -f *.aux *.dvi *.log *.out
 ~~~

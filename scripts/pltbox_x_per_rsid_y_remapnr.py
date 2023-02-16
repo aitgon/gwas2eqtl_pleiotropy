@@ -15,10 +15,10 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_category_count = int(sys.argv[1])
-    remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[2]
-    tf_flank_10_png = sys.argv[3]
-    if len(sys.argv) > 4:
+    # max_gwas_category_count = int(sys.argv[1])
+    remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[1]
+    tf_flank_10_png = sys.argv[2]
+    if len(sys.argv) > 3:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -35,8 +35,11 @@ indir_path = os.path.dirname(remap_nr_pleio_1_flank_10_hg38_bed)
 flank = 10
 
 cat_df = pandas.DataFrame({'gwas_category_count': [], 'rsid': [], 'tf': []})
-for pleio in range(1, max_gwas_category_count+1):
+# for pleio in range(1, max_gwas_category_count+1):
+for pleio in range(1, 99):
     pleio_path = remap_nr_pleio_1_flank_10_hg38_bed.replace('pleio_1', 'pleio_{}'.format(pleio))
+    if not os.path.isfile(pleio_path):
+        break
     if os.stat(pleio_path).st_size == 0:
         continue
     df = pandas.read_csv(pleio_path, sep="\t", header=None)
@@ -53,7 +56,7 @@ cat_df.groupby('gwas_category_count')['tf'].apply(lambda x: x.describe()).to_csv
 #%%
 order = [str(int(x)) for x in cat_df['gwas_category_count'].unique()]
 xticklabels = order.copy()
-xticklabels[-1] = '≥{}'.format(order[-1])
+# xticklabels[-1] = '≥{}'.format(order[-1])
 title = "TFs per variant"
 xlabel = "GWAS category count"
 ylabel = "TF count"

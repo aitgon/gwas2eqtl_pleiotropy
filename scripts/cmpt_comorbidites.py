@@ -3,6 +3,7 @@ import pandas
 import pathlib
 import sys
 import seaborn as sns;
+import sqlalchemy
 
 from gwas2eqtl_pleiotropy.Logger import Logger
 
@@ -27,9 +28,16 @@ except IndexError:
 outdir_path = os.path.dirname(disease_corr_tsv_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
+# sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
+# columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
+# d_df = pandas.read_sql(sql, con=sa_url, columns=columns).drop_duplicates()
+
+#%%
 columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
-d_df = pandas.read_sql(sql, con=sa_url, columns=columns).drop_duplicates()
+sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
+engine = sqlalchemy.create_engine(sa_url)
+with engine.begin() as conn:
+    h4_df = pandas.read_sql(sqlalchemy.text(sql), con=conn, columns=columns).drop_duplicates()
 
 #%%
 d_df = d_df.pivot_table(values='eqtl_beta', index=['rsid', 'eqtl_gene_id', 'eqtl_id'], columns='gwas_id', fill_value=0)

@@ -1,4 +1,7 @@
-from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, boxplot_kwargs, annotator_config_dic
+import pdb
+import sys
+
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, annotator_config_dic
 from statannotations.Annotator import Annotator
 
 import matplotlib.pyplot as plt
@@ -7,7 +10,7 @@ import os
 import pandas
 import pathlib
 import seaborn
-import sys
+import sqlalchemy
 
 
 # Plot parameters
@@ -44,14 +47,16 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
-h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
+engine = sqlalchemy.create_engine(url)
+with engine.begin() as conn:
+    h4_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
 #%%
 count_per_rsid_gwas_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine='odf')
 max_gwas_category_count = count_per_rsid_gwas_df['gwas_category_count'].max()
 
 #%%
-m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid', 'ref', 'alt'])
+m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid','alt'])
 
 #%%
 m_gwas_df = m_df[['chrom', 'pos38', 'rsid', 'ref', 'alt', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_category_count']].drop_duplicates()

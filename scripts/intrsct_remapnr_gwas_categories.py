@@ -12,12 +12,12 @@ from gwas2eqtl_pleiotropy.constants import public_data_dir
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_category_count = int(sys.argv[1])
-    threads = int(sys.argv[2])
-    remap_nr_path = sys.argv[3]
-    variant_pleio_1_flank_10_hg38_bed = sys.argv[4]
-    remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[5]
-    if len(sys.argv) > 6:
+    # max_gwas_category_count = int(sys.argv[1])
+    threads = int(sys.argv[1])
+    remap_nr_path = sys.argv[2]
+    variant_pleio_1_flank_10_hg38_bed = sys.argv[3]
+    remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -35,7 +35,15 @@ indir_path = os.path.dirname(variant_pleio_1_flank_10_hg38_bed)
 #%% bedtools intersect
 flank = 10
 
+for max_gwas_category_count in range(1, 99):
+    bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(max_gwas_category_count, flank))
+    if not os.path.isfile(bed_path):
+        break
+
+max_gwas_category_count = max_gwas_category_count - 1
+print(max_gwas_category_count)
 def intrsct_remapnr(count_pleio):
+    # print(count_pleio)
     bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
     intersect_basename = os.path.basename(remap_nr_pleio_1_flank_10_hg38_bed).replace('pleio_1', 'pleio_' + str(count_pleio))
     intersect_bed_path = os.path.join(os.path.dirname(remap_nr_pleio_1_flank_10_hg38_bed), intersect_basename)
@@ -46,4 +54,4 @@ def intrsct_remapnr(count_pleio):
         result = subprocess.run(shlex.split(cmd), stdout=fout)
 
 with Pool(processes=threads) as p:
-    p.map(intrsct_remapnr, range(1, max_gwas_category_count+1))
+    p.map(intrsct_remapnr, range(1, max_gwas_category_count + 1))

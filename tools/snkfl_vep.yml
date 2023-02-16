@@ -18,10 +18,10 @@ rule plt_vep_consequence:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     output:
         os.path.join(outdir, "pltbar_vep_consequence.py/vep.png"),
-    params:
-        max_gwas_category_count=(max_gwas_category_count-1)
+#    params:
+#        max_gwas_category_count=(max_gwas_category_count-1)
     shell:
-        "python scripts/pltbar_vep_consequence.py {input[0]} {params[0]} {output[0]}"
+        "python scripts/pltbar_vep_consequence.py {input[0]} {output[0]}"
 
 rule cmpt_vep_consequence_fisher:
     input:
@@ -30,10 +30,10 @@ rule cmpt_vep_consequence_fisher:
     output:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     params:
-        max_gwas_category_count=(max_gwas_category_count-2)
+#        max_gwas_category_count=(max_gwas_category_count-2)
     threads: 25  # ~nb of vep consequences
     shell:
-        "python scripts/cmpt_vep_consequence_fisher.py {params.max_gwas_category_count} {threads} {input[0]} {input[1]} {output[0]}"
+        "python scripts/cmpt_vep_consequence_fisher.py {threads} {input[0]} {input[1]} {output[0]}"
 
 rule cmpt_vep:
     input:
