@@ -70,10 +70,10 @@ SELECT DISTINCT co.chrom,
     co.ref,
     co.alt,
     gwtron.gwas_trait,
-    gwtron.gwas_ontology_term as gwas_trait_ontology_term,
-    gwtron.gwas_ontology_id as gwas_trait_ontology_id,
-    gwcaon.gwas_ontology_term as gwas_category_ontology_term,
-    gwcaon.gwas_ontology_id as gwas_category_ontology_id,
+    gwtron.gwas_ontology_term AS gwas_trait_ontology_term,
+    gwtron.gwas_ontology_id AS gwas_trait_ontology_id,
+    gwcaon.gwas_ontology_term AS gwas_category_ontology_term,
+    gwcaon.gwas_ontology_id AS gwas_category_ontology_id,
     op.batch,
     op.pmid,
     co.gwas_beta,
@@ -89,8 +89,13 @@ SELECT DISTINCT co.chrom,
     co.coloc_variant_id AS tophits_variant_id,
     co.nsnps,
     eqtl_annot.etissue_category_term,
-    en2.pubmed_count
-   FROM (((((((( SELECT DISTINCT co0.chrom,
+    en2.pubmed_count,
+    af.eas_af,
+    af.amr_af,
+    af.afr_af,
+    af.eur_af,
+    af.sas_af
+   FROM ((((((((( SELECT DISTINCT co0.chrom,
             co0.pos AS pos38,
             concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
             co0.rsid,
@@ -117,6 +122,7 @@ SELECT DISTINCT co.chrom,
      LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
      LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
      LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text)))
+     LEFT JOIN af_1000genomes af ON ((((co.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text))))
   ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
