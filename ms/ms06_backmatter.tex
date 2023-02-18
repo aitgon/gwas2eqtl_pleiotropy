@@ -1,0 +1,228 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Backmatter begins here                   %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{backmatter}
+
+    \section*{Acknowledgements}%% if any
+    Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
+%
+    I thank Sandrine Marquet, Marie Michel, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and Léopoldine Lecerf for a preliminary version of the colocalization pipeline developed during her internship.
+
+%    \section*{Funding}%% if any
+%    Text for this section\ldots
+
+%    \section*{Abbreviations}%% if any
+%    Text for this section\ldots
+
+    \section*{Availability of data and materials}%% if any
+    Text for this section\ldots
+
+%    \section*{Ethics approval and consent to participate}%% if any
+%    Text for this section\ldots
+
+    \section*{Competing interests}
+    The author declare that he has no competing interests.
+
+%    \section*{Consent for publication}%% if any
+%    Text for this section\ldots
+
+    \section*{Authors' contributions}
+    Aitor González: Conceptualization, Methodology, Software, Validation, Formal analysis, Resources, Data Curation, Visualization, Writing - original draft, Writing - review \& editing.
+
+%    \section*{Authors' information}%% if any
+%    Text for this section\ldots
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                  The Bibliography                       %%
+%%                                                         %%
+%%  Bmc_mathpys.bst  will be used to                       %%
+%%  create a .BBL file for submission.                     %%
+%%  After submission of the .TEX file,                     %%
+%%  you will be prompted to submit your .BBL file.         %%
+%%                                                         %%
+%%                                                         %%
+%%  Note that the displayed Bibliography will not          %%
+%%  necessarily be rendered by Latex exactly as specified  %%
+%%  in the online Instructions for Authors.                %%
+%%                                                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% if your bibliography is in bibtex format, use those commands:
+    \bibliographystyle{bmc-mathphys} % Style BST file (bmc-mathphys, vancouver, spbasic).
+    \bibliography{ms_pleiotropy}      % Bibliography file (usually '*.bib' )
+% for author-year bibliography (bmc-mathphys or spbasic)
+% a) write to bib file (bmc-mathphys only)
+% @settings{label, options="nameyear"}
+% b) uncomment next line
+%\nocite{label}
+
+% or include bibliography directly:
+% \begin{thebibliography}
+% \bibitem{b1}
+% \end{thebibliography}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                               %%
+%% Figures                       %%
+%%                               %%
+%% NB: this is for captions and  %%
+%% Titles. All graphics must be  %%
+%% submitted separately and NOT  %%
+%% included in the Tex document  %%
+%%                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%
+%% Do not use \listoffigures as most will included as separate files
+
+    \section*{Figures}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 1: Histogram of the percentage of the GWAS explained leading variants
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{figure}[h!]
+        %
+        \caption{Histogram showing the percentage of GWAS with the percentage of their tophits colocalized with eQTLs.
+        I have excluded tophits in in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000,
+            because this locus is not included in the colocalization pipeline.}
+        \label{fig:hist_perc_tophits_eqtl_excl_mhc}
+        %
+    \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 2: Trait distance matrix
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{figure}[h!]
+        %
+        \caption{Trait clustering based on the Spearman correlation between beta values of colocalized eQTL variants, genes and biosamples.}
+        \label{fig:trait_clusters}
+        %
+    \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 3: Histograms of variants vs GWAS, eQTL genes and eQTL biosamples
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+    \begin{figure}[h!]
+        %
+        \caption{Percentage of colocalized eQTL/GWAS variants with different number of GWAS classes (\textbf{a}), eQTL genes
+            (\textbf{b}) and eQTL tissues (\textbf{c}).} \label{fig:hist_gwas_egene_etissue}
+        %
+    \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 4: Spearman correlation between counts of GWAS categories, eQTL genes and eQTL biosamples
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{figure}[h!]
+        %
+        \caption{Spearman correlation between the counts of GWAS classes, eQTL genes and eQTL biosamples.}
+        \label{fig:correlation_counts}
+        %
+    \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 5: VEP consequences
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{figure}[h!]
+        %
+        \caption{Odds ratio of the variants annotated with given variant effect
+        predictor (VEP) consequence and given GWAS class count compared with non
+        pleiotropic variants with GWAS class count one. The significance is given for the
+        q-value with False discovery rate 5\%.}
+        \label{fig:vep_consequence}
+        %
+    \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 6: beta and pval
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{figure}[h!]
+        %
+        \caption{TODO beta and p-val}
+        \label{fig:beta_pval}
+        %
+    \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 7: Plots of the number of genes and biosample per variant-biosample and variant-gene, respectively
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{figure}[h!]
+        %
+        \caption{Mean number of eQTL genes per eQTL-biosample pair (\textbf{a}) and mean number of biosamples per eQTL-gene pairs (\textbf{b}).} \label{fig:gwas_egene_etisue_per_variant}
+        %
+    \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 8: TF count per GWAS class count
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \begin{figure}[h!]
+        %
+        \caption{Analysis of transcription factor binding.
+        \textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic eQTLs with a radius of 50 bp as a function of the GWAS class count.
+        \textbf{b}, Odds ratio of eQTLs annotated as belonging to a cis regulatory modules vs. non-annotated.}
+        \label{fig:freq_tf_per_variant}
+        %
+    \end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                               %%
+%% Tables                        %%
+%%                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Use of \listoftables is discouraged.
+%%
+    \section*{Tables}
+
+    \input{ms07_tables}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                               %%
+%% Additional Files              %%
+%%                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \section*{Additional Files}
+    \subsection*{Additional file 1: Table S1.}
+    Classification of eQTL tissues and cell types. The first six were downloaded from the EBI eQTL repository.
+    The 7th column "etissue\_category\_term" is used here to compute tissue diversity.
+
+    \subsection*{Additional file 2: Table S2.}
+    Metadata and classification of GWAS.
+
+    \subsection*{Additional file 3: Table S3.}
+    Percentage of tophits per GWAS that colocalized with at least one eQTL.
+
+    \subsection*{Additional file 4: Table S4.}
+    Count and list of GWAS phenotypes, egenes and etissues for each eQTL/GWAS variant.
+
+    \subsection*{Additional file 5: Table S5.}
+    Count and list of GWAS phenotypes, egene symbols and ENSEMBL IDs and etissue classes for each pleiotropic region.
+
+\end{backmatter}

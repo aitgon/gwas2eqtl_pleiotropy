@@ -196,12 +196,6 @@ snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgr
 
 ~~~
 cd ms
-rm -f ms00_bmc_article_75_25.tex.pdf; texi2pdf ms00_bmc_article_75_25.tex; rm -f *.aux *.dvi *.log *.out
-rm -f ms00_fig_suppl_75_25.tex.pdf; texi2pdf ms00_fig_suppl_75_25.tex; rm -f *.aux *.dvi *.log *.out
-
-rm -f ms00_bmc_article.tex.pdf; texi2pdf ms00_bmc_article.tex; rm -f *.aux *.dvi *.log *.out
-rm -f ms00_fig_suppl.tex.pdf; texi2pdf ms00_fig_suppl.tex; rm -f *.aux *.dvi *.log *.out
-
-rm -f ms00_bmc_article_75_75.tex.pdf; texi2pdf ms00_bmc_article_75_75.tex; rm -f *.aux *.dvi *.log *.out
-rm -f ms00_fig_suppl_75_75.tex.pdf; texi2pdf ms00_fig_suppl_75_75.tex; rm -f *.aux *.dvi *.log *.out
+rm -f *.aux *.dvi *.log *.out; texi2pdf ms00_bmc_article.tex; rm -f *.aux *.dvi *.log *.out
+rm -f *.aux *.dvi *.log *.out; texi2pdf ms00_fig_suppl.tex; rm -f *.aux *.dvi *.log *.out
 ~~~

@@ -1,7 +1,9 @@
 \documentclass[12pt, a4paper]{article}
 
 % Set relative path to all figures
+\newcommand*{\floatRelativePathTwentyFive}{../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_25}%
 \newcommand*{\floatRelativePath}{../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50}%
+\newcommand*{\floatRelativePathSeventyFive}{../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_75}%
 
 \usepackage{orcidlink}
 \usepackage[utf8]{inputenc}
@@ -21,14 +23,8 @@
 
 \begin{document}
 
-%\input{ms01_titlepage}
-%\input{ms02_intro}
-%\input{ms03_results}
-%\input{ms04_discussion}
-%\input{ms05_methods}
-\input{ms06_figures}
-%\input{ms07_tables}
-\include{ms08_suppl}
+\input{ms08_figures.tex}
+\include{ms09_suppl}
 
 % \bibliographystyle{apalike}
 % \bibliography{ms_pleiotropy}

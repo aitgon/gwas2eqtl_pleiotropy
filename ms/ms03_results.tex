@@ -6,12 +6,16 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-To annotate traits from genome-wide associations studies (GWAS) with genes and tissues,
-I developed a pipeline that systematically colocalizes variants from GWAS and expression quantitative trait loci (eQTLs) (Section Methods).
+% Organizing words: Pleiotropic eQTLs
+
+To investigate the pleiotropy of eQTLs, I developed a pipeline that systematically colocalizes variants from GWAS and expression quantitative trait loci (eQTLs) (Section Methods).
 %
 127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many
 tissues and cell types \cite{2021.Alasoo.Kerimov} (Supplementary table 1).
 
+For the genome-wide association studies (GWAS), I used data from the IEU OpenGWAS database, that provides GWAS summary statistics
+from different batches such as the EBI database of complete GWAS summary data, manually collected GWAS and UK Biobank.
+%
 GWAS traits were selected from the IEU OpenGWAS database based on four criteria \cite{2018.Parkinson.Buniello}.
 %
 The first criterion was to exclude molecular traits such as proteome or methylome.
@@ -24,18 +28,18 @@ conditions and exclude environmental traits such "employment status" or "self-re
 %
 The fourth criterion was to keep only GWAS with at least 10,000 subjects, 2,000 controls and 2,000 cases.
 %
-These filters resulted in 418 GWAS traits (Supplementary table 2).
+These filters resulted in 417 GWAS traits (Supplementary table 2).
 %
 These studies resulted in 10,621 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary file).
+% TODO: Add to supplementary table?
 % select count(distinct gwas_id) from tophits
 % 335
 % select count(*) from (select DISTINCT chrom, pos, rsid, ea from tophits) as sel; 10621
 % tophits goes to OSF
 % colocpleio goes to OSF
 
-I excluded colocalization in the MHC locus in chromosome 6 between position 25,000,000 and 35,000,000.
+The colocalization pipeline uncovered eQTL colocalizations for 5,484 of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples in the somatic chromosomes 1-22 \cite{2019.Posthuma.Watanabe,2021.Li.Mu}.
 %
-My pipeline uncovered eQTL colocalizations for 5,484 of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples.
 % select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid
 % from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
 % 5484
@@ -46,14 +50,20 @@ My pipeline uncovered eQTL colocalizations for 5,484 of the leading GWAS variant
 % select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel;  5620
 % select count(*) from (select distinct eqtl_id from coloc where pp_h4_abf>=0.75) as sel;  127
 %
-The histogram shows three group of GWAS (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}).
+Variants in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000 were
+excluded from the colocalization pipeline, because of their complex linkage disequilibrium structure.
 %
-Around 25\% of GWAS had no tophits colocalized with eQTLs.
+The histogram shows three groups of GWAS (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}).
 %
-On the other extreme, 7.5\% of GWAS had all 100\% tophits colocalized with eQTLs.
+There were 100\% of leading variants explained with eQTLs for between 5\% and 12\% of the GWAS depending on whether
+we set PP.H4.SNP at 0.25, 0.5 or 0.75 (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc} and suppl. fig. S1).
+This parameter gives the posterior probability of a SNP in a window to be causal.
 %
-The other GWAS had between 10\% and 50\% of tophits colocalized with eQTLs.
-
+There were a middle group of maximally 5\% GWAS with maximum percentage of explained leading SNPs between 10\% and 50\%
+depending on the PP.H4.SNP parameter 0.25-0.75
+Around 25\% of GWAS had no tophits colocalized with eQTLs for a parameter PP.SNP.H4=0.5.
+%
+Finally, between 17\% and 27\% GWAS had 0\% of leading variants explained by eQTLs (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc} and suppl. fig. S1).
 
 The largest classes of diseases by number of leading GWAS variants are cancer of breast (1976), allergy (1288), and autoimmune diseases (1216).
 %
@@ -63,17 +73,17 @@ In these disease classes, the percentages of variants with a colocalized eQTL ar
 % select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits where tophits.gwas_id=gwas_annot.gwas_id group by gwas_class order by count desc;
 % Number of tophits rsid per GWAS class that is also preset in coloc table
 % select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits, coloc where tophits.gwas_id=gwas_annot.gwas_id and tophits.rsid=coloc.rsid group by gwas_class order by count desc;
-
+%
 These results is much higher than previous colocalization analyses for autoimmune diseases by previous authors that
 found 23-41\% depending on the study \cite{2016.Soranzo.Chen,2017.Cotsapas.Chun,2021.Li.Mu}.
 % Discuss 25% in Chun et al 2017, Nature Genetics
 % Discuss 41% (eQTL + sQTLs) in Mu et al 2021, Genome Biology
 % Discuss 23% in Chen et al 2016, Cell. Genetic Drivers of Epigenetic and Transcriptional Variation in Human Immune Cells
 
-These data is a useful resource to annotate GWAS variants with genes and biosamples.
+These variants annotated with GWAS association and gene expression associations in particular biosamples are useful functional informations.
+%
 Therefore I have developed a web application where I expose 138,301 variants from 293 GWAS that colocalize with at least
 one eQTL at a threshold value PP.H4.abf$\geq$0.75.
-% TODO
 %select count(*) from (select DISTINCT chrom,pos,alt FROM coloc
 %where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0) as sel
 %138301
@@ -85,11 +95,22 @@ one eQTL at a threshold value PP.H4.abf$\geq$0.75.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Work with PP.H4.abf`>=0.75 and SNP.PP.H4>=0.5
-\subsection*{Traits classification based on the effect size of eQTLs}
+\subsection*{Trait clustering based on the beta of the eQTLs}
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Organizing words: Pleiotropic eQTLs
+
+In the 417 GWAS, there are traits from different categories and belonging to independent studies.
+%
+To verify that the colocalization results are coherent between different GWAS datasets,
+I cluster the GWAS traits based on the Spearman correlation between beta values
+of colocalized eQTL variant, gene and biosample (Fig. \ref{fig:trait_clusters}).
+
+
 In the previous colocalization analysis, we found many eQTLs that are associated to very different traits.
+
+Many eQTLs were found to colocalize with GWAS traits from different categories.
 %
 To systematically identify pleiotropic eQTLs, I manually annotated the GWAS traits in different classes.
 
@@ -104,7 +125,7 @@ The cutoff SNP.PP.H4>=0.5 was chosen, it allow to group pleiotropic eQTLs in a r
 %
 I plotted these trait distances as a hierarchically-clustered heatmap.
 %
-Only trait classes with more than a minimum number of traits were plotted (Fig. \ref{fig:gwas_distance}).
+Only trait classes with more than a minimum number of traits were plotted (Fig. \ref{fig:trait_clusters}).
 %
 Due to the large number of datasets, I have create a separate class for some cancers such as breast and skin.
 %
@@ -112,7 +133,7 @@ In the OpenGWAS, some traits are redundant because the come from the same refere
 %
 I plotted non-rendundant GWAS traits.
 %
-This analysis shows a coherent clustering of traits belonging to autoimmune, circulatory system diseases, cancers and allergies (Fig. \ref{fig:gwas_distance}).
+This analysis shows a coherent clustering of traits belonging to autoimmune, circulatory system diseases, cancers and allergies (Fig. \ref{fig:trait_clusters}).
 %
 Breast and skin cancer are found in two different cluster with some shared signal.
 %
