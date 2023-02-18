@@ -1,13 +1,41 @@
 \section*{Background}\label{sec:introduction}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% I. FIRST HALF OF THE INTRODUCTION (State of the art)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%1. Background key sentence (max < 1 ½ line):
+%Example: "Machupo virus infects 200,000 persons per year worldwide"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % GWAS in general
-Genome-wide association studies (GWAS) have allowed the association of frequent genetic variants with common traits.
+Genome-wide association studies (GWAS) have allowed the association of many frequent genetic variants with common traits.
 %
 The number of GWAS has rapidly increased since the first GWAS around 15 years ago and has resulted in comprehensive databases such as the NHGRI-EBI GWAS Catalog \cite{2007burton.barret,2018.Parkinson.Buniello}.
 %
 For instance, in 2019, NHGRI-EBI GWAS Catalog contained 5687 GWAS comprising 71,673 variant-trait associations from 3,567 publications \cite{2018.Parkinson.Buniello}.
 
-% Shortcomings of GWAS
+%In addition, colocalization analysis can help prioritize causal variants.
+
+This wealth of GWAS has indicated that a large proportion of the genome is highly pleiotropic \cite{2019.Posthuma.Watanabe}.
+%
+More precisely, loci covering 60\% of the genome loci was analyzed, and 90\% of these loci contained associations across different traits \cite{2019.Posthuma.Watanabe}.
+%
+It was also found that pleiotropic genes and variants were less tissue-specific in terms of gene expression and eQTLs \cite{2019.Posthuma.Watanabe}.
+%
+%However, the question of tissue specificity of eQTLs has been analyzed in different works with conflicting conclusions \cite{2021.Li.Mu,2018.Vijayanand.Schmiedel,2017gtex.nature}.
+%%
+%In addition, the mechanism of pleiotropy is not well understood yet.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 2. Put the hero of the study center stage1:
+% - Template: “X is a central component of/ one of the main parameters of/ a logical candidate for/an enigmatic/ etc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Shortcomings of GWAS and advantage of eQTLs
 However, the interpretation of the GWAS variants is complex because of three reasons \cite{2020.Trynka.CanoGamez}.
 %
 First, the causal variant is hidden in regions with high linkage disequilibrium (LD).
@@ -17,31 +45,58 @@ Second, GWAS do not inform about the genes, cell types, and tissues involved in 
 Third, GWAS variants often affect non-coding regions, where the molecular cause is more difficult to define.
 
 % Interest in studying GWAS
-Expression QTLs (eQTLs) are variants that change the expression of a given gene in a cell type or tissue.
+Expression QTLs (eQTLs) are variants that change the expression of genes in particular cell types and tissue.
 %
-eQTLs share some of the same shortcomings as GWAS variants such as the inability to identify the causal variant in regions of high LD.
+Therefore, eQTLs can be used to annotate non-coding regions that often regulate gene expression.
 %
-Moreover, the distribution of eQTLs and GWAS variants in the genome are different because of negative selection \cite{2022.Pritchard.Mostafavi}.
+%In addition, colocalization analysis of eQTLs and GWAS variants is able to partially break linkage disequilibrium (LD).
+%%
+%eQTLs share some of the same shortcomings as GWAS variants such as the inability to identify the causal variant in regions of high LD.
+%%
+%%Moreover, the distribution of eQTLs and GWAS variants in the genome are different because of negative selection \cite{2022.Pritchard.Mostafavi}.
+%%
+%Nevertheless, eQTLs are still important data sets to interpret GWAS variants, because they provide gene regulatory information about the eQTL genes and cell types and tissues \cite{2021.Li.Mu}.
 %
-Nevertheless, eQTLs are still important data sets to interpret GWAS variants, because they provide gene regulatory information about the eQTL genes and cell types and tissues \cite{2021.Li.Mu}.
-%
-%In addition, colocalization analysis can help prioritize causal variants.
+There, eQTLs are important variants to interprete GWAS.
 
-Many GWAS have allowed observing that many genetic variants are involved in different traits \cite{2019.Posthuma.Watanabe}.
-%
-In that work, the analyzed loci covered 60\% of the genome, and 90\% of these loci contained associations across different traits \cite{2019.Posthuma.Watanabe}.
-%
-They also found that pleiotropic genes and variants were less tissue-specific in terms of gene expression and eQTLs \cite{2019.Posthuma.Watanabe}.
-%
-However, the question of tissue specificity of eQTLs has been analyzed in different works with conflicting conclusions \cite{2021.Li.Mu,2018.Vijayanand.Schmiedel,2017gtex.nature}.
-%
-In addition, the mechanism of pleiotropy is not well understood yet.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% I.3. Gap1:
+% - Template: We don't know / we don’t understand / we lack ..."
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+However, we don't know whether there are differences in pleiotropy among eQTLs and the distribution in the genome and properties of  pleiotropic eQTLs in the genome.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%4. Limitations of previous approaches1:
+%- Template: "Existing approaches couldn’t address the gap because they suffer from N main obstacles"
+%- Example: "2 obstacles prevented the determination of the structure of protein X: 1) the difficulty of producing it in sufficient quantity and 2) its inherent flexibility"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Previous colocalization analysis between eQTLs and GWAS focused on particular sets of GWAS such as autoimmune traits \cite{2021.Li.Mu}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%5. How you overcame previous limitations:
+%- Template: We were able to address the gap thanks to approach X, which solves the N main limitations mentioned above
+%- Example: "We were able to determine the structure of X because 1) we managed to produce sufficient quantities in a cell-free system and 2) we reduced its flexibility by complexing it with an anti-X antibody”.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this work, I have taken advantage of two large eQTL and GWAS data sets from the EBI eQTL Catalogue and the IEU OpenGWAS, respectively,
-to develop a global colocalization analysis based on 127 eQTL studies and 418 GWAS across many cell types, tissues, and phenotypes.
+to develop a systematic colocalization analysis based on 127 eQTL studies and 417 GWAS across many cell types, tissues, and phenotypes.
 %
-I have used these eQTL/GWAS variants to investigate mechanisms of pleiotropic gene regulatory variants.
+I have annotated the 417 GWAS with trait categories and aggregated colocalized eQTLs into this trait categories.
 %
-These eQTL/GWAS variants might be a useful resource for the annotation and prioritization of frequent variants.
+This approach has allowed me to uncover pleiotropic eQTLs, locate the genomic regions with most pleiotropic eQTLs
+and identify some significant properties of these eQTLs.
 %
-Therefore, I have developed an easy-to-use web application to expose these colocalization data.
+%I have used these eQTL/GWAS variants to investigate mechanisms of pleiotropic gene regulatory variants.
+%%
+%These eQTL/GWAS variants might be a useful resource for the annotation and prioritization of frequent variants.
+%%
+%Therefore, I have developed an easy-to-use web application to expose these colocalization data.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% SECOND HALF OF THE INTRODUCTION
+% (Research questions and overview of experimental approach)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
