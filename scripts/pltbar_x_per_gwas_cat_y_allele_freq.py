@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+import sqlalchemy
 
 from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, boxplot_kwargs, annotator_config_dic
 from statannotations.Annotator import Annotator
@@ -43,18 +43,16 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
-engine = create_engine(url)
-# query = 'SELECT * FROM my_table'
-# import pdb; pdb.set_trace()
+engine = sqlalchemy.create_engine(url)
 with engine.begin() as conn:
-    h4_df = pandas.read_sql(text(sql), con=conn).drop_duplicates()
+    h4_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
 #%%
 count_per_rsid_gwas_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine='odf')
 max_gwas_category_count = count_per_rsid_gwas_df['gwas_category_count'].max()
 
 #%%
-m_df = h4_df.merge(count_per_rsid_gwas_df[['chrom', 'pos38', 'rsid', 'ref', 'alt', 'gwas_category_count']], on=['chrom', 'pos38', 'rsid', 'ref', 'alt'])
+m_df = h4_df.merge(count_per_rsid_gwas_df[['chrom', 'pos38', 'rsid', 'alt', 'gwas_category_count']], on=['chrom', 'pos38', 'rsid', 'alt'])
 m_df = m_df[['chrom', 'pos38', 'rsid', 'ref', 'alt', 'afr_af', 'amr_af', 'eas_af', 'eur_af', 'sas_af', 'gwas_category_count']].drop_duplicates()
 
 #%%

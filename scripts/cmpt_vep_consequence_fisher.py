@@ -12,12 +12,12 @@ from statsmodels.stats import multitest as multitest
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_category_count = int(sys.argv[1])
-    threads = int(sys.argv[2])
-    vep_input_path = sys.argv[3]
-    vep_output_path = sys.argv[4]
-    consequence_tsv_path = sys.argv[5]
-    if len(sys.argv) > 6:
+    # max_gwas_category_count = int(sys.argv[1])
+    threads = int(sys.argv[1])
+    vep_input_path = sys.argv[2]
+    vep_output_path = sys.argv[3]
+    consequence_tsv_path = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -25,7 +25,6 @@ except IndexError:
     print("""Argument missing!
     {}""".format(help_cmd_str))
     sys.exit(1)
-
 
 #%%
 vep_input_column_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_category_count']
@@ -51,13 +50,14 @@ out_columns = ['consequence', 'gwas_category_count', 'a_pleio_x_with_consequence
 out_dic = dict(zip(out_columns, [[] for i in range(len(out_columns))]))
 
 all_df = vep_input_df[['rsid', 'gwas_category_count']].drop_duplicates()
-# import pdb; pdb.set_trace()
+
 def cmpt_vep_consequence_fisher(consequence):
     out_consequence_lst = []
     Logger.info('Consequence: ' + consequence)
     cons_df = df.loc[df['Consequence'] == consequence, ['rsid', 'gwas_category_count']].drop_duplicates()
     cons_df = all_df.merge(cons_df, on=['rsid', 'gwas_category_count'], how='outer', indicator=True)
-    cons_df.loc[cons_df['gwas_category_count'] > max_gwas_category_count, 'gwas_category_count'] = max_gwas_category_count
+
+    # cons_df.loc[cons_df['gwas_category_count'] > max_gwas_category_count, 'gwas_category_count'] = max_gwas_category_count
 
     #%%
     count_df = cons_df.groupby(['gwas_category_count', '_merge']).size().reset_index()
@@ -70,7 +70,7 @@ def cmpt_vep_consequence_fisher(consequence):
 
     #%%
     # gwas_cat_count = 2
-    for gwas_cat_count in [*range(2, max_gwas_category_count + 1)]:
+    for gwas_cat_count in [*range(2, (count_df['gwas_category_count'].max() + 1))]:
         # pleio x, non-consequence
         cc = count_df.loc[(count_df['gwas_category_count'] == gwas_cat_count) & (count_df['_merge'] == 'left_only'), 0].values[0]
         # pleio x, consequence

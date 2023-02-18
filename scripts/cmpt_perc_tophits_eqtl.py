@@ -4,6 +4,8 @@ import pathlib
 import pandas
 import sys
 
+import sqlalchemy
+
 from gwas2eqtl_pleiotropy.Logger import Logger
 
 #%%
@@ -24,15 +26,19 @@ except IndexError:
 pathlib.Path(os.path.dirname(loci_explained_perc_tsv)).mkdir(exist_ok=True, parents=True)
 
 sql = 'select distinct chrom, pos, ea, tophits.gwas_id, trait as gwas_trait, op.consortium, op.pmid from tophits, open_gwas_info op where op.gwas_id=tophits.gwas_id'
-tophits_df = pandas.read_sql(sql, con=url)
-tophits_df.rename({'ea': 'alt', 'pos': 'pos38'}, inplace=True, axis=1)
+engine = sqlalchemy.create_engine(url)
+with engine.begin() as conn:
+    tophits_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
+tophits_df.rename({'ea': 'alt', 'pos': 'pos38'}, inplace=True, axis=1)
 concat_df = pandas.DataFrame()
 
 for gwas_id in sorted(tophits_df['gwas_id'].unique()):
     Logger.info(gwas_id)
     sql = "select distinct chrom, pos38, alt, gwas_id, gwas_trait from colocpleio where colocpleio.gwas_id='{}' and snp_pp_h4>={}".format(gwas_id, snp_pp_h4)
-    coloc_df = pandas.read_sql(sql, con=url)
+    with engine.begin() as conn:
+        coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn)
+    # coloc_df = pandas.read_sql(sql, con=url)
     tophits_gwas_df = tophits_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
     tophits_gwas_coloc_df = coloc_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
     merge_col_lst = ['chrom', 'pos38', 'alt', 'gwas_id', 'gwas_trait']

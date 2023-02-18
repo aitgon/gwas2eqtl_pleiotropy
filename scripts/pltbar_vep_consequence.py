@@ -14,9 +14,9 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     consequence_tsv_path = sys.argv[1]
-    max_gwas_category_count = sys.argv[2]  # requires string
-    consequence_png_path = sys.argv[3]
-    if len(sys.argv) > 4:
+    # max_gwas_category_count = sys.argv[2]  # requires string
+    consequence_png_path = sys.argv[2]
+    if len(sys.argv) > 3:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -46,7 +46,7 @@ in_df.loc[in_df['pfdr5perc'] <= 5.00e-02, 'signif'] = '*'
 in_df.loc[in_df['pfdr5perc'] <= 1.00e-02, 'signif'] = '**'
 in_df.loc[in_df['pfdr5perc'] <= 1.00e-03, 'signif'] = '***'
 in_df.loc[in_df['pfdr5perc'] <= 1.00e-04, 'signif'] = '****'
-in_df.loc[in_df['gwas_category_count'] == max_gwas_category_count, 'gwas_category_count'] = '≥{}'.format(max_gwas_category_count)
+# in_df.loc[in_df['gwas_category_count'] == max_gwas_category_count, 'gwas_category_count'] = '≥{}'.format(max_gwas_category_count)
 
 ################################################################################
 # Draw a nested barplot by species and sex

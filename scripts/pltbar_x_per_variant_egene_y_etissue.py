@@ -1,3 +1,4 @@
+import sqlalchemy
 from statannotations.Annotator import Annotator
 from gwas2eqtl_pleiotropy.constants import label_fontsize, dpi, tick_fontsize, boxplot_kwargs, annotator_config_dic
 
@@ -19,10 +20,10 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_category_count = int(sys.argv[2])
-    url = sys.argv[3]
-    count_per_rsid_gwas_ods_path = sys.argv[4]
-    vlnplt_png_path = sys.argv[5]
+    # max_gwas_category_count = int(sys.argv[2])
+    sa_url = sys.argv[2]
+    count_per_rsid_gwas_ods_path = sys.argv[3]
+    vlnplt_png_path = sys.argv[4]
     if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -42,9 +43,12 @@ outdir_path = os.path.dirname(vlnplt_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
+sql = 'select distinct * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 # columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
-h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
+# h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
+engine = sqlalchemy.create_engine(sa_url)
+with engine.begin() as conn:
+    h4_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
 #%%
 # count_per_rsid_gwas_df = pandas.read_csv(count_per_rsid_gwas_ods_path, sep="\t")
@@ -59,7 +63,7 @@ sel_cols = ['rsid', 'eqtl_gene_id', 'etissue_category_term']  # tissue per varia
 
 #%% set max_gwas_category_count
 m_df = m_df[sel_cols + ['gwas_category_count']]
-m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+# m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
 
 #%% keep unique rsid-etissue_category_term pairs with max. gwas category
 m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
@@ -77,7 +81,7 @@ m_df.groupby('gwas_category_count')['etissue_category_term_count'].apply(lambda 
 #%%
 order = [str(x) for x in range(1, max(m_df['gwas_category_count'].unique())+1)]
 xticklabels = order.copy()
-xticklabels[-1] = '≥{}'.format(order[-1])
+# xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Tissues per eQTL-gene "
 xlabel = "GWAS category count"
 ylabel = "Tissue count mean"

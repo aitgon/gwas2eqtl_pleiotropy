@@ -22,12 +22,12 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_category_count = int(sys.argv[1])
-    variant_pleio_1_flank_10_hg38_bed = sys.argv[2]
-    remap_crm_path = sys.argv[3]
-    remap_count_tsv = sys.argv[4]
-    remap_crm_png = sys.argv[5]
-    if len(sys.argv) > 6:
+    # max_gwas_category_count = int(sys.argv[1])
+    variant_pleio_1_flank_10_hg38_bed = sys.argv[1]
+    remap_crm_path = sys.argv[2]
+    remap_count_tsv = sys.argv[3]
+    remap_crm_png = sys.argv[4]
+    if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -49,8 +49,10 @@ out_df = pandas.DataFrame(columns = out_df_columns)
 
 #%% bedtools intersect
 flank = 10
-for count_pleio in range(1, max_gwas_category_count+1):
+for count_pleio in range(1, 99):
     bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
+    if not os.path.isfile(bed_path):
+        break
     intersect_bed_path = os.path.join(outdir_path, "remap_crm_pleio_{}.bed".format(count_pleio))
     cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -loj -wb"
     cmd = cmd_stf.format(**{'bed_path': bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
@@ -99,7 +101,7 @@ out_df.rename({'pleio_count': 'gwas_category_count'}, axis=1, inplace=1)
 out_df['gwas_category_count'] = [str(i) for i in out_df['gwas_category_count']]
 order = out_df['gwas_category_count'].tolist()
 xticklabels = order.copy()
-xticklabels[-1] = '≥{}'.format(order[-1])
+# xticklabels[-1] = '≥{}'.format(order[-1])
 title = "CRM annotation enrichm."
 xlabel = "GWAS category count"
 ylabel = "Odds ratio"
