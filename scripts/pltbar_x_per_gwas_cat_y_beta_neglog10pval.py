@@ -22,7 +22,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    url = sys.argv[2]
+    sa_url = sys.argv[2]
     count_per_rsid_gwas_ods_path = sys.argv[3]
     eqtl_beta_png_path = sys.argv[4]
     gwas_beta_png_path = sys.argv[5]
@@ -47,7 +47,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
-engine = sqlalchemy.create_engine(url)
+engine = sqlalchemy.create_engine(sa_url)
 with engine.begin() as conn:
     h4_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
