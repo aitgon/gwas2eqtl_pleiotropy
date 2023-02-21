@@ -1,0 +1,3 @@
+python scripts/cmpt_ucsc_tracks_eqtl_interactions.py 0.5 postgresql://postgres:postgres@0.0.0.0:5435/postgres out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_interactions.py
+
+python scripts/cmpt_track_hub.py /home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_interactions.py ../gwas2eqtl_pleiotropy_track_hub

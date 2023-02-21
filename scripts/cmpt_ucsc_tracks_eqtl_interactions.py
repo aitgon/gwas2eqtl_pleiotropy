@@ -1,11 +1,9 @@
 import os
 import pandas
 import pathlib
-import seaborn
 import sys
 
 import sqlalchemy
-from matplotlib import pyplot as plt
 
 
 #%%
@@ -29,8 +27,8 @@ track_data_hub_dir = os.path.join(outdir_path, "ucsc_hub")
 pathlib.Path(track_data_hub_dir).mkdir(parents=True, exist_ok=True)
 
 hub_txt_path = os.path.join(track_data_hub_dir, "hub.txt")
-hub_txt_str = """hub ucsc_hub
-shortLabel GWAS/eQTL colocalization
+hub_txt_str = """hub gwas2eqtl
+shortLabel gwas2eqtl
 longLabel Colocalization analysis of IEU OpenGWAS and EBI eQTL Catalogue  
 genomesFile genomes.txt
 email aitor.gonzalez@univ-amu.fr

@@ -47,6 +47,7 @@ python scripts/insrt_etissue_category.py postgresql://postgres:postgres@0.0.0.0:
 python scripts/insrt_open_gwas.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_entrezgene2ensg2symbol.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_entrezgene2pubmed_count.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
+insrt_ncbirefseq -u postgresql://postgres:postgres@0.0.0.0:5435/postgres
 ~~~
 
 Create "ensg2pubmed_count" view
