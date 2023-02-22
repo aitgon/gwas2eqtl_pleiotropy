@@ -193,6 +193,8 @@ snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_E
 snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process  snp_pp_h4=0.5 -p
 
 snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_75 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process  snp_pp_h4=0.75 -p
+
+snakemake -p --cores 1 -s tools/06_ucsc_hubs.yml --config outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50 db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres
 ~~~
 
 # MS

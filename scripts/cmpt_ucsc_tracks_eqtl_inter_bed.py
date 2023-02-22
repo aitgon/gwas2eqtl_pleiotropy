@@ -21,38 +21,7 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-# outdir_path = os.path.dirname(track_tsv)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
-# track_data_hub_dir = os.path.join(outdir_path, "ucsc_hub")
-# pathlib.Path(track_data_hub_dir).mkdir(parents=True, exist_ok=True)
-#
-# hub_txt_path = os.path.join(track_data_hub_dir, "hub.txt")
-# hub_txt_str = """hub gwas2eqtl
-# shortLabel gwas2eqtl
-# longLabel Colocalization analysis of IEU OpenGWAS and EBI eQTL Catalogue
-# genomesFile genomes.txt
-# email aitor.gonzalez@univ-amu.fr
-# descriptionUrl https://gwas2eqtl.tagc.univ-amu.fr/gwas2eqtl/"""
-# with open(hub_txt_path, 'w') as fout:
-#     fout.write(hub_txt_str)
-#
-# genomes_txt_path = os.path.join(track_data_hub_dir, "genomes.txt")
-# genomes_txt_str = """genome hg38
-# trackDb hg38/trackDb.txt"""
-# with open(genomes_txt_path, 'w') as fout:
-#     fout.write(genomes_txt_str)
-#
-# # hub_txt_path = os.path.join(track_data_hub_dir, "hg38/trackDb.txt")
-# # hub_txt_str = """track footprint_scores
-# # compositeTrack on
-# # shortLabel coloc intersection
-# # longLabel coloc footprint scores
-# # visibility full
-# # priority 3
-# # type bed"""
-# # with open(hub_txt_str, 'w') as fout:
-# #     fout.write(hub_txt_path)
-
 
 #%%
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
@@ -61,10 +30,9 @@ with engine.begin() as conn:
     df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
 df = df.loc[~df['eqtl_refseq_transcript_start38'].isna()]
-
 df = df[['chrom', 'pos38', 'rsid', 'eqtl_gene_symbol', 'eqtl_beta', 'eqtl_id',
          'eqtl_refseq_transcript_start38', 'eqtl_refseq_transcript_end38', 'eqtl_refseq_transcript_strand',
-         'etissue_category_term', 'gwas_trait', 'gwas_id']].drop_duplicates()
+         'etissue_category_term', 'gwas_trait', 'gwas_category_ontology_term', 'gwas_id']].drop_duplicates()
 
 # select longest transcript
 df['transcript_length'] = df['eqtl_refseq_transcript_end38'] - df['eqtl_refseq_transcript_start38']
@@ -75,7 +43,7 @@ df2 = df.copy()
 df2["sourceChrom"] = "chr" + df2['chrom'].astype(str)
 df2["sourceStart"] = df2['pos38'].astype(int) - 1
 df2["sourceEnd"] = df2['pos38'].astype(int)
-df2["sourceName"] = 'rs' + df2['rsid'].astype(str)
+df2["sourceName"] = 'rs' + df2['rsid'].astype(str) + '/' + df2['gwas_category_ontology_term'].str.replace(" ", "")
 df2["sourceStrand"] = '.'
 
 df2["targetChrom"] = "chr" + df2['chrom'].astype(str)

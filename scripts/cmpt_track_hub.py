@@ -24,21 +24,11 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-# First we initialize the components of a track hub
-
-# hub, genomes_file, genome, trackdb = trackhub.default_hub(
-#     hub_name="gwas2eqtl",
-#     short_label='GWAS/eQTL colocalization',
-#     long_label='Colocalization analysis of IEU OpenGWAS and EBI eQTL Catalogue',
-#     genome="hg38",
-#     email="aitor.gonzalez@univ-amu.fr")
-
 eqtl_tsv_path = 'https://raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv'
-eqtl_df = pandas.read_csv(eqtl_tsv_path, sep="\t", usecols=[0, 3, 6, 8])
+eqtl_df = pandas.read_csv(eqtl_tsv_path, sep="\t", usecols=[0, 3, 4, 6, 8])
+eqtl_df.sort_values(by=['tissue_ontology_term', 'tissue_label', 'study'], inplace=True)
 eqtl_df = eqtl_df.loc[eqtl_df['ftp_path'].str.contains('/ge/|/microarray/',regex=True,na=False), ]
-# if "eqtl_id" in config:
-#     eqtl_id = config["eqtl_id"] # path to the eqtl< ods list
-#     eqtl_df = eqtl_df.loc[eqtl_df['ftp_path'].str.contains(eqtl_id)]
+
 # keep urls containing "ge" or "microarray"
 eqtl_df['index'] = (eqtl_df['ftp_path'].str.replace('.all.tsv.gz', '', regex=True)).str.split('/', expand=True)[10].tolist()
 eqtl_df.set_index('index', drop=True, verify_integrity=True, inplace=True)
@@ -59,43 +49,10 @@ composite = trackhub.CompositeTrack(
 
 trackdb.add_tracks(composite)
 
-# signal_view = trackhub.ViewTrack(
-#      name='group',
-#      view='group_view',
-#      visibility='full',
-#      tracktype='bigInteract',
-#      short_label='Signal')
-# composite.add_tracks(signal_view)
-
-# Next we add tracks for some bigWigs. These can be anywhere on the
-# filesystem; symlinks will be made to them. Here we use some example data
-# included with the trackhub package; in practice you'd point to your own
-# data.
-
-# track footprint_scores
-# compositeTrack on
-# shortLabel footprint scores
-# longLabel TOBIAS footprint scores
-# visibility full
-# priority 3
-# html docs/footprints
-# type bigWig
-
-# track = trackhub.Track(
-#     name='gwas2eqtl',  # track names can't have any spaces or special chars.
-#     compositeTrack=True,
-#     visibility='full',  # shows the full signal
-#     priority=True,  # brick red
-#     tracktype='bigInteract',  # required when making a track
-# )
-#
-# trackdb.add_tracks(track)
-
-
 for eqtl_id in eqtl_id_lst:
-    eqtl2_id = trackhub.helpers.sanitize(os.path.basename(eqtl_id))
-    bigbed = os.path.join(bigbed_dir_path, "{}.inter.bb".format(eqtl2_id))
-    track_name = "gwas2eqtl_{}".format(eqtl_id)
+    # eqtl2_id = trackhub.helpers.sanitize(os.path.basename(eqtl_id))
+    bigbed = os.path.join(bigbed_dir_path, "{}.inter.bb".format(eqtl_id))
+    track_name = "{}".format(eqtl_id.replace('+', 'And'))
 
     # for bigbed in glob.glob(os.path.join(bigbed_dir_path, '*.bb')):
 
@@ -103,7 +60,8 @@ for eqtl_id in eqtl_id_lst:
     # be using filenames as names, and filenames have non-alphanumeric
     # characters, we use the sanitize() function to remove them.
 
-    track_name = trackhub.helpers.sanitize(os.path.basename(track_name))
+
+    # track_name = trackhub.helpers.sanitize(os.path.basename(track_name))
 
     # We're keeping this relatively simple, but arguments can be
     # programmatically determined (color tracks based on sample; change scale
@@ -112,7 +70,7 @@ for eqtl_id in eqtl_id_lst:
     track = trackhub.Track(
         name=track_name,          # track names can't have any spaces or special chars.
         short_label=eqtl_id,
-        long_label="gwas2eqtl {}: Colocalization with 417 IEU OpenGWAS".format(eqtl_id, eqtl_id),
+        long_label="gwas2eqtl {}".format(eqtl_id, eqtl_id),
         source=bigbed,      # filename to build this track from
         visibility='full',  # shows the full signal
         color='128,0,5',    # brick red
