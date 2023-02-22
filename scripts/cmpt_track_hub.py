@@ -93,7 +93,8 @@ trackdb.add_tracks(composite)
 
 
 for eqtl_id in eqtl_id_lst:
-    bigbed = os.path.join(bigbed_dir_path, "{}.inter.bb".format(eqtl_id))
+    eqtl2_id = trackhub.helpers.sanitize(os.path.basename(eqtl_id))
+    bigbed = os.path.join(bigbed_dir_path, "{}.inter.bb".format(eqtl2_id))
     track_name = "gwas2eqtl_{}".format(eqtl_id)
 
     # for bigbed in glob.glob(os.path.join(bigbed_dir_path, '*.bb')):
