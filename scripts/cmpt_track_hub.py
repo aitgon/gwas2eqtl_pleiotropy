@@ -45,14 +45,14 @@ composite = trackhub.CompositeTrack(
      name='gwas2eqtl',
      short_label='gwas2eqtl colocalization',
      tracktype='bigInteract',
-     visibility='full')
+     visibility='pack')
 
 trackdb.add_tracks(composite)
 
 for eqtl_id in eqtl_id_lst:
     # eqtl2_id = trackhub.helpers.sanitize(os.path.basename(eqtl_id))
     bigbed = os.path.join(bigbed_dir_path, "{}.inter.bb".format(eqtl_id))
-    track_name = "{}".format(eqtl_id.replace('+', 'And'))
+    # track_name = "{}".format(eqtl_id.replace('+', 'And'))
 
     # for bigbed in glob.glob(os.path.join(bigbed_dir_path, '*.bb')):
 
@@ -61,16 +61,18 @@ for eqtl_id in eqtl_id_lst:
     # characters, we use the sanitize() function to remove them.
 
 
-    # track_name = trackhub.helpers.sanitize(os.path.basename(track_name))
+    tissue_ontology_term = eqtl_df.loc[eqtl_id, 'tissue_ontology_term']
+    track_name = trackhub.helpers.sanitize(tissue_ontology_term) + "_" + trackhub.helpers.sanitize(eqtl_id)
 
     # We're keeping this relatively simple, but arguments can be
     # programmatically determined (color tracks based on sample; change scale
     # based on criteria, etc).
-    # import pdb; pdb.set_trace()
+    short_label = "{}_{}".format(tissue_ontology_term, eqtl_id)
+    long_label = "{} {}".format(tissue_ontology_term, eqtl_id)
     track = trackhub.Track(
         name=track_name,          # track names can't have any spaces or special chars.
-        short_label=eqtl_id,
-        long_label="gwas2eqtl {}".format(eqtl_id, eqtl_id),
+        short_label=short_label,
+        long_label="{} {}".format(tissue_ontology_term, eqtl_id),
         source=bigbed,      # filename to build this track from
         visibility='full',  # shows the full signal
         color='128,0,5',    # brick red
