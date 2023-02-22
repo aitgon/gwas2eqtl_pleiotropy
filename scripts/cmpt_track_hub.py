@@ -20,17 +20,60 @@ except IndexError:
 
 # First we initialize the components of a track hub
 
+# hub, genomes_file, genome, trackdb = trackhub.default_hub(
+#     hub_name="gwas2eqtl",
+#     short_label='GWAS/eQTL colocalization',
+#     long_label='Colocalization analysis of IEU OpenGWAS and EBI eQTL Catalogue',
+#     genome="hg38",
+#     email="aitor.gonzalez@univ-amu.fr")
+
+
 hub, genomes_file, genome, trackdb = trackhub.default_hub(
-    hub_name="gwas2eqtl",
-    short_label='GWAS/eQTL colocalization',
-    long_label='Colocalization analysis of IEU OpenGWAS and EBI eQTL Catalogue',
-    genome="hg38",
-    email="aitor.gonzalez@univ-amu.fr")
+     hub_name="gwas2eqtl",
+     short_label="groupAutoScale",
+     long_label="groupAutoScale",
+     genome="hg38",
+     email="eva.jason@nih.gov")
+
+composite = trackhub.CompositeTrack(
+     name='composite',
+     short_label='Group AutoScale',
+     tracktype='bigInteract',
+     visibility='full')
+
+trackdb.add_tracks(composite)
+
+signal_view = trackhub.ViewTrack(
+     name='group',
+     view='group_view',
+     visibility='full',
+     tracktype='bigInteract',
+     short_label='Signal')
+composite.add_tracks(signal_view)
 
 # Next we add tracks for some bigWigs. These can be anywhere on the
 # filesystem; symlinks will be made to them. Here we use some example data
 # included with the trackhub package; in practice you'd point to your own
 # data.
+
+# track footprint_scores
+# compositeTrack on
+# shortLabel footprint scores
+# longLabel TOBIAS footprint scores
+# visibility full
+# priority 3
+# html docs/footprints
+# type bigWig
+
+# track = trackhub.Track(
+#     name='gwas2eqtl',  # track names can't have any spaces or special chars.
+#     compositeTrack=True,
+#     visibility='full',  # shows the full signal
+#     priority=True,  # brick red
+#     tracktype='bigInteract',  # required when making a track
+# )
+#
+# trackdb.add_tracks(track)
 
 for bigbed in glob.glob(os.path.join(bigbed_dir_path, '*.bb')):
 
@@ -55,7 +98,7 @@ for bigbed in glob.glob(os.path.join(bigbed_dir_path, '*.bb')):
 
     # Each track is added to the trackdb
 
-    trackdb.add_tracks(track)
+    signal_view.add_tracks(track)
 
 # In this example we "upload" the hub locally. Files are created in the
 # "example_hub" directory, along with symlinks to the tracks' data files.
