@@ -1,11 +1,9 @@
 import os
 import pandas
 import pathlib
-import seaborn
 import sys
 
 import sqlalchemy
-from matplotlib import pyplot as plt
 
 
 #%%

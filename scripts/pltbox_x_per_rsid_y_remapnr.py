@@ -66,10 +66,10 @@ x = "gwas_category_count"
 #%%
 pairs = [(str(1), str(int(i))) for i in sorted(cat_df['gwas_category_count'].unique())]
 cat_df[x] = cat_df[x].astype(int).astype(str)
-ax = seaborn.boxplot(x=x, y=y, data=cat_df, order=order, **boxplot_kwargs)
-annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
+ax = seaborn.ecdfplot(x=x, y=y, data=cat_df, order=order, **boxplot_kwargs)
+# annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
+# annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+# annotator.apply_and_annotate()
 
 
 plt.title(title, fontsize=label_fontsize)
