@@ -112,6 +112,7 @@ import pdb; pdb.set_trace()
 # annotator.apply_and_annotate()
 # ax = seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', common_norm=False, element="step")
 ax = seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=10)
+ax = seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', common_norm=False, element="step", fill=False, cumulative=True)
 
 # plt.title(title, fontsize=label_fontsize)
 # plt.xlabel(xlabel, fontsize=label_fontsize)
