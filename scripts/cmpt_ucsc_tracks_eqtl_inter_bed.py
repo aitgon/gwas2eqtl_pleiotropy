@@ -31,8 +31,8 @@ with engine.begin() as conn:
 
 df = df.loc[~df['eqtl_refseq_transcript_start38'].isna()]
 df = df[['chrom', 'pos38', 'rsid', 'eqtl_gene_symbol', 'eqtl_beta', 'eqtl_id',
-         'eqtl_refseq_transcript_start38', 'eqtl_refseq_transcript_end38', 'eqtl_refseq_transcript_strand',
-         'etissue_category_term', 'gwas_trait', 'gwas_category_ontology_term', 'gwas_id']].drop_duplicates()
+ 'eqtl_refseq_transcript_start38', 'eqtl_refseq_transcript_end38', 'eqtl_refseq_transcript_strand',
+ 'etissue_category_term', 'gwas_trait', 'gwas_category_ontology_term', 'gwas_id', 'snp_pp_h4']].drop_duplicates()
 
 # select longest transcript
 df['transcript_length'] = df['eqtl_refseq_transcript_end38'] - df['eqtl_refseq_transcript_start38']
@@ -43,7 +43,7 @@ df2 = df.copy()
 df2["sourceChrom"] = "chr" + df2['chrom'].astype(str)
 df2["sourceStart"] = df2['pos38'].astype(int) - 1
 df2["sourceEnd"] = df2['pos38'].astype(int)
-df2["sourceName"] = 'rs' + df2['rsid'].astype(str) + '/' + df2['gwas_category_ontology_term'].str.replace(" ", "")
+df2["sourceName"] = 'rs' + df2['rsid'].astype(str) + '/' + df2['gwas_trait'].str.replace(" ", "_")
 df2["sourceStrand"] = '.'
 
 df2["targetChrom"] = "chr" + df2['chrom'].astype(str)
@@ -56,10 +56,10 @@ df2["#chrom"] = "chr" + df2['chrom'].astype(str)
 df2['chromStart'] = df2[['sourceStart', 'sourceEnd', 'targetStart', 'targetEnd']].min(axis=1)
 df2['chromEnd'] = df2[['sourceStart', 'sourceEnd', 'targetStart', 'targetEnd']].max(axis=1)
 
-df2['score'] = 1000
+df2['score'] = (df2['snp_pp_h4'] * 1000).astype(int)
 
-df2['exp'] = df['eqtl_id'] + '/' + df['gwas_trait'].str.replace(' ', '_') + '/' + df['gwas_id']
-df2['value'] = df['eqtl_beta'].abs()
+df2['exp'] = df['eqtl_id'] + '/' + df['gwas_id']
+df2['value'] = df['eqtl_beta']
 df2['color'] = '#008000'
 df2.loc[df['eqtl_beta'] < 0, 'color'] = '#FF0000'
 df2['name'] = df2['sourceName'] + '/' + df2['targetName'] + '/' + df2['exp']
