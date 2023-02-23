@@ -44,7 +44,7 @@ outdir_path = os.path.dirname(vlnplt_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
-sql = 'select distinct * from colocpleio2 where snp_pp_h4>={}'.format(snp_pp_h4)
+sql = 'select distinct * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 # columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
 # h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
 engine = sqlalchemy.create_engine(sa_url)
@@ -61,40 +61,20 @@ m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid'])
 
 #%%
 # distance to transcript middle
-# m_df['eqtl_gene_position'] = m_df['refseq_transcript_start38'] + ((m_df['refseq_transcript_end38'] - m_df['refseq_transcript_start38'])/2)
+# m_df['eqtl_gene_position'] = m_df['eqtl_refseq_transcript_start38'] + ((m_df['eqtl_refseq_transcript_end38'] - m_df['eqtl_refseq_transcript_start38'])/2)
 # m_df['eqtl_gene_distance'] = (m_df['pos38'] - m_df['eqtl_gene_position']).abs()
 # # variant within transcript
-# m_df.loc[(m_df['pos38'] >= m_df['refseq_transcript_start38']) & (m_df['pos38'] <= m_df['refseq_transcript_end38']), 'eqtl_gene_distance'] = 0
+# m_df.loc[(m_df['pos38'] >= m_df['eqtl_refseq_transcript_start38']) & (m_df['pos38'] <= m_df['eqtl_refseq_transcript_end38']), 'eqtl_gene_distance'] = 0
 
 # distance to transcript middle
 m_df['eqtl_gene_distance'] = math.nan
 # import pdb; pdb.set_trace()
-m_df.loc[m_df['refseq_transcript_strand'] == '+', 'eqtl_gene_distance'] = (m_df['pos38'] - m_df['refseq_transcript_start38']).abs()
-m_df.loc[m_df['refseq_transcript_strand'] == '-', 'eqtl_gene_distance'] = (m_df['pos38'] - m_df['refseq_transcript_end38']).abs()
-m_df.loc[(m_df['pos38'] >= m_df['refseq_transcript_start38']) & (m_df['pos38'] <= m_df['refseq_transcript_end38']), 'eqtl_gene_distance'] = 0
+m_df.loc[m_df['eqtl_refseq_transcript_strand'] == '+', 'eqtl_gene_distance'] = (m_df['pos38'] - m_df['eqtl_refseq_transcript_start38']).abs()
+m_df.loc[m_df['eqtl_refseq_transcript_strand'] == '-', 'eqtl_gene_distance'] = (m_df['pos38'] - m_df['eqtl_refseq_transcript_end38']).abs()
+m_df.loc[(m_df['pos38'] >= m_df['eqtl_refseq_transcript_start38']) & (m_df['pos38'] <= m_df['eqtl_refseq_transcript_end38']), 'eqtl_gene_distance'] = 0
 
-# import pdb; pdb.set_trace()
-# import pdb; pdb.set_trace()
 sel_cols = ['rsid', 'eqtl_gene_id', 'gwas_category_count', 'eqtl_gene_distance']
 m_df = m_df[sel_cols].drop_duplicates()
-
-# import pdb; pdb.set_trace()
-
-# # %%
-# sel_cols = ['rsid', 'eqtl_gene_id', 'etissue_category_term']  # tissue per variant-eqtl_gene_id
-#
-# #%% set max_gwas_category_count
-# m_df = m_df[sel_cols + ['gwas_category_count']]
-# # m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
-#
-# #%% keep unique rsid-etissue_category_term pairs with max. gwas category
-# m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
-# m_df = m_df.drop_duplicates(subset=['rsid', 'etissue_category_term', 'eqtl_gene_id'], keep='first')
-
-#%%
-# m_df = m_df.groupby(['rsid', 'eqtl_gene_id', 'gwas_category_count']).count()
-# m_df = m_df.reset_index()
-# m_df.columns = ['rsid', 'eqtl_gene_id', 'gwas_category_count', 'etissue_category_term_count']
 
 #%%
 describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
@@ -103,7 +83,6 @@ m_df.groupby('gwas_category_count')['eqtl_gene_distance'].apply(lambda x: x.desc
 #%%
 order = [str(x) for x in range(1, max(m_df['gwas_category_count'].unique())+1)]
 xticklabels = order.copy()
-# xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Tissues per eQTL-gene "
 xlabel = "GWAS category count"
 ylabel = "Tissue count mean"
@@ -117,18 +96,29 @@ pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_category_count'].uniq
 m_df[x] = m_df[x].astype(str)
 # ax = seaborn.boxplot(x=x, y=y, data=m_df, order=order, **boxplot_kwargs)
 # ax = seaborn.barplot(x=x, y=y, data=m_df, order=order, estimator=numpy.mean, palette="rocket_r")
-ax = seaborn.histplot(x=x, y=y, data=m_df, order=order, palette="rocket_r")
+# ax = seaborn.histplot(x=x, y=y, data=m_df, palette="rocket_r")
+import pdb; pdb.set_trace()
+# ax = (m_df.loc[m_df['gwas_category_count'] == '1', 'eqtl_gene_distance']).hist(density=True)
+# (m_df.loc[m_df['gwas_category_count'] == '2', 'eqtl_gene_distance']).hist(density=True)
+# (m_df.loc[m_df['gwas_category_count'] == '3', 'eqtl_gene_distance']).hist(density=True)
+# (m_df.loc[m_df['gwas_category_count'] == '4', 'eqtl_gene_distance']).hist(density=True)
+# ax = seaborn.histplot(data=(m_df.loc[m_df['gwas_category_count'] == '1', 'eqtl_gene_distance']), stat="proportion", color='red')
+# seaborn.histplot(data=(m_df.loc[m_df['gwas_category_count'] == '2', 'eqtl_gene_distance']), stat="proportion", color='green')
+# seaborn.histplot(data=(m_df.loc[m_df['gwas_category_count'] == '3', 'eqtl_gene_distance']), stat="proportion", color='blue')
+# seaborn.histplot(data=(m_df.loc[m_df['gwas_category_count'] == '4', 'eqtl_gene_distance']), stat="proportion", color='gray')
 # seaborn.boxplot(x=x, y=y, data=m_df, order=order, palette="rocket_r")
 # annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
 # annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 # annotator.apply_and_annotate()
+# ax = seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', common_norm=False, element="step")
+ax = seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=10)
 
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-ax.set_xticklabels(xticklabels)
+# plt.title(title, fontsize=label_fontsize)
+# plt.xlabel(xlabel, fontsize=label_fontsize)
+# plt.xticks(fontsize=tick_fontsize, rotation=0)
+# plt.ylabel(ylabel, fontsize=label_fontsize)
+# plt.yticks(fontsize=tick_fontsize)
+# ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
 plt.savefig(vlnplt_png_path)
