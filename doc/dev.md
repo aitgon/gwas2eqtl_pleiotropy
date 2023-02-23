@@ -47,6 +47,7 @@ python scripts/insrt_etissue_category.py postgresql://postgres:postgres@0.0.0.0:
 python scripts/insrt_open_gwas.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_entrezgene2ensg2symbol.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
 python scripts/insrt_entrezgene2pubmed_count.py postgresql://postgres:postgres@0.0.0.0:5435/postgres
+insrt_ncbirefseq -u postgresql://postgres:postgres@0.0.0.0:5435/postgres
 ~~~
 
 Create "ensg2pubmed_count" view
@@ -96,35 +97,8 @@ SELECT DISTINCT co.chrom,
     af.eur_af,
     af.sas_af,
     en.refseq_transcript_start38,
-    en.refseq_transcript_end38
+    en.refseq_transcript_end38,
     en.refseq_transcript_strand
-   FROM ((((((((( SELECT DISTINCT co0.chrom,
-            co0.pos AS pos38,
-            concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
-            co0.rsid,
-            co0.ref,
-            co0.alt,
-            co0.gwas_beta,
-            co0.eqtl_beta,
-            co0.eqtl_id,
-            co0.eqtl_gene_id,
-            co0.gwas_id,
-            co0.gwas_pval,
-            co0.eqtl_pval,
-            co0.pp_h4_abf,
-            co0.snp_pp_h4,
-            co0.coloc_variant_id,
-            co0.nsnps
-           FROM coloc co0,
-            cytoband cy
-          WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co
-     LEFT JOIN "genome-mysql.soe.ucsc.edu/hg38/ncbirefseq" en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
-     LEFT JOIN opengwas2trait_ontology gwtron ON (((gwtron.gwas_id)::text = (co.gwas_id)::text)))
-     LEFT JOIN opengwas2category_ontology gwcaon ON (((gwcaon.gwas_id)::text = (co.gwas_id)::text)))
-     LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text)))
-     LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
-     LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
-     LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text)))
      LEFT JOIN "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502" af ON ((((cSELECT DISTINCT co.chrom,
     pos19.pos19,
     co.pos38,
@@ -190,7 +164,6 @@ SELECT DISTINCT co.chrom,
      LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text)))
      LEFT JOIN "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502" af ON ((((co.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text))))
   ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, en.symbol, co.eqtl_id;o.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text))))
-  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, en.symbol, co.eqtl_id;
 ~~~
 
 Create "colocweb" view
@@ -257,6 +230,8 @@ snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_E
 snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process  snp_pp_h4=0.5 -p
 
 snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_75 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process  snp_pp_h4=0.75 -p
+
+snakemake -p --cores 1 -s tools/06_ucsc_hubs.yml --config outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50 db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres
 ~~~
 
 # MS
