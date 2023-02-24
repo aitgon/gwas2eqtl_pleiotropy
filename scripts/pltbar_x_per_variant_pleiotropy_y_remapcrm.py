@@ -26,7 +26,7 @@ try:
     variant_pleio_1_flank_10_hg38_bed = sys.argv[1]
     remap_crm_path = sys.argv[2]
     remap_count_tsv = sys.argv[3]
-    remap_crm_png = sys.argv[4]
+    barplot_remap_crm_png = sys.argv[4]
     if len(sys.argv) > 5:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -36,7 +36,7 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-outdir_path = os.path.join(os.path.dirname(remap_crm_png))
+outdir_path = os.path.join(os.path.dirname(barplot_remap_crm_png))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%% input dir cmpt_count_per_rsid
@@ -109,11 +109,11 @@ y = "oddsr"
 x = "gwas_category_count"
 
 #%%
-ax = seaborn.barplot(x=x, y=y, data=out_df, order=order, palette="rocket_r")
-
-#%%
 pairs = [('1', x) for x in out_df['gwas_category_count'] if x != "1"]
 formatted_pvalues = out_df['signif'].tolist()[1:]
+
+#%% barplot
+ax = seaborn.barplot(x=x, y=y, data=out_df, order=order, palette="rocket_r")
 
 annotator = Annotator(ax, pairs, data=out_df, x=x, y=y, order=order, size=label_fontsize)
 annotator.set_custom_annotations(formatted_pvalues)
@@ -129,5 +129,26 @@ plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-plt.savefig(remap_crm_png, dpi=dpi)
+plt.savefig(barplot_remap_crm_png, dpi=dpi)
+plt.close()
+
+#%% barplot
+ax = seaborn.violinplot(x=x, y=y, data=out_df, order=order, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=out_df, x=x, y=y, order=order, size=label_fontsize)
+annotator.set_custom_annotations(formatted_pvalues)
+annotator.configure(**annotator_config_dic)
+annotator.annotate()
+
+ax.set_xticklabels(xticklabels)
+plt.grid(axis="y")
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "violin.png")
+plt.savefig(png_path, dpi=dpi)
 plt.close()

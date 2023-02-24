@@ -50,8 +50,11 @@ rule all:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
+        os.path.join(outdir, "plt_x_per_variant_y_egene_distance.py/hist.png"),
+        os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/violin.png"),
+        os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/violin.png"),
         #
-        # 04snkfl_plots.yml
+        # 05snkfl_supplementary_and_web.yml
         os.path.join(outdir, "ms_supp_tab/table_s1.xlsx"),
         os.path.join(outdir, "ms_supp_tab/table_s2.xlsx"),
         os.path.join(outdir, "ms_supp_tab/table_s3.xlsx"),

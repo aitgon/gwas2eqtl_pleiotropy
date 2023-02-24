@@ -96,8 +96,10 @@ x = "gwas_category_count"
 #%%
 pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_category_count'].unique()) + 1)]
 m_df[x] = m_df[x].astype(str)
-# ax = seaborn.boxplot(x=x, y=y, data=m_df, order=order, **boxplot_kwargs)
+
+#%%
 ax = seaborn.barplot(x=x, y=y, data=m_df, order=order, estimator=numpy.mean, palette="rocket_r")
+
 annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
@@ -111,4 +113,23 @@ ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
 plt.savefig(vlnplt_png_path, dpi=dpi)
+plt.close()
+
+#%% Violin plot
+ax = seaborn.violinplot(data=m_df, x=x, y=y, order=order, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+ax.set_xticklabels(xticklabels)
+
+plt.tight_layout()
+hist_png_path = os.path.join(outdir_path, "violin.png")
+plt.savefig(hist_png_path)
 plt.close()
