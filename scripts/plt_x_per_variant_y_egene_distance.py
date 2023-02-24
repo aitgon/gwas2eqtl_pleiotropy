@@ -92,20 +92,24 @@ pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_category_count'].uniq
 m_df[x] = m_df[x].astype(str)
 
 #%% Histogram
-seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=10)
+seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=10, palette="rocket_r")
 plt.tight_layout()
 plt.savefig(hist_png_path)
 plt.close()
 
 #%% Cumulative distribution
-seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', common_norm=False, element="step", fill=False, cumulative=True)
+seaborn.histplot(data=m_df, x=y, hue=x, stat='percent', common_norm=False, element="step", fill=False, cumulative=True, palette="rocket_r")
 plt.tight_layout()
 hist_png_path = os.path.join(outdir_path, "cumulative.png")
 plt.savefig(hist_png_path)
 plt.close()
 
 #%% Violin plot
-ax = seaborn.violinplot(data=m_df, x=x, y=y)
+ax = seaborn.violinplot(data=m_df, x=x, y=y, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
 
 plt.tight_layout()
 hist_png_path = os.path.join(outdir_path, "violin.png")

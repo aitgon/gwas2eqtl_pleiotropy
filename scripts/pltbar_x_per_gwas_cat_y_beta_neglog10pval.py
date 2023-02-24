@@ -186,3 +186,31 @@ ax.set_xticklabels(xticklabels)
 plt.tight_layout()
 plt.savefig(gwas_beta_png_path)
 plt.close()
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# violin and mann-whitney
+y = "gwas_beta_abs"
+title = "GWAS beta"
+ylabel = "Absolute beta"
+
+#%%
+pairs = [(str(1), str(i)) for i in range(2, max_gwas_category_count+1)]
+m_gwas_df[x] = m_gwas_df[x].astype(str)
+
+ax = seaborn.violinplot(x=x, y=y, data=m_gwas_df, order=order, estimator=numpy.mean, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+ax.set_xticklabels(xticklabels)
+
+plt.tight_layout()
+gwas_beta_png_path = os.path.join(outdir_path, "gwas_beta_violin.png")
+plt.savefig(gwas_beta_png_path)
+plt.close()

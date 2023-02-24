@@ -132,9 +132,9 @@ SELECT DISTINCT co.chrom,
     af.afr_af,
     af.eur_af,
     af.sas_af,
-    en.refseq_transcript_strand,
-    en.refseq_transcript_start38,
-    en.refseq_transcript_end38
+    en.eqtl_refseq_transcript_strand,
+    en.eqtl_refseq_transcript_start38,
+    en.eqtl_refseq_transcript_end38
    FROM ((((((((( SELECT DISTINCT co0.chrom,
             co0.pos AS pos38,
             concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,

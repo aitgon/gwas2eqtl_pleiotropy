@@ -23,7 +23,7 @@ try:
     # max_gwas_category_count = int(sys.argv[2])
     sa_url = sys.argv[2]
     count_per_rsid_gwas_ods_path = sys.argv[3]
-    vlnplt_png_path = sys.argv[4]
+    png_path = sys.argv[4]
     if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -39,7 +39,7 @@ if not os.path.isfile(count_per_rsid_gwas_ods_path):
     print("input file does not exit")
     sys.exit(1)
 
-outdir_path = os.path.dirname(vlnplt_png_path)
+outdir_path = os.path.dirname(png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
@@ -107,5 +107,43 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-plt.savefig(vlnplt_png_path)
+plt.savefig(png_path)
+plt.close()
+
+#%%
+ax = seaborn.violinplot(x=x, y=y, data=m_df, order=order, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+ax.set_xticklabels(xticklabels)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, 'violin.png')
+plt.savefig(png_path)
+plt.close()
+
+#%%
+ax = seaborn.boxplot(x=x, y=y, data=m_df, order=order, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+ax.set_xticklabels(xticklabels)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, 'boxplot.png')
+plt.savefig(png_path)
 plt.close()

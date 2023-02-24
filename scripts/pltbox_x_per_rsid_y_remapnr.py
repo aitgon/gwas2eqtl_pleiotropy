@@ -1,4 +1,6 @@
 import os
+import pathlib
+
 import pandas
 import seaborn
 import sys
@@ -30,6 +32,8 @@ except IndexError:
 i_path_lst = []
 
 indir_path = os.path.dirname(remap_nr_pleio_1_flank_10_hg38_bed)
+outdir_path = os.path.dirname(tf_flank_10_png)
+pathlib.Path(outdir_path).mkdir(exist_ok=True, parents=True)
 
 ########################################################################################################################
 flank = 10
@@ -66,11 +70,13 @@ x = "gwas_category_count"
 #%%
 pairs = [(str(1), str(int(i))) for i in sorted(cat_df['gwas_category_count'].unique())]
 cat_df[x] = cat_df[x].astype(int).astype(str)
-ax = seaborn.ecdfplot(x=x, y=y, data=cat_df, order=order, **boxplot_kwargs)
-# annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
-# annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-# annotator.apply_and_annotate()
 
+#%%
+ax = seaborn.boxplot(x=x, y=y, data=cat_df, order=order, **boxplot_kwargs)
+
+annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
 
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
@@ -80,5 +86,25 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
+plt.savefig(tf_flank_10_png)
+plt.close()
+
+#%%
+ax = seaborn.violinplot(x=x, y=y, data=cat_df, order=order, **boxplot_kwargs)
+
+annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+ax.set_xticklabels(xticklabels)
+# plt.ylim([0, 120])
+
+plt.tight_layout()
+tf_flank_10_png = os.path.join(outdir_path, "violin")
 plt.savefig(tf_flank_10_png)
 plt.close()
