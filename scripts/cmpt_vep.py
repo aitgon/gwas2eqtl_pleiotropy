@@ -1,4 +1,6 @@
 """Variant effect predictor"""
+import sqlalchemy
+
 from gwas2eqtl_pleiotropy.Logger import Logger
 from gwas2eqtl_pleiotropy.PathManager import PathManager
 from gwas2eqtl_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
@@ -38,7 +40,10 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 #%%
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 # columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
-h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
+# h4_df = pandas.read_sql(sql, con=url).drop_duplicates()
+engine = sqlalchemy.create_engine(url)
+with engine.begin() as conn:
+    h4_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
 #%%
 # gwas_cat_df = pandas.read_csv(count_per_rsid_gwas_ods_path, sep="\t")

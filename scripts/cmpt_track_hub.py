@@ -55,14 +55,6 @@ for eqtl_id in eqtl_id_lst:
     # eqtl2_id = trackhub.helpers.sanitize(os.path.basename(eqtl_id))
     bigbed = os.path.join(bigbed_dir_path, "{}.inter.bb".format(eqtl_id))
     if os.path.getsize(bigbed) > 2278:
-        # track_name = "{}".format(eqtl_id.replace('+', 'And'))
-
-        # for bigbed in glob.glob(os.path.join(bigbed_dir_path, '*.bb')):
-
-        # track names can't have any spaces or special characters. Since we'll
-        # be using filenames as names, and filenames have non-alphanumeric
-        # characters, we use the sanitize() function to remove them.
-
 
         tissue_ontology_term = eqtl_df.loc[eqtl_id, 'tissue_ontology_term']
         track_name = trackhub.helpers.sanitize(tissue_ontology_term) + "_" + trackhub.helpers.sanitize(eqtl_id)
