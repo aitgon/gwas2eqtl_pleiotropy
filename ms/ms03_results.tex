@@ -30,15 +30,14 @@ The fourth criterion was to keep only GWAS with at least 10,000 subjects, 2,000 
 %
 These filters resulted in 417 GWAS traits (Supplementary table 2).
 %
-These studies resulted in 10,621 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary file).
-% TODO: Add to supplementary table?
+These studies resulted in 10,621 clumped leading variants with a p-value below 5e-8 from 335 GWAS.
 % select count(distinct gwas_id) from tophits
 % 335
 % select count(*) from (select DISTINCT chrom, pos, rsid, ea from tophits) as sel; 10621
 % tophits goes to OSF
 % colocpleio goes to OSF
 
-The colocalization pipeline uncovered eQTL colocalizations for 5,484 of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples in the somatic chromosomes 1-22 \cite{2019.Posthuma.Watanabe,2021.Li.Mu}.
+The colocalization pipeline uncovered eQTL colocalizations for 5,484 of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples in the somatic chromosomes \cite{2019.Posthuma.Watanabe,2021.Li.Mu}.
 %
 % select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid
 % from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
@@ -53,17 +52,22 @@ The colocalization pipeline uncovered eQTL colocalizations for 5,484 of the lead
 Variants in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000 were
 excluded from the colocalization pipeline, because of their complex linkage disequilibrium structure.
 %
-The histogram shows three groups of GWAS (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}).
+The histogram shows three groups of GWAS depending on the percentage of explained leading SNPs (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}a).
 %
-There were 100\% of leading variants explained with eQTLs for between 5\% and 12\% of the GWAS depending on whether
-we set PP.H4.SNP at 0.25, 0.5 or 0.75 (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc} and suppl. fig. S1).
-This parameter gives the posterior probability of a SNP in a window to be causal.
+For around 25\% of GWAS, there are not colocalizations between the leading SNPs and eQTLs.
 %
-There were a middle group of maximally 5\% GWAS with maximum percentage of explained leading SNPs between 10\% and 50\%
-depending on the PP.H4.SNP parameter 0.25-0.75
-Around 25\% of GWAS had no tophits colocalized with eQTLs for a parameter PP.SNP.H4=0.5.
+On the other side, for around 7.5\% of GWAS, 100\% of the leading SNPs colocalize with eQTLs.
 %
-Finally, between 17\% and 27\% GWAS had 0\% of leading variants explained by eQTLs (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc} and suppl. fig. S1).
+The remaining GWAS show between 10\% and 50\% colocalized leading SNPs with eQTLs.
+
+The number of colocalization depends on the PP.H4.SNP parameter that gives the probability of a SNP in the colocalized locus to be the causal SNP.
+%
+We have changed this parameter between 25\% and 75\%, which results in 5\% and 12\% of the GWAS
+showing colocalization with 100\% of their leading variants.
+%
+In this range, between 16\% and 25\% of the GWAS do not show any colocalization.
+%
+The remaining GWAS show between 5\% and 10\% of their leading variants colocalized with eQTLs (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}a and Supplementary figure S1).
 
 The largest classes of diseases by number of leading GWAS variants are cancer of breast (1976), allergy (1288), and autoimmune diseases (1216).
 %
@@ -80,7 +84,7 @@ found 23-41\% depending on the study \cite{2016.Soranzo.Chen,2017.Cotsapas.Chun,
 % Discuss 41% (eQTL + sQTLs) in Mu et al 2021, Genome Biology
 % Discuss 23% in Chen et al 2016, Cell. Genetic Drivers of Epigenetic and Transcriptional Variation in Human Immune Cells
 
-These variants annotated with GWAS association and gene expression associations in particular biosamples are useful functional informations.
+These variants annotated with GWAS associations and eQTLs are useful functional information.
 %
 Therefore I have developed a web application where I expose 138,301 variants from 293 GWAS that colocalize with at least
 one eQTL at a threshold value PP.H4.abf$\geq$0.75.
@@ -91,6 +95,14 @@ one eQTL at a threshold value PP.H4.abf$\geq$0.75.
 %where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
 %5343
 % select count(*) from (select DISTINCT gwas_id FROM colocweb) as sel; 293
+
+I provide a UCSC track hub with these GWAS colocalizations.
+%
+In Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}b-d, I show three screenshots of this UCSC track hub for three different biosamples, namely B-cells, naive monocytes and frontal cortex biosamples in the chromosome 5 around the gene IL4.
+%
+This screenshot shows that depending on the biosample, the regulated genes are very different.
+%
+In the 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -155,7 +167,6 @@ For instance, the different immune cell types such as monocyte, T-cell, etc are 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% TODO CONTINUE
 These trait class annotations were used to investigate pleiotropy of eQTLs.
 %
 Different trait classes of eQTLs were aggregated and sorted according to the number of GWAS classes the eQTLs belong to (Table \ref{tab:pleitropic_variants} and Supplementary table 4).
@@ -171,7 +182,7 @@ Our analysis annotates this variant with eQTL genes AP4B1,AP4B1-AS1,BCL2L15,DCLR
 % TODO add rs2522051
 This variant rs2522051 is involved in six classes of traits, namely,
 allergy, autoimmune diseases, cancer of the breast, circulatory system diseases, hypertension, and respiratory system diseases
-(Table \ref{tab:pleitropic_variants} and Supplementary table 4).
+(Table \ref{tab:pleitropic_variants}a and Supplementary table 4).
 %
 The variant rs2522051 is located downstream of the IRF1 gene in cytoband 5q31.1
 %
