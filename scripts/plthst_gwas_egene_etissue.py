@@ -1,23 +1,22 @@
-#%%
-import sys
 import matplotlib.pyplot as plt
 import os
 import pandas
 import pathlib
 import seaborn
+import sys
 
-from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
+from matplotlib.ticker import FuncFormatter
+
+from gwas2eqtl_pleiotropy.constants import tick_fontsize, dpi
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 
 plt.rcParams["figure.figsize"] = (8, 6)
-from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
 try:
     count_per_rsid_gwas_egene_etissue_ods = sys.argv[1]
-    # egene_count_tsv_path = sys.argv[2]
-    # etissue_count_tsv_path = sys.argv[3]
     hist_rsid_gwas_path = sys.argv[2]
     hist_rsid_egene_path = sys.argv[3]
     hist_rsid_etissue_path = sys.argv[4]
@@ -39,8 +38,8 @@ count_df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods, engine='odf'
 #%%
 ylabel = "Percent"
 title = "Colocalized eQTL/GWAS variants"
-ylim=[0, 100]
-edgecolor='k'
+ylim = [0, 100]
+edgecolor = 'k'
 linewidth = 2
 grid_axis = 'y'
 hist_kwargs = {'density': 1, 'edgecolor': edgecolor, 'linewidth': linewidth}
@@ -48,19 +47,15 @@ stat = 'percent'
 label_fontsize = 28
 
 #%% gwas
-# count_df = pandas.read_csv(gwas_count_tsv_path, sep="\t", header=0)
-# bins = numpy.array(range(6))
 data_ser = count_df['gwas_category_count']
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
-plt.title(title.format(" and GWAS categories"), fontsize=label_fontsize)
+plt.title(title, fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.ylim(ylim)
-# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
@@ -70,20 +65,16 @@ plt.close()
 with open(hist_rsid_gwas_path + ".txt", 'w') as fout:
     fout.write('\n'.join([str(h.get_height()) for h in shplt.patches]))
 
-#%% egene
-# count_df = pandas.read_csv(egene_count_tsv_path, sep="\t", header=0)
+#%% eQTL gene
 data_ser = count_df['egene_count']
-# plt.hist(data_ser, **hist_kwargs)
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
-plt.title(title.format(" and egenes"), fontsize=label_fontsize)
-plt.xlabel("eGene count", fontsize=label_fontsize)
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel("eQTL gene count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.ylim(ylim)
-# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
@@ -93,24 +84,19 @@ plt.close()
 with open(hist_rsid_egene_path + ".txt", 'w') as fout:
     fout.write('\n'.join([str(h.get_height()) for h in shplt.patches]))
 
-#%% etissue
-# count_df = pandas.read_csv(etissue_count_tsv_path, sep="\t", header=0)
+#%% eQTL biosample
 data_ser = count_df['etissue_category_term_count']
-# plt.hist(data_ser, **hist_kwargs)
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
-plt.title(title.format(" and etissues"), fontsize=label_fontsize)
-plt.xlabel("eTissue category count", fontsize=label_fontsize)
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel("eQTL biosample count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.ylim(ylim)
-# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-# png_path = os.path.join(outdir_path, "hist_etissue.png")
 plt.savefig(hist_rsid_etissue_path, dpi=dpi)
 plt.close()
 

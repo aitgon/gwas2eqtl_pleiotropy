@@ -52,7 +52,7 @@ The colocalization pipeline uncovered eQTL colocalizations for 5,484 of the lead
 Variants in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000 were
 excluded from the colocalization pipeline, because of their complex linkage disequilibrium structure.
 %
-The histogram shows three groups of GWAS depending on the percentage of explained leading SNPs (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}a).
+The histogram shows three groups of GWAS depending on the percentage of explained leading SNPs (Fig. \ref{fig:1}a).
 %
 For around 25\% of GWAS, there are not colocalizations between the leading SNPs and eQTLs.
 %
@@ -67,7 +67,7 @@ showing colocalization with 100\% of their leading variants.
 %
 In this range, between 16\% and 25\% of the GWAS do not show any colocalization.
 %
-The remaining GWAS show between 5\% and 10\% of their leading variants colocalized with eQTLs (Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}a and Supplementary figure S1).
+The remaining GWAS show between 5\% and 10\% of their leading variants colocalized with eQTLs (Fig. \ref{fig:1}a and Supplementary figure S1).
 
 The largest classes of diseases by number of leading GWAS variants are cancer of breast (1976), allergy (1288), and autoimmune diseases (1216).
 %
@@ -98,7 +98,7 @@ one eQTL at a threshold value PP.H4.abf$\geq$0.75.
 
 I provide a UCSC track hub with these GWAS colocalizations.
 %
-In Fig. \ref{fig:hist_perc_tophits_eqtl_excl_mhc}b-d, I show three screenshots of this UCSC track hub for three different biosamples, namely B-cells, naive monocytes and frontal cortex biosamples in the chromosome 5 around the gene IL4.
+In Fig. \ref{fig:1}b-d, I show three screenshots of this UCSC track hub for three different biosamples, namely monocytes, and  frontal cortex biosamples in the chromosome 5 around the gene IL4 (Fig. \ref{fig:1}a).
 %
 This screenshot shows that depending on the biosample, the regulated genes are very different.
 %
@@ -117,7 +117,7 @@ In the 417 GWAS, there are traits from different categories and belonging to ind
 %
 To verify that the colocalization results are coherent between different GWAS datasets,
 I cluster the GWAS traits based on the Spearman correlation between beta values
-of colocalized eQTL variant, gene and biosample (Fig. \ref{fig:trait_clusters}).
+of colocalized eQTL variant, gene and biosample (Fig. \ref{fig:2}).
 
 
 In the previous colocalization analysis, we found many eQTLs that are associated to very different traits.
@@ -137,7 +137,7 @@ The cutoff SNP.PP.H4>=0.5 was chosen, it allow to group pleiotropic eQTLs in a r
 %
 I plotted these trait distances as a hierarchically-clustered heatmap.
 %
-Only trait classes with more than a minimum number of traits were plotted (Fig. \ref{fig:trait_clusters}).
+Only trait classes with more than a minimum number of traits were plotted (Fig. \ref{fig:2}).
 %
 Due to the large number of datasets, I have create a separate class for some cancers such as breast and skin.
 %
@@ -145,7 +145,7 @@ In the OpenGWAS, some traits are redundant because the come from the same refere
 %
 I plotted non-rendundant GWAS traits.
 %
-This analysis shows a coherent clustering of traits belonging to autoimmune, circulatory system diseases, cancers and allergies (Fig. \ref{fig:trait_clusters}).
+This analysis shows a coherent clustering of traits belonging to autoimmune, circulatory system diseases, cancers and allergies (Fig. \ref{fig:2}).
 %
 Breast and skin cancer are found in two different cluster with some shared signal.
 %
@@ -248,16 +248,16 @@ Altogether, pleiotropic regions with 3 or more trait classes make around 3 Mb of
 Next I verified whether the colocalized eQTL/GWAS variants tend to be specific to traits, eQTL genes and eQTL tissues.
 %
 74\% of colocalized eQTL/GWAS variants are associated to one GWAS class, 21\% are associated to 2 classes and the remaining variants associated to
-3 or more trait classes make less that 4\% of colocalized eQTL/GWAS variants (Fig. \ref{fig:hist_gwas_egene_etissue}a).
+3 or more trait classes make less that 4\% of colocalized eQTL/GWAS variants (Fig. \ref{fig:3}a).
 %
 Regarding eQTL genes, 36\% of the colocalized eQTL/GWAS variants modulate a single gene, 24\% modulate two genes, and the
-remaining 40\% modulate three or more genes (Fig. \ref{fig:hist_gwas_egene_etissue}b).
+remaining 40\% modulate three or more genes (Fig. \ref{fig:3}b).
 %
 Concerning tissues, 27\% colocalized eQTL/GWAS variants are active in a single tissue, 16\% in two tissues, 11\% in three
-tissues, and the remaining 46\% in four or more tissues (Fig. \ref{fig:hist_gwas_egene_etissue}c).
+tissues, and the remaining 46\% in four or more tissues (Fig. \ref{fig:3}c).
 %
 In conclusion, trait pleiotropy is rather rare among colocalized eQTL/GWAS variants, while, regulation of at least two
-genes in at least two tissues is rather common (Fig. \ref{fig:hist_gwas_egene_etissue}).
+genes in at least two tissues is rather common (Fig. \ref{fig:3}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %

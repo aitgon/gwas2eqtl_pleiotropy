@@ -86,12 +86,12 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \begin{figure}[h!]
+    \begin{figure}[!ht]
         %
         \caption{Histogram showing the percentage of GWAS with the percentage of their tophits colocalized with eQTLs.
         I have excluded tophits in in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000,
             because this locus is not included in the colocalization pipeline.}
-        \label{fig:hist_perc_tophits_eqtl_excl_mhc}
+        \label{fig:1}
         %
     \end{figure}
 
@@ -101,52 +101,32 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \begin{figure}[h!]
+    \begin{figure}[!ht]
         %
         \caption{Trait clustering based on the Spearman correlation between beta values of colocalized eQTL variants, genes and biosamples.}
-        \label{fig:trait_clusters}
+        \label{fig:2}
         %
     \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Fig 3: Histograms of variants vs GWAS, eQTL genes and eQTL biosamples
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-    \begin{figure}[h!]
-        %
-        \caption{Percentage of colocalized eQTL/GWAS variants with different number of GWAS classes (\textbf{a}), eQTL genes
-            (\textbf{b}) and eQTL tissues (\textbf{c}).} \label{fig:hist_gwas_egene_etissue}
-        %
-    \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 % Fig 4: Spearman correlation between counts of GWAS categories, eQTL genes and eQTL biosamples
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    \begin{figure}[h!]
-        %
-        \caption{Spearman correlation between the counts of GWAS classes, eQTL genes and eQTL biosamples.}
-        \label{fig:correlation_counts}
-        %
-    \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
 % Fig 5: VEP consequences
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    \begin{figure}[h!]
+%
+    \begin{figure}[!ht]
         %
-        \caption{Odds ratio of the variants annotated with given variant effect
-        predictor (VEP) consequence and given GWAS class count compared with non
-        pleiotropic variants with GWAS class count one. The significance is given for the
-        q-value with False discovery rate 5\%.}
-        \label{fig:vep_consequence}
+        \caption{Distribution of GWAS category counts, correlation and ENSEMBL variant effect prediction.
+        \textbf{a-c} Distribution of GWAS category, eQTL gene and eQTL biosample counts.
+        Percentage of colocalized eQTL/GWAS variants with different number of GWAS classes (\textbf{a}), eQTL genes (\textbf{b}) and eQTL tissues (\textbf{c}).
+        \textbf{d} Spearman correlation between the counts of GWAS categories, eQTL genes and eQTL biosamples.
+        \textbf{e} Odds ratio of the eQTLs annotated with the given ENSEMBL variant predictor
+        for eQTLs association withe the given GWAS category count versus the eQTLs with a single GWAS category count.
+        The significance is given for the q-value with False discovery rate 5\%.
+        }
+        \label{fig:3}
         %
     \end{figure}
 
@@ -156,10 +136,14 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \begin{figure}[h!]
+    \begin{figure}[!ht]
         %
-        \caption{TODO beta and p-val}
-        \label{fig:beta_pval}
+        \caption{eQTL and GWAS beta and p-values and allele frequencies for different GWAS category counts.
+        \textbf{a,b} Average eQTL and GWAS beta values.
+        \textbf{c,d} Average eQTL and GWAS p-values.
+        \textbf{e} Average alternative allele frequency in the European population from the 1000 Genomes database.
+        }
+        \label{fig:4}
         %
     \end{figure}
 
@@ -169,7 +153,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \begin{figure}[h!]
+    \begin{figure}[!ht]
         %
         \caption{Mean number of eQTL genes per eQTL-biosample pair (\textbf{a}) and mean number of biosamples per eQTL-gene pairs (\textbf{b}).} \label{fig:gwas_egene_etisue_per_variant}
         %
@@ -181,7 +165,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \begin{figure}[h!]
+    \begin{figure}[!ht]
         %
         \caption{Analysis of transcription factor binding.
         \textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic eQTLs with a radius of 50 bp as a function of the GWAS class count.
