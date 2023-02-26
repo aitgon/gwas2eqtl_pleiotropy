@@ -77,8 +77,8 @@ rule cmpt_davidgo:
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
         os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
     shell:
-        """python scripts/cmpt_davidgo.py {input[0]} {params[0]} {params[1]} {params[2]}
-        python scripts/pltbar_davidgo.py {params[1]} {params[2]} {params[3]}"""
+        """python scripts/cmpt_davidgo.py {input[0]} {params[0]} {params[2]}
+        python scripts/pltbar_davidgo.py {input[0]} {params[2]} {params[3]}"""
 
 #rule pltbox_logpval_per_gwas_cat:
 #    input:

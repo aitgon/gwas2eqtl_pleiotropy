@@ -33,14 +33,13 @@ rule count_per_rsid:
     output:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
     params:
         snp_pp_h4=snp_pp_h4,
-        max_gwas_category_count=max_gwas_category_count,
         manuscript_pleio_cutoff=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.manuscript_pleio_cutoff} {params.db_url} {output[0]} {output[1]}"
+        "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.manuscript_pleio_cutoff} {params.db_url} {output[0]} {output[1]}"
 
 rule plthst_perc_tophits_eqtl:
     input:

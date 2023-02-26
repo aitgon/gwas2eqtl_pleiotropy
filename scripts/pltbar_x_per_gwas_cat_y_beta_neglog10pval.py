@@ -56,7 +56,7 @@ count_per_rsid_gwas_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine=
 max_gwas_category_count = count_per_rsid_gwas_df['gwas_category_count'].max()
 
 #%%
-m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid','alt'])
+m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid', 'ref', 'alt'])
 
 #%%
 m_gwas_df = m_df[['chrom', 'pos38', 'rsid', 'ref', 'alt', 'gwas_beta', 'gwas_pval', 'gwas_id', 'gwas_category_count']].drop_duplicates()

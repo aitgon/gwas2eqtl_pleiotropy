@@ -29,7 +29,7 @@ from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi
 
 help_cmd_str = "todo"
 try:
-    max_gwas_class_count = int(sys.argv[1])
+    count_per_rsid_gwas_egene_etissue_ods_path = sys.argv[1]
     davidgo_tsv_path = sys.argv[2]
     davidgo_png_path = sys.argv[3]
     if len(sys.argv) > 4:
@@ -44,8 +44,11 @@ except IndexError:
 outdir_path = os.path.dirname(davidgo_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
+fin_df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods_path, engine='odf')
+
 #%%
-for pleio_i in range(2, max_gwas_class_count+1):
+max_gwas_category_count = fin_df['gwas_category_count'].max()
+for pleio_i in range(2, max_gwas_category_count + 1):
     Logger.info(pleio_i)
     davidgo_pleio_tsv_path = davidgo_tsv_path + "_{}.tsv".format(pleio_i)
     fin_df = pandas.read_csv(davidgo_pleio_tsv_path, sep="\t", header=0)

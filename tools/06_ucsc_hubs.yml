@@ -15,30 +15,44 @@ eqtl_df['index'] = (eqtl_df['ftp_path'].str.replace('.all.tsv.gz', '', regex=Tru
 eqtl_df.set_index('index', drop=True, verify_integrity=True, inplace=True)
 eqtl_id_lst = (eqtl_df.index).tolist()
 
+beta_sign_lst = ['beta_equal', 'beta_unequal']
+pleio_lst = range(1, 5)
 
 rule all_eqtl2:
     input:
-        expand(os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bigbed", "{eqtl_id}.inter.bb"), eqtl_id=eqtl_id_lst),
+        expand(os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bigbed", "{beta_sign}", "{eqtl_id}.inter.bb"), eqtl_id=eqtl_id_lst, beta_sign=beta_sign_lst),
+        expand(os.path.join(outdir, "cmpt_count_per_rsid.py", "bigbed", "eqtl_pleio{pleio}.bb"), pleio=pleio_lst),
 
-rule bedTobigBed:
+rule bedTobigBed_pleio:
+    input:
+        os.path.join(public_data_dir, "hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed"),
+        os.path.join(public_data_dir, "raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py", "eqtl_pleio_{pleio}_flank_0_hg38.bed"),
+    output:
+        os.path.join(outdir, "cmpt_count_per_rsid.py", "bigbed", "eqtl_pleio{pleio}.bb"),
+    shell:
+        """{input[0]} -type=bed5 {input[2]} {input[1]} {output[0]}"""
+
+rule bedTobigBed_interact:
     input:
         os.path.join(public_data_dir, "hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed"),
         os.path.join(public_data_dir, "genome.ucsc.edu/goldenPath/help/examples/interact/interact.as"),
         os.path.join(public_data_dir, "raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"),
-        os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bed", "{eqtl_id}.inter.bed"),
+        os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bed", "{beta_sign}", "{eqtl_id}.inter.bed"),
     output:
-        os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bigbed", "{eqtl_id}.inter.bb"),
+        os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bigbed", "{beta_sign}", "{eqtl_id}.inter.bb"),
     shell:
         """{input[0]} -as={input[1]} -type=bed5+13 {input[3]}  {input[2]} {output[0]}"""
 
-rule cmpt_ucsc_tracks_eqtl_inter_bed:
+rule cmpt_ucsc_tracks_eqtl_inter_bed_beta:
     output:
-        expand(os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bed", "{eqtl_id}.inter.bed"), eqtl_id=eqtl_id_lst)
+        expand(os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bed", "beta_equal", "{eqtl_id}.inter.bed"), eqtl_id=eqtl_id_lst),
+        expand(os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bed", "beta_unequal", "{eqtl_id}.inter.bed"), eqtl_id=eqtl_id_lst),
     params:
         snp_pp_h4=snp_pp_h4,
         db_url=db_url,
     shell:
-        """python scripts/cmpt_ucsc_tracks_eqtl_inter_bed.py {params.snp_pp_h4} {params.db_url} $(dirname {output[0]})"""
+        """python scripts/cmpt_ucsc_tracks_eqtl_inter_bed.py {params.snp_pp_h4} {params.db_url} $(dirname $(dirname {output[0]}))"""
 
 rule dwnld_hg38_chrom_sizes:
     output:

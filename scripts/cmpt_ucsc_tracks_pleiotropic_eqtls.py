@@ -33,7 +33,6 @@ df['chrom'] = 'chr' + df['chrom'].astype(str)
 df['rsid'] = 'rs' + df['rsid'].astype(str)
 df.rename({'chrom': '#chrom', 'pos38': 'chromEnd', 'rsid': 'name', 'gwas_category_count': 'score'}, axis=1, inplace=True)
 df['score'] = df['score'] * 1000 / 4
-# import pdb; pdb.set_trace()
 
 track_config_str = """browser position chr5:132239646-132497907
 browser pack Pleiotropic_eQTLs

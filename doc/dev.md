@@ -225,11 +225,24 @@ Then snakemake is run with:
 snp_pp_h4 0.25 0.5 0.75
 
 ~~~
-snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_trait_ods=out/gwas417/query_ontology.py/gwas_trait_ontology.ods  gwas_category_ods=out/gwas417/query_ontology.py/gwas_category_ontology.ods max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50
+export SNP_PP_H4=0.5
+export OUTDIR=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50
+~~~
 
-snakemake --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process snp_pp_h4=0.50 -p
+~~~
+snakemake -p --cores all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres etissue_category_ods=config/etissue_category.ods gwas_trait_ods=out/gwas417/query_ontology.py/gwas_trait_ontology.ods  gwas_category_ods=out/gwas417/query_ontology.py/gwas_category_ontology.ods max_gwas_category_count=4 outdir="${OUTDIR}" public_data_dir="${HOME}"/Software/public snp_pp_h4="${SNP_PP_H4}"
 
+snakemake -p --cores all -s tools/snkfl_vep.yml --config db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres max_gwas_category_count=4 outdir="${OUTDIR}" public_data_dir=/home/gonzalez/Software/public process_data_dir=/home/gonzalez/Software/process snp_pp_h4="${SNP_PP_H4}"
+
+snakemake -p --cores all -s tools/06_ucsc_hubs.yml --config public_data_dir=/home/gonzalez/Software/public db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres outdir="${OUTDIR}" snp_pp_h4="${SNP_PP_H4}"
+~~~
+
+UCSC track hub
+
+~~~
 snakemake -p --cores 1 -s tools/06_ucsc_hubs.yml --config outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50 db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres
+ython scripts/cmpt_track_hub.py gwas2eqtl_beta_equal out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_inter_bed.py/bigbed/beta_equal/ ../gwas2eqtl_trackhub
+ython scripts/cmpt_track_hub.py gwas2eqtl_beta_unequal out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_inter_bed.py/bigbed/beta_unequal/ ../gwas2eqtl_trackhub
 ~~~
 
 # MS

@@ -4,6 +4,7 @@ import pathlib
 import seaborn
 import sys
 
+import sqlalchemy
 from matplotlib import pyplot as plt
 
 
@@ -11,12 +12,11 @@ from matplotlib import pyplot as plt
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_category_count = int(sys.argv[2])
-    manuscript_pleio_cutoff = int(sys.argv[3])
-    sa_url = sys.argv[4]
-    count_per_rsid_gwas_egene_etissue_ods = sys.argv[5]
-    count_per_rsid_gwas_egene_etissue_corr_png = sys.argv[6]
-    if len(sys.argv) > 7:
+    manuscript_pleio_cutoff = int(sys.argv[2])
+    db_url = sys.argv[3]
+    count_per_rsid_gwas_egene_etissue_ods = sys.argv[4]
+    count_per_rsid_gwas_egene_etissue_corr_png = sys.argv[5]
+    if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -30,7 +30,10 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_category_term', 'pubmed_count']
-coloc_df = pandas.read_sql(sql, con=sa_url, columns=columns).drop_duplicates()
+# coloc_df = pandas.read_sql(sql, con=db_url, columns=columns).drop_duplicates()
+engine = sqlalchemy.create_engine(db_url)
+with engine.begin() as conn:
+    coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn, columns=columns).drop_duplicates()
 
 #%% definition of variant for aggregation
 variant_def_lst = ['chrom', 'cytoband', 'pos19', 'pos38', 'rsid', 'ref', 'alt']
@@ -118,18 +121,31 @@ plt.close()
 #%########################################### bed files, flanking=0
 # bed files of variants splitted by gwas categories
 flank = 10
-variant_bed_df = gwas_df.copy()
-variant_bed_df['chrom'] = 'chr' + variant_bed_df['chrom'].astype(str)
-variant_bed_df['start'] = variant_bed_df['pos38'] - 1 - flank
-variant_bed_df['end'] = variant_bed_df['pos38'] + flank
-variant_bed_df = variant_bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_category_count', 'gwas_category_lst']]
+bed_df = gwas_df.copy()
+bed_df['chrom'] = 'chr' + bed_df['chrom'].astype(str)
+bed_df['start'] = bed_df['pos38'] - 1 - flank
+bed_df['end'] = bed_df['pos38'] + flank
+bed_df['rsid'] = 'rs' + bed_df['rsid'].astype(str)
+bed_df = bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_category_count']]
 
-for count_pleio in range(1, max_gwas_category_count+1):
-    # print(count_pleio)
-    variant_pleio_i_bed_path = os.path.join(outdir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
-    if count_pleio == max_gwas_category_count:
-        variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] >= count_pleio, ]
-    else:
-        variant_pleio_i_bed_df = variant_bed_df.loc[variant_bed_df['gwas_category_count'] == count_pleio,]
-    variant_pleio_i_bed_df = variant_pleio_i_bed_df.sort_values(by=['chrom', 'start', 'end'])
-    variant_pleio_i_bed_df.to_csv(variant_pleio_i_bed_path, sep="\t", index=False, header=False)
+for gwas_category_count in sorted(bed_df['gwas_category_count'].unique()):
+    pleio_bed_path = os.path.join(outdir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(gwas_category_count, flank))
+    bed_pleio_df = bed_df.loc[bed_df['gwas_category_count'] == gwas_category_count, ]
+    bed_pleio_df = bed_pleio_df.sort_values(by=['chrom', 'start', 'end'])
+    bed_pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
+
+#%########################################### bed files, flanking=0
+# bed files of variants splitted by gwas categories
+flank = 0
+bed_df = gwas_df.copy()
+bed_df['chrom'] = 'chr' + bed_df['chrom'].astype(str)
+bed_df['start'] = bed_df['pos38'] - 1 - flank
+bed_df['end'] = bed_df['pos38'] + flank
+bed_df['rsid'] = 'rs' + bed_df['rsid'].astype(str)
+bed_df = bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_category_count']]
+
+for gwas_category_count in sorted(bed_df['gwas_category_count'].unique()):
+    pleio_bed_path = os.path.join(outdir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(gwas_category_count, flank))
+    bed_pleio_df = bed_df.loc[bed_df['gwas_category_count'] == gwas_category_count, ]
+    bed_pleio_df = bed_pleio_df.sort_values(by=['chrom', 'start', 'end'])
+    bed_pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
