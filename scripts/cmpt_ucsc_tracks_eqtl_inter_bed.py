@@ -32,20 +32,21 @@ with engine.begin() as conn:
     df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
 df = df.loc[~df['eqtl_refseq_transcript_start38'].isna()]
-df = df[['chrom', 'pos38', 'rsid', 'eqtl_gene_symbol', 'eqtl_beta', 'eqtl_id',
+df = df[['chrom', 'pos38', 'rsid', 'ref', 'alt', 'eqtl_gene_symbol', 'eqtl_beta', 'eqtl_id',
  'eqtl_refseq_transcript_start38', 'eqtl_refseq_transcript_end38', 'eqtl_refseq_transcript_strand',
  'etissue_category_term', 'gwas_trait', 'gwas_category_ontology_term', 'gwas_beta', 'gwas_id', 'snp_pp_h4']].drop_duplicates()
+
 
 # select longest transcript
 df['transcript_length'] = df['eqtl_refseq_transcript_end38'] - df['eqtl_refseq_transcript_start38']
 df = df.sort_values(['transcript_length'], ascending=[False])
-df = df.drop_duplicates(['chrom', 'pos38', 'rsid', 'eqtl_gene_symbol', 'eqtl_beta', 'eqtl_id', 'eqtl_refseq_transcript_strand'], keep='first')
+df = df.drop_duplicates(['chrom', 'pos38', 'rsid', 'ref', 'alt', 'eqtl_gene_symbol', 'eqtl_beta', 'eqtl_id', 'gwas_id', 'gwas_trait', 'gwas_beta', 'eqtl_refseq_transcript_strand'], keep='first')
 
 df2 = df.copy()
 df2["sourceChrom"] = "chr" + df2['chrom'].astype(str)
 df2["sourceStart"] = df2['pos38'].astype(int) - 1
 df2["sourceEnd"] = df2['pos38'].astype(int)
-df2["sourceName"] = 'rs' + df2['rsid'].astype(str) + '/' + df2['gwas_trait'].str.replace(" ", "_") + '/' + df2['gwas_beta'].astype(str)
+df2["sourceName"] = 'rs' + df2['rsid'].astype(str) + '/' + df2['gwas_trait'].str.replace(" ", "_") + '/' + df['gwas_id'] + '/' + df2['gwas_beta'].astype(str)
 df2["sourceStrand"] = '.'
 
 df2["targetChrom"] = "chr" + df2['chrom'].astype(str)
@@ -60,7 +61,7 @@ df2['chromEnd'] = df2[['sourceStart', 'sourceEnd', 'targetStart', 'targetEnd']].
 
 df2['score'] = (df2['snp_pp_h4'] * 1000).astype(int)
 
-df2['exp'] = df['eqtl_id'] + '/' + df['gwas_id']
+df2['exp'] = df['eqtl_id']
 df2['value'] = df['eqtl_beta']
 
 df2['color'] = '#FF0000'

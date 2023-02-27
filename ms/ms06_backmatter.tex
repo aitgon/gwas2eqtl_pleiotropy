@@ -6,10 +6,10 @@
 
 \begin{backmatter}
 
-    \section*{Acknowledgements}%% if any
-    Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
+\section*{Acknowledgements}%% if any
+Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
 %
-    I thank Sandrine Marquet, Marie Michel, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and Léopoldine Lecerf for a preliminary version of the colocalization pipeline developed during her internship.
+I thank Sandrine Marquet, Marie Michel, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and Léopoldine Lecerf for a preliminary version of the colocalization pipeline developed during her internship.
 
 %    \section*{Funding}%% if any
 %    Text for this section\ldots
@@ -17,20 +17,20 @@
 %    \section*{Abbreviations}%% if any
 %    Text for this section\ldots
 
-    \section*{Availability of data and materials}%% if any
-    Text for this section\ldots
+\section*{Availability of data and materials}%% if any
+Text for this section\ldots
 
 %    \section*{Ethics approval and consent to participate}%% if any
 %    Text for this section\ldots
 
-    \section*{Competing interests}
-    The author declare that he has no competing interests.
+\section*{Competing interests}
+The author declare that he has no competing interests.
 
 %    \section*{Consent for publication}%% if any
 %    Text for this section\ldots
 
-    \section*{Authors' contributions}
-    Aitor González: Conceptualization, Methodology, Software, Validation, Formal analysis, Resources, Data Curation, Visualization, Writing - original draft, Writing - review \& editing.
+\section*{Authors' contributions}
+Aitor González: Conceptualization, Methodology, Software, Validation, Formal analysis, Resources, Data Curation, Visualization, Writing - original draft, Writing - review \& editing.
 
 %    \section*{Authors' information}%% if any
 %    Text for this section\ldots
@@ -51,8 +51,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % if your bibliography is in bibtex format, use those commands:
-    \bibliographystyle{bmc-mathphys} % Style BST file (bmc-mathphys, vancouver, spbasic).
-    \bibliography{ms_pleiotropy}      % Bibliography file (usually '*.bib' )
+\bibliographystyle{bmc-mathphys} % Style BST file (bmc-mathphys, vancouver, spbasic).
+\bibliography{ms_pleiotropy}      % Bibliography file (usually '*.bib' )
 % for author-year bibliography (bmc-mathphys or spbasic)
 % a) write to bib file (bmc-mathphys only)
 % @settings{label, options="nameyear"}
@@ -78,7 +78,7 @@
 %%
 %% Do not use \listoffigures as most will included as separate files
 
-    \section*{Figures}
+\section*{Figures}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -86,14 +86,22 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \begin{figure}[!ht]
-        %
-        \caption{Histogram showing the percentage of GWAS with the percentage of their tophits colocalized with eQTLs.
-        I have excluded tophits in in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000,
-            because this locus is not included in the colocalization pipeline.}
-        \label{fig:1}
-        %
-    \end{figure}
+\begin{figure}[!ht]
+    %
+    \caption{Distribution of GWAS based on eQTL colocalization and UCSC screenshots with colocalized GWAS/eQTLs.
+    \textbf{a} Histogram showing the percentage of GWAS with the percentage of their tophits colocalized with eQTLs.
+    I have excluded tophits in in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000,
+    because this locus is not included in the colocalization pipeline.
+    \textbf{b-d} UCSC screenshots of eQTLs colocalized with GWAS variants in the chr5:132,137,990-132,728,110 (hg38)
+    for the b-cells (\textbf{b}), classical monocytes (\textbf{c}) and cortex cells (\textbf{d}).
+    There are two tracks for each biosample: "beta equal" and "beta unequal".
+    "beta equal" corresponds to colocalized GWAS/eQTLs where both the GWAS beta and the eQTL beta coefficient have the same sign.
+    "beta unequal" corresponds to colocalized GWAS/eQTLs where the GWAS beta and the eQTL beta coefficients have different signs.
+    This allows to infer the beta coefficient of the GWAS variant eventhough the sign is shown with the column for the eQTL.
+    }
+    \label{fig:1}
+    %
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -101,78 +109,93 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \begin{figure}[!ht]
-        %
-        \caption{Trait clustering based on the Spearman correlation between beta values of colocalized eQTL variants, genes and biosamples.}
-        \label{fig:2}
-        %
-    \end{figure}
+\begin{figure}[!ht]
+    %
+    \caption{
+    Trait clustering based on the Spearman correlation between beta values of colocalized eQTL variants, genes and biosamples.
+    }
+    \label{fig:2}
+    %
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Fig 3: Histograms of variants vs GWAS, eQTL genes and eQTL biosamples
-% Fig 4: Spearman correlation between counts of GWAS categories, eQTL genes and eQTL biosamples
-% Fig 5: VEP consequences
+% Fig : Spearman correlation between counts of GWAS categories, eQTL genes and eQTL biosamples
+% Fig : VEP consequences
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[!ht]
+    %
+    \caption{Distribution of GWAS category counts, correlation and ENSEMBL variant effect prediction.
+    \textbf{a-c} Distribution of GWAS category, eQTL gene and eQTL biosample counts.
+    Percentage of colocalized eQTL/GWAS variants with different number of GWAS classes (\textbf{a}), eQTL genes (\textbf{b}) and eQTL tissues (\textbf{c}).
+    \textbf{d} Spearman correlation between the counts of GWAS categories, eQTL genes and eQTL biosamples.
+    \textbf{e} Odds ratio of the eQTLs annotated with the given ENSEMBL variant predictor
+    for eQTLs association withe the given GWAS category count versus the eQTLs with a single GWAS category count.
+    The significance is given for the q-value with False discovery rate 5\%.
+    }
+    \label{fig:3}
+    %
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-    \begin{figure}[!ht]
-        %
-        \caption{Distribution of GWAS category counts, correlation and ENSEMBL variant effect prediction.
-        \textbf{a-c} Distribution of GWAS category, eQTL gene and eQTL biosample counts.
-        Percentage of colocalized eQTL/GWAS variants with different number of GWAS classes (\textbf{a}), eQTL genes (\textbf{b}) and eQTL tissues (\textbf{c}).
-        \textbf{d} Spearman correlation between the counts of GWAS categories, eQTL genes and eQTL biosamples.
-        \textbf{e} Odds ratio of the eQTLs annotated with the given ENSEMBL variant predictor
-        for eQTLs association withe the given GWAS category count versus the eQTLs with a single GWAS category count.
-        The significance is given for the q-value with False discovery rate 5\%.
+% Fig 4: beta and pval
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[!ht]
+    %
+    \caption{
+    eQTL and GWAS beta and p-values and allele frequencies for different GWAS category counts.
+    \textbf{a,b} Average eQTL and GWAS beta values.
+    \textbf{c,d} Average eQTL and GWAS p-values.
+    \textbf{e} Average alternative allele frequency in the European population from the 1000 Genomes database.
+    }
+    \label{fig:4}
+    %
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 5: Plots of the number of genes and biosample per variant-biosample and variant-gene, respectively
+% Fig: TF count per GWAS class count
+% Fig: eQTL gene distribution
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[!ht]
+    %
+    \caption{
+    Analysis of eQTL gene and biosample counts, transcription factor binding and gene distance as a function of the GWAS category count.
+    \textbf{a} Mean number of eQTL genes per eQTL-biosample pair.
+    \textbf{b} Mean number of biosamples per eQTL-gene pair.
+    \textbf{c} Binding count of transcription factors in the region surrounding pleiotropic eQTLs with a radius of 50 bp as a function of the GWAS class count.
+    \textbf{d} Odds ratio of eQTLs annotated as belonging to a cis regulatory modules versus non-annotated.
+    \textbf{e} Violin plots of the eQTL gene distances.
+    }
+    \label{fig:5}
+    %
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Graphical conclusions
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[!ht]
+    %
+        \caption{
+        Graphical conclusions. I have analysed the differences underlying pleiotropy of eQTLs.
+        I have found that pleiotropic eQTLs have more target genes and lower GWAS and expression beta coefficients.
+        There is some evidence that pleitropic eQTLs overlap with more cis-regulatory modules.
         }
-        \label{fig:3}
-        %
-    \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Fig 6: beta and pval
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    \begin{figure}[!ht]
-        %
-        \caption{eQTL and GWAS beta and p-values and allele frequencies for different GWAS category counts.
-        \textbf{a,b} Average eQTL and GWAS beta values.
-        \textbf{c,d} Average eQTL and GWAS p-values.
-        \textbf{e} Average alternative allele frequency in the European population from the 1000 Genomes database.
-        }
-        \label{fig:4}
-        %
-    \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Fig 7: Plots of the number of genes and biosample per variant-biosample and variant-gene, respectively
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    \begin{figure}[!ht]
-        %
-        \caption{Mean number of eQTL genes per eQTL-biosample pair (\textbf{a}) and mean number of biosamples per eQTL-gene pairs (\textbf{b}).} \label{fig:gwas_egene_etisue_per_variant}
-        %
-    \end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Fig 8: TF count per GWAS class count
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    \begin{figure}[!ht]
-        %
-        \caption{Analysis of transcription factor binding.
-        \textbf{a}, Binding count of transcription factors in the region surrounding pleiotropic eQTLs with a radius of 50 bp as a function of the GWAS class count.
-        \textbf{b}, Odds ratio of eQTLs annotated as belonging to a cis regulatory modules vs. non-annotated.}
-        \label{fig:freq_tf_per_variant}
-        %
-    \end{figure}
+    \label{fig:6}
+    %
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                               %%
@@ -182,9 +205,9 @@
 
 %% Use of \listoftables is discouraged.
 %%
-    \section*{Tables}
+\section*{Tables}
 
-    \input{ms07_tables}
+\input{ms07_tables}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                               %%
@@ -192,21 +215,21 @@
 %%                               %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \section*{Additional Files}
-    \subsection*{Additional file 1: Table S1.}
-    Classification of eQTL tissues and cell types. The first six were downloaded from the EBI eQTL repository.
-    The 7th column "etissue\_category\_term" is used here to compute tissue diversity.
+\section*{Additional Files}
+\subsection*{Additional file 1: Table S1.}
+Classification of eQTL tissues and cell types. The first six were downloaded from the EBI eQTL repository.
+The 7th column "etissue\_category\_term" is used here to compute tissue diversity.
 
-    \subsection*{Additional file 2: Table S2.}
-    Metadata and classification of GWAS.
+\subsection*{Additional file 2: Table S2.}
+Metadata and classification of GWAS.
 
-    \subsection*{Additional file 3: Table S3.}
-    Percentage of tophits per GWAS that colocalized with at least one eQTL.
+\subsection*{Additional file 3: Table S3.}
+Percentage of tophits per GWAS that colocalized with at least one eQTL.
 
-    \subsection*{Additional file 4: Table S4.}
-    Count and list of GWAS phenotypes, egenes and etissues for each eQTL/GWAS variant.
+\subsection*{Additional file 4: Table S4.}
+Count and list of GWAS phenotypes, egenes and etissues for each eQTL/GWAS variant.
 
-    \subsection*{Additional file 5: Table S5.}
-    Count and list of GWAS phenotypes, egene symbols and ENSEMBL IDs and etissue classes for each pleiotropic region.
+\subsection*{Additional file 5: Table S5.}
+Count and list of GWAS phenotypes, egene symbols and ENSEMBL IDs and etissue classes for each pleiotropic region.
 
 \end{backmatter}

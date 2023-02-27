@@ -241,8 +241,7 @@ UCSC track hub
 
 ~~~
 snakemake -p --cores 1 -s tools/06_ucsc_hubs.yml --config outdir=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 public_data_dir=/home/gonzalez/Software/public snp_pp_h4=0.50 db_url=postgresql://postgres:postgres@0.0.0.0:5435/postgres
-ython scripts/cmpt_track_hub.py gwas2eqtl_beta_equal out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_inter_bed.py/bigbed/beta_equal/ ../gwas2eqtl_trackhub
-ython scripts/cmpt_track_hub.py gwas2eqtl_beta_unequal out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_inter_bed.py/bigbed/beta_unequal/ ../gwas2eqtl_trackhub
+python scripts/cmpt_track_hub.py out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_inter_bed.py/bigbed out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods  ../gwas2eqtl_trackhub
 ~~~
 
 # MS
