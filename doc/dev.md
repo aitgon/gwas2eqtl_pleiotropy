@@ -250,4 +250,5 @@ python scripts/cmpt_track_hub.py out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_10
 cd ms
 rm -f *.aux *.dvi *.log *.out; texi2pdf ms00_bmc_article.tex; rm -f *.aux *.dvi *.log *.out
 rm -f *.aux *.dvi *.log *.out; texi2pdf ms00_fig_suppl.tex; rm -f *.aux *.dvi *.log *.out
+rm -f *.aux *.dvi *.log *.out; texi2pdf ms00_fig_table_suppl.tex; rm -f *.aux *.dvi *.log *.out
 ~~~
