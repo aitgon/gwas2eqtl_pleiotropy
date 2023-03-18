@@ -7,6 +7,7 @@ import sys
 import sqlalchemy
 from matplotlib import pyplot as plt
 
+from gwas2eqtl_pleiotropy.constants import label_fontsize
 
 #%%
 help_cmd_str = "todo"
@@ -29,8 +30,7 @@ outdir_path = os.path.dirname(count_per_rsid_gwas_egene_etissue_ods)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
-columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_category_term', 'pubmed_count']
-# coloc_df = pandas.read_sql(sql, con=db_url, columns=columns).drop_duplicates()
+columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_category_term', 'pubmed_count', 'domains_watanabe2019']
 engine = sqlalchemy.create_engine(db_url)
 with engine.begin() as conn:
     coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn, columns=columns).drop_duplicates()
@@ -66,7 +66,7 @@ etissue_df['etissue_category_term_count'] = etissue_df['etissue_category_term'].
 etissue_df.rename({'etissue_category_term': 'etissue_category_term_lst'}, axis=1, inplace=True)
 
 #%% per rsid, aggregate eqtl gene pubmed count
-gene_pubmed_marker_df = coloc_df[variant_def_lst + ['eqtl_gene_id', 'eqtl_gene_symbol', 'pubmed_count']].drop_duplicates()
+gene_pubmed_marker_df = coloc_df[variant_def_lst + ['eqtl_gene_id', 'eqtl_gene_symbol', 'pubmed_count', 'domains_watanabe2019']].drop_duplicates()
 gene_pubmed_marker_df.rename({'eqtl_gene_id': 'eqtl_gene_marker_id', 'eqtl_gene_symbol': 'eqtl_gene_marker_symbol'}, axis=1, inplace=True)
 gene_pubmed_marker_df['pubmed_count'] = gene_pubmed_marker_df['pubmed_count'].fillna(0)
 gene_pubmed_marker_df.sort_values('pubmed_count', ascending=False, inplace=True)
@@ -80,7 +80,8 @@ m_df = pandas.merge(m_df, gene_pubmed_marker_df, on=variant_def_lst)
 m_df.sort_values(['gwas_category_count', 'gwas_trait_count', 'chrom', 'pos38', 'rsid'], ascending=[False, False, True, True, True], inplace=True)
 columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'ref', 'alt', 'eqtl_gene_marker_symbol',
            'pubmed_count', 'gwas_category_count', 'gwas_trait_count',
-           'gwas_category_lst', 'gwas_trait_ontology_term', 'egene_lst', 'eqtl_gene_symbol_lst', 'egene_count', 'etissue_category_term_lst', 'etissue_category_term_count', 'eqtl_gene_marker_id']
+           'gwas_category_lst', 'gwas_trait_ontology_term', 'egene_lst', 'eqtl_gene_symbol_lst', 'egene_count',
+           'etissue_category_term_lst', 'etissue_category_term_count', 'eqtl_gene_marker_id', 'domains_watanabe2019']
 m_df = m_df[columns]
 
 m_df['gwas_category_lst'] = m_df['gwas_category_lst'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
@@ -117,6 +118,36 @@ plt.title("Spearman correlation", fontsize=16)
 plt.savefig(count_per_rsid_gwas_egene_etissue_corr_png)
 plt.clf()
 plt.close()
+
+#%########################################### watanabe 2019 category count
+m2df = m_df[['rsid', 'ref', 'alt', 'gwas_category_count', 'domains_watanabe2019']].copy()
+
+order = [*range(1, m2df['gwas_category_count'].max()+1)]
+ax = seaborn.boxplot(x='gwas_category_count', y='domains_watanabe2019', data=m2df, order=order, palette="rocket_r")
+plt.ylabel("Watanabe cat. cnt.", fontsize=label_fontsize)
+plt.xlabel("GWAS category count", fontsize=label_fontsize)
+png_path = os.path.join(outdir_path, 'watanabe_cat_count.png')
+plt.savefig(png_path)
+plt.clf()
+plt.close()
+
+#%########################################### watanabe 2019 category count
+m2df_cat_count_df = m2df.groupby('gwas_category_count').agg({'domains_watanabe2019': len})
+m2df_watanabe2019_cat_count_df = m2df.loc[~m2df['domains_watanabe2019'].isna()].groupby('gwas_category_count').agg({'domains_watanabe2019': len})
+m2df_watanabe2019_cat_count_df = m2df_watanabe2019_cat_count_df.merge(m2df_cat_count_df, left_index=True, right_index=True)
+m2df_watanabe2019_cat_count_df.columns = ['watanabe_count', 'count']
+m2df_watanabe2019_cat_count_df['watanabe_perc'] = (m2df_watanabe2019_cat_count_df['watanabe_count'] / m2df_watanabe2019_cat_count_df['count'] * 100).astype(int)
+
+order = [*range(1, m2df['gwas_category_count'].max()+1)]
+ax = seaborn.barplot(x=m2df_watanabe2019_cat_count_df.index, y='watanabe_perc', data=m2df_watanabe2019_cat_count_df, order=order, palette="rocket_r")
+plt.title("Part of Watanabe in our study", fontsize=label_fontsize)
+plt.ylabel("Percentage", fontsize=label_fontsize)
+plt.xlabel("GWAS category count", fontsize=label_fontsize)
+png_path = os.path.join(outdir_path, 'watanabe_percentage.png')
+plt.savefig(png_path)
+plt.clf()
+plt.close()
+
 
 #%########################################### bed files, flanking=0
 # bed files of variants splitted by gwas categories

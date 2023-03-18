@@ -16,6 +16,8 @@ rule all_02snkfl_cmpt_pleiotropic_regions:
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
         os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_incl_mhc.png"),
         os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_excl_mhc.png"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
 
 rule cmpt_pleiotropic_regions_wlength:
     input:
@@ -34,6 +36,8 @@ rule count_per_rsid:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
     params:
         snp_pp_h4=snp_pp_h4,
         manuscript_pleio_cutoff=max_gwas_category_count,
