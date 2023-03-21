@@ -50,6 +50,13 @@ python scripts/insrt_entrezgene2pubmed_count.py postgresql://postgres:postgres@0
 insrt_ncbirefseq -u postgresql://postgres:postgres@0.0.0.0:5435/postgres
 ~~~
 
+Pleiotropy from Watanabe et al. 2019
+
+~~~
+wget -r -c https://static-content.springer.com/esm/art%3A10.1038%2Fs41588-019-0481-0/MediaObjects/41588_2019_481_MOESM3_ESM.xlsx -P ~/Software/public
+insrt_watanabe_posthuma2019 -u postgresql://postgres:postgres@0.0.0.0:5435/postgres -i ~/Software/public/static-content.springer.com/esm/art:10.1038%2Fs41588-019-0481-0/MediaObjects/41588_2019_481_MOESM3_ESM.xlsx
+~~~
+
 Create "ensg2pubmed_count" view
 
 ~~~
