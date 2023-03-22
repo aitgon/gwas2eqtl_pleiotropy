@@ -85,7 +85,7 @@ SELECT DISTINCT co.chrom,
     op.batch,
     op.pmid,
     co.gwas_beta,
-    en.symbol AS eqtl_gene_symbol,
+    refseq.symbol AS eqtl_gene_symbol,
     co.eqtl_beta,
     co.eqtl_id,
     co.eqtl_gene_id,
@@ -103,46 +103,12 @@ SELECT DISTINCT co.chrom,
     af.afr_af,
     af.eur_af,
     af.sas_af,
-    en.refseq_transcript_start38,
-    en.refseq_transcript_end38,
-    en.refseq_transcript_strand
-     LEFT JOIN "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502" af ON ((((cSELECT DISTINCT co.chrom,
-    pos19.pos19,
-    co.pos38,
-    co.cytoband,
-    co.rsid,
-    co.ref,
-    co.alt,
-    gwtron.gwas_trait,
-    gwtron.gwas_ontology_term AS gwas_trait_ontology_term,
-    gwtron.gwas_ontology_id AS gwas_trait_ontology_id,
-    gwcaon.gwas_ontology_term AS gwas_category_ontology_term,
-    gwcaon.gwas_ontology_id AS gwas_category_ontology_id,
-    op.batch,
-    op.pmid,
-    co.gwas_beta,
-    en.symbol AS eqtl_gene_symbol,
-    co.eqtl_beta,
-    co.eqtl_id,
-    co.eqtl_gene_id,
-    co.gwas_id,
-    co.gwas_pval,
-    co.eqtl_pval,
-    co.pp_h4_abf,
-    co.snp_pp_h4,
-    co.coloc_variant_id AS tophits_variant_id,
-    co.nsnps,
-    eqtl_annot.etissue_category_term,
-    en2.pubmed_count,
-    af.eas_af,
-    af.amr_af,
-    af.afr_af,
-    af.eur_af,
-    af.sas_af,
-    en.eqtl_refseq_transcript_strand,
-    en.eqtl_refseq_transcript_start38,
-    en.eqtl_refseq_transcript_end38
-   FROM ((((((((( SELECT DISTINCT co0.chrom,
+    refseq.refseq_transcript_id AS eqtl_refseq_transcript_id,
+    refseq.refseq_transcript_start38 AS eqtl_refseq_transcript_start38,
+    refseq.refseq_transcript_end38 AS eqtl_refseq_transcript_end38,
+    refseq.refseq_transcript_strand AS eqtl_refseq_transcript_strand,
+    wp.domains AS domains_watanabe2019
+   FROM (((((((((( SELECT DISTINCT co0.chrom,
             co0.pos AS pos38,
             concat_ws(''::text, co0.chrom, cy.cytoband) AS cytoband,
             co0.rsid,
@@ -162,15 +128,16 @@ SELECT DISTINCT co.chrom,
            FROM coloc co0,
             cytoband cy
           WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co
-     LEFT JOIN "genome-mysql.soe.ucsc.edu/hg38/ncbirefseq" en ON (((en.gene_id)::text = (co.eqtl_gene_id)::text)))
+     LEFT JOIN "genome-mysql.soe.ucsc.edu/hg38/ncbirefseq" refseq ON (((refseq.gene_id)::text = (co.eqtl_gene_id)::text)))
      LEFT JOIN opengwas2trait_ontology gwtron ON (((gwtron.gwas_id)::text = (co.gwas_id)::text)))
      LEFT JOIN opengwas2category_ontology gwcaon ON (((gwcaon.gwas_id)::text = (co.gwas_id)::text)))
      LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text)))
      LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
      LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
      LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text)))
-     LEFT JOIN "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502" af ON ((((co.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text))))
-  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, en.symbol, co.eqtl_id;o.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text))))
+     LEFT JOIN af_1000genomes af ON ((((co.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text))))
+     LEFT JOIN watanabe_posthuma2019 wp ON ((((co.rsid)::text = (wp.rsid)::text) AND ((co.ref)::text = (wp.ref)::text) AND ((co.alt)::text = (wp.alt)::text))))
+  ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, refseq.symbol, co.eqtl_id;
 ~~~
 
 Create "colocweb" view
