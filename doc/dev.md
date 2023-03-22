@@ -199,6 +199,7 @@ Then snakemake is run with:
 snp_pp_h4 0.25 0.5 0.75
 
 ~~~
+export DAVID_EMAIL=myemaildavid@example.com
 export SNP_PP_H4=0.5
 export OUTDIR=out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50
 ~~~

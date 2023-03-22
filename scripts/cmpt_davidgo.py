@@ -94,19 +94,20 @@ for pleio_i in range(2, max_gwas_category_count+1):
     with open(davidgo_pleio_tsv_path, 'w') as fout:
         fout.write('Category\tTerm\tCount\t%\tPvalue\tGenes\tList Total\tPop Hits\tPop Total\tFold Enrichment\tBonferroni\tBenjamini\tFDR\n')
         for simpleChartRecord in chartReport:
-            categoryName = simpleChartRecord.categoryName
-            termName = simpleChartRecord.termName
-            listHits = simpleChartRecord.listHits
-            percent = simpleChartRecord.percent
-            ease = simpleChartRecord.ease
-            Genes = simpleChartRecord.geneIds
-            listTotals = simpleChartRecord.listTotals
-            popHits = simpleChartRecord.popHits
-            popTotals = simpleChartRecord.popTotals
-            foldEnrichment = simpleChartRecord.foldEnrichment
-            bonferroni = simpleChartRecord.bonferroni
-            benjamini = simpleChartRecord.benjamini
-            FDR = simpleChartRecord.afdr
-            rowList = [categoryName,termName,str(listHits),str(percent),str(ease),Genes,str(listTotals),str(popHits),str(popTotals),str(foldEnrichment),str(bonferroni),str(benjamini),str(FDR)]
-            fout.write('\t'.join(rowList) + '\n')
+            if not simpleChartRecord is None:
+                categoryName = simpleChartRecord.categoryName
+                termName = simpleChartRecord.termName
+                listHits = simpleChartRecord.listHits
+                percent = simpleChartRecord.percent
+                ease = simpleChartRecord.ease
+                Genes = simpleChartRecord.geneIds
+                listTotals = simpleChartRecord.listTotals
+                popHits = simpleChartRecord.popHits
+                popTotals = simpleChartRecord.popTotals
+                foldEnrichment = simpleChartRecord.foldEnrichment
+                bonferroni = simpleChartRecord.bonferroni
+                benjamini = simpleChartRecord.benjamini
+                FDR = simpleChartRecord.afdr
+                rowList = [categoryName,termName,str(listHits),str(percent),str(ease),Genes,str(listTotals),str(popHits),str(popTotals),str(foldEnrichment),str(bonferroni),str(benjamini),str(FDR)]
+                fout.write('\t'.join(rowList) + '\n')
     print('write file:', davidgo_pleio_tsv_path, 'finished!')
