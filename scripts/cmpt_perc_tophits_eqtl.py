@@ -12,7 +12,7 @@ from gwas2eqtl_pleiotropy.Logger import Logger
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    url = sys.argv[2]
+    db_url = sys.argv[2]
     loci_explained_perc_tsv = sys.argv[3]
     if len(sys.argv) > 4:
         print("""Two many arguments!
@@ -25,32 +25,44 @@ except IndexError:
 
 pathlib.Path(os.path.dirname(loci_explained_perc_tsv)).mkdir(exist_ok=True, parents=True)
 
-sql = 'select distinct chrom, pos, ea, tophits.gwas_id, trait as gwas_trait, op.consortium, op.pmid from tophits, open_gwas_info op where op.gwas_id=tophits.gwas_id'
-engine = sqlalchemy.create_engine(url)
+sql = 'select distinct chrom, pos, nea, ea, tophits.gwas_id, trait as gwas_trait, op.consortium, op.pmid from tophits, open_gwas_info op where op.gwas_id=tophits.gwas_id'
+engine = sqlalchemy.create_engine(db_url)
 with engine.begin() as conn:
     tophits_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
-tophits_df.rename({'ea': 'alt', 'pos': 'pos38'}, inplace=True, axis=1)
-concat_df = pandas.DataFrame()
+sql = 'select distinct * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
+columns = ['chrom', 'pos38', 'alt', 'eqtl_gene_id', 'gwas_id', 'gwas_trait', 'gwas_trait_ontology_term', 'eqtl_id', 'tophits_variant_id']
+engine = sqlalchemy.create_engine(db_url)
+with engine.begin() as conn:
+    coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn)
+coloc_df = coloc_df[columns].drop_duplicates()
 
-for gwas_id in sorted(tophits_df['gwas_id'].unique()):
-    Logger.info(gwas_id)
-    sql = "select distinct chrom, pos38, alt, gwas_id, gwas_trait from colocpleio where colocpleio.gwas_id='{}' and snp_pp_h4>={}".format(gwas_id, snp_pp_h4)
-    with engine.begin() as conn:
-        coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn)
-    # coloc_df = pandas.read_sql(sql, con=url)
-    tophits_gwas_df = tophits_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
-    tophits_gwas_coloc_df = coloc_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
-    merge_col_lst = ['chrom', 'pos38', 'alt', 'gwas_id', 'gwas_trait']
-    tophits_gwas_coloc_df = (tophits_gwas_df[merge_col_lst]).merge(tophits_gwas_coloc_df[merge_col_lst], on=merge_col_lst)
-    tophits_gwas_df = tophits_gwas_df.merge(tophits_gwas_coloc_df, on=['chrom', 'pos38', 'alt', 'gwas_id', 'gwas_trait'], how='left', indicator=True)
-    concat_df = pandas.concat([concat_df, tophits_gwas_df], axis=0)
+tophits_df['tophits_variant_id'] = tophits_df['chrom'].astype(str) + '_' + tophits_df['pos'].astype(str) + '_' + tophits_df['nea'] + '_' + tophits_df['ea']
+concat_df = tophits_df[['chrom', 'tophits_variant_id', 'gwas_id']].merge(coloc_df[['chrom', 'tophits_variant_id', 'gwas_id']], on=['chrom', 'tophits_variant_id', 'gwas_id'], how='left', indicator=True).drop_duplicates()
+concat_df.sort_values(['gwas_id', 'tophits_variant_id'], inplace=True)
+
+# tophits_df.rename({'ea': 'alt', 'pos': 'pos38'}, inplace=True, axis=1)
+# concat_df = pandas.DataFrame()
+#
+# for gwas_id in sorted(tophits_df['gwas_id'].unique()):
+#     Logger.info(gwas_id)
+#     sql = "select distinct chrom, pos38, alt, gwas_id, gwas_trait from colocpleio where colocpleio.gwas_id='{}' and snp_pp_h4>={}".format(gwas_id, snp_pp_h4)
+#     with engine.begin() as conn:
+#         coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn)
+#     # coloc_df = pandas.read_sql(sql, con=url)
+#     tophits_gwas_df = tophits_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
+#     tophits_gwas_coloc_df = coloc_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
+#     merge_col_lst = ['chrom', 'pos38', 'alt', 'gwas_id', 'gwas_trait']
+#     tophits_gwas_coloc_df = (tophits_gwas_df[merge_col_lst]).merge(tophits_gwas_coloc_df[merge_col_lst], on=merge_col_lst)
+#     tophits_gwas_df = tophits_gwas_df.merge(tophits_gwas_coloc_df, on=['chrom', 'pos38', 'alt', 'gwas_id', 'gwas_trait'], how='left', indicator=True)
+#     concat_df = pandas.concat([concat_df, tophits_gwas_df], axis=0)
 
 # Percentage explained all
-out_df = concat_df.groupby(['gwas_id', 'gwas_trait', '_merge']).size().reset_index()
+import pdb; pdb.set_trace()
+out_df = concat_df.groupby(['gwas_id', '_merge']).size().reset_index()
 out_df = out_df.loc[out_df['_merge'] != 'right_only']
-out_df = tophits_df[['gwas_id', 'gwas_trait']].merge(out_df, on=['gwas_id', 'gwas_trait']).drop_duplicates()
-out_df = out_df.pivot_table(index=['gwas_id', 'gwas_trait'], columns=['_merge'], values=0)
+out_df = tophits_df[['gwas_id']].merge(out_df, on=['gwas_id']).drop_duplicates()
+out_df = out_df.pivot_table(index=['gwas_id'], columns=['_merge'], values=0)
 
 out_df['loci_count'] = out_df.apply(sum, axis=1)
 out_df.rename({'both': 'loci_coloc_count', 'left_only': 'loci_noncoloc_count'}, axis=1, inplace=True)
