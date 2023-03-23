@@ -17,7 +17,7 @@ help_cmd_str = "todo"
 try:
     perc_tophits_eqtl_tsv = sys.argv[1]
     hist_perc_tophits_eqtl_png = sys.argv[2]
-    hist_perc_tophits_nomhc_eqtl_png = sys.argv[3]
+    # hist_perc_tophits_nomhc_eqtl_png = sys.argv[3]
     if len(sys.argv) > 4:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -30,7 +30,7 @@ except IndexError:
 pathlib.Path(os.path.dirname(hist_perc_tophits_eqtl_png)).mkdir(parents=True, exist_ok=True)
 # import pdb; pdb.set_trace()
 # count_df = pandas.read_csv(perc_tophits_eqtl_tsv, sep="\t")
-perc_tophits_eqtl_df = pandas.read_csv(perc_tophits_eqtl_tsv, sep="\t", usecols=['gwas_id', 'loci_coloc_perc', 'loci_nomhc_coloc_perc'], index_col='gwas_id')
+perc_tophits_eqtl_df = pandas.read_csv(perc_tophits_eqtl_tsv, sep="\t", usecols=['gwas_id', 'loci_explained_perc'], index_col='gwas_id')
 # import pdb; pdb.set_trace()
 
 #%%
@@ -45,7 +45,7 @@ label_fontsize = 28
 
 #%% loci_coloc_perc
 title = "eQTL colocalized tophits (incl. MHC)"
-data_ser = perc_tophits_eqtl_df['loci_coloc_perc']
+data_ser = perc_tophits_eqtl_df['loci_explained_perc']
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
@@ -60,21 +60,21 @@ plt.tight_layout()
 plt.savefig(hist_perc_tophits_eqtl_png, dpi=dpi)
 plt.close()
 
-#%% loci_nomhc_coloc_perc
-title = "eQTL colocalized tophits (excl. MHC)"
-data_ser = perc_tophits_eqtl_df['loci_nomhc_coloc_perc']
-shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
-
-plt.grid(visible=True, axis='y')
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel("Percentage of tophits", fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-
-plt.tight_layout()
-plt.savefig(hist_perc_tophits_nomhc_eqtl_png, dpi=dpi)
-plt.close()
+# #%% loci_nomhc_coloc_perc
+# title = "eQTL colocalized tophits (excl. MHC)"
+# data_ser = perc_tophits_eqtl_df['loci_nomhc_coloc_perc']
+# shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
+#
+# plt.grid(visible=True, axis='y')
+# plt.title(title, fontsize=label_fontsize)
+# plt.xlabel("Percentage of tophits", fontsize=label_fontsize)
+# plt.xticks(fontsize=tick_fontsize)
+# plt.xticks(fontsize=tick_fontsize, rotation=0)
+# plt.ylabel(ylabel, fontsize=label_fontsize)
+# plt.yticks(fontsize=tick_fontsize)
+#
+# plt.tight_layout()
+# plt.savefig(hist_perc_tophits_nomhc_eqtl_png, dpi=dpi)
+# plt.close()
 
 

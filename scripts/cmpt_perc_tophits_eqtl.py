@@ -1,12 +1,11 @@
 import os
-import pathlib
-
 import pandas
+import pathlib
+import seaborn
+import sqlalchemy
 import sys
 
-import sqlalchemy
-
-from gwas2eqtl_pleiotropy.Logger import Logger
+from matplotlib import pyplot as plt
 
 #%%
 help_cmd_str = "todo"
@@ -23,7 +22,8 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
-pathlib.Path(os.path.dirname(loci_explained_perc_tsv)).mkdir(exist_ok=True, parents=True)
+outdir_path = os.path.dirname(loci_explained_perc_tsv)
+pathlib.Path(outdir_path).mkdir(exist_ok=True, parents=True)
 
 sql = 'select distinct chrom, pos, nea, ea, tophits.gwas_id, trait as gwas_trait, op.consortium, op.pmid from tophits, open_gwas_info op where op.gwas_id=tophits.gwas_id'
 engine = sqlalchemy.create_engine(db_url)
@@ -31,58 +31,57 @@ with engine.begin() as conn:
     tophits_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
 sql = 'select distinct * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
-columns = ['chrom', 'pos38', 'alt', 'eqtl_gene_id', 'gwas_id', 'gwas_trait', 'gwas_trait_ontology_term', 'eqtl_id', 'tophits_variant_id']
+columns = ['chrom', 'pos38', 'alt', 'eqtl_gene_id', 'gwas_id', 'gwas_trait', 'gwas_trait_ontology_term', 'gwas_category_ontology_term', 'eqtl_id', 'tophits_variant_id']
 engine = sqlalchemy.create_engine(db_url)
 with engine.begin() as conn:
     coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn)
 coloc_df = coloc_df[columns].drop_duplicates()
+# Remove Locus MHC
+coloc_df = coloc_df.query('not (chrom==6 & pos38>=25000000 & pos38<=35000000)')
 
 tophits_df['tophits_variant_id'] = tophits_df['chrom'].astype(str) + '_' + tophits_df['pos'].astype(str) + '_' + tophits_df['nea'] + '_' + tophits_df['ea']
-concat_df = tophits_df[['chrom', 'tophits_variant_id', 'gwas_id']].merge(coloc_df[['chrom', 'tophits_variant_id', 'gwas_id']], on=['chrom', 'tophits_variant_id', 'gwas_id'], how='left', indicator=True).drop_duplicates()
-concat_df.sort_values(['gwas_id', 'tophits_variant_id'], inplace=True)
+# Remove Locus MHC
+tophits_df = tophits_df.query('not (chrom==6 & pos>=25000000 & pos<=35000000)')
 
-# tophits_df.rename({'ea': 'alt', 'pos': 'pos38'}, inplace=True, axis=1)
-# concat_df = pandas.DataFrame()
-#
-# for gwas_id in sorted(tophits_df['gwas_id'].unique()):
-#     Logger.info(gwas_id)
-#     sql = "select distinct chrom, pos38, alt, gwas_id, gwas_trait from colocpleio where colocpleio.gwas_id='{}' and snp_pp_h4>={}".format(gwas_id, snp_pp_h4)
-#     with engine.begin() as conn:
-#         coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn)
-#     # coloc_df = pandas.read_sql(sql, con=url)
-#     tophits_gwas_df = tophits_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
-#     tophits_gwas_coloc_df = coloc_df.query("gwas_id=='{gwas_id}'".format(gwas_id=gwas_id))
-#     merge_col_lst = ['chrom', 'pos38', 'alt', 'gwas_id', 'gwas_trait']
-#     tophits_gwas_coloc_df = (tophits_gwas_df[merge_col_lst]).merge(tophits_gwas_coloc_df[merge_col_lst], on=merge_col_lst)
-#     tophits_gwas_df = tophits_gwas_df.merge(tophits_gwas_coloc_df, on=['chrom', 'pos38', 'alt', 'gwas_id', 'gwas_trait'], how='left', indicator=True)
-#     concat_df = pandas.concat([concat_df, tophits_gwas_df], axis=0)
+m_df = tophits_df[['chrom', 'tophits_variant_id', 'gwas_id']].merge(coloc_df[['chrom', 'tophits_variant_id', 'gwas_id']], on=['chrom', 'tophits_variant_id', 'gwas_id'], how='left', indicator=True).drop_duplicates()
+m_df.sort_values(['gwas_id', 'tophits_variant_id'], inplace=True)
 
-# Percentage explained all
-import pdb; pdb.set_trace()
-out_df = concat_df.groupby(['gwas_id', '_merge']).size().reset_index()
-out_df = out_df.loc[out_df['_merge'] != 'right_only']
-out_df = tophits_df[['gwas_id']].merge(out_df, on=['gwas_id']).drop_duplicates()
-out_df = out_df.pivot_table(index=['gwas_id'], columns=['_merge'], values=0)
+# Percentage explained non-MHC
+m_df = m_df.groupby(['gwas_id', '_merge']).size().reset_index()
+m_df = m_df.loc[m_df['_merge'] != 'right_only']
+m_df = m_df.pivot_table(index=['gwas_id'], columns=['_merge'], values=0)
 
-out_df['loci_count'] = out_df.apply(sum, axis=1)
-out_df.rename({'both': 'loci_coloc_count', 'left_only': 'loci_noncoloc_count'}, axis=1, inplace=True)
-out_df['loci_coloc_perc'] = out_df['loci_coloc_count'] / out_df['loci_count'] * 100
-out_df['loci_coloc_perc'] = out_df['loci_coloc_perc'].apply(int)
+m_df['loci_cnt'] = m_df.apply(sum, axis=1)
+m_df.drop(['left_only'], axis=1, inplace=True)
+m_df.rename({'both': 'explained_cnt'}, axis=1, inplace=True)
+m_df['loci_explained_perc'] = m_df['explained_cnt'] / m_df['loci_cnt'] * 100
+m_df['loci_explained_perc'] = m_df['loci_explained_perc'].apply(int)
 
-# Percentage explained non mch
-concat_nomhc_df = concat_df.query('not (chrom==6 & pos38>=25000000 & pos38<=35000000)')
-out_nomhc_df = concat_nomhc_df.groupby(['gwas_id', 'gwas_trait', '_merge']).size().reset_index()
-out_nomhc_df = out_nomhc_df.loc[out_nomhc_df['_merge'] != 'right_only']
-out_nomhc_df = tophits_df[['gwas_id', 'gwas_trait']].merge(out_nomhc_df, on=['gwas_id', 'gwas_trait']).drop_duplicates()
-out_nomhc_df = out_nomhc_df.pivot_table(index=['gwas_id', 'gwas_trait'], columns=['_merge'], values=0)
+gwas_annot_df = coloc_df[['gwas_id', 'gwas_trait', 'gwas_trait_ontology_term', 'gwas_category_ontology_term']].drop_duplicates()
+m_df.merge(gwas_annot_df, on='gwas_id')
+m_df = m_df.merge(gwas_annot_df, on='gwas_id')
 
-out_nomhc_df['loci_nomhc_count'] = out_nomhc_df.apply(sum, axis=1)
-out_nomhc_df.rename({'both': 'loci_nomhc_coloc_count', 'left_only': 'loci_nomhc_noncoloc_count'}, axis=1, inplace=True)
-out_nomhc_df['loci_nomhc_coloc_perc'] = out_nomhc_df['loci_nomhc_coloc_count'] / out_nomhc_df['loci_nomhc_count'] * 100
-out_nomhc_df['loci_nomhc_coloc_perc'] = out_nomhc_df['loci_nomhc_coloc_perc'].apply(int)
-out_df = (out_df.merge(out_nomhc_df[['loci_nomhc_count', 'loci_nomhc_coloc_count', 'loci_nomhc_coloc_perc']], left_index=True, right_index=True))
+xlim = [0, 100]
+xlabel = "Explained loci percentage"
+ylabel = "GWAS trait ontology"
 
-out_df = out_df.merge(tophits_df[['gwas_id', 'gwas_trait', 'consortium', 'pmid']].drop_duplicates(), left_index=True, right_on=['gwas_id', 'gwas_trait'])
-out_df.set_index(['gwas_id', 'gwas_trait'], verify_integrity=True, inplace=True)
-out_df = out_df[['consortium', 'pmid', 'loci_count', 'loci_coloc_count', 'loci_coloc_perc', 'loci_nomhc_count', 'loci_nomhc_coloc_count', 'loci_nomhc_coloc_perc']]
-out_df.to_csv(loci_explained_perc_tsv, sep='\t', index=True)
+# import pdb; pdb.set_trace()
+m_df = m_df[['gwas_id', 'gwas_trait', 'gwas_trait_ontology_term', 'gwas_category_ontology_term', 'loci_cnt', 'explained_cnt', 'loci_explained_perc']]
+m_df.set_index(['gwas_id'], verify_integrity=True, inplace=True)
+m_df.to_csv(loci_explained_perc_tsv, sep='\t', index=True)
+
+for gwas_category_ontology_term in sorted(m_df['gwas_category_ontology_term'].unique()):
+    print(gwas_category_ontology_term)
+    m2_df = m_df.query('gwas_category_ontology_term=="{}"'.format(gwas_category_ontology_term))
+    order = sorted(m2_df['gwas_trait_ontology_term'].unique())
+    seaborn.stripplot(data=m2_df, y="gwas_trait_ontology_term", x="loci_explained_perc", orient='h', order=order)
+    plt.title(gwas_category_ontology_term)
+    plt.xlim(xlim)
+    plt.grid(True)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.tight_layout()
+    png_path = os.path.join(outdir_path, "{}.png".format(gwas_category_ontology_term.replace(' ', '_')))
+    plt.savefig(png_path)
+    plt.close()
+
