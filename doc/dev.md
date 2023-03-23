@@ -135,7 +135,7 @@ SELECT DISTINCT co.chrom,
      LEFT JOIN pos19 ON ((co.pos38 = pos19.pos)))
      LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text)))
      LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text)))
-     LEFT JOIN af_1000genomes af ON ((((co.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text))))
+     LEFT JOIN "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502" af ON ((((co.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text))))
      LEFT JOIN watanabe_posthuma2019 wp ON ((((co.rsid)::text = (wp.rsid)::text) AND ((co.ref)::text = (wp.ref)::text) AND ((co.alt)::text = (wp.alt)::text))))
   ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, refseq.symbol, co.eqtl_id;
 ~~~
