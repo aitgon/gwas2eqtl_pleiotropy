@@ -8,20 +8,26 @@ import sys
 from matplotlib import pyplot as plt
 
 #%%
-help_cmd_str = "todo"
-try:
-    snp_pp_h4 = float(sys.argv[1])
-    db_url = sys.argv[2]
-    loci_explained_perc_tsv = sys.argv[3]
-    if len(sys.argv) > 4:
-        print("""Two many arguments!
-        {}""".format(help_cmd_str))
-        sys.exit(1)
-except IndexError:
-    print("""Argument missing!
-    {}""".format(help_cmd_str))
-    sys.exit(1)
+snp_pp_h4 = "0.5"
+db_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
+loci_explained_perc_tsv = "out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"
 
+#%%
+# help_cmd_str = "todo"
+# try:
+#     snp_pp_h4 = float(sys.argv[1])
+#     db_url = sys.argv[2]
+#     loci_explained_perc_tsv = sys.argv[3]
+#     if len(sys.argv) > 4:
+#         print("""Two many arguments!
+#         {}""".format(help_cmd_str))
+#         sys.exit(1)
+# except IndexError:
+#     print("""Argument missing!
+#     {}""".format(help_cmd_str))
+#     sys.exit(1)
+
+#%%
 outdir_path = os.path.dirname(loci_explained_perc_tsv)
 pathlib.Path(outdir_path).mkdir(exist_ok=True, parents=True)
 
@@ -70,6 +76,12 @@ m_df = m_df[['gwas_id', 'gwas_trait', 'gwas_trait_ontology_term', 'gwas_category
 m_df.set_index(['gwas_id'], verify_integrity=True, inplace=True)
 m_df.to_csv(loci_explained_perc_tsv, sep='\t', index=True)
 
+#%%
+plt.rcParams["figure.figsize"] = (5, 10)
+seaborn.stripplot(data=m_df, y="gwas_trait_ontology_term", x="loci_explained_perc", orient='h')
+plt.show()
+
+#%%
 for gwas_category_ontology_term in sorted(m_df['gwas_category_ontology_term'].unique()):
     print(gwas_category_ontology_term)
     m2_df = m_df.query('gwas_category_ontology_term=="{}"'.format(gwas_category_ontology_term))
