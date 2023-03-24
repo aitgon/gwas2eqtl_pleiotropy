@@ -4,12 +4,34 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[!ht]
-    \centering
+\begin{figure}[!tbp]
 
-        \includegraphics[width=0.5\textwidth]{\floatRelativePath/plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_excl_mhc.png}
+\begin{subfigure}[]{.24\textwidth}
+\textbf{a}
+\\
+\includegraphics[width=\textwidth]{\floatRelativePath/cmpt_perc_tophits_eqtl.py/autoimmune_disease.png}
+\end{subfigure}
+%
+\begin{subfigure}[]{.24\textwidth}
+\textbf{b}
+\\
+\includegraphics[width=\textwidth]{\floatRelativePath/cmpt_perc_tophits_eqtl.py/cardiovascular_disease.png}
+\end{subfigure}
+%
+\begin{subfigure}[]{.24\textwidth}
+\textbf{c}
+\\
+\includegraphics[width=\textwidth]{\floatRelativePath/cmpt_perc_tophits_eqtl.py/digestive_system_disease.png}
+\end{subfigure}
+%
+\begin{subfigure}[]{.24\textwidth}
+\textbf{d}
+\\
+\includegraphics[width=\textwidth]{\floatRelativePath/cmpt_perc_tophits_eqtl.py/mental_or_behavioural_disorder.png}
+\end{subfigure}
 
-    \caption{}
+\caption{}
+\label{fig:region_gwas_egenes_tissues}
 %
 \end{figure}
 
@@ -125,39 +147,6 @@
         \\
         \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_vep_consequence.py/vep.png}
     \end{subfigure}
-    %
-    % Fig 9: eQTL gene distance
-    \begin{subfigure}[]{.49\textwidth}
-        \textbf{e}
-        \\
-        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_egene_distance.py/violin.png}
-    \end{subfigure}
-
-    \caption{}
-
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Fig 5: Comparison with Watanabe 2019
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{figure}[!ht]
-    %
-    \centering
-    %
-    \begin{subfigure}[]{.49\textwidth}
-        \textbf{a}
-        \\
-        \includegraphics[width=\textwidth]{\floatRelativePath/cmpt_count_per_rsid.py/watanabe_cat_count.png}
-    \end{subfigure}
-    %
-    \begin{subfigure}[]{.49\textwidth}
-        \textbf{b}
-        \\
-        \includegraphics[width=\textwidth]{\floatRelativePath/cmpt_count_per_rsid.py/watanabe_percentage.png}
-    \end{subfigure}
 
     \caption{}
 
@@ -200,6 +189,13 @@
         \textbf{e}
         \\
         \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_per_gwas_cat_y_allele_freq.py/eur_af.png}
+    \end{subfigure}
+    %
+    % Fig 9: eQTL gene distance
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{e}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_egene_distance.py/violin.png}
     \end{subfigure}
 
     \caption{}

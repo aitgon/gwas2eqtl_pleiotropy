@@ -8,24 +8,24 @@ import sys
 from matplotlib import pyplot as plt
 
 #%%
-snp_pp_h4 = "0.5"
-db_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
-loci_explained_perc_tsv = "out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"
+# snp_pp_h4 = "0.5"
+# db_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
+# loci_explained_perc_tsv = "out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"
 
 #%%
-# help_cmd_str = "todo"
-# try:
-#     snp_pp_h4 = float(sys.argv[1])
-#     db_url = sys.argv[2]
-#     loci_explained_perc_tsv = sys.argv[3]
-#     if len(sys.argv) > 4:
-#         print("""Two many arguments!
-#         {}""".format(help_cmd_str))
-#         sys.exit(1)
-# except IndexError:
-#     print("""Argument missing!
-#     {}""".format(help_cmd_str))
-#     sys.exit(1)
+help_cmd_str = "todo"
+try:
+    snp_pp_h4 = float(sys.argv[1])
+    db_url = sys.argv[2]
+    loci_explained_perc_tsv = sys.argv[3]
+    if len(sys.argv) > 4:
+        print("""Two many arguments!
+        {}""".format(help_cmd_str))
+        sys.exit(1)
+except IndexError:
+    print("""Argument missing!
+    {}""".format(help_cmd_str))
+    sys.exit(1)
 
 #%%
 outdir_path = os.path.dirname(loci_explained_perc_tsv)
@@ -77,15 +77,31 @@ m_df.set_index(['gwas_id'], verify_integrity=True, inplace=True)
 m_df.to_csv(loci_explained_perc_tsv, sep='\t', index=True)
 
 #%%
-plt.rcParams["figure.figsize"] = (5, 10)
-seaborn.stripplot(data=m_df, y="gwas_trait_ontology_term", x="loci_explained_perc", orient='h')
-plt.show()
+m_df.sort_values(by=['gwas_category_ontology_term', 'gwas_trait_ontology_term', 'gwas_trait'], inplace=True)
+
+#%%
+# fig, axes = plt.subplots(4, 1, sharex=True, figsize=(8,8))
+# plt.show()
+# m2_df = m_df.query('gwas_category_ontology_term=="autoimmune disease" or gwas_category_ontology_term=="cardiovascular disease"')
+
+# #%%
+# plt.rcParams["figure.figsize"] = (20, 10)
+# order = m2_df['gwas_trait_ontology_term'].tolist()
+# seaborn.catplot(data=m2_df, y="gwas_category_ontology_term", x="loci_explained_perc", orient='h', hue="gwas_trait_ontology_term", dodge=True, legend=False)
+# plt.legend(loc='upper left', title='Team', bbox_to_anchor=(-1, 1))
+# plt.yticks(fontsize=5)
+# plt.grid(True)
+# plt.subplots_adjust(left=0.4, right=0.9, bottom=0.05, top=0.95)
+# plt.show()
+
+#%%
 
 #%%
 for gwas_category_ontology_term in sorted(m_df['gwas_category_ontology_term'].unique()):
     print(gwas_category_ontology_term)
     m2_df = m_df.query('gwas_category_ontology_term=="{}"'.format(gwas_category_ontology_term))
     order = sorted(m2_df['gwas_trait_ontology_term'].unique())
+    plt.rcParams["figure.figsize"] = (6.4, 4.8)
     seaborn.stripplot(data=m2_df, y="gwas_trait_ontology_term", x="loci_explained_perc", orient='h', order=order)
     plt.title(gwas_category_ontology_term)
     plt.xlim(xlim)
@@ -96,4 +112,3 @@ for gwas_category_ontology_term in sorted(m_df['gwas_category_ontology_term'].un
     png_path = os.path.join(outdir_path, "{}.png".format(gwas_category_ontology_term.replace(' ', '_')))
     plt.savefig(png_path)
     plt.close()
-
