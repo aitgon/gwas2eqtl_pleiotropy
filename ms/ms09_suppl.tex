@@ -11,10 +11,11 @@
 \setcounter{figure}{0} % reset figure counter for Supp. Figures
 \setcounter{equation}{0} % reset equation counter for Supp. Equations
 %\setcounter{page}{1} % reset page count
-\makeatletter
-\renewcommand{\thefigure}{S\@arabic\c@figure} % make Figure legend start with Figure S
-\makeatother
-\def\theequation{S\arabic{equation}}
+%\makeatletter
+%\renewcommand{\thefigure}{S\@arabic\c@figure} % make Figure legend start with Figure S
+%\makeatother
+%\def\theequation{S\arabic{equation}}
+\renewcommand{\figurename}{Supplementary Figure}
 
 %  MAIN TEXT
 
@@ -142,7 +143,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-% Fig 2: ucsc help and screenshots
+% Fig 2: ucsc screenshots
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -152,29 +153,23 @@
     \begin{subfigure}[]{0.99\textwidth}
         \textbf{a}
         \\
-        \includegraphics[width=\textwidth]{fig/ucsc_help.png}
+        \includegraphics[width=\textwidth]{fig/ucsc_gwas2eqtl_il4_bcell_help.png}
     \end{subfigure}
 
     \begin{subfigure}[]{0.99\textwidth}
         \textbf{b}
         \\
-        \includegraphics[width=\textwidth]{fig/ucsc_gwas2eqtl_il4_bcell_help.png}
+        \includegraphics[width=\textwidth]{fig/ucsc_gwas2eqtl_il4_monocyte.png}
     \end{subfigure}
 
     \begin{subfigure}[]{0.99\textwidth}
         \textbf{c}
         \\
-        \includegraphics[width=\textwidth]{fig/ucsc_gwas2eqtl_il4_monocyte.png}
-    \end{subfigure}
-
-    \begin{subfigure}[]{0.99\textwidth}
-        \textbf{d}
-        \\
         \includegraphics[width=\textwidth]{fig/ucsc_gwas2eqtl_il4_frontalcortex.png}
     \end{subfigure}
 
     \caption{}
-%
+
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
