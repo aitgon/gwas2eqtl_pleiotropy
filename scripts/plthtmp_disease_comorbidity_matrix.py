@@ -4,6 +4,7 @@ import pandas
 import pathlib
 import sys
 import seaborn
+import sqlalchemy
 
 from gwas2eqtl_pleiotropy.Logger import Logger
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, dpi
@@ -18,7 +19,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    sa_url = sys.argv[1]  # annotate
+    db_url = sys.argv[1]  # annotate
     disease_corr_tsv_path = sys.argv[2]
     gwas_metadata_ods_path = sys.argv[3]
     htmp_disease_corr_png_path = sys.argv[4]
@@ -52,7 +53,10 @@ corr_df = corr_df[corr_df.columns[mask]]
 
 #%% create distance matrix
 dis_df = 1 - corr_df   # distance matrix
-gwas_metadata_df = pandas.read_sql('select distinct gwas_id, gwas_trait_ontology_term, batch, pmid , gwas_category_ontology_term from colocpleio', con=create_engine(sa_url))
+sql = 'select distinct gwas_id, gwas_trait_ontology_term, batch, pmid , gwas_category_ontology_term from colocpleio'
+engine = sqlalchemy.create_engine(db_url)
+with engine.begin() as conn:
+    gwas_metadata_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
 #%%
 # gwas_metadata_df = pandas.read_excel(gwas_metadata_ods_path, engine="odf", usecols=['gwas_id', 'trait', 'gwas_category'])
