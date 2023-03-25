@@ -29,11 +29,14 @@ except IndexError:
 outdir_path = os.path.dirname(count_per_rsid_gwas_egene_etissue_ods)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
-sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
-columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id', 'etissue_category_term', 'pubmed_count', 'domains_watanabe2019']
+columns = ['chrom', 'pos19', 'pos38', 'cytoband', 'rsid', 'ref', 'alt', 'gwas_trait_ontology_term',
+           'gwas_category_ontology_term', 'eqtl_beta', 'eqtl_gene_id', 'eqtl_gene_symbol', 'gwas_id',
+           'eqtl_id', 'etissue_category_term', 'pubmed_count', 'domains_watanabe2019']
+cols_str = ','.join(columns)
+sql = 'select distinct {} from colocpleio where snp_pp_h4>={}'.format(cols_str, snp_pp_h4)
 engine = sqlalchemy.create_engine(db_url)
 with engine.begin() as conn:
-    coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn, columns=columns).drop_duplicates()
+    coloc_df = pandas.read_sql(sqlalchemy.text(sql), con=conn)
 
 #%% definition of variant for aggregation
 variant_def_lst = ['chrom', 'cytoband', 'pos19', 'pos38', 'rsid', 'ref', 'alt']
