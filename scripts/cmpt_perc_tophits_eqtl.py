@@ -7,27 +7,30 @@ import sys
 
 from matplotlib import pyplot as plt
 
-from gwas2eqtl_pleiotropy.constants import tick_fontsize
+from gwas2eqtl_pleiotropy.constants import tick_fontsize, seaborn_theme_dic
+
+# %%
+snp_pp_h4 = "0.5"
+db_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
+loci_explained_perc_tsv = "out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"
+
+# #%%
+# help_cmd_str = "todo"
+# try:
+#     snp_pp_h4 = float(sys.argv[1])
+#     db_url = sys.argv[2]
+#     loci_explained_perc_tsv = sys.argv[3]
+#     if len(sys.argv) > 4:
+#         print("""Two many arguments!
+#         {}""".format(help_cmd_str))
+#         sys.exit(1)
+# except IndexError:
+#     print("""Argument missing!
+#     {}""".format(help_cmd_str))
+#     sys.exit(1)
 
 #%%
-# snp_pp_h4 = "0.5"
-# db_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
-# loci_explained_perc_tsv = "out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"
-
-#%%
-help_cmd_str = "todo"
-try:
-    snp_pp_h4 = float(sys.argv[1])
-    db_url = sys.argv[2]
-    loci_explained_perc_tsv = sys.argv[3]
-    if len(sys.argv) > 4:
-        print("""Two many arguments!
-        {}""".format(help_cmd_str))
-        sys.exit(1)
-except IndexError:
-    print("""Argument missing!
-    {}""".format(help_cmd_str))
-    sys.exit(1)
+seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 outdir_path = os.path.dirname(loci_explained_perc_tsv)
@@ -69,7 +72,7 @@ gwas_annot_df = coloc_df[['gwas_id', 'gwas_trait', 'gwas_trait_ontology_term', '
 m_df.merge(gwas_annot_df, on='gwas_id')
 m_df = m_df.merge(gwas_annot_df, on='gwas_id')
 
-xlim = [0, 100]
+xlim = [-5, 105]
 xlabel = "Explained loci percentage"
 ylabel = "GWAS trait ontology"
 
@@ -97,21 +100,33 @@ m_df.sort_values(by=['gwas_category_ontology_term', 'gwas_trait_ontology_term', 
 # plt.show()
 
 #%%
+m_df['gwas_trait_ontology_term'] = m_df['gwas_trait_ontology_term'].str.slice(0, 30)
 
 #%%
+fig, axes = plt.subplots(9, 4, sharex=False, figsize=(15, 20))
+counter = 0
 for gwas_category_ontology_term in sorted(m_df['gwas_category_ontology_term'].unique()):
     print(gwas_category_ontology_term)
     m2_df = m_df.query('gwas_category_ontology_term=="{}"'.format(gwas_category_ontology_term))
     order = sorted(m2_df['gwas_trait_ontology_term'].unique())
-    plt.rcParams["figure.figsize"] = (6.4, 6.4)
-    seaborn.stripplot(data=m2_df, y="gwas_trait_ontology_term", x="loci_explained_perc", orient='h', order=order)
-    plt.title(gwas_category_ontology_term, fontsize=18)
-    plt.xlim(xlim)
-    plt.grid(True)
-    plt.xlabel(xlabel, fontsize=18)
-    plt.ylabel("")
-    plt.yticks(fontsize=18, rotation=0)
+    # plt.rcParams["figure.figsize"] = (20, 10)
+    g = seaborn.stripplot(ax=axes[int(counter/4), counter%4], data=m2_df, y="gwas_trait_ontology_term", x="loci_explained_perc", orient='h', order=order, s=5)
+    g.tick_params(axis='y', which='major', labelsize=8)
+    g.set(ylabel=None)
+    g.set(xlabel="Percent. explain.")
+    g.set(title=gwas_category_ontology_term)
+    g.set_xticks([0, 25, 50, 75, 100])
+    plt.yticks(fontsize=5, rotation=0)
     plt.tight_layout()
-    png_path = os.path.join(outdir_path, "{}.png".format(gwas_category_ontology_term.replace(' ', '_')))
-    plt.savefig(png_path)
-    plt.close()
+    counter = counter + 1
+    # if counter == 8:
+    #     break
+
+fig.delaxes(axes[8][1])
+fig.delaxes(axes[8][2])
+fig.delaxes(axes[8][3])
+
+# plt.grid(True)
+png_path = os.path.join(outdir_path, "subplots.png".format(gwas_category_ontology_term.replace(' ', '_')))
+plt.savefig(png_path)
+plt.close()
