@@ -15,7 +15,7 @@ rule all_03snkfl_analysis_pleiotropy:
 
 rule pltbar_remap_crm_gwas_categories:
     input:
-        os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
         os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"),
     output:
         os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10_count.tsv"),
@@ -38,7 +38,7 @@ rule pltbox_remaptf_per_rsid:
 rule intrsct_remap_nr_gwas_categories:
     input:
         os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
     output:
         os.path.join(outdir, "intrsct_remapnr_gwas_categories.py/remap_nr_variant_pleio_1_flank_10_hg38.bed"),
     params:

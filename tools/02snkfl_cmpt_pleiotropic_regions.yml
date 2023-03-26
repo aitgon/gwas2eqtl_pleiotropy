@@ -39,7 +39,6 @@ rule count_per_rsid:
         os.path.join(outdir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/variant_pleio_1_flank_10_hg38.bed"),
     params:
         snp_pp_h4=snp_pp_h4,
         manuscript_pleio_cutoff=max_gwas_category_count,
