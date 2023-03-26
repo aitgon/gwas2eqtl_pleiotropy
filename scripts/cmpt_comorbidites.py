@@ -37,12 +37,12 @@ columns = ['rsid', 'eqtl_beta', 'eqtl_gene_id', 'gwas_id', 'eqtl_id']
 sql = 'select * from colocpleio where snp_pp_h4>={}'.format(snp_pp_h4)
 engine = sqlalchemy.create_engine(sa_url)
 with engine.begin() as conn:
-    h4_df = pandas.read_sql(sqlalchemy.text(sql), con=conn, columns=columns).drop_duplicates()
+    c_df = pandas.read_sql(sqlalchemy.text(sql), con=conn, columns=columns).drop_duplicates()
 
 #%%
-d_df = d_df.pivot_table(values='eqtl_beta', index=['rsid', 'eqtl_gene_id', 'eqtl_id'], columns='gwas_id', fill_value=0)
+c_df = c_df.pivot_table(values='eqtl_beta', index=['rsid', 'eqtl_gene_id', 'eqtl_id'], columns='gwas_id', fill_value=0)
 
 Logger.info("Spearman correlation")
-d_df = d_df.corr(method='spearman')
-d_df.to_csv(disease_corr_tsv_path, sep='\t', index=True, header=True)
+c_df = c_df.corr(method='spearman')
+c_df.to_csv(disease_corr_tsv_path, sep='\t', index=True, header=True)
 

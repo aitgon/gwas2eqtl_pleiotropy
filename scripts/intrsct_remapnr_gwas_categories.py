@@ -15,7 +15,7 @@ try:
     # max_gwas_category_count = int(sys.argv[1])
     threads = int(sys.argv[1])
     remap_nr_path = sys.argv[2]
-    variant_pleio_1_flank_10_hg38_bed = sys.argv[3]
+    eqtl_pleio_1_flank_10_hg38_bed = sys.argv[3]
     remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[4]
     if len(sys.argv) > 5:
         print("""Two many arguments!
@@ -30,13 +30,13 @@ outdir_path = os.path.join(os.path.dirname(remap_nr_pleio_1_flank_10_hg38_bed))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%% input dir cmpt_count_per_rsid
-indir_path = os.path.dirname(variant_pleio_1_flank_10_hg38_bed)
+indir_path = os.path.dirname(eqtl_pleio_1_flank_10_hg38_bed)
 
 #%% bedtools intersect
 flank = 10
 
 for max_gwas_category_count in range(1, 99):
-    bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(max_gwas_category_count, flank))
+    bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(max_gwas_category_count, flank))
     if not os.path.isfile(bed_path):
         break
 
@@ -44,7 +44,7 @@ max_gwas_category_count = max_gwas_category_count - 1
 print(max_gwas_category_count)
 def intrsct_remapnr(count_pleio):
     # print(count_pleio)
-    bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
+    bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
     intersect_basename = os.path.basename(remap_nr_pleio_1_flank_10_hg38_bed).replace('pleio_1', 'pleio_' + str(count_pleio))
     intersect_bed_path = os.path.join(os.path.dirname(remap_nr_pleio_1_flank_10_hg38_bed), intersect_basename)
     cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_nr_path} -wb"

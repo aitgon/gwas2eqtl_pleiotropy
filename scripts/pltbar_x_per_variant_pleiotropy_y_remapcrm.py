@@ -22,8 +22,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    # max_gwas_category_count = int(sys.argv[1])
-    variant_pleio_1_flank_10_hg38_bed = sys.argv[1]
+    eqtl_pleio_1_flank_10_hg38_bed = sys.argv[1]
     remap_crm_path = sys.argv[2]
     remap_count_tsv = sys.argv[3]
     barplot_remap_crm_png = sys.argv[4]
@@ -40,9 +39,7 @@ outdir_path = os.path.join(os.path.dirname(barplot_remap_crm_png))
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%% input dir cmpt_count_per_rsid
-indir_path = os.path.dirname(variant_pleio_1_flank_10_hg38_bed)
-
-# remap_crm_path = os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz")
+indir_path = os.path.dirname(eqtl_pleio_1_flank_10_hg38_bed)
 
 out_df_columns = ['pleio_count', 'pleio_n_crm_count', 'pleio_1_crm_count', 'pleio_n_nocrm_count', 'pleio_1_nocrm_count', 'oddsr', 'p']
 out_df = pandas.DataFrame(columns = out_df_columns)
@@ -50,23 +47,22 @@ out_df = pandas.DataFrame(columns = out_df_columns)
 #%% bedtools intersect
 flank = 10
 for count_pleio in range(1, 99):
-    bed_path = os.path.join(indir_path, "variant_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
-    if not os.path.isfile(bed_path):
+    eqtl_bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
+    if not os.path.isfile(eqtl_bed_path):
         break
     intersect_bed_path = os.path.join(outdir_path, "remap_crm_pleio_{}.bed".format(count_pleio))
-    cmd_stf = "bedtools intersect -sorted -a {bed_path} -b {remap_crm_path} -loj -wb"
-    cmd = cmd_stf.format(**{'bed_path': bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
+    cmd_stf = "bedtools intersect -sorted -a {eqtl_bed_path} -b {remap_crm_path} -loj -wb"
+    cmd = cmd_stf.format(**{'eqtl_bed_path': eqtl_bed_path, 'remap_crm_path': remap_crm_path, 'output_bed': intersect_bed_path})
     Logger.info(cmd)
     with open(intersect_bed_path, 'w') as fout:
         result = subprocess.run(shlex.split(cmd), stdout=fout)
+    crm_pleio_df = pandas.read_csv(intersect_bed_path, sep="\t", header=None, usecols=[0, 1, 2, 3, 4, 5, 6, 7],
+                                   names=['chrom', 'eqtl_start', 'eqtl_end', 'eqtl_rsid', 'gwas_category_count', 'crm_chrom', 'crm_start', 'crm_end'])
+    # import pdb; pdb.set_trace()
+    pleio_n_nocrm_count = (crm_pleio_df['crm_chrom'] == '.').sum()
+    pleio_n_crm_count = (crm_pleio_df['crm_chrom'] != '.').sum()
 
-    crm_pleio_df = pandas.read_csv(intersect_bed_path, sep="\t", header=None, usecols=[0, 1, 2, 3, 4, 5, 6],
-                                   names=['chrom', 'start', 'end', 'rsid', 'gwas_category_count', 'gwas_category_lst', 'crm'])
-
-    pleio_n_nocrm_count = (crm_pleio_df['crm'] == '.').sum()
-    pleio_n_crm_count = (crm_pleio_df['crm'] != '.').sum()
-
-    if count_pleio == 1:  # fisher test
+    if count_pleio == 1:  # fisher test reference
 
         pleio_1_nocrm_count = pleio_n_nocrm_count
         pleio_1_crm_count = pleio_n_crm_count

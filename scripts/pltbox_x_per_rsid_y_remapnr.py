@@ -47,7 +47,7 @@ for pleio in range(1, 99):
     if os.stat(pleio_path).st_size == 0:
         continue
     df = pandas.read_csv(pleio_path, sep="\t", header=None)
-    df['tf'] = df[9].str.split(':', expand=True)[0]
+    df['tf'] = df[8].str.split(':', expand=True)[0]
     df = df[[3, 'tf']].drop_duplicates()
     df.columns = ['rsid', 'tf']
     df = df.groupby('rsid').count().reset_index()
