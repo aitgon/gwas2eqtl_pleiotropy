@@ -7,6 +7,8 @@ import sys
 
 from matplotlib import pyplot as plt
 
+from gwas2eqtl_pleiotropy.constants import tick_fontsize
+
 #%%
 # snp_pp_h4 = "0.5"
 # db_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
@@ -101,13 +103,14 @@ for gwas_category_ontology_term in sorted(m_df['gwas_category_ontology_term'].un
     print(gwas_category_ontology_term)
     m2_df = m_df.query('gwas_category_ontology_term=="{}"'.format(gwas_category_ontology_term))
     order = sorted(m2_df['gwas_trait_ontology_term'].unique())
-    plt.rcParams["figure.figsize"] = (6.4, 4.8)
+    plt.rcParams["figure.figsize"] = (6.4, 6.4)
     seaborn.stripplot(data=m2_df, y="gwas_trait_ontology_term", x="loci_explained_perc", orient='h', order=order)
-    plt.title(gwas_category_ontology_term)
+    plt.title(gwas_category_ontology_term, fontsize=18)
     plt.xlim(xlim)
     plt.grid(True)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
+    plt.xlabel(xlabel, fontsize=18)
+    plt.ylabel("")
+    plt.yticks(fontsize=18, rotation=0)
     plt.tight_layout()
     png_path = os.path.join(outdir_path, "{}.png".format(gwas_category_ontology_term.replace(' ', '_')))
     plt.savefig(png_path)
