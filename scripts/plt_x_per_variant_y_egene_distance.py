@@ -106,6 +106,8 @@ plt.savefig(hist_png_path)
 plt.close()
 
 #%% Violin plot
+# import pdb; pdb.set_trace()
+m2_df['eqtl_gene_distance'] = m2_df['eqtl_gene_distance']/1000
 ax = seaborn.barplot(data=m2_df, x=x, y=y, estimator=numpy.mean, palette="rocket_r")
 
 annotator = Annotator(ax, pairs, data=m2_df, x=x, y=y, order=order)
@@ -114,7 +116,7 @@ annotator.apply_and_annotate()
 
 plt.title("Distance to closest gene", fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
-plt.ylabel("Distance mean", fontsize=label_fontsize)
+plt.ylabel("Mean distance [kbp]", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.yticks(fontsize=tick_fontsize)
 
@@ -122,6 +124,7 @@ plt.tight_layout()
 hist_png_path = os.path.join(outdir_path, "violin.png")
 plt.savefig(hist_png_path)
 plt.close()
+m2_df['eqtl_gene_distance'] = m2_df['eqtl_gene_distance']*1000
 
 ########################################################################################################################
 #

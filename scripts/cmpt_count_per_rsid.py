@@ -7,7 +7,7 @@ import sys
 import sqlalchemy
 from matplotlib import pyplot as plt
 
-from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, seaborn_theme_dic
 
 #%%
 help_cmd_str = "todo"
@@ -26,6 +26,7 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
+seaborn.set_theme(**seaborn_theme_dic)
 outdir_path = os.path.dirname(count_per_rsid_gwas_egene_etissue_ods)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
@@ -121,8 +122,8 @@ ax.set_yticklabels(ax.get_ymajorticklabels(), fontsize=20, rotation=45)
 plt.title("Spearman correlation", fontsize=label_fontsize)
 plt.subplots_adjust(left=0.4, right=1)
 plt.savefig(count_per_rsid_gwas_egene_etissue_corr_png)
+
 plt.tight_layout()
-plt.clf()
 plt.close()
 
 #%########################################### watanabe 2019 category count
@@ -130,11 +131,16 @@ m2df = m_df[['rsid', 'ref', 'alt', 'gwas_category_count', 'domains_watanabe2019'
 
 order = [*range(1, m2df['gwas_category_count'].max()+1)]
 ax = seaborn.boxplot(x='gwas_category_count', y='domains_watanabe2019', data=m2df, order=order, palette="rocket_r")
-plt.ylabel("Watanabe cat. cnt.", fontsize=label_fontsize)
+
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+plt.ylabel("Watanabe cat. cnt.", fontsize=label_fontsize)
+plt.title("Comparion Watanabe 2019", fontsize=28)
+
+plt.tight_layout()
 png_path = os.path.join(outdir_path, 'watanabe_cat_count.png')
 plt.savefig(png_path)
-plt.clf()
 plt.close()
 
 #%########################################### watanabe 2019 category count
@@ -146,12 +152,16 @@ m2df_watanabe2019_cat_count_df['watanabe_perc'] = (m2df_watanabe2019_cat_count_d
 
 order = [*range(1, m2df['gwas_category_count'].max()+1)]
 ax = seaborn.barplot(x=m2df_watanabe2019_cat_count_df.index, y='watanabe_perc', data=m2df_watanabe2019_cat_count_df, order=order, palette="rocket_r")
-plt.title("Part of Watanabe in our study", fontsize=label_fontsize)
-plt.ylabel("Percentage", fontsize=label_fontsize)
+
+plt.title("Known in Watanabe 2019", fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+plt.ylabel("Percentage", fontsize=label_fontsize)
+
+plt.tight_layout()
 png_path = os.path.join(outdir_path, 'watanabe_percentage.png')
 plt.savefig(png_path)
-plt.clf()
 plt.close()
 
 

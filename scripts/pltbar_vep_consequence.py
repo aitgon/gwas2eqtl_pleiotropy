@@ -4,7 +4,7 @@ import sys
 import pandas
 import seaborn
 
-from gwas2eqtl_pleiotropy.constants import dpi, seaborn_theme_dic, label_fontsize
+from gwas2eqtl_pleiotropy.constants import dpi, seaborn_theme_dic, label_fontsize, tick_fontsize
 from matplotlib import pyplot as plt
 
 seaborn.set_theme(**seaborn_theme_dic)
@@ -54,16 +54,19 @@ in_df = in_df.sort_values(['consequence', 'gwas_category_count'])
 
 order = in_df['consequence'].unique()
 hue_order = in_df['gwas_category_count'].unique()
-g = seaborn.barplot(data=in_df, y="consequence", x="oddsr", hue="gwas_category_count", palette="rocket_r", orient='h', order=order, hue_order=hue_order)
+g = seaborn.barplot(data=in_df, x="consequence", y="oddsr", hue="gwas_category_count", palette="rocket_r", orient='v', order=order, hue_order=hue_order)
 for c in g.containers:
     gwas_category_count = c.get_label()
     labels = in_df.loc[in_df['gwas_category_count'] == gwas_category_count, 'signif'].tolist()
     g.bar_label(c, labels=labels, label_type='edge', padding=5)
-plt.legend(title='GWAS category cnt.', loc='best', title_fontsize='small')
-plt.ylabel("Most severe VEP consequence", fontsize=12)
-plt.title("Variant Effect Predictor")
-plt.yticks(rotation=22.5)
-plt.xlabel("Odds ratio: Class cnt. x vs. category cnt 1", fontsize=12)
+
+plt.legend(title='Category cnt.', loc='best', title_fontsize='xx-large', fontsize='18')
+plt.title("Variant Effect Predictor", fontsize=label_fontsize)
+plt.ylabel("Odds vs cat. count 1", fontsize=tick_fontsize)
+plt.yticks(fontsize=12, rotation=0)
+plt.xlabel(None)
+plt.ylim([0, 11])
+plt.xticks(fontsize=label_fontsize)
 
 plt.tight_layout()
 plt.savefig(consequence_png_path, dpi=dpi)
