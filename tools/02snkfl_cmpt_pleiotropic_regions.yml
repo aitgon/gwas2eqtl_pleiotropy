@@ -15,7 +15,7 @@ rule all_02snkfl_cmpt_pleiotropic_regions:
         expand(os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.ods"), wlength=wlength_lst),
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
         os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl.png"),
-#        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl_excl_mhc.png"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/subplots.png"),

@@ -81,12 +81,13 @@ for y,ytitle in zip(y_labels, y_titles):
     annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
     annotator.apply_and_annotate()
 
+    ax.set_xticklabels(xticklabels)
     plt.title(ytitle, fontsize=label_fontsize)
     plt.xlabel(xlabel, fontsize=label_fontsize)
     plt.xticks(fontsize=tick_fontsize, rotation=0)
     plt.ylabel(ylabel, fontsize=label_fontsize)
+    plt.ylim([0.2, 0.7])
     plt.yticks(fontsize=tick_fontsize)
-    ax.set_xticklabels(xticklabels)
 
     plt.tight_layout()
     this_af_png_path = eur_af_png_path.replace('eur_af', y)

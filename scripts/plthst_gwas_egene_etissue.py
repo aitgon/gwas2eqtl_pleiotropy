@@ -36,7 +36,7 @@ pathlib.Path(os.path.dirname(hist_rsid_etissue_path)).mkdir(parents=True, exist_
 count_df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods, engine='odf')
 
 #%%
-ylabel = "Percent"
+ylabel = "Percentage"
 title = "Colocalized eQTL/GWAS variants"
 ylim = [0, 100]
 edgecolor = 'k'

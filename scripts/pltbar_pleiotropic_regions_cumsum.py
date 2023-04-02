@@ -39,14 +39,11 @@ cumsum_df.sort_values('gwas_category_count', ascending=False, inplace=True)
 cumsum_df['cumsum'] = cumsum_df['cumsum'].cumsum()
 cumsum_df['cumsum'] = cumsum_df['cumsum']/10e6
 
-# import pdb; pdb.set_trace()
 #%%
 order = cumsum_df['gwas_category_count'].tolist()
-# xticklabels = order.copy()
-# xticklabels[-1] = '≥{}'.format(order[-1])
-title = "Regions"
+title = "Pleiotropic regions"
 xlabel = "GWAS category count"
-ylabel = "Cumulative sum [Mb]"
+ylabel = "Cumulative sum [Mbp]"
 y = "cumsum"
 x = "gwas_category_count"
 
@@ -54,25 +51,13 @@ x = "gwas_category_count"
 ax = seaborn.barplot(x=x, y=y, data=cumsum_df, order=order, palette="rocket")
 
 #%%
-# pairs = [('1', x) for x in out_df['gwas_category_count'] if x != "1"]
-# formatted_pvalues = out_df['signif'].tolist()[1:]
-#
-# annotator = Annotator(ax, pairs, data=out_df, x=x, y=y, order=order, size=label_fontsize)
-# annotator.set_custom_annotations(formatted_pvalues)
-# annotator.configure(**annotator_config_dic)
-# annotator.annotate()
-
-# import pdb; pdb.set_trace()
-# ax.set_xticklabels(xticklabels)
+label_fontsize = 26
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(ax.get_yticks().tolist(), fontsize=tick_fontsize)
-# import pdb; pdb.set_trace()
-# ax.set_yticks(ax.get_yticks().tolist())
+plt.yticks(fontsize=tick_fontsize)
+plt.xticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 plt.savefig(png_path, dpi=dpi)
 plt.close()
-
-# import pdb; pdb.set_trace()

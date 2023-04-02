@@ -161,8 +161,7 @@ hist_kwargs = {'density': False, 'edgecolor': edgecolor, 'linewidth': linewidth}
 #%%
 data_ser = region_length_ser / wlength
 
-# ax = plt.hist(data_ser, bins=range(50), density=True, cumulative=True)
-ax = plt.hist(data_ser, bins=[i/100 for i in range(0,1001)], density=True, cumulative=True)
+ax = plt.hist(data_ser, bins=[i/100 for i in range(0, 1001)], density=True, cumulative=True)
 plt.xlim(0, 1)
 
 plt.grid(visible=True, axis='y')
@@ -170,7 +169,6 @@ plt.title(title, fontsize=label_fontsize)
 plt.xlabel("Region length [1e5 bp]", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
-# plt.yscale('log')
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()

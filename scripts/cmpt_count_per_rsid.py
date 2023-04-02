@@ -7,7 +7,7 @@ import sys
 import sqlalchemy
 from matplotlib import pyplot as plt
 
-from gwas2eqtl_pleiotropy.constants import label_fontsize
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize
 
 #%%
 help_cmd_str = "todo"
@@ -112,13 +112,16 @@ ms_df.to_csv(tsv_path, sep="\t", index=False)
 
 #%%
 m2df = m_df[['gwas_category_count', 'etissue_category_term_count', 'egene_count']].copy()
-m2df.rename({'gwas_category_count': 'GWAS. cat. cnt.', 'etissue_category_term_count': 'eTissue cat. cnt.', 'egene_count': 'eGene cnt.', }, axis=1, inplace=True)
+m2df.rename({'gwas_category_count': 'Trait cat. cnt.', 'etissue_category_term_count': 'Tissue cnt.', 'egene_count': 'Gene cnt.', }, axis=1, inplace=True)
 corr = m2df.corr(method='spearman')
 plt.subplots_adjust(left=0.2, right=0.8, top=0.9, bottom=0.)
-ax = seaborn.heatmap(corr, annot=True, xticklabels=False)
-ax.set_yticklabels(ax.get_ymajorticklabels(), fontsize=12, rotation=45)
-plt.title("Spearman correlation", fontsize=16)
+ax = seaborn.heatmap(corr, annot=True, xticklabels=False, cmap="rocket_r", annot_kws={"size": 20})
+ax.set_yticklabels(ax.get_ymajorticklabels(), fontsize=20, rotation=45)
+#plt.yticks(fontsize=tick_fontsize, rotation=45)
+plt.title("Spearman correlation", fontsize=label_fontsize)
+plt.subplots_adjust(left=0.4, right=1)
 plt.savefig(count_per_rsid_gwas_egene_etissue_corr_png)
+plt.tight_layout()
 plt.clf()
 plt.close()
 

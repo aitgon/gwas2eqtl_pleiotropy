@@ -122,7 +122,7 @@ g.ax_heatmap.set(ylabel='Trait')
 #
 for label in category_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
-l1 = g.ax_col_dendrogram.legend(title='Class', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=3, bbox_transform=gcf().transFigure)
+l1 = g.ax_col_dendrogram.legend(title='Category', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=3, bbox_transform=gcf().transFigure)
 
 plt.subplots_adjust(top=1., right=0.6, bottom=0.05, left=0.)
 plt.savefig(htmp_disease_corr_png_path, dpi=600)

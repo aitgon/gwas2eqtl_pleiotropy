@@ -58,10 +58,10 @@ m_df = tophits_df[['chrom', 'tophits_variant_id', 'gwas_id']].merge(coloc_df[['c
 m_df.sort_values(['gwas_id', 'tophits_variant_id'], inplace=True)
 
 # Percentage explained non-MHC
+import pdb; pdb.set_trace()
 m_df = m_df.groupby(['gwas_id', '_merge']).size().reset_index()
 m_df = m_df.loc[m_df['_merge'] != 'right_only']
 m_df = m_df.pivot_table(index=['gwas_id'], columns=['_merge'], values=0)
-
 m_df['loci_cnt'] = m_df.apply(sum, axis=1)
 m_df.drop(['left_only'], axis=1, inplace=True)
 m_df.rename({'both': 'explained_cnt'}, axis=1, inplace=True)
