@@ -1,4 +1,6 @@
 import os
+
+import numpy
 import pandas
 import pathlib
 import seaborn
@@ -7,27 +9,27 @@ import sys
 
 from matplotlib import pyplot as plt
 
-from gwas2eqtl_pleiotropy.constants import tick_fontsize, seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import tick_fontsize, seaborn_theme_dic, label_fontsize
 
 # %%
-snp_pp_h4 = "0.5"
-db_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
-loci_explained_perc_tsv = "out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"
+# snp_pp_h4 = "0.5"
+# db_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
+# loci_explained_perc_tsv = "out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"
 
-# #%%
-# help_cmd_str = "todo"
-# try:
-#     snp_pp_h4 = float(sys.argv[1])
-#     db_url = sys.argv[2]
-#     loci_explained_perc_tsv = sys.argv[3]
-#     if len(sys.argv) > 4:
-#         print("""Two many arguments!
-#         {}""".format(help_cmd_str))
-#         sys.exit(1)
-# except IndexError:
-#     print("""Argument missing!
-#     {}""".format(help_cmd_str))
-#     sys.exit(1)
+#%%
+help_cmd_str = "todo"
+try:
+    snp_pp_h4 = float(sys.argv[1])
+    db_url = sys.argv[2]
+    loci_explained_perc_tsv = sys.argv[3]
+    if len(sys.argv) > 4:
+        print("""Two many arguments!
+        {}""".format(help_cmd_str))
+        sys.exit(1)
+except IndexError:
+    print("""Argument missing!
+    {}""".format(help_cmd_str))
+    sys.exit(1)
 
 #%%
 seaborn.set_theme(**seaborn_theme_dic)
@@ -58,7 +60,6 @@ m_df = tophits_df[['chrom', 'tophits_variant_id', 'gwas_id']].merge(coloc_df[['c
 m_df.sort_values(['gwas_id', 'tophits_variant_id'], inplace=True)
 
 # Percentage explained non-MHC
-import pdb; pdb.set_trace()
 m_df = m_df.groupby(['gwas_id', '_merge']).size().reset_index()
 m_df = m_df.loc[m_df['_merge'] != 'right_only']
 m_df = m_df.pivot_table(index=['gwas_id'], columns=['_merge'], values=0)
@@ -83,6 +84,24 @@ m_df.to_csv(loci_explained_perc_tsv, sep='\t', index=True)
 
 #%%
 m_df.sort_values(by=['gwas_category_ontology_term', 'gwas_trait_ontology_term', 'gwas_trait'], inplace=True)
+
+#%%
+# t = m_df[['gwas_trait', 'gwas_trait_ontology_term', 'gwas_category_ontology_term', 'loci_explained_perc']].head(200)
+plt.close()
+agg_data = m_df.groupby('gwas_category_ontology_term').agg({'loci_explained_perc': numpy.mean}).sort_values('loci_explained_perc', ascending=False)
+
+plt.figure(figsize=(6.4, 6.4))
+g = seaborn.barplot(data=m_df, y="gwas_category_ontology_term", x="loci_explained_perc",
+                    orient='h', estimator=numpy.mean, order=agg_data.index, color='gray')
+tick_fontsize2 = 16
+plt.title('Explained loci', fontsize=tick_fontsize2)
+plt.xlabel('Percentage', fontsize=tick_fontsize2)
+plt.ylabel('GWAS category', fontsize=tick_fontsize2)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "loci_explained_perc.png")
+plt.savefig(png_path)
+plt.close()
 
 #%%
 # fig, axes = plt.subplots(4, 1, sharex=True, figsize=(8,8))

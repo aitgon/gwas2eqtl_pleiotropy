@@ -25,6 +25,7 @@ rule all:
         os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/subplots.png"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/loci_explained_perc.png"),
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
         os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl.png"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),

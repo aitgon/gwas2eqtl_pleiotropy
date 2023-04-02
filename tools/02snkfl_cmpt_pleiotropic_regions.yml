@@ -19,6 +19,7 @@ rule all_02snkfl_cmpt_pleiotropic_regions:
         os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/subplots.png"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/loci_explained_perc.png"),
 
 rule cmpt_pleiotropic_regions_wlength:
     input:
@@ -59,6 +60,7 @@ rule cmpt_perc_tophits_eqtl:
     output:
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
         os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/subplots.png"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/loci_explained_perc.png"),
     params:
         snp_pp_h4=snp_pp_h4,
         db_url=db_url,
