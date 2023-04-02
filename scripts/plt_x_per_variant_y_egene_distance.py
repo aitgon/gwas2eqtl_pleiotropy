@@ -1,4 +1,6 @@
 import math
+
+import numpy
 import sqlalchemy
 import os
 import pandas
@@ -12,7 +14,7 @@ from statannotations.stats.StatTest import StatTest
 
 #%%
 plt.rcParams["figure.figsize"] = (8, 6)
-from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, annotator_config_dic
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, annotator_config_dic, label_fontsize, tick_fontsize
 
 seaborn.set_theme(**seaborn_theme_dic)
 
@@ -104,15 +106,19 @@ plt.savefig(hist_png_path)
 plt.close()
 
 #%% Violin plot
-ax = seaborn.violinplot(data=m2_df, x=x, y=y, palette="rocket_r")
+ax = seaborn.barplot(data=m2_df, x=x, y=y, estimator=numpy.mean, palette="rocket_r")
 
 annotator = Annotator(ax, pairs, data=m2_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
 
+plt.title("Distance to closest gene", fontsize=label_fontsize)
+plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.ylabel("Distance mean", fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.yticks(fontsize=tick_fontsize)
+
 plt.tight_layout()
-plt.xlabel("GWAS category count")
-plt.ylabel("Minimal eQTL gene distance")
 hist_png_path = os.path.join(outdir_path, "violin.png")
 plt.savefig(hist_png_path)
 plt.close()
