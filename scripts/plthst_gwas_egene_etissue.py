@@ -37,7 +37,6 @@ count_df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods, engine='odf'
 
 #%%
 ylabel = "Percentage"
-title = "Colocalized eQTL/GWAS variants"
 ylim = [0, 100]
 edgecolor = 'k'
 linewidth = 2
@@ -51,6 +50,7 @@ data_ser = count_df['gwas_category_count']
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
+title = "Trait specificity"
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel("GWAS category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
@@ -70,6 +70,7 @@ data_ser = count_df['egene_count']
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
+title = "eQTL gene specificity"
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel("eQTL gene count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
@@ -89,6 +90,7 @@ data_ser = count_df['etissue_category_term_count']
 shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 
 plt.grid(visible=True, axis='y')
+title = "eQTL gene specificity"
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel("eQTL biosample count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)

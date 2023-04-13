@@ -41,7 +41,7 @@ cumsum_df['cumsum'] = cumsum_df['cumsum']/10e6
 
 #%%
 order = cumsum_df['gwas_category_count'].tolist()
-title = "Pleiotropic regions"
+title = "Coverage of pleiotropic regions"
 xlabel = "GWAS category count"
 ylabel = "Cumulative sum [Mbp]"
 y = "cumsum"
