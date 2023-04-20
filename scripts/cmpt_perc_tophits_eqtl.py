@@ -96,7 +96,7 @@ g = seaborn.barplot(data=m_df, y="gwas_category_ontology_term", x="loci_explaine
 tick_fontsize2 = 16
 plt.title('Explained loci', fontsize=tick_fontsize2)
 plt.xlabel('Percentage', fontsize=tick_fontsize2)
-plt.ylabel('GWAS category', fontsize=tick_fontsize2)
+plt.ylabel('Trait category', fontsize=tick_fontsize2)
 
 plt.tight_layout()
 png_path = os.path.join(outdir_path, "loci_explained_perc.png")

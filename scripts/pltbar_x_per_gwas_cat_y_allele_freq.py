@@ -60,7 +60,7 @@ order = [str(x) for x in range(1, max(m_df['gwas_category_count'].unique()) + 1)
 xticklabels = order.copy()
 box_pairs = [(1, i) for i in range(1, max_gwas_category_count+1) ]
 x = 'gwas_category_count'
-xlabel = "GWAS category count"
+xlabel = "Trait category count"
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # boxplot and mann-whitney

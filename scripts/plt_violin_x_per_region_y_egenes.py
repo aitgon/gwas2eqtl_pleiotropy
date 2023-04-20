@@ -66,7 +66,7 @@ order = sorted(m_df['gwas_class_count'].unique())
 xticklabels = order.copy()
 # xticklabels[-1] = '≥{}'.format(order[-1])
 title = "eGenes per region"
-xlabel = "GWAS category count"
+xlabel = "Trait category count"
 ylabel = "eGenes count"
 y = "egene"
 

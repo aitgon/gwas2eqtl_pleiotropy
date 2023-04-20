@@ -132,7 +132,7 @@ m2df = m_df[['rsid', 'ref', 'alt', 'gwas_category_count', 'domains_watanabe2019'
 order = [*range(1, m2df['gwas_category_count'].max()+1)]
 ax = seaborn.boxplot(x='gwas_category_count', y='domains_watanabe2019', data=m2df, order=order, palette="rocket_r")
 
-plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.xlabel("trait category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 plt.ylabel("Watanabe cat. cnt.", fontsize=label_fontsize)
@@ -154,7 +154,7 @@ order = [*range(1, m2df['gwas_category_count'].max()+1)]
 ax = seaborn.barplot(x=m2df_watanabe2019_cat_count_df.index, y='watanabe_perc', data=m2df_watanabe2019_cat_count_df, order=order, palette="rocket_r")
 
 plt.title("Known in Watanabe 2019", fontsize=label_fontsize)
-plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.xlabel("trait category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 plt.ylabel("Percentage", fontsize=label_fontsize)

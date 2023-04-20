@@ -52,7 +52,7 @@ shplt = seaborn.histplot(data_ser, stat=stat, discrete=True)
 plt.grid(visible=True, axis='y')
 title = "Trait specificity"
 plt.title(title, fontsize=label_fontsize)
-plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.ylim(ylim)

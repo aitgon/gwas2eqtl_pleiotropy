@@ -115,7 +115,7 @@ annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_
 annotator.apply_and_annotate()
 
 plt.title("Distance to closest gene", fontsize=label_fontsize)
-plt.xlabel("GWAS category count", fontsize=label_fontsize)
+plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.ylabel("Mean distance [kbp]", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
 plt.yticks(fontsize=tick_fontsize)
@@ -172,7 +172,7 @@ annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_
 annotator.apply_and_annotate()
 
 plt.tight_layout()
-plt.xlabel("GWAS category count")
+plt.xlabel("Trait category count")
 plt.ylabel("Maximal eQTL gene distance")
 hist_png_path = os.path.join(outdir_path, "max_violin.png")
 plt.savefig(hist_png_path)

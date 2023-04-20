@@ -78,12 +78,12 @@ xticklabels = order.copy()
 # xticklabels[-1] = '≥{}'.format(order[-1])
 box_pairs = [(1, i) for i in range(1, max_gwas_category_count+1) ]
 x = 'gwas_category_count'
-xlabel = "GWAS category count"
+xlabel = "Trait category count"
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # boxplot and mann-whitney
 y = "gwas_neglog10pval"
-title = "GWAS neg. log10 p-val"
+title = "GWAS significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%%
@@ -110,7 +110,7 @@ plt.close()
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # boxplot and mann-whitney
 y = "eqtl_neglog10pval"
-title = "eQTL neg. log10 p-val"
+title = "eQTL significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%%
@@ -138,7 +138,7 @@ plt.close()
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # boxplot and mann-whitney
 y = "eqtl_beta_abs"
-title = "eQTL beta"
+title = "eQTL effect"
 ylabel = "Absolute beta mean"
 
 #%%
@@ -166,7 +166,7 @@ plt.close()
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # boxplot and mann-whitney
 y = "gwas_beta_abs"
-title = "GWAS beta"
+title = "GWAS effect"
 ylabel = "Absolute beta mean"
 
 #%%
@@ -193,7 +193,7 @@ plt.close()
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # violin and mann-whitney
 y = "gwas_beta_abs"
-title = "GWAS beta"
+title = "GWAS effect"
 ylabel = "Absolute beta"
 
 #%%

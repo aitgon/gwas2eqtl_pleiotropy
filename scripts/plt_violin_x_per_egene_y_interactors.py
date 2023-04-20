@@ -101,7 +101,7 @@ order = [*range(1, max_gwas_class_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Interactors per egene"
-xlabel = "GWAS category count"
+xlabel = "Trait category count"
 ylabel = "Phys. interactor count"
 y = "interactor_count"
 
