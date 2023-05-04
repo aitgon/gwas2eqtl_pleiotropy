@@ -6,6 +6,7 @@
 \usepackage{csvsimple}
 
 \newcommand*{\presentationgoldparispath}{../presentation_230120_gold2022_paris/fig/}%
+\newcommand*{\mspath}{../../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50}%
 
 % Change size of footnotes
 \renewcommand{\footnotesize}{\fontsize{5pt}{5pt}\selectfont}
@@ -18,86 +19,98 @@
 % Add section slide
 \AtBeginSection[]
 {
-\begin{frame}
-\frametitle{Table of Contents}
-\tableofcontents[currentsection]
-\end{frame}
+    \begin{frame}
+        \frametitle{Table of Contents}
+        \tableofcontents[currentsection]
+    \end{frame}
 }
 
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
+    \begin{frame}
 
-\titlepage
+        \titlepage
 
-\end{frame}
+    \end{frame}
 
 
-\section{Introduction} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\frametitle{Genetic variants and diseases}
-
-\begin{itemize}
-\item Phenotypic differences between human populations are mostly coded in frequent genetic variants
-\item These genetic variants also cause different disease susceptibility
-\item Large datasets of associations have shown that many genetic variants change simultaneously susceptibility to many diseases, ie. the variants are pleiotropic
-\end{itemize}
-%
-\vfill
-%
-What is the molecular mechanism and effect of tissue of these variants?
-
-\end{frame}
+    \section{Introduction} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\frametitle{Expression quantitative trait loci (eQTL)}
+    \begin{frame}
+        \frametitle{Genetic variants and diseases}
 
-\begin{itemize}
-\item Quantitative trait loci (QTL) are variants associated with changes of quantitative phenotypes
-\item Expression (eQTL) are variants associated with changes of gene expression in a given tissue
-\item eQTLs provide a putative molecular mechanism of a variant
-\end{itemize}
+        \begin{itemize}
+            \item Phenotypic differences between human populations are mostly coded in frequent genetic variants
+            \item These genetic variants also cause different disease susceptibility
+            \item Large datasets of associations have shown that many genetic variants change simultaneously susceptibility to many diseases, ie. the variants are pleiotropic
+        \end{itemize}
 %
-\vfill
+        \vfill
 %
-What are the properties of pleiotropic eQTLs?
+        What is the molecular mechanism and effect of tissue of these variants?
 
-\includegraphics[width=\textwidth]{\presentationgoldparispath/doi_10.3389_fgene.2020.00424_fig4a.jpg}
-
-\let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
-\end{frame}
+    \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\frametitle{Approach}
+    \begin{frame}
+        \frametitle{Expression quantitative trait loci (eQTL)}
 
-\begin{enumerate}
-\item Compute colocalization of eQTLs and GWAS variants
-\item Split eQTLs by the number of associated disease categories
-\item Compare properties of pleiotropic eQTLs
-\end{enumerate}
-%
-\vfill
-%
-What are the properties of pleiotropic eQTLs?
+        \begin{itemize}
+            \item Quantitative trait loci (QTL) are variants associated with changes of quantitative phenotypes
+            \item Expression (eQTL) are variants associated with changes of gene expression in a given tissue
+            \item eQTLs provide a putative molecular mechanism of a variant
+        \end{itemize}
+        \vfill
+        What are the properties of pleiotropic eQTLs?
 
-\includegraphics[width=\textwidth]{\presentationgoldparispath/doi_10.3389_fgene.2020.00424_fig4a.jpg}
+        \includegraphics[width=0.7\textwidth]{\presentationgoldparispath/doi_10.3389_fgene.2020.00424_fig4a.jpg}
 
-\let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
-\end{frame}
+        \let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
+    \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}
-\frametitle{Summary}
+    \begin{frame}
+        \frametitle{Annotation of eQTLs traits using colocalization analysis}
 
-\begin{center}
-\includegraphics[width=0.5\textwidth]{fig/graphical_abstract.drawio.png}
-\end{center}
+        \begin{center}
+            \includegraphics[width=0.6\textwidth]{\presentationgoldparispath/doi_10.3389_fgene.2020.00424_fig4bc.png}
+        \end{center}
 
-\end{frame}
+        \let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Strategy}
+
+        \begin{enumerate}
+            \item Compute colocalization of eQTLs and GWAS variants
+            \item Split eQTLs by the number of associated disease categories
+            \item Compare molecular properties of pleiotropic eQTLs
+        \end{enumerate}
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Are pleiotropic variants associated to more eQTL genes?}
+
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{\mspath/pltbar_x_per_variant_etissue_y_egene.py/plt.png}
+        \end{center}
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Summary}
+
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{fig/graphical_abstract.drawio.png}
+        \end{center}
+
+    \end{frame}
 
 \end{document}
