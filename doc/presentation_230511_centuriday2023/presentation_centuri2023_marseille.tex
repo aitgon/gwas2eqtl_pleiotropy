@@ -1,16 +1,18 @@
 \documentclass{beamer}
-\usetheme{Boadilla}
+\usetheme{Warsaw}
+\usecolortheme{seahorse}
 
 \usepackage{graphicx}
 \usepackage{subcaption}
 \usepackage{csvsimple}
+\usepackage{hyperref}
 
 \newcommand*{\presentationgoldparispath}{../presentation_230120_gold2022_paris/fig/}%
 \newcommand*{\mspath}{../../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50}%
 
 % Change size of footnotes
 \renewcommand{\footnotesize}{\fontsize{5pt}{5pt}\selectfont}
-\title{Pleiotropic expression quantitative trait loci are located in cis-regulatory modules, closer to more target genes and with smaller effects on the genes}
+\title{Identification and analysis of pleiotropic expression quantitative trait loci}
 \subtitle{Centuri Day 2023}
 \author{Aitor Gonz\'alez}
 \institute{Aix Marseille Univ, INSERM, TAGC}
@@ -93,12 +95,53 @@
 
     \end{frame}
 
+
+    \section{Results} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Are pleiotropic variants associated to more eQTL genes?}
+        \frametitle{Is the effect size of pleiotropic eQTLs different?}
+
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{\mspath/plt_x_per_variant_y_egene_distance.py/violin.png}
+        \end{center}
+        \vfill
+        Yes, pleiotropic eQTLs have a lower effect on gene expression and traits
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Are pleiotropic eQTLs closer to genes?}
+
+        \begin{center}
+            \includegraphics[width=0.5\textwidth]{\mspath/plt_x_per_variant_y_egene_distance.py/violin.png}
+        \end{center}
+        \vfill
+        Yes, distance to genes decreases with the pleiotropy
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Are pleiotropic eQTLs associated to more genes?}
 
         \begin{center}
             \includegraphics[width=0.5\textwidth]{\mspath/pltbar_x_per_variant_etissue_y_egene.py/plt.png}
+        \end{center}
+        \vfill
+        Yes, number of target gene increaseas with the pleiotropy
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{A web portal to access the eQTL/trait annotations}
+
+        \url{https://gwas2eqtl.tagc.univ-amu.fr/gwas2eqtl}
+
+        \begin{center}
+            \includegraphics[width=0.9\textwidth]{fig/gwas2eqtl.png}
         \end{center}
 
     \end{frame}
@@ -110,6 +153,26 @@
         \begin{center}
             \includegraphics[width=0.5\textwidth]{fig/graphical_abstract.drawio.png}
         \end{center}
+
+    \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \begin{frame}
+        \frametitle{Acknowledgements}
+
+        \begin{itemize}
+            \item P Paul
+            \item L Lecerf (M1), P Rihet, M Michel, S Marquet, S Spicuglia
+        \end{itemize}
+%
+        \vfill
+%
+        Funding
+%
+        \begin{itemize}
+            \item Institut Cancer et Immunologie - Aix-Marseille Univ.
+            \item Agence nationale de la recherche (ANR)
+        \end{itemize}
 
     \end{frame}
 
