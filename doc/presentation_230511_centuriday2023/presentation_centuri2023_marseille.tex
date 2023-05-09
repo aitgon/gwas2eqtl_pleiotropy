@@ -46,7 +46,7 @@
 
         \begin{itemize}
             \item Differences between humans coded in 80 x 10$^6$ frequent genetic variants
-            \item Genetic variants change susceptibilities for thousands of common traits and diseases
+            \item Genetic variants change susceptibilities to thousands of human traits
             \item For example, breast cancer:
         \end{itemize}
         %
@@ -90,8 +90,23 @@
         \frametitle{Pleiotropic genetic variants}
 
         \begin{itemize}
-            \item Large datasets of associations have shown that many genetic variants change simultaneously susceptibility to many diseases, ie. the variants are pleiotropic
+            \item Large datasets of associations have shown that many genetic variants change simultaneously susceptibility to many diseases, for instance:
         \end{itemize}
+
+        % full size table is table
+        \begin{table}[!tbp]
+            \centering
+            \scriptsize
+
+            \csvreader[separator=tab,
+            tabular=crcp{0.4\textwidth},
+            late after last line=\\\hline,
+            head,
+            table head=\\\hline \bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Gene marker& \bfseries Trait categories\\\hline,
+            ]{\mspath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
+                {\csvcoli\ & \csvcolii\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
+            \vspace{15pt}\label{tab:pleitropic_variants}
+        \end{table}
 
     \end{frame}
 
@@ -131,16 +146,16 @@
 
 % full size table is table
         \begin{table}[!tbp]
-    \centering
-    \scriptsize
+            \centering
+            \scriptsize
 
-    \csvreader[separator=tab,
-    tabular=crcp{0.4\textwidth},
-    late after last line=\\\hline,
-    head,
-    table head=\\\hline \bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Gene marker& \bfseries Trait categories\\\hline,
-    ]{\mspath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
-        {\csvcoli\ & \csvcolii\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
+            \csvreader[separator=tab,
+            tabular=crcp{0.4\textwidth},
+            late after last line=\\\hline,
+            head,
+            table head=\\\hline \bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Gene marker& \bfseries Trait categories\\\hline,
+            ]{\mspath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
+                {\csvcoli\ & \csvcolii\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
             \vspace{15pt}\label{tab:pleitropic_variants}
         \end{table}
 
@@ -150,9 +165,22 @@
     \begin{frame}
         \frametitle{Is the effect size of pleiotropic eQTLs different?}
 
-        \begin{center}
-            \includegraphics[width=0.5\textwidth]{\mspath/plt_x_per_variant_y_egene_distance.py/violin.png}
-        \end{center}
+        \begin{figure}[!ht]
+
+            \begin{subfigure}[]{.49\textwidth}
+                \textbf{a}
+                \\
+                \includegraphics[width=\textwidth]{\mspath/pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/eqtl_beta.png}
+            \end{subfigure}
+            %
+            \begin{subfigure}[]{.49\textwidth}
+                \textbf{b}
+                \\
+                \includegraphics[width=\textwidth]{\mspath/pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/gwas_beta.png}
+            \end{subfigure}
+
+        \end{figure}
+        %
         \vfill
         Yes, pleiotropic eQTLs have a lower effect on gene expression and traits
 
@@ -220,6 +248,7 @@
         \begin{itemize}
             \item Institut Cancer et Immunologie - Aix-Marseille Univ.
             \item Agence nationale de la recherche (ANR)
+            \item Centre de Calcul Intensif d'Aix-Marseille
         \end{itemize}
 
     \end{frame}
