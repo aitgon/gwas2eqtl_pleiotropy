@@ -9,14 +9,16 @@
 
 \newcommand*{\presentationgoldparispath}{../presentation_230120_gold2022_paris/fig/}%
 \newcommand*{\mspath}{../../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50}%
+\newcounter{frame}[frame]
+\setbeamertemplate{footline}[frame number]
 
 % Change size of footnotes
 \renewcommand{\footnotesize}{\fontsize{5pt}{5pt}\selectfont}
 \title{Identification and analysis of pleiotropic expression quantitative trait loci}
-\subtitle{Centuri Day 2023}
+\subtitle{CENTURI Scientific Day 2023}
+\date{May 11, 2023 - Hexagone auditorium, Luminy campus}
 \author{Aitor Gonz\'alez}
 \institute{Aix Marseille Univ, INSERM, TAGC}
-\date{May 11, 2023}
 
 % Add section slide
 \AtBeginSection[]
@@ -45,7 +47,7 @@
         \frametitle{Genetic variants and diseases}
 
         \begin{itemize}
-            \item Differences between humans coded in 80 x 10$^6$ frequent genetic variants
+            \item Trait differences in human due to 80 x 10$^6$ genetic variants
             \item Genetic variants change susceptibilities to thousands of human traits
             \item For example, breast cancer:
         \end{itemize}
@@ -57,28 +59,30 @@
             \caption{Genetic variant associations with breast cancer risk (DOI:10.1038/nature24284).}
         \end{figure}
 
+        $\rightarrow$ What is the molecular mechanism of the trait association?
+
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Effect of genetic variants on gene expression: eQTLs}
-
-        \begin{itemize}
-            \item Quantitative trait loci (QTL) variants associated with changes of quantitative phenotypes
-            \item Expression (eQTL) are variants associated with changes of gene expression in a given tissue
-            \item eQTLs provide a putative molecular mechanism of a variant
-        \end{itemize}
+        \frametitle{eQTLs: Genetic variants that change gene expression}
 
         \includegraphics[width=0.7\textwidth]{\presentationgoldparispath/doi_10.3389_fgene.2020.00424_fig4a.jpg}
+
+        \begin{itemize}
+            \item eQTLs useful to indicate putative molecular mechanism of a trait variants
+        \end{itemize}
+
+        $\rightarrow$ How do we annotate trait variants with eQTLs?
 
         \let\thefootnote\relax\footnotetext{Cano-Gamez et al. 2020. doi:10.3389/fgene.2020.00424}
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Genetic variants with effect on trait and gene expression}
+        \frametitle{Annotation of trait variants with eQTLs}
 
-        Colocalization of eQTLs and GWAS variants
+        $\rightarrow$ Colocalization of eQTLs and trait variants
 
         \begin{center}
             \includegraphics[width=0.5\textwidth]{\presentationgoldparispath/doi_10.3389_fgene.2020.00424_fig4bc.png}
@@ -92,32 +96,30 @@
         \frametitle{Pleiotropic genetic variants}
 
         \begin{itemize}
-            \item Large datasets of associations have shown that many genetic variants change simultaneously susceptibility to many diseases, for instance:
+            \item Many genetic variants change simultaneously susceptibility to several diseases, for instance:
         \end{itemize}
 
-        % full size table is table
         \begin{table}[!tbp]
             \centering
             \scriptsize
-
             \csvreader[separator=tab,
-            tabular=crcp{0.4\textwidth},
+            tabular=crrcp{0.4\textwidth},
             late after last line=\\\hline,
             head,
-            table head=\\\hline \bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Gene marker& \bfseries Trait categories\\\hline,
-            ]{\mspath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
-                {\csvcoli\ & \csvcolii\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
-            \vspace{15pt}\label{tab:pleitropic_variants}
+            table head=\\\hline \bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Ref. & \bfseries Alt. & \bfseries Trait categories\\\hline,
+            ]{fig/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
+                {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolvi}% specify your coloumns here
+            \vspace{15pt}\label{tab:2}
         \end{table}
 
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Positioning of my work in the state of the art}
+        \frametitle{Positioning of our work here in the state of the art}
 
         \begin{center}
-            \includegraphics[width=0.6\textwidth]{fig/graphical_intro_approach.drawio.png}
+            \includegraphics[width=0.6\textwidth]{fig/graphical_intro_approach.v2.drawio.png}
         \end{center}
 
     \end{frame}
@@ -135,30 +137,29 @@
     \end{frame}
 
 
-    \section{Results} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \section{Results and discussion} %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Most pleiotroic eQTLs}
+        \frametitle{Pleiotroic eQTLs}
 
         \begin{itemize}
-            \item Example pleiotropic eQTLs in different cytobands
-            \item The gene marker is the eQTL gene with the highest PubMed publication count
+            \item Analyzed: 138,274 variants from 293 traits and the 127 cell types/tissues
+            \item Found: 476 pleiotropic eQTLs associated to $\geq$ two traits categories
+            \item Important genomic regions: ABO, ALDH2, IL4, TP53, ...
         \end{itemize}
 
-% full size table is table
         \begin{table}[!tbp]
             \centering
             \scriptsize
-
             \csvreader[separator=tab,
-            tabular=crcp{0.4\textwidth},
+            tabular=crrrcp{0.4\textwidth},
             late after last line=\\\hline,
             head,
-            table head=\\\hline \bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Gene marker& \bfseries Trait categories\\\hline,
-            ]{\mspath/cmpt_count_per_rsid.py/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
-                {\csvcoli\ & \csvcolii\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
-            \vspace{15pt}\label{tab:pleitropic_variants}
+            table head=\\\hline \bfseries Chrom. & \bfseries Pos (hg38) & \bfseries Ref. & \bfseries Alt. & \bfseries Gene marker& \bfseries Trait categories\\\hline,
+            ]{fig/count_per_rsid_gwas_ms.tsv}{}% use head of csv as column names
+                {\csvcoli\ & \csvcolii\ & \csvcoliii\ & \csvcoliv\ & \csvcolv\ & \csvcolvi}% specify your coloumns here
+            \vspace{15pt}\label{tab:1}
         \end{table}
 
     \end{frame}
@@ -226,22 +227,22 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Summary of my work}
+        \frametitle{Graphical summary}
 
         \begin{center}
-            \includegraphics[width=0.5\textwidth]{fig/graphical_abstract.drawio.png}
+            \includegraphics[width=0.6\textwidth]{fig/graphical_abstract.drawio.png}
         \end{center}
 
     \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \begin{frame}
-        \frametitle{Applications / Collaborations}
+        \frametitle{\includegraphics[width=0.1\textwidth]{fig/opentonetwork.png} Applications of these datasets}
 
         \begin{itemize}
-            \item Dataset of traits, categories, tissues and cell types
-            \item Annotation of genomic regions
-            \item Annotation of genes
+            \item Large dataset of genetic variants ...
+            \item ... associated to traits and gene expression changes in 127 tissues and cell types
+            \item Useful to annotate genomic regions and genes
         \end{itemize}
 
     \end{frame}
@@ -250,20 +251,26 @@
     \begin{frame}
         \frametitle{Acknowledgements}
 
+%
+        Collaborators and colleagues at TAGC, specially:
+        %
         \begin{itemize}
-            \item P Paul
-            \item L Lecerf (M1), P Rihet, M Michel, S Marquet, S Spicuglia
+            \item P. Paul, L. Lecerf (M1), P. Rihet, M. Michel, S. Marquet, S. Spicuglia.
         \end{itemize}
 %
         \vfill
 %
-        Funding
+        Funding and resources:
 %
         \begin{itemize}
             \item Institut Cancer et Immunologie - Aix-Marseille Univ.
             \item Agence nationale de la recherche (ANR)
             \item Centre de Calcul Intensif d'Aix-Marseille
         \end{itemize}
+%
+        \vfill
+        %
+        Thank you for your attention!!
 
     \end{frame}
 
