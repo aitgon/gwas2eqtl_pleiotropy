@@ -1,4 +1,10 @@
-**Changes in Version 0.1.3 (Dec. 17, 2022)**
+**Changes in Version 0.1.4 (Sep. 1, 2023)**
+
+- MS Critical reading by Pascale Paul with many suggestions that will become new version 0.1.5
+- MS improvement
+- Enhancements
+
+- **Changes in Version 0.1.3 (Dec. 17, 2022)**
 
 - ENH Some parameters improvements
 - MS improvement
