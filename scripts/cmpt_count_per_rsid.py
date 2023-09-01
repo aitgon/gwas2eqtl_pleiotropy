@@ -129,7 +129,9 @@ plt.close()
 #%########################################### watanabe 2019 category count
 m2df = m_df[['rsid', 'ref', 'alt', 'gwas_category_count', 'domains_watanabe2019']].copy()
 
-order = [*range(1, m2df['gwas_category_count'].max()+1)]
+m2df.loc[m2df['gwas_category_count']>=manuscript_pleio_cutoff, 'gwas_category_count'] = '≥' + str(manuscript_pleio_cutoff)
+
+order = [*range(1, manuscript_pleio_cutoff)] + ['≥' + str(manuscript_pleio_cutoff)]
 ax = seaborn.boxplot(x='gwas_category_count', y='domains_watanabe2019', data=m2df, order=order, palette="rocket_r")
 
 plt.xlabel("trait category count", fontsize=label_fontsize)
@@ -150,7 +152,7 @@ m2df_watanabe2019_cat_count_df = m2df_watanabe2019_cat_count_df.merge(m2df_cat_c
 m2df_watanabe2019_cat_count_df.columns = ['watanabe_count', 'count']
 m2df_watanabe2019_cat_count_df['watanabe_perc'] = (m2df_watanabe2019_cat_count_df['watanabe_count'] / m2df_watanabe2019_cat_count_df['count'] * 100).astype(int)
 
-order = [*range(1, m2df['gwas_category_count'].max()+1)]
+order = [*range(1, manuscript_pleio_cutoff)] + ['≥' + str(manuscript_pleio_cutoff)]
 ax = seaborn.barplot(x=m2df_watanabe2019_cat_count_df.index, y='watanabe_perc', data=m2df_watanabe2019_cat_count_df, order=order, palette="rocket_r")
 
 plt.title("Known in Watanabe 2019", fontsize=label_fontsize)

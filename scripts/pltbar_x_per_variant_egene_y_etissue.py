@@ -1,6 +1,7 @@
 import sqlalchemy
 from statannotations.Annotator import Annotator
 from gwas2eqtl_pleiotropy.constants import label_fontsize, dpi, tick_fontsize, boxplot_kwargs, annotator_config_dic
+from matplotlib.ticker import MaxNLocator
 
 import numpy
 import os
@@ -20,10 +21,10 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    # max_gwas_category_count = int(sys.argv[2])
-    sa_url = sys.argv[2]
-    count_per_rsid_gwas_ods_path = sys.argv[3]
-    png_path = sys.argv[4]
+    max_gwas_category_count = int(sys.argv[2])
+    sa_url = sys.argv[3]
+    count_per_rsid_gwas_ods_path = sys.argv[4]
+    png_path = sys.argv[5]
     if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -63,7 +64,7 @@ sel_cols = ['rsid', 'eqtl_gene_id', 'etissue_category_term']  # tissue per varia
 
 #%% set max_gwas_category_count
 m_df = m_df[sel_cols + ['gwas_category_count']]
-# m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
 
 #%% keep unique rsid-etissue_category_term pairs with max. gwas category
 m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
@@ -79,7 +80,11 @@ describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
 m_df.groupby('gwas_category_count')['etissue_category_term_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-order = [str(x) for x in range(1, max(m_df['gwas_category_count'].unique())+1)]
+m_df.loc[m_df['gwas_category_count']>=max_gwas_category_count, 'gwas_category_count'] = '≥' + str(max_gwas_category_count)
+
+# order = [str(x) for x in range(1, max(m_df['gwas_category_count'].unique())+1)]
+order = [str(x) for x in [*range(1, max_gwas_category_count)] + ['≥' + str(max_gwas_category_count)]]
+
 xticklabels = order.copy()
 # xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Tissues per eQTL-gene "
@@ -89,7 +94,7 @@ y = "etissue_category_term_count"
 x = "gwas_category_count"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max(m_df['gwas_category_count'].unique()) + 1)]
+pairs = [(str(1), str(i)) for i in order[1:]]
 m_df[x] = m_df[x].astype(str)
 
 #%%
@@ -147,4 +152,40 @@ ax.set_xticklabels(xticklabels)
 plt.tight_layout()
 png_path = os.path.join(outdir_path, 'boxplot.png')
 plt.savefig(png_path)
+plt.close()
+
+#%% boxenplot
+ax = seaborn.boxenplot(data=m_df, x=x, y=y, order=order, palette="rocket_r", showfliers = False, scale='area')
+
+annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+ax.set_xticklabels(xticklabels)
+
+plt.tight_layout()
+hist_png_path = os.path.join(outdir_path, "boxenplot.png")
+plt.savefig(hist_png_path)
+plt.close()
+
+#%% histplot
+ax = seaborn.histplot(data=m_df, hue=x, x=y, hue_order=order, stat="density", cumulative=True, common_norm=False, fill=False, element="step", palette="rocket_r", lw=3)
+
+ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel("Tissue count", fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel('Density', fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+plt.xlim([1, m_df['etissue_category_term_count'].max()])
+plt.xlim([1, 20])
+
+plt.tight_layout()
+hist_png_path = os.path.join(outdir_path, "histplot.png")
+plt.savefig(hist_png_path)
 plt.close()
