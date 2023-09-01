@@ -21,11 +21,10 @@ from gwas2eqtl_pleiotropy.Logger import Logger
 
 help_cmd_str = "todo"
 try:
-    count_per_rsid_gwas_egene_etissue_tsv_path = sys.argv[1]
+    count_per_rsid_gwas_egene_etissue_ods_path = sys.argv[1]
     david_email = sys.argv[2]
-    max_gwas_class_count = int(sys.argv[3])
-    davidgo_tsv_path = sys.argv[4]
-    if len(sys.argv) > 5:
+    davidgo_tsv_path = sys.argv[3]
+    if len(sys.argv) > 4:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -37,19 +36,17 @@ except IndexError:
 outdir_path = os.path.dirname(davidgo_tsv_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
+#%%
+# fin_df = pandas.read_csv(count_per_rsid_gwas_egene_etissue_ods_path, sep="\t", header=0)
+fin_df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods_path, engine='odf')
 
 #%%
-fin_df = pandas.read_csv(count_per_rsid_gwas_egene_etissue_tsv_path, sep="\t", header=0)
+p_back_str = ",".join(fin_df.loc[fin_df['gwas_category_count'] == 1, "egene_lst"].str.split(';').explode().unique())
 
-#%%
-p_back_str = ",".join(fin_df.loc[fin_df['gwas_class_count'] == 1, "egene_lst"].str.split(',').explode().unique())
-
-for pleio_i in range(2, max_gwas_class_count+1):
+max_gwas_category_count = fin_df['gwas_category_count'].max()
+for pleio_i in range(2, max_gwas_category_count+1):
     Logger.info(pleio_i)
-    if pleio_i == max_gwas_class_count:
-        p_input_str = ",".join(fin_df.loc[fin_df['gwas_class_count'] >= pleio_i, "egene_lst"].str.split(',').explode().unique())
-    else:
-        p_input_str = ",".join(fin_df.loc[fin_df['gwas_class_count'] == pleio_i, "egene_lst"].str.split(',').explode().unique())
+    p_input_str = ",".join(fin_df.loc[fin_df['gwas_category_count'] == pleio_i, "egene_lst"].str.split(';').explode().unique())
 
     #%%
 
@@ -97,19 +94,20 @@ for pleio_i in range(2, max_gwas_class_count+1):
     with open(davidgo_pleio_tsv_path, 'w') as fout:
         fout.write('Category\tTerm\tCount\t%\tPvalue\tGenes\tList Total\tPop Hits\tPop Total\tFold Enrichment\tBonferroni\tBenjamini\tFDR\n')
         for simpleChartRecord in chartReport:
-            categoryName = simpleChartRecord.categoryName
-            termName = simpleChartRecord.termName
-            listHits = simpleChartRecord.listHits
-            percent = simpleChartRecord.percent
-            ease = simpleChartRecord.ease
-            Genes = simpleChartRecord.geneIds
-            listTotals = simpleChartRecord.listTotals
-            popHits = simpleChartRecord.popHits
-            popTotals = simpleChartRecord.popTotals
-            foldEnrichment = simpleChartRecord.foldEnrichment
-            bonferroni = simpleChartRecord.bonferroni
-            benjamini = simpleChartRecord.benjamini
-            FDR = simpleChartRecord.afdr
-            rowList = [categoryName,termName,str(listHits),str(percent),str(ease),Genes,str(listTotals),str(popHits),str(popTotals),str(foldEnrichment),str(bonferroni),str(benjamini),str(FDR)]
-            fout.write('\t'.join(rowList) + '\n')
+            if not simpleChartRecord is None:
+                categoryName = simpleChartRecord.categoryName
+                termName = simpleChartRecord.termName
+                listHits = simpleChartRecord.listHits
+                percent = simpleChartRecord.percent
+                ease = simpleChartRecord.ease
+                Genes = simpleChartRecord.geneIds
+                listTotals = simpleChartRecord.listTotals
+                popHits = simpleChartRecord.popHits
+                popTotals = simpleChartRecord.popTotals
+                foldEnrichment = simpleChartRecord.foldEnrichment
+                bonferroni = simpleChartRecord.bonferroni
+                benjamini = simpleChartRecord.benjamini
+                FDR = simpleChartRecord.afdr
+                rowList = [categoryName,termName,str(listHits),str(percent),str(ease),Genes,str(listTotals),str(popHits),str(popTotals),str(foldEnrichment),str(bonferroni),str(benjamini),str(FDR)]
+                fout.write('\t'.join(rowList) + '\n')
     print('write file:', davidgo_pleio_tsv_path, 'finished!')

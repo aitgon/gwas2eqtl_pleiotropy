@@ -1,12 +1,13 @@
 """
-snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_class_ods=config/etissue_class.ods gwas_class_ods=config/gwas418.ods max_gwas_class_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public 
+snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas418.ods max_gwas_category_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public 
 """
 
 david_email = config['david_email']
 db_url = config['db_url']
-etissue_class_ods = config['etissue_class_ods']
-gwas_class_ods = config['gwas_class_ods']
-max_gwas_class_count = config['max_gwas_class_count']
+etissue_category_ods = config['etissue_category_ods']
+gwas_trait_ods = config['gwas_trait_ods']
+gwas_category_ods = config['gwas_category_ods']
+max_gwas_category_count = config['max_gwas_category_count']
 outdir = config['outdir']
 public_data_dir = config['public_data_dir']
 snp_pp_h4 = config['snp_pp_h4']
@@ -19,7 +20,15 @@ rule all:
         os.path.join(outdir, "plthtmp_disease_comorbidity_matrix.py/corr.svg"),
         #
         # 02snkfl_cmpt_pleiotropic_regions.yml
-        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.tsv"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/perc_tophits_eqtl.tsv"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/subplots.png"),
+        os.path.join(outdir, "cmpt_perc_tophits_eqtl.py/loci_explained_perc.png"),
+        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
+        os.path.join(outdir, "plthst_perc_tophits_eqtl.py/hist_perc_tophits_eqtl.png"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
         #
         # 03snkfl_remap.yml
         os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
@@ -28,10 +37,15 @@ rule all:
         # 04snkfl_plots.yml
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_3.tsv"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
-        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/eqtl_beta.png"),
-        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta.py/gwas_beta.png"),
-        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/eqtl.png"),
-        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_logpval.py/gwas.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_allele_freq.py/afr_af.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_allele_freq.py/amr_af.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_allele_freq.py/eas_af.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_allele_freq.py/eur_af.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_allele_freq.py/sas_af.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/eqtl_beta.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/eqtl_neglog10pval.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/gwas_beta.png"),
+        os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
         os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
         os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
@@ -40,9 +54,19 @@ rule all:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
+        os.path.join(outdir, "plt_x_per_variant_y_egene_distance.py/hist.png"),
+        os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/violin.png"),
+        os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/violin.png"),
+        #
+        # 05snkfl_supplementary_and_web.yml
+        os.path.join(outdir, "ms_supp_tab/table_s1.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/table_s2.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/table_s3.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/table_s4.xlsx"),
+        os.path.join(outdir, "ms_supp_tab/table_s5.xlsx"),
 
 
-#include: "05snkfl_supplementary_and_web.yml"
+include: "05snkfl_supplementary_and_web.yml"
 include: "04snkfl_plots.yml"
 include: "03snkfl_remap.yml"
 include: "02snkfl_cmpt_pleiotropic_regions.yml"

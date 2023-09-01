@@ -23,3 +23,8 @@ boxplot_kwargs = {'linewidth': 3, 'notch': True, 'palette': "rocket_r", 'showfli
 
 # statannotations
 annotator_config_dic = {'fontsize': 16}
+
+# mhc locus, excluded in gwas2eqtl
+mhc_chrom = 6
+mhc_start38 = 25000000
+mhc_end38 = 35000000

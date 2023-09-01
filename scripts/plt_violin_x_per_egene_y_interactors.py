@@ -1,7 +1,6 @@
-from statannot import add_stat_annotation
-
 from gwas2eqtl_pleiotropy.UCSC import UCSC
 from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize
+from statannot import add_stat_annotation
 
 import matplotlib.pyplot as plt
 import os
@@ -102,7 +101,7 @@ order = [*range(1, max_gwas_class_count+1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Interactors per egene"
-xlabel = "GWAS category count"
+xlabel = "Trait category count"
 ylabel = "Phys. interactor count"
 y = "interactor_count"
 

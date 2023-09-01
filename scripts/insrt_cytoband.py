@@ -1,6 +1,8 @@
+import sqlalchemy
+
 from gwas2eqtl_pleiotropy.Logger import Logger
 from psycopg2.extras import NumericRange
-from gwas2eqtl_pleiotropy.db2 import Base
+from gwas2eqtl_pleiotropy.db import Base, cytoband
 from sqlalchemy import create_engine
 
 import pandas
@@ -10,7 +12,7 @@ import sys
 
 help_cmd_str = "todo"
 try:
-    url = sys.argv[1]
+    sa_url = sys.argv[1]
     if len(sys.argv) > 2:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -21,7 +23,9 @@ except IndexError:
     sys.exit(1)
 
 #%% Create all tables
-engine = create_engine(url)
+engine = create_engine(sa_url)
+if sqlalchemy.inspect(engine).has_table("cytoband"):
+    cytoband.__table__.drop(engine)
 Base.metadata.create_all(engine)
 
 #%% cytoband

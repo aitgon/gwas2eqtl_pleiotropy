@@ -1,0 +1,94 @@
+import pandas
+
+public_data_dir = config['public_data_dir']
+outdir = config['outdir']
+db_url = config['db_url']
+snp_pp_h4 = config['snp_pp_h4']
+
+###############################################################################
+# eQTL
+eqtl_tsv_path = 'https://raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/master/tabix/tabix_ftp_paths.tsv'
+eqtl_df = pandas.read_csv(eqtl_tsv_path, sep="\t", usecols=[0, 6, 8])
+eqtl_df = eqtl_df.loc[eqtl_df['ftp_path'].str.contains('/ge/|/microarray/',regex=True,na=False), ]
+# keep urls containing "ge" or "microarray"
+eqtl_df['index'] = (eqtl_df['ftp_path'].str.replace('.all.tsv.gz', '', regex=True)).str.split('/', expand=True)[10].tolist()
+eqtl_df.set_index('index', drop=True, verify_integrity=True, inplace=True)
+eqtl_id_lst = (eqtl_df.index).tolist()
+
+beta_sign_lst = ['beta_equal', 'beta_unequal']
+pleio_lst = range(1, 5)
+
+rule all_eqtl2:
+    input:
+        expand(os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bigbed", "{beta_sign}", "{eqtl_id}.inter.bb"), eqtl_id=eqtl_id_lst, beta_sign=beta_sign_lst),
+        expand(os.path.join(outdir, "cmpt_count_per_rsid.py", "bigbed", "eqtl_pleio{pleio}.bb"), pleio=pleio_lst),
+
+rule bedTobigBed_pleio:
+    input:
+        os.path.join(public_data_dir, "hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed"),
+        os.path.join(public_data_dir, "raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"),
+        os.path.join(outdir, "cmpt_count_per_rsid.py", "eqtl_pleio_{pleio}_flank_0_hg38.bed"),
+    output:
+        os.path.join(outdir, "cmpt_count_per_rsid.py", "bigbed", "eqtl_pleio{pleio}.bb"),
+    shell:
+        """{input[0]} -type=bed5 {input[2]} {input[1]} {output[0]}"""
+
+rule bedTobigBed_interact:
+    input:
+        os.path.join(public_data_dir, "hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed"),
+        os.path.join(public_data_dir, "genome.ucsc.edu/goldenPath/help/examples/interact/interact.as"),
+        os.path.join(public_data_dir, "raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"),
+        os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bed", "{beta_sign}", "{eqtl_id}.inter.bed"),
+    output:
+        os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bigbed", "{beta_sign}", "{eqtl_id}.inter.bb"),
+    shell:
+        """{input[0]} -as={input[1]} -type=bed5+13 {input[3]}  {input[2]} {output[0]}"""
+
+rule cmpt_ucsc_tracks_eqtl_inter_bed_beta:
+    output:
+        expand(os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bed", "beta_equal", "{eqtl_id}.inter.bed"), eqtl_id=eqtl_id_lst),
+        expand(os.path.join(outdir, "cmpt_ucsc_tracks_eqtl_inter_bed.py", "bed", "beta_unequal", "{eqtl_id}.inter.bed"), eqtl_id=eqtl_id_lst),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        db_url=db_url,
+    shell:
+        """python scripts/cmpt_ucsc_tracks_eqtl_inter_bed.py {params.snp_pp_h4} {params.db_url} $(dirname $(dirname {output[0]}))"""
+
+rule dwnld_hg38_chrom_sizes:
+    output:
+        os.path.join(public_data_dir, "raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes"),
+    params:
+        url="raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}"""
+
+rule dwnld_interact_as:
+    output:
+        os.path.join(public_data_dir, "genome.ucsc.edu/goldenPath/help/examples/interact/interact.as"),
+    params:
+        url="genome.ucsc.edu/goldenPath/help/examples/interact/interact.as",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}"""
+
+rule dwnld_bedToBigBed:
+    output:
+        os.path.join(public_data_dir, "hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed"),
+    params:
+        url="hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}
+        chmod u+x {params.public_data_dir}/{params.url}"""
+
+
+"""
+python scripts/cmpt_ucsc_tracks_eqtl_inter_bed.py 0.5 postgresql://postgres:postgres@0.0.0.0:5435/postgres out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_inter_bed.py
+wget -r http://hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed -P ~/Software/public/
+wget -r http://genome.ucsc.edu/goldenPath/help/examples/interact/interact.as -P ~/Software/public/
+wget -r https://raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes -P ~/Software/public/
+chmod u+x ~/Software/public/hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed
+~/Software/public/hgdownload.cse.ucsc.edu/admin/exe/linux.x86_64/bedToBigBed -as=/home/gonzalez/Software/public/genome.ucsc.edu/goldenPath/help/examples/interact/interact.as -type=bed5+13 Alasoo2018gemacrophageIFNg.inter.bed https://raw.githubusercontent.com/igvteam/igv/master/genomes/sizes/hg38.chrom.sizes Alasoo2018gemacrophageIFNg.inter.bb
+python scripts/cmpt_track_hub.py /home/gonzalez/Repositories/gwas2eqtl_pleiotropy/out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_ucsc_tracks_eqtl_inter_bed.py ../gwas2eqtl_pleiotropy_track_hub
+"""

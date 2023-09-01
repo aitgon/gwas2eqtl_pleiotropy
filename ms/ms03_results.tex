@@ -1,15 +1,22 @@
 \section*{Results}\label{s:results}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 \subsection*{Systematic colocalization of variants from genome-wide associations studies and expression quantitative trait loci}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-To better understand the role of gene regulatory variants for variant pleiotropy,
-I developed a pipeline to systematically colocalize variants from genome-wide associations
-studies (GWAS) and expression quantitative trait loci (eQTL) (Section Methods).
+% Organizing words: Pleiotropic eQTLs
+
+To investigate the pleiotropy of eQTLs, I developed a pipeline that systematically colocalizes variants from GWAS and expression quantitative trait loci (eQTLs) (Section Methods).
 %
 127 eQTL studies were downloaded from the EBI eQTL catalogue, which aims to provide uniformly processed eQTLs in many
-tissues and cell types \citep{2021.Alasoo.Kerimov} (Supplementary table 1).
+tissues and cell types \cite{2021.Alasoo.Kerimov} (Supplementary table 1).
 
-GWAS traits were selected from the IEU OpenGWAS database based on four criteria \citep{2018.Parkinson.Buniello}.
+For the genome-wide association studies (GWAS), I used data from the IEU OpenGWAS database, that provides GWAS summary statistics
+from different batches such as the EBI database of complete GWAS summary data, manually collected GWAS and UK Biobank.
+%
+GWAS traits were selected from the IEU OpenGWAS database based on four criteria \cite{2018.Parkinson.Buniello}.
 %
 The first criterion was to exclude molecular traits such as proteome or methylome.
 %	
@@ -19,98 +26,223 @@ samples from the EBI eQTL catalogue belong to the European population.
 The third criterion was to keep only well-defined medical or physiological
 conditions and exclude environmental traits such "employment status" or "self-reported" medical conditions.
 %
-The fourth criterion was to keep only GWAS studies with at least 10,000 subjects, 2,000 controls and 2,000 cases.
+The fourth criterion was to keep only GWAS with at least 10,000 subjects, 2,000 controls and 2,000 cases.
 %
-These filters resulted in 418 GWAS traits (Supplementary table 2).
+These filters resulted in 417 GWAS traits (Supplementary table 2).
 %
-Among these studies, there were 10,627 clumped leading variants with a p-value below 5e-8 from 335 GWAS (Supplementary file).
-% sqlite
-% select count(distinct gwas_id) from tophits; 335
-% select count(*) from (select DISTINCT chrom, pos, rsid, nea, ea from tophits) limit 50; 10627
-% Supplementary file is db.sqlite that can go to OSF
+These studies resulted in 10,621 clumped leading variants with a p-value below 5e-8 from 335 GWAS.
+% select count(distinct gwas_id) from tophits
+% 335
+% select count(*) from (select DISTINCT chrom, pos, rsid, ea from tophits) as sel; 10621
+% tophits goes to OSF
+% colocpleio goes to OSF
 
-My pipeline uncovered eQTL colocalizations for 3,849 or 36$\%$ of the leading GWAS variants with 2,348 eQTL genes and 127 eQTL samples.
-% sqlite
-% select count(distinct tophits.rsid) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8; 3849
-% alternative: select count(distinct tophits.rsid) from tophits, coloc where coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8; 3849
-% select count(distinct coloc.egene) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8
-% select count(distinct coloc.eqtl_id) from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.`PP.H4.abf`>=0.8
+The colocalization pipeline uncovered eQTL colocalizations for 5,484 of the leading GWAS variants with 7,040 eQTL genes and 127 eQTL biosamples in the somatic chromosomes \cite{2019.Posthuma.Watanabe,2021.Li.Mu}.
+%
+% select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid
+% from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
+% 5484
+% select count(*) from (select distinct tophits.chrom,tophits.pos,tophits.ea,tophits.rsid
+% from tophits inner join coloc on coloc.rsid=tophits.rsid where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
+% 2441
+% select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75) as sel;  7040
+% select count(*) from (select distinct eqtl_gene_id from coloc where pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel;  5620
+% select count(*) from (select distinct eqtl_id from coloc where pp_h4_abf>=0.75) as sel;  127
+%
+Variants in the MHC locus in chromosome 6 between 25,000,000 and 35,000,000 were
+excluded from the colocalization pipeline, because of their complex linkage disequilibrium structure.
+%
+The histogram shows three groups of GWAS depending on the percentage of explained leading SNPs (Fig. \ref{fig:1}a).
+%
+For around 25\% of GWAS, there are not colocalizations between the leading SNPs and eQTLs.
+%
+On the other side, for around 7.5\% of GWAS, 100\% of the leading SNPs colocalize with eQTLs.
+%
+The remaining GWAS show between 10\% and 50\% colocalized leading SNPs with eQTLs.
 
-The largest classes of diseases by number of leading GWAS variants are autoimmune diseases (2107), cancer of breast (1976) and allergy (1321)
+The number of colocalization depends on the PP.H4.SNP parameter that gives the probability of a SNP in the colocalized locus to be the causal SNP.
 %
-In these diseases, the percentages of variants with a colocalized eQTL are 37\%, 21\% and 42\% in these classe, respectively (Supplementary table ST3).
+We have changed this parameter between 25\% and 75\%, which results in 5\% and 12\% of the GWAS
+showing colocalization with 100\% of their leading variants.
 %
-%/* count tophits.rsid group by gwas_annot.gwas_class where coloc.`PP.H4.abf`>=0.8*/
-%select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, coloc, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id and coloc.rsid=tophits.rsid and coloc.`PP.H4.abf`>=0.8 GROUP by gwas_annot.gwas_class;
-%/* count tophits.rsid group by gwas_annot.gwas_class*/
-%select gwas_annot.gwas_class, count(distinct tophits.rsid) from tophits, gwas_annot where gwas_annot.gwas_id=tophits.gwas_id GROUP by gwas_annot.gwas_class order by gwas_annot.gwas_class;
+In this range, between 16\% and 25\% of the GWAS do not show any colocalization.
 %
-These results agree with previous work for autoimmune diseases \citep{2021.Li.Mu}.
+The remaining GWAS show between 5\% and 10\% of their leading variants colocalized with eQTLs (Fig. \ref{fig:1}a and Supplementary figure S1).
 
-This pipeline resulted in 103,551 variants from 246 GWAS that colocalized (PP.H4.abf$\geq$0.8) with at least one eQTL.
-%select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.8);
-%select count(*) from (select DISTINCT rsid FROM coloc where `PP.H4.abf`>=0.8);
+The largest classes of diseases by number of leading GWAS variants are cancer of breast (1976), allergy (1288), and autoimmune diseases (1216).
 %
-I have also developed a web application where I expose 116,736 variants from 246 GWAS that colocalize with at least one eQTL at a lower threshold value PP.H4.abf$\geq$0.5.
-% select count(*) from (select DISTINCT rsid FROM coloc where `PP.H4.abf`>=0.5);
-% select count(*) from (select DISTINCT gwas_id FROM coloc where `PP.H4.abf`>=0.5);
+In these disease classes, the percentages of variants with a colocalized eQTL are 58\%, 61\% and 68\%, respectively (Supplementary table ST3).
+% Supplementary ST3
+% Number of tophits rsid per GWAS class
+% select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits where tophits.gwas_id=gwas_annot.gwas_id group by gwas_class order by count desc;
+% Number of tophits rsid per GWAS class that is also preset in coloc table
+% select count(distinct tophits.rsid),gwas_class from gwas_annot, tophits, coloc where tophits.gwas_id=gwas_annot.gwas_id and tophits.rsid=coloc.rsid group by gwas_class order by count desc;
+%
+These results is much higher than previous colocalization analyses for autoimmune diseases by previous authors that
+found 23-41\% depending on the study \cite{2016.Soranzo.Chen,2017.Cotsapas.Chun,2021.Li.Mu}.
+% Discuss 25% in Chun et al 2017, Nature Genetics
+% Discuss 41% (eQTL + sQTLs) in Mu et al 2021, Genome Biology
+% Discuss 23% in Chen et al 2016, Cell. Genetic Drivers of Epigenetic and Transcriptional Variation in Human Immune Cells
 
-%\subsection*{Pleiotropic variants colocalized with eQTLs}
+These variants annotated with GWAS associations and eQTLs are useful functional information.
+%
+Therefore I have developed a web application where I expose 138,301 variants from 293 GWAS that colocalize with at least
+one eQTL at a threshold value PP.H4.abf$\geq$0.75.
+%select count(*) from (select DISTINCT chrom,pos,alt FROM coloc
+%where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0) as sel
+%138301
+%select count(*) from (select DISTINCT chrom,pos,alt FROM coloc
+%where coloc.pp_h4_abf>=0.75 and coloc.snp_pp_h4>=0.5) as sel
+%5343
+% select count(*) from (select DISTINCT gwas_id FROM colocweb) as sel; 293
 
-\subsection*{Traits classification based on the colocalized eQTL effect size}
+I provide a UCSC track hub with these GWAS/eQTL colocalizations.
+%
+In Fig. \ref{fig:1}b-d, I show three screenshots of these UCSC tracks for three different biosamples, namely monocytes, and  frontal cortex biosamples in the chromosome 5 around the gene IL4.
+%
+In these UCSC tracks, red represents a positive eQTL beta coefficient, which blue represents a negative eQTL beta coefficient.
+%
+This screenshot shows that depending of gene regulation based on the biosample.
+%
+In b-cells, there is mainly the SLC22A5 gene that is regulated (Fig. \ref{fig:1}b).
+%
+On the other hand, monocytes show a significant level changes of P4HA2, SLC22A4 and SLC22A5 (Fig. \ref{fig:1}c).
+%
+Finally, the cortex biosamples show significant eQTL effects for the PDLIM4, MIR3936HG, IRF-1S1 and RAD50 (Fig. \ref{fig:1}d).
 
-I manually assigned the 418 GWAS to 96 classes to aggregate identical or similar traits (Supplementary table 2).
+To visualize simultaneously, the GWAS and eQTL beta coefficients, I have create two tracks "beta equal" and "beta unequal".
 %
-Then I verified whether GWAS traits cluster coherently within these classes.
+In "beta equal", both GWAS and eQTL beta coefficients have the same sign while in "beta unequal", the coefficients show different sign.
 %
-I computed distances between GWAS traits based on the Spearman correlation of the colocalized eQTL beta for every target gene, cell type and tissue.
+This shows that in b-cells, an expression decrease of SLC22A5 gene correlates with a decrease of Asthma predisposition and an increase of extreme height and inflammatory bowel diseases.
 %
-I plot only classes with more than a minimum number of GWAS traits (Fig. \ref{fig:gwas_distance}).
-%
-GWAS traits cluster together in autoimmune diseases and circulatory system diseases.
-%
-Due to the large number of breast cancer GWAS, we have created a separated class from cancer.
-Nevertheless, we can observe weaker correlations between the breast cancer class and other types of cancers.
+Altogether, I provide two new resources, namely a web application and a UCSC track hub, that might be useful for the interpretation of genetic human variants.
 
-\subsection*{Which eQTLs are the most pleiotropic?}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Work with PP.H4.abf`>=0.75 and SNP.PP.H4>=0.5
+\subsection*{Trait clustering based on the beta of the eQTLs}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Organizing words: Pleiotropic eQTLs
+
+In the 417 GWAS, there are traits from different categories and belonging to independent studies.
+%
+To verify that the colocalization results are coherent between different GWAS datasets,
+I cluster the GWAS traits based on the Spearman correlation between beta values
+of colocalized eQTL variant, gene and biosample (Fig. \ref{fig:2}).
+
+In the previous colocalization analysis, we found many eQTLs that are associated to very different traits.
+
+Many eQTLs were found to colocalize with GWAS traits from different categories.
+%
+To systematically identify pleiotropic eQTLs, I manually annotated the GWAS traits in different classes.
+
+Then I wanted to verify if different traits cluster coherently in different trait classes.
+%
+As trait distance, I used the the spearman correlation of the eQTL splitted by
+chromosome, position, alternative allele, eQTL gene and eQTL biosample.
+%
+To avoid non resolve eQTLs, I set a cutoff SNP.PP.H4>=0.5 in addition to the cutoff PP.H4.abf>=0.75.
+%
+The cutoff SNP.PP.H4>=0.5 was chosen, it allow to group pleiotropic eQTLs in a reasonable number of regions (See below).
+%
+I plotted these trait distances as a hierarchically-clustered heatmap.
+%
+Only trait classes with more than a minimum number of traits were plotted (Fig. \ref{fig:2}).
+%
+Due to the large number of datasets, I have create a separate class for some cancers such as breast and skin.
+%
+In the OpenGWAS, some traits are redundant because the come from the same reference.
+%
+I plotted non-rendundant GWAS traits.
+%
+This analysis shows a coherent clustering of traits belonging to autoimmune, circulatory system diseases, cancers and allergies (Fig. \ref{fig:2}).
+%
+Breast and skin cancer are found in two different cluster with some shared signal.
+%
+Multiple sclerosis cluster with autoimmune diseases of the digestive system.
+
+I manually assigned the 418 GWAS to 112 classes to aggregate identical or similar traits (Supplementary table 2).
 
 In the EBI eQTL Catalogue, some samples have been analyzed at the cell type level and others at the tissue level.
 %
 For instance, immune cell types are analyzed at very high resolution that includes different stimulation of the same cell type.
 %
-Therefore I manually defined 36 classes to aggregate eQTL cell types into tissues (Supplementary table 1).
+Therefore I manually defined 35 classes to aggregate eQTL cell types into tissues (Supplementary table 1).
 %
 For instance, the different immune cell types such as monocyte, T-cell, etc are aggregated into an ImmuneCell class (Supplementary table 1).
 
-These class annotations were used to investigate the variant pleiotropy.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
-Colocalized eQTL/GWAS variants were classified according to the number of GWAS classes they belong to (Table \ref{tab:pleitropic_variants} and Supplementary table 4).
+\subsection*{Which eQTLs are the most pleiotropic?}
 %
-The most pleiotropic variants belong to 6 classes that include different traits such as autoimmune diseases, circulatory disases and cancer.
-%
-For instance, the variant rs2522051 is located downstream of the IRF1 gene in cytoband 5q31.1
-%
-This variant rs2522051 is involved in six classes of traits, namely,
-allergy, autoimmune diseases, cancer of the breast, circulatory system diseases, hypertension, and respiratory system diseases
-(Table \ref{tab:pleitropic_variants} and Supplementary table 4).
-%
-This variant rs2522051 is active in 23 classes of tissues including adipose, brain, digestive cells, immune cells, and sexual organs.
-%
-This variant rs2522051 regulates several genes such as IL13, PDLIM4, and RAD50.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+These trait class annotations were used to investigate pleiotropy of eQTLs.
+%
+Different trait classes of eQTLs were aggregated and sorted according to the number of GWAS classes the eQTLs belong to (Table \ref{tab:pleitropic_eqtls} and Supplementary table 4).
+%
+The most pleiotropic variants belong to four classes that include different traits such as autoimmune diseases, circulatory disases and cancer.
+%
+The most pleiotropic eQTLs are found in the loci around genes ALDH2 (12q24.12), ENO1 (1p36.23), ORMDL3 (17.q21.1), IL4 (5q31.1), BACH2 (6q15), FUT2 (19q13.33), SLC39A8 (4q24) and CYP1A1 (15q24.1)
+(Table \ref{tab:pleitropic_eqtls} and Supplementary table 4).
+%
+We have generated this list based on different SNP.PP.H4 parameter values 0.25, 0.5 and 0.75 and we find the same variants except rs8067378 (Data not shown).
+%
+Most of these pleiotropic eQTLs are well known with Google Scholar citations (Accessed Feb. 27, 2023).
+
+%By contrast, the variant rs13107325 has 596
+% between 596 for rs13107325
+%%
+%The eQTL rs2476601 is well known for rheumatoid arthritis, juvenile athritis, diabetes and cancer of skin REFs.
+%%
+%Our analysis annotates this variant with eQTL genes AP4B1,AP4B1-AS1,BCL2L15,DCLRE1B,MAGI3,PHTF1 and PTPN22 tissues Adipose,Brain,Colon,Fibroblast,ImmuneCell LCL and iPSC
+%
+%% TODO add rs2522051
+%This variant rs2522051 is involved in six classes of traits, namely,
+%allergy, autoimmune diseases, cancer of the breast, circulatory system diseases, hypertension, and respiratory system diseases
+%(Table \ref{tab:pleitropic_eqtls}a and Supplementary table 4).
+%%
+%The variant rs2522051 is located downstream of the IRF1 gene in cytoband 5q31.1
+%%
+%This variant rs2522051 is active in 23 classes of tissues including adipose, brain, digestive cells, immune cells, and sexual organs.
+%%
+%This variant rs2522051 regulates several genes such as IL13, PDLIM4, and RAD50.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 \subsection*{Which genomic regions contain the most pleiotropic eQTLs?}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Pleiotropic eQTLs are concentrated in genomic regions such as in cytobands 3q23,
-5q31.1, 9p21.3, 15q24.1, and 19q13.33 for eQTLs involved on five or more classes (Table \ref{tab:pleitropic_variants} and Supplementary table 4).
+5q31.1, 9p21.3, 15q24.1, and 19q13.33 for eQTLs involved on five or more classes (Table \ref{tab:pleitropic_eqtls} and Supplementary table 4).
 %
-Therefore, I wanted to compute pleiotropic regions that include concentrations of pleiotropic eQTLs.
+Therefore, I wanted to compute pleiotropic regions with high concentration of pleiotropic eQTLs.
 %
-To compute these pleiotropic regions, I aggregated genomic regions with at least one pleiotropic eQTL in a sliding
-window of 100,000 nt (See Methods) (Table \ref{tab:pleiotropic_regions} and Supplementary table 5).
+To compute these pleiotropic regions, I use a sliding window to aggregate regions with pleiotropic eQTLs at distances
+of less than 1e5 nt (See Methods) (Table \ref{tab:pleiotropic_regions} and Supplementary table 5).
 %
-I found 13 regions with 5 or more trait classes, 30 regions with 4 or more trait
-classes and 80 regions with 3 or more trait classes (Supplementary table 5).
+% TODO add data
+I tested three SNP.H4.PP cutoffs, namely, 0.25, 0.5 and 0.75, to compute these regions.
 %
+% TODO
+For the SNP.PP.H4 cutoff 0.75, we obtain very few regions.
+%
+A less stringent cutoff 0.5, gives more pleiotropic regions, but still contains the pleiotropic regions found for a
+cutoff SNP.PP.H4 0.75.
+%
+A lower cutoff 0.25 gives more pleiotropic regions, but these regions are different than for the higher cutoffs.
+%
+Therefore, we fixed our analysis at SNP.PP.H4 0.5.
+
+% TODO Verify values
+I found seven regions with seven or more trait classes, 30?? regions with 4?? or more trait
+classes and 80?? regions with 3?? or more trait classes (Supplementary table 5).
+%
+% TODO Verify values
 50\% of regions with at least two trait classes are shorter than 100 kb, 20\% of regions are
 between 100 kb and 200 kb, 10\% between 200 kb and 300 kb, and 20\% are larger than 300 kb (Fig. \ref{fig:pleiotropy_region_distribution}a).
 
@@ -125,25 +257,33 @@ autoimmune and respiratory diseases and height (Supplementary table 5).
 Very pleiotropic regions with 5 trait classes or more make around 0.6 Mb of the genome,
 regions with 4 GWAS classes make an additional 1 Mb and regions with 3 trait classes make an additional 1.5 Mb (Fig. \ref{fig:pleiotropy_region_distribution}b).
 %
-Altogether, pleiotropic regions with 3 or Routinesmore trait classes make around 3 Mb of the genome (Fig. \ref{fig:pleiotropy_region_distribution}b).
+Altogether, pleiotropic regions with 3 or more trait classes make around 3 Mb of the genome (Fig. \ref{fig:pleiotropy_region_distribution}b).
 
-\subsection*{How specific are eQTLs regarding traits, genes and tissues?}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\subsection*{How specific are eQTLs for traits, genes and tissues?}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Next I verified whether the colocalized eQTL/GWAS variants tend to be specific to traits, eQTL genes and eQTL tissues.
 %
 74\% of colocalized eQTL/GWAS variants are associated to one GWAS class, 21\% are associated to 2 classes and the remaining variants associated to
-3 or more trait classes make less that 4\% of colocalized eQTL/GWAS variants (Fig. \ref{fig:hist_gwas_egene_etissue}a).
+3 or more trait classes make less that 4\% of colocalized eQTL/GWAS variants (Fig. \ref{fig:3}a).
 %
 Regarding eQTL genes, 36\% of the colocalized eQTL/GWAS variants modulate a single gene, 24\% modulate two genes, and the
-remaining 40\% modulate three or more genes (Fig. \ref{fig:hist_gwas_egene_etissue}b).
+remaining 40\% modulate three or more genes (Fig. \ref{fig:3}b).
 %
 Concerning tissues, 27\% colocalized eQTL/GWAS variants are active in a single tissue, 16\% in two tissues, 11\% in three
-tissues, and the remaining 46\% in four or more tissues (Fig. \ref{fig:hist_gwas_egene_etissue}c).
+tissues, and the remaining 46\% in four or more tissues (Fig. \ref{fig:3}c).
 %
 In conclusion, trait pleiotropy is rather rare among colocalized eQTL/GWAS variants, while, regulation of at least two
-genes in at least two tissues is rather common (Fig. \ref{fig:hist_gwas_egene_etissue}).
+genes in at least two tissues is rather common (Fig. \ref{fig:3}).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 \subsection*{Relation between trait, eQTL gene and tissue counts}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In Supplementary Figure \ref{fig:region_gwas_egenes_tissues}, I have plotted the number of trait classes, eQTL genes and tissues of
 eQTLs in four pleiotropic regions.
@@ -159,7 +299,11 @@ Indeed, Spearman correlation between eQTL gene and tissue counts is 0.75 while t
 
 In summary, counts of eQTL genes and tissues is highly correlated, while correlation with GWAS classes is much lower.
 
-\subsection*{Where are the pleiotropic variants?}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\subsection*{What is the impact of pleiotropic eQTLs?}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %\subsection*{What are the mechanisms of pleiotropy}
 
@@ -173,7 +317,7 @@ In the following sections, I studied different molecular mechanisms of pleiotrop
 
 First, I analysed whether there are significant differences of some effect consequences between more and less pleiotropic eQTLs.
 %
-I separated eQTLs according to the count of GWAS classes and computed the EBI variant effect predictor (VEP) consequence (\citep{2016.Cunningham.McLaren}).
+I separated eQTLs according to the count of GWAS classes and computed the EBI variant effect predictor (VEP) consequence (\cite{2016.Cunningham.McLaren}).
 %
 I found a significant larger number of upstream, 5'-UTR, downstream and 3'-UTR eQTLs
 with 2, 3 and 4 and more classes compared to eQTLs with one class (Fig. \ref{fig:vep_consequence}).
@@ -184,7 +328,11 @@ with 3 and 4 and more classes (Fig. \ref{fig:vep_consequence}).
 These analyses suggest that more pleiotropic eQTLs have a stronger effect on
 the coding sequence and splicing regions, which might explain partly their more pleiotropic function.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 \subsection*{Do pleiotropic eQTLs modulate more genes?}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Then I hypothesized that pleiotropic eQTLs modulate more genes even after taking into account the same tissues.
 %
@@ -199,7 +347,11 @@ This suggests that pleiotropic eQTLs modulate more genes compared to eQTLs invol
 %
 More target genes of eQTLs provides an explanation to the observed pleiotropy.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 \subsection*{Are pleiotropic eQTLs active in more tissues?}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 My next hypothesis was that pleiotropic eQTL-gene pairs are active in more tissues than non-pleiotropic eQTLs.
 %
@@ -225,7 +377,11 @@ This suggests that pleiotropic eQTL are active in more tissues (Mann–Whitney U
 %%
 %This observation could be explained by my previous observation that pleiotropic variants have more often missense effects (Fig. \ref{fig:vep_consequence}a).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 \subsection*{Are pleiotropic eQTLs bound by more transcription factors?}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In Fig. \ref{fig:gwas_egene_etisue_per_variant}b, I observed that pairs of eQTL-gene are active in more tissues.
 %
@@ -237,27 +393,27 @@ eQTLs involved in 1, 2, 3 and 4 and more GWAS classes bind a mean number of 17,
 19, 23 and 27 transcription factors, respectively (Fig. \ref{fig:freq_tf_per_variant}a).
 %I found a significant larger number of transcription factors bound around pleiotropic variants (Fig. \ref{fig:freq_tf_per_variant}a).
 
-Cis-regulatory modules (CRMs) are non-coding genomic regions with a higher density of bound cis-regulatory modules \citep{2021.Ballester.Hammal}.
+Cis-regulatory modules (CRMs) are non-coding genomic regions with a higher density of bound cis-regulatory modules \cite{2021.Ballester.Hammal}.
 %
 I found that the odds ratio of variants annotated with CRMs vs non-annotated is significantly (Fisher's exact test) higher for variants with 2 and 3 GWAS class counts compared to class count 1 (Fig. \ref{fig:freq_tf_per_variant}b).
 
 In summary, pleitropic eQTLs bind more unique transcription factors and are more
 likely to belong to cis-regulatory modules.
 
-%\subsection*{Do pleiotropic eQTLs have stronger effect sizes?}
+\subsection*{Do pleiotropic eQTLs have stronger effect sizes?}
+
+Pleiotropic eQTLs affect simultaneously more trait classes.
 %
-%Pleiotropic eQTLs affect simultaneously more trait classes.
-%%
-%Therefore, I wonder about the relationship between pleiotropy, effect size and significance of eQTLs.
-%%
-%I found that the mean of the absolute eQTL effect sizes (beta) decreased between GWAS class counts 1 and 5 (Fig. \ref{fig:beta_pval}a).
-%%
-%Regarding the eQTL significance (Negative decimal logarithm of the p-values), I found decreasing mean values for GWAS class counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
+Therefore, I wonder about the relationship between pleiotropy, effect size and significance of eQTLs.
 %
-%Then I carried out the same analysis for the GWAS effect size (beta) and significance (p-value).
-%%
-%I found that the mean of the absolute GWAS effect sizes (beta) decreased between GWAS class counts 1 and 5 (Fig. \ref{fig:beta_pval}b).
-%%
-%Regarding the GWAS variant significance (Negative decimal logarithm of the p-values), I found increasing mean values for GWAS class counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
+I found that the mean of the absolute eQTL effect sizes (beta) decreased between GWAS class counts 1 and 5 (Fig. \ref{fig:beta_pval}a).
 %
-%These observations suggest that the strength of both eQTL and GWAS effects decrease with the pleiotropy (Fig. \ref{fig:beta_pval}a,b).
+Regarding the eQTL significance (Negative decimal logarithm of the p-values), I found decreasing mean values for GWAS class counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
+
+Then I carried out the same analysis for the GWAS effect size (beta) and significance (p-value).
+%
+I found that the mean of the absolute GWAS effect sizes (beta) decreased between GWAS class counts 1 and 5 (Fig. \ref{fig:beta_pval}b).
+%
+Regarding the GWAS variant significance (Negative decimal logarithm of the p-values), I found increasing mean values for GWAS class counts between 1 and 5 (Fig. \ref{fig:beta_pval}b).
+
+These observations suggest that the strength of both eQTL and GWAS effects decrease with the pleiotropy (Fig. \ref{fig:beta_pval}a,b).

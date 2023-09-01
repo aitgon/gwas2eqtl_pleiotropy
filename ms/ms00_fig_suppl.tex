@@ -1,0 +1,33 @@
+\documentclass[12pt, a4paper]{article}
+
+% Set relative path to all figures
+\newcommand*{\floatRelativePathTwentyFive}{../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_25}%
+\newcommand*{\floatRelativePath}{../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50}%
+\newcommand*{\floatRelativePathSeventyFive}{../out/gwas417/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_75}%
+
+\usepackage{orcidlink}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{csvsimple}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lipsum}
+\usepackage{nameref}
+% \usepackage{natbib}
+\usepackage{subcaption}
+\usepackage{biblatex}
+\addbibresource{/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/ms/ms_pleiotropy.bib}
+% \addbibresource{\jobname.bib}
+
+%\captionsetup[figure]{labelfont={bf},labelformat={default},labelsep=period,name={Fig.}}
+
+\begin{document}
+
+\input{ms08_figures.tex}
+\include{ms09_suppl}
+
+% \bibliographystyle{apalike}
+% \bibliography{ms_pleiotropy}
+\printbibliography
+
+\end{document}

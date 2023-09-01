@@ -1,0 +1,9 @@
+chrom	pos38	ref	alt	Gene	gwas_category_lst
+12	111,621,753	C	T	ALDH2	allergic disease; cardiovascular disease; eye disease; longevity
+1	8,437,247	T	A	ENO1	allergic disease; cardiovascular disease; hypertensive disorder; mental or behavioural disorder
+17	39,895,095	A	G	ORMDL3	allergic disease; autoimmune disease; cardiovascular disease; metabolic disease
+5	132,461,886	T	C	IL4	breast cancer; cardiovascular disease; hypertensive disorder; respiratory system disease
+6	90,267,049	G	A	BACH2	allergic disease; autoimmune disease; metabolic disease; skin cancer
+19	48,703,417	G	A	FUT2	autoimmune disease; cardiovascular disease; digestive system disease; hypertensive disorder
+4	102,267,552	C	T	SLC39A8	autoimmune disease; cardiovascular disease; hypertensive disorder; musculoskeletal system
+15	74,770,056	C	T	CYP1A1	cardiovascular disease; hypertensive disorder; immune system disease; joint disease

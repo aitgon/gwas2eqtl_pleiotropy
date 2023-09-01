@@ -1,5 +1,26 @@
 \section*{Discussion}
 
+%https://www.scribbr.com/dissertation/discussion/
+%Step 1: Summarize your key findings
+%Examples: Summarization sentence starters
+%
+%    The results indicate that…
+%    The study demonstrates a correlation between…
+%    This analysis supports the theory that…
+%    The data suggest that…
+
+%https://www.scribbr.com/dissertation/discussion/
+%Step 2: Give your interpretations
+
+%https://www.scribbr.com/dissertation/discussion/
+%Step 3: Give your interpretations
+
+%https://www.scribbr.com/dissertation/discussion/
+%Step 4: Acknowledge the limitations
+
+%https://www.scribbr.com/dissertation/discussion/
+%Step 5: Share your recommendations
+
 In this article, I present the results of a colocalization pipeline for eQTLs and GWAS variants that I have applied to 418 GWAS and 127 eQTL studies.
 %
 I have taken advantage of two public resources of GWAS and eQTL studies with summary statistics to compute a large number of colocalizations between eQTLs and GWAS variants.
@@ -7,15 +28,13 @@ I have taken advantage of two public resources of GWAS and eQTL studies with sum
 We start with 10,627 tag variants with a significant p-value below 5e-8 and we observe a colocalization for 3,849 or 36\% of the leading variants from 335 GWAS.
 %
 More preciseley, in autoimmune diseases, we find colocalization for 37\% of leading GWAS variants, which is comparable
-to a previous study that found colocalization for 40.4\% of GWAS loci \citep{2021.Li.Mu}.
+to a previous study that found colocalization for 40.4\% of GWAS loci \cite{2021.Li.Mu}.
 %
 The difference is that many colocalization by the previous study were contributed by RNA splicing, whereas our study entirely focuses on eQTLs.
 
 These results are provided as a downloadable table that can be used to explore variants with the GWAS traits, eQTL tissues and genes.
 %
 We found 103,551 variants from 246 GWAS that colocalized with a posterior probability PP.H4.abf$\ge$0.8 with at least one eQTL.
-
-%TODO continue
 
 I have extensively compared molecular properties of pleiotropic variants involved in several GWAS traits.
 %
@@ -85,56 +104,4 @@ There is also the 5q31.1 locus that includes important genes of the immune syste
 %rs301816
 %in the cytoband 1p36.23 that are involved in allergy, cardiovascular and hypertension.
 %This variants control the gene RERE, which is a nuclear receptor corregulator and is involved in neurodevelopmental disorders.\\
-
-\section*{Methods}\label{sec:methods}
-
-\subsection*{Data sets and data exploration}
-
-I used these data sets here: eQTLs from the eQTL Catalogue \citep{2021.Alasoo.Kerimov}, GWAS variants from the IEU OpenGWAS project \citep{2021.Marcora.Lyon}, chromatin immunoprecipitation (ChIP) transcription factors peaks from the ReMap database \citep{2021.Ballester.Hammal}, and UCSC annotation data.
-%
-I explore the data using the UCSC browser (\url{http://genome.ucsc.edu}) \citep{2021.Kent.Lee}, and OMIM database (\url{https://omim.org/}).
-%
-Colocalization and analysis pipelines were implemented with Snakemake (Supplementary Figure S1) .
-%
-The colocalization and analysis pipelines can be found here: \url{https://github.com/aitgon/gwas2eqtl} and \url{https://github.com/aitgon/gwas2eqtl_pleiotropy}.
-
-\subsection*{Colocalization}
-
-My colocalization pipeline was inspired by another pipeline that is at the eQTL Catalogue Github repository ( \url{https://github.com/eQTL-Catalogue/colocalisation} ).
-%
-GWAS were downloaded from OpenGWAS and converted to hg38 coordinates.
-%
-Permuted eQTLs with FDR 0.05 in each sample were selected as lead variants.
-%
-eQTL and GWAS variants surrounded the lead variants with radius of 500,000 nt (Total window 1,000,000 nt) were retrieved.
-%
-These variants were kept if MAF was strictly greater than 0 and lower than 1, the variants were not duplicated and there was no missing data.
-%
-Colocalization between eQTL and GWAS variants was tested using the "coloc.abf" function of CRAN coloc for each window, each eQTL sample and each GWAS.
-
-\subsection*{Definition of pleiotropic regions}
-
-To define pleiotropic regions, I included "pleiotropic" variants defining as having more than 2 categories as long as the distance between the two "pleiotropic" variants is less than 100 000 bp.
-%
-Then the number of GWAS categories in Supplementary table TODO is given by the number of different variant categories in the region.
-
-\subsection*{Characterization of regulatory QTLs}
-
-\section*{Code availability}
-
-The eQTL/GWAS variant colocalization pipeline code is available at this repository: \url{https://github.com/aitgon/gwas2eqtl}.
-%
-The analysis pipeline of the eQTL/GWAS colocalization data and the source code of this manuscript is available at this repository: \url{https://github.com/aitgon/gwas2eqtl_pleiotropy}.
-
-\section*{Data availability}
-
-The raw colocalization data before filtering in a single file is available at this URL: \url{https://osf.io/hvmje}.
-%
-A website to access colocalization variants with PP.H4.abf $\geq$ 0.5 is available at this URL: TODO.
-
-\section*{Acknowledgements}
-
-Centre de Calcul Intensif d'Aix-Marseille is acknowledged for granting access to its high performance computing resources.
-%
-I thank Sandrine Marquet, Pascale Paul, Salvatore Spicuglia and Pascal Rihet for helpful discussions and L\'eopoldine Lecerf for a preliminary version of the pipeline developed during her internship.
 

@@ -2,6 +2,10 @@
 
 - add chrom to cytoband
 
+# Aug 18, 2022
+
+- add chrom to cytoband
+
 # Aug 10, 2022
 
 - compare OMIM rare variants -> ONHOLD
