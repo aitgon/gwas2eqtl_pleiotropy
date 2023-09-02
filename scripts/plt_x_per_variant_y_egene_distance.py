@@ -8,23 +8,22 @@ import pathlib
 import seaborn
 import sys
 import matplotlib.pyplot as plt
-from scipy.stats import kstest
 from statannotations.Annotator import Annotator
-from statannotations.stats.StatTest import StatTest
+
 
 #%%
 plt.rcParams["figure.figsize"] = (8, 6)
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, annotator_config_dic, label_fontsize, tick_fontsize
-
 seaborn.set_theme(**seaborn_theme_dic)
 
 #%%
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    sa_url = sys.argv[2]
-    count_per_rsid_gwas_ods_path = sys.argv[3]
-    hist_png_path = sys.argv[4]
+    max_gwas_category_count = int(sys.argv[2])
+    sa_url = sys.argv[3]
+    count_per_rsid_gwas_ods_path = sys.argv[4]
+    hist_png_path = sys.argv[5]
     if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -61,6 +60,7 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid', 'ref', 'alt'])
+m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
 
 # distance to tss
 m_df['eqtl_gene_distance'] = math.nan
@@ -93,7 +93,10 @@ pairs = [(str(1), str(i)) for i in range(2, max(m2_df['gwas_category_count'].uni
 m2_df[x] = m2_df[x].astype(str)
 
 #%% Histogram
-seaborn.histplot(data=m2_df, x=y, hue=x, stat='percent', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=10, palette="rocket_r")
+seaborn.histplot(data=m2_df, x=y, hue=x, stat='proportion', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=20, palette="rocket_r")
+
+# plt.yscale('log')
+
 plt.tight_layout()
 plt.savefig(hist_png_path)
 plt.close()
@@ -106,7 +109,6 @@ plt.savefig(hist_png_path)
 plt.close()
 
 #%% Violin plot
-# import pdb; pdb.set_trace()
 m2_df['eqtl_gene_distance'] = m2_df['eqtl_gene_distance']/1000
 ax = seaborn.barplot(data=m2_df, x=x, y=y, estimator=numpy.mean, palette="rocket_r")
 
@@ -117,7 +119,10 @@ annotator.apply_and_annotate()
 plt.title("Distance to closest gene", fontsize=label_fontsize)
 plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.ylabel("Mean distance [kbp]", fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
+# plt.xticks(fontsize=tick_fontsize, rotation=0)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()

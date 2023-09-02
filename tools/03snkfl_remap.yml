@@ -10,30 +10,30 @@ public_data_dir = config['public_data_dir']
 
 rule all_03snkfl_analysis_pleiotropy:
     input:
-        os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
+        os.path.join(outdir, "plt_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
+        os.path.join(outdir, "plt_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
 
 rule pltbar_remap_crm_gwas_categories:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
         os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"),
     output:
-        os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10_count.tsv"),
-        os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
-#    params:
-#        max_gwas_category_count=max_gwas_category_count
+        os.path.join(outdir, "plt_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10_count.tsv"),
+        os.path.join(outdir, "plt_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
+    params:
+        max_gwas_category_count=max_gwas_category_count
     shell:
-        "python scripts/pltbar_x_per_variant_pleiotropy_y_remapcrm.py {input[0]} {input[1]} {output[0]} {output[1]}"
+        "python scripts/plt_x_per_variant_pleiotropy_y_remapcrm.py {params[0]} {input[0]} {input[1]} {output[0]} {output[1]}"
 
 rule pltbox_remaptf_per_rsid:
     input:
         os.path.join(outdir, "intrsct_remapnr_gwas_categories.py/remap_nr_variant_pleio_1_flank_10_hg38.bed"),
     output:
-        os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
-#    params:
-#        max_gwas_category_count=(max_gwas_category_count-1)
+        os.path.join(outdir, "plt_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
+    params:
+        max_gwas_category_count=max_gwas_category_count
     shell:
-        "python scripts/pltbox_x_per_rsid_y_remapnr.py {input[0]} {output[0]}"
+        "python scripts/plt_x_per_rsid_y_remapnr.py {params[0]} {input[0]} {output[0]}"
 
 rule intrsct_remap_nr_gwas_categories:
     input:
@@ -42,10 +42,10 @@ rule intrsct_remap_nr_gwas_categories:
     output:
         os.path.join(outdir, "intrsct_remapnr_gwas_categories.py/remap_nr_variant_pleio_1_flank_10_hg38.bed"),
     params:
-#        max_gwas_category_count=(max_gwas_category_count-1)
+        max_gwas_category_count=max_gwas_category_count
     threads: multiprocessing.cpu_count()
     shell:
-        "python scripts/intrsct_remapnr_gwas_categories.py {threads} {input[0]} {input[1]} {output[0]}"
+        "python scripts/intrsct_remapnr_gwas_categories.py {threads} {params[0]} {input[0]} {input[1]} {output[0]}"
 
 rule dwnld_remap_nr:
     output:

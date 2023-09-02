@@ -22,11 +22,12 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    eqtl_pleio_1_flank_10_hg38_bed = sys.argv[1]
-    remap_crm_path = sys.argv[2]
-    remap_count_tsv = sys.argv[3]
-    barplot_remap_crm_png = sys.argv[4]
-    if len(sys.argv) > 5:
+    max_gwas_category_count = int(sys.argv[1])
+    eqtl_pleio_1_flank_10_hg38_bed = sys.argv[2]
+    remap_crm_path = sys.argv[3]
+    remap_count_tsv = sys.argv[4]
+    barplot_remap_crm_png = sys.argv[5]
+    if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -46,7 +47,8 @@ out_df = pandas.DataFrame(columns = out_df_columns)
 
 #%% bedtools intersect
 flank = 10
-for count_pleio in range(1, 99):
+# for count_pleio in range(1, 99):
+for count_pleio in range(1, max_gwas_category_count + 1):
     eqtl_bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
     if not os.path.isfile(eqtl_bed_path):
         break
@@ -97,7 +99,6 @@ out_df.rename({'pleio_count': 'gwas_category_count'}, axis=1, inplace=1)
 out_df['gwas_category_count'] = [str(i) for i in out_df['gwas_category_count']]
 order = out_df['gwas_category_count'].tolist()
 xticklabels = order.copy()
-# xticklabels[-1] = '≥{}'.format(order[-1])
 title = "CRM annotation enrichm."
 xlabel = "Trait category count"
 ylabel = "Odds ratio"
@@ -117,10 +118,12 @@ annotator.configure(**annotator_config_dic)
 annotator.annotate()
 
 ax.set_xticklabels(xticklabels)
-# plt.grid(axis="y")
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
+# plt.xticks(fontsize=tick_fontsize, rotation=0)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 
@@ -140,7 +143,10 @@ ax.set_xticklabels(xticklabels)
 # plt.grid(axis="y")
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
+# plt.xticks(fontsize=tick_fontsize, rotation=0)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 

@@ -57,6 +57,7 @@ plt.xlabel(xlabel, fontsize=label_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 plt.xticks(fontsize=tick_fontsize)
+plt.yscale('log')
 
 plt.tight_layout()
 plt.savefig(png_path, dpi=dpi)

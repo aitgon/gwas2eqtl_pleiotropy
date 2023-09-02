@@ -31,8 +31,8 @@ rule all:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
         #
         # 03snkfl_remap.yml
-        os.path.join(outdir, "pltbox_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
+        os.path.join(outdir, "plt_x_per_rsid_y_remapnr.py/bxplt_remaptf_per_rsid_flank_10.png"),
+        os.path.join(outdir, "plt_x_per_variant_pleiotropy_y_remapcrm.py/remapcrm_flank10.png"),
         #
         # 04snkfl_plots.yml
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_3.tsv"),
@@ -46,8 +46,8 @@ rule all:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/eqtl_neglog10pval.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/gwas_beta.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
+        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
+        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
@@ -55,8 +55,8 @@ rule all:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
         os.path.join(outdir, "plt_x_per_variant_y_egene_distance.py/hist.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/violin.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/violin.png"),
+        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/violin.png"),
+        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/violin.png"),
         #
         # 05snkfl_supplementary_and_web.yml
         os.path.join(outdir, "ms_supp_tab/table_s1.xlsx"),

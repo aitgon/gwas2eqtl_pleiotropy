@@ -23,8 +23,8 @@ rule all_plots:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/eqtl_neglog10pval.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/gwas_beta.png"),
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
+        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
+        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
@@ -32,8 +32,8 @@ rule all_plots:
         os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
         os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
         os.path.join(outdir, "plt_x_per_variant_y_egene_distance.py/hist.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/violin.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/violin.png"),
+        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/violin.png"),
+        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/violin.png"),
 
 rule plt_x_per_variant_y_egene_distance:
     input:
@@ -42,9 +42,10 @@ rule plt_x_per_variant_y_egene_distance:
         os.path.join(outdir, "plt_x_per_variant_y_egene_distance.py/hist.png"),
     params:
         snp_pp_h4=snp_pp_h4,
+        max_gwas_category_count=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/plt_x_per_variant_y_egene_distance.py {params[0]} {params[1]} {input[0]} {output[0]}"
+        "python scripts/plt_x_per_variant_y_egene_distance.py {params[0]} {params[1]} {params[2]} {input[0]} {output[0]}"
 
 rule pltbar_pleiotropic_regions_cumsum:
     input:
@@ -119,37 +120,38 @@ rule pltbar_x_per_gwas_cat_y_beta_neglog10pval:
         os.path.join(outdir, "pltbar_x_per_gwas_cat_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
     params:
         snp_pp_h4=snp_pp_h4,
+        max_gwas_category_count=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_gwas_cat_y_beta_neglog10pval.py {params.snp_pp_h4} {params.db_url} {input[0]} {output[0]} {output[1]} {output[2]} {output[3]}"
+        "python scripts/pltbar_x_per_gwas_cat_y_beta_neglog10pval.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]} {output[1]} {output[2]} {output[3]}"
 
 rule pltbar_x_per_variant_egene_y_etissue:
     input:
 #        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
-        os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/plt.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_egene_y_etissue.py/violin.png"),
+        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
+        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/violin.png"),
     params:
         snp_pp_h4=snp_pp_h4,
         max_gwas_category_count=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_variant_egene_y_etissue.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]}"
+        "python scripts/plt_x_per_variant_egene_y_etissue.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]}"
 
 rule pltbar_x_per_variant_etissue_y_egene:
     input:
 #        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
     output:
-        os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/plt.png"),
-        os.path.join(outdir, "pltbar_x_per_variant_etissue_y_egene.py/violin.png"),
+        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
+        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/violin.png"),
     params:
         snp_pp_h4=snp_pp_h4,
         max_gwas_category_count=max_gwas_category_count,
         db_url=db_url,
     shell:
-        "python scripts/pltbar_x_per_variant_etissue_y_egene.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]}"
+        "python scripts/plt_x_per_variant_etissue_y_egene.py {params.snp_pp_h4} {params.max_gwas_category_count} {params.db_url} {input[0]} {output[0]}"
 
 rule plt_scttr_count_per_rsid_etissue:
     input:

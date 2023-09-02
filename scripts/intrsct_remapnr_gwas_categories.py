@@ -1,4 +1,3 @@
-import multiprocessing
 import os
 import pathlib
 import shlex
@@ -7,17 +6,16 @@ import sys
 from multiprocessing import Pool
 
 from gwas2eqtl_pleiotropy.Logger import Logger
-from gwas2eqtl_pleiotropy.constants import public_data_dir
 
 #%%
 help_cmd_str = "todo"
 try:
-    # max_gwas_category_count = int(sys.argv[1])
     threads = int(sys.argv[1])
-    remap_nr_path = sys.argv[2]
-    eqtl_pleio_1_flank_10_hg38_bed = sys.argv[3]
-    remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[4]
-    if len(sys.argv) > 5:
+    max_gwas_category_count = int(sys.argv[2])
+    remap_nr_path = sys.argv[3]
+    eqtl_pleio_1_flank_10_hg38_bed = sys.argv[4]
+    remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[5]
+    if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -35,15 +33,14 @@ indir_path = os.path.dirname(eqtl_pleio_1_flank_10_hg38_bed)
 #%% bedtools intersect
 flank = 10
 
-for max_gwas_category_count in range(1, 99):
-    bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(max_gwas_category_count, flank))
+for gwas_category_count_i in range(max_gwas_category_count + 1):
+    bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(gwas_category_count_i, flank))
     if not os.path.isfile(bed_path):
         break
 
-max_gwas_category_count = max_gwas_category_count - 1
-print(max_gwas_category_count)
+# max_gwas_category_count = max_gwas_category_count - 1
+# print(max_gwas_category_count)
 def intrsct_remapnr(count_pleio):
-    # print(count_pleio)
     bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
     intersect_basename = os.path.basename(remap_nr_pleio_1_flank_10_hg38_bed).replace('pleio_1', 'pleio_' + str(count_pleio))
     intersect_bed_path = os.path.join(os.path.dirname(remap_nr_pleio_1_flank_10_hg38_bed), intersect_basename)
