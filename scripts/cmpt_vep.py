@@ -79,7 +79,7 @@ vep_df.to_csv(vep_input_path, sep="\t", index=False, header=False)
 
 #%% run vep command
 dir_cache = "/".join(vep_cache_info.split('/')[:-3])
-cmd_str = "vep --offline --dir_cache {dir_cache} --plugin TSSDistance --force_overwrite -i {vep_input} " \
+cmd_str = "vep --offline --dir_cache {dir_cache} --cache_version 108 --plugin TSSDistance --force_overwrite -i {vep_input} " \
           "--output_file {vep_output}".format(vep_input=vep_input_path, dir_cache=dir_cache, vep_output=vep_output_path)
 Logger.info(cmd_str)
 output = subprocess.run(shlex.split(cmd_str), capture_output=True)

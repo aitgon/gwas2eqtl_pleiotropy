@@ -13,8 +13,8 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
+    # max_gwas_category_count = int(sys.argv[1])
     consequence_tsv_path = sys.argv[1]
-    # max_gwas_category_count = sys.argv[2]  # requires string
     consequence_png_path = sys.argv[2]
     if len(sys.argv) > 3:
         print("""Two many arguments!
@@ -51,6 +51,7 @@ in_df.loc[in_df['pfdr5perc'] <= 1.00e-04, 'signif'] = '****'
 ################################################################################
 # Draw a nested barplot by species and sex
 in_df = in_df.sort_values(['consequence', 'gwas_category_count'])
+in_df.loc[in_df['gwas_category_count'] == max(in_df['gwas_category_count']), 'gwas_category_count'] = '≥' + max(in_df['gwas_category_count'])
 
 order = in_df['consequence'].unique()
 hue_order = in_df['gwas_category_count'].unique()
@@ -60,7 +61,10 @@ for c in g.containers:
     labels = in_df.loc[in_df['gwas_category_count'] == gwas_category_count, 'signif'].tolist()
     g.bar_label(c, labels=labels, label_type='edge', padding=5)
 
-plt.legend(title='Category cnt.', loc='best', title_fontsize='xx-large', fontsize='18')
+# legend_labels = hue_order
+# legend_labels[-1] = '≥' + hue_order[-1]
+# g.legend(labels=legend_labels, title='Category cnt.', loc='best', title_fontsize='xx-large', fontsize='18')
+g.legend(title='Category cnt.', loc='best', title_fontsize='xx-large', fontsize='18')
 plt.title("Variant Effect Predictor", fontsize=label_fontsize)
 plt.ylabel("Odds vs cat. count 1", fontsize=tick_fontsize)
 plt.yticks(fontsize=12, rotation=0)

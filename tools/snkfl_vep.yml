@@ -2,6 +2,8 @@
 snakemake -j all -s tools/snkfl_vep.yml --config max_gwas_category_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public
 """
 
+import multiprocessing
+
 db_url = config['db_url']
 max_gwas_category_count = config['max_gwas_category_count']
 outdir = config['outdir']
@@ -18,8 +20,8 @@ rule plt_vep_consequence:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     output:
         os.path.join(outdir, "pltbar_vep_consequence.py/vep.png"),
-#    params:
-#        max_gwas_category_count=(max_gwas_category_count-1)
+    params:
+#        max_gwas_category_count=max_gwas_category_count
     shell:
         "python scripts/pltbar_vep_consequence.py {input[0]} {output[0]}"
 
@@ -30,10 +32,10 @@ rule cmpt_vep_consequence_fisher:
     output:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     params:
-#        max_gwas_category_count=(max_gwas_category_count-2)
-    threads: 25  # ~nb of vep consequences
+        max_gwas_category_count=max_gwas_category_count
+    threads: multiprocessing.cpu_count()  # ~nb of vep consequences
     shell:
-        "python scripts/cmpt_vep_consequence_fisher.py {threads} {input[0]} {input[1]} {output[0]}"
+        "python scripts/cmpt_vep_consequence_fisher.py {threads} {params[0]} {input[0]} {input[1]} {output[0]}"
 
 rule cmpt_vep:
     input:

@@ -1,4 +1,7 @@
 import multiprocessing
+import os
+import pathlib
+
 import numpy
 import pandas
 import sys
@@ -12,12 +15,12 @@ from statsmodels.stats import multitest as multitest
 #%%
 help_cmd_str = "todo"
 try:
-    # max_gwas_category_count = int(sys.argv[1])
     threads = int(sys.argv[1])
-    vep_input_path = sys.argv[2]
-    vep_output_path = sys.argv[3]
-    consequence_tsv_path = sys.argv[4]
-    if len(sys.argv) > 5:
+    max_gwas_category_count = int(sys.argv[2])
+    vep_input_path = sys.argv[3]
+    vep_output_path = sys.argv[4]
+    consequence_tsv_path = sys.argv[5]
+    if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -26,9 +29,14 @@ except IndexError:
     {}""".format(help_cmd_str))
     sys.exit(1)
 
+outdir_path = os.path.dirname(consequence_tsv_path)
+pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
+
 #%%
 vep_input_column_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_category_count']
 vep_input_df = pandas.read_csv(vep_input_path, sep="\t", header=None, names=vep_input_column_lst)
+vep_input_df.loc[vep_input_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+
 columns = ['#Uploaded_variation', 'Location', 'Allele', 'Gene', 'Feature', 'Feature_type', 'Consequence', 'cDNA_position', 'CDS_position', 'Protein_position', 'Amino_acids', 'Codons', 'Existing_variation', 'Extra']
 vep_output_df = pandas.read_csv(vep_output_path, sep="\t", comment='#', header=None, names=columns)
 
@@ -40,7 +48,7 @@ df0['Consequence'] = df0['Consequence'].str.split(',')
 df = df0.explode('Consequence').drop_duplicates()
 
 # Keep most severe VEP
-vep_serverity_order_df = pandas.read_excel('/home/gonzalez/Repositories/gwas2eqtl_pleiotropy/config/vep_severity_order.ods', engine='odf')
+vep_serverity_order_df = pandas.read_excel('config/vep_severity_order.ods', engine='odf')
 vep_serverity_order_df['severity'] = vep_serverity_order_df.index
 df = df.merge(vep_serverity_order_df[['SO term', 'severity']], left_on='Consequence', right_on='SO term')
 df.sort_values('severity', inplace=True, ascending=True)
@@ -98,7 +106,6 @@ with Pool(processes=multiprocessing.cpu_count()) as p:
     out_lst = p.map(cmpt_vep_consequence_fisher, sorted(df['Consequence'].unique()))
 
 out_df = pandas.DataFrame.from_records([record for sublst in out_lst for record in sublst])
-
 rejected, pcorrected = multitest.fdrcorrection(out_df['p'], alpha=0.05)
 out_df['pfdr5perc'] = pcorrected
 
