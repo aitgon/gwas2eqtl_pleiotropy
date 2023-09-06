@@ -21,7 +21,7 @@ try:
     h4_annot_tsv_path = sys.argv[1]
     count_per_rsid_gwas_tsv_path = sys.argv[2]
     interactome_tsv_path = sys.argv[3]
-    max_gwas_class_count = int(sys.argv[4])
+    pleio_high_cutoff = int(sys.argv[4])
     vlnplt_png_path = sys.argv[5]
     if len(sys.argv) > 6:
         print("""Two many arguments!
@@ -84,7 +84,7 @@ m2_df.to_csv(tsv_path, header=True, index=False, sep='\t')
 
 #%% set max_gwas_class_count
 m_df = m_df[sel_cols + ['gwas_class_count']]
-m_df.loc[m_df['gwas_class_count'] >= max_gwas_class_count, "gwas_class_count"] = max_gwas_class_count
+m_df.loc[m_df['gwas_class_count'] >= pleio_high_cutoff, "gwas_class_count"] = pleio_high_cutoff
 
 #%%
 m_df = m_df.drop_duplicates()
@@ -97,7 +97,7 @@ describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
 m_df.groupby('gwas_class_count')['interactor_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-order = [*range(1, max_gwas_class_count+1)]
+order = [*range(1, pleio_high_cutoff + 1)]
 xticklabels = order.copy()
 xticklabels[-1] = '≥{}'.format(order[-1])
 title = "Interactors per egene"
@@ -106,7 +106,7 @@ ylabel = "Phys. interactor count"
 y = "interactor_count"
 
 #%%
-box_pairs = [(1, i) for i in range(2, max_gwas_class_count+1) ]
+box_pairs = [(1, i) for i in range(2, pleio_high_cutoff + 1)]
 ax = seaborn.violinplot(x="gwas_class_count", y=y, data=m_df, order=order, palette="rocket_r")
 test_results = add_stat_annotation(ax, data=m_df, x="gwas_class_count", y=y, order=order,
                                    box_pairs=box_pairs,

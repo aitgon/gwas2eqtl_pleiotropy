@@ -22,7 +22,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_category_count = int(sys.argv[1])
+    pleio_high_cutoff = int(sys.argv[1])
     eqtl_pleio_1_flank_10_hg38_bed = sys.argv[2]
     remap_crm_path = sys.argv[3]
     remap_count_tsv = sys.argv[4]
@@ -48,7 +48,7 @@ out_df = pandas.DataFrame(columns = out_df_columns)
 #%% bedtools intersect
 flank = 10
 # for count_pleio in range(1, 99):
-for count_pleio in range(1, max_gwas_category_count + 1):
+for count_pleio in range(1, pleio_high_cutoff + 1):
     eqtl_bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(count_pleio, flank))
     if not os.path.isfile(eqtl_bed_path):
         break

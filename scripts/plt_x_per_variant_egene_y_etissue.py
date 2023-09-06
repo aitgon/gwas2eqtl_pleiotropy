@@ -21,7 +21,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_category_count = int(sys.argv[2])
+    pleio_high_cutoff = int(sys.argv[2])
     sa_url = sys.argv[3]
     count_per_rsid_gwas_ods_path = sys.argv[4]
     png_path = sys.argv[5]
@@ -64,7 +64,7 @@ sel_cols = ['rsid', 'eqtl_gene_id', 'etissue_category_term']  # tissue per varia
 
 #%% set max_gwas_category_count
 m_df = m_df[sel_cols + ['gwas_category_count']]
-m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+m_df.loc[m_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
 
 #%% keep unique rsid-etissue_category_term pairs with max. gwas category
 m_df.sort_values('gwas_category_count', ascending=False, inplace=True)
@@ -80,10 +80,10 @@ describe_tsv_path = os.path.join(outdir_path, "describe.tsv")
 m_df.groupby('gwas_category_count')['etissue_category_term_count'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")
 
 #%%
-m_df.loc[m_df['gwas_category_count']>=max_gwas_category_count, 'gwas_category_count'] = '≥' + str(max_gwas_category_count)
+m_df.loc[m_df['gwas_category_count'] >= pleio_high_cutoff, 'gwas_category_count'] = '≥' + str(pleio_high_cutoff)
 
 # order = [str(x) for x in range(1, max(m_df['gwas_category_count'].unique())+1)]
-order = [str(x) for x in [*range(1, max_gwas_category_count)] + ['≥' + str(max_gwas_category_count)]]
+order = [str(x) for x in [*range(1, pleio_high_cutoff)] + ['≥' + str(pleio_high_cutoff)]]
 
 # xticklabels = order.copy()
 # xticklabels[-1] = '≥{}'.format(order[-1])

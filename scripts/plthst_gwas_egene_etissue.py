@@ -5,8 +5,6 @@ import pathlib
 import seaborn
 import sys
 
-from matplotlib.ticker import FuncFormatter
-
 from gwas2eqtl_pleiotropy.constants import tick_fontsize, dpi
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 from matplotlib.ticker import MaxNLocator

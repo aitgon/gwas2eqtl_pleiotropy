@@ -18,7 +18,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_category_count = int(sys.argv[1])
+    pleio_high_cutoff = int(sys.argv[1])
     remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[2]
     tf_flank_10_png = sys.argv[3]
     if len(sys.argv) > 4:
@@ -41,7 +41,7 @@ flank = 10
 
 cat_df = pandas.DataFrame({'gwas_category_count': [], 'rsid': [], 'tf': []})
 # for pleio in range(1, max_gwas_category_count+1):
-for pleio in range(1, max_gwas_category_count + 1):
+for pleio in range(1, pleio_high_cutoff + 1):
     pleio_path = remap_nr_pleio_1_flank_10_hg38_bed.replace('pleio_1', 'pleio_{}'.format(pleio))
     if not os.path.isfile(pleio_path):
         break
@@ -55,7 +55,7 @@ for pleio in range(1, max_gwas_category_count + 1):
     df['gwas_category_count'] = pleio
     cat_df = pandas.concat([cat_df, df], axis=0)
 
-cat_df.loc[cat_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+cat_df.loc[cat_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
 
 describe_tsv_path = os.path.join(os.path.dirname(tf_flank_10_png), "describe.tsv")
 cat_df.groupby('gwas_category_count')['tf'].apply(lambda x: x.describe()).to_csv(describe_tsv_path, sep="\t")

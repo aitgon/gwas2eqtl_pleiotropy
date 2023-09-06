@@ -20,7 +20,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_category_count = int(sys.argv[2])
+    pleio_high_cutoff = int(sys.argv[2])
     sa_url = sys.argv[3]
     count_per_rsid_gwas_ods_path = sys.argv[4]
     hist_png_path = sys.argv[5]
@@ -60,7 +60,7 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid', 'ref', 'alt'])
-m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+m_df.loc[m_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
 
 # distance to tss
 m_df['eqtl_gene_distance'] = math.nan

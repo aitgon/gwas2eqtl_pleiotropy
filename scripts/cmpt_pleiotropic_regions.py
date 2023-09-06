@@ -1,17 +1,13 @@
-import pdb
 from itertools import chain
-
 from gwas2eqtl_pleiotropy.constants import region_bin, label_fontsize, tick_fontsize
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 from matplotlib import pyplot as plt
-
 
 import os
 import pandas
 import pathlib
 import seaborn
 import sys
-import ast
 
 
 #%%
@@ -21,11 +17,12 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     wlength = int(sys.argv[1])
-    manuscript_pleio_cutoff = int(sys.argv[2])
-    count_per_rsid_gwas_egene_etissue_ods = sys.argv[3]
-    pleio_ods_path = sys.argv[4]
-    png_path = sys.argv[5]
-    if len(sys.argv) > 6:
+    pleio_high_cutoff = int(sys.argv[2])
+    ms_table_pleio_cutoff = int(sys.argv[3])
+    count_per_rsid_gwas_egene_etissue_ods = sys.argv[4]
+    pleio_ods_path = sys.argv[5]
+    png_path = sys.argv[6]
+    if len(sys.argv) > 7:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -78,8 +75,6 @@ for chrom in sorted(df['chrom'].unique()):  # problem split by chromosome
         ['chrom', 'eqtl_gene_marker_symbol', 'eqtl_gene_marker_id', 'pubmed_count', 'region_pleio']].sort_values(
         'pubmed_count', ascending=False).drop_duplicates(['chrom', 'region_pleio'], keep='first')
     pubmed_df.set_index(['chrom', 'region_pleio'], verify_integrity=True, inplace=True)
-    # import pdb; pdb.set_trace()
-    # pubmed_df.drop('pubmed_count', axis=1, inplace=True)
     # Merge region-level and variant-level information
     pubmed_df.rename({'eqtl_gene_marker_id': 'region_marker_id', 'eqtl_gene_marker_symbol': 'region_marker_symbol', 'pubmed_count': 'region_pubmed_count'},
                      axis=1, inplace=True)
@@ -98,13 +93,14 @@ region_df['gwas_category'] = region_df['gwas_category'].apply(lambda x: ";".join
 region_df['eqtl_gene_symbol'] = region_df['eqtl_gene_symbol'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
 region_df['etissue_category_term'] = region_df['etissue_category_term'].apply(lambda x: ";".join(sorted([i for i in x if not i is None])))
 region_df['rsid'] = region_df['rsid'].apply(lambda x: ";".join(sorted([str(i) for i in x if not i is None])))
+region_df['rsid_count'] = region_df['rsid'].apply(lambda x: len(set(x.split(';'))))
 
 # write to ods
 region_df.reset_index(inplace=True)
 region_df.drop('region_pleio', axis=1, inplace=True)
 columns = ['chrom', 'start', 'end', 'cytoband', 'region_marker_symbol',
            'gwas_category_count', 'gwas_category', 'eqtl_gene_symbol_count',
-           'eqtl_gene_symbol', 'etissue_category_term_count', 'etissue_category_term', 'region_marker_id', 'rsid', 'region_pubmed_count']
+           'eqtl_gene_symbol', 'etissue_category_term_count', 'etissue_category_term', 'region_marker_id', 'rsid', 'region_pubmed_count', 'rsid_count']
 region_df = region_df[columns]
 region_df = region_df.sort_values(['gwas_category_count', 'chrom', 'start'], ascending=[False, True, True])
 
@@ -123,14 +119,17 @@ bed_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
 # import pdb; pdb.set_trace()
 regions_pleio_ms_df = region_df.copy()
 regions_pleio_ms_df = regions_pleio_ms_df.sort_values(by=['gwas_category_count', 'chrom', 'start'], ascending=[False, True, True])
-regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_category_count'] >= manuscript_pleio_cutoff]
+regions_pleio_ms_df = regions_pleio_ms_df.loc[regions_pleio_ms_df['gwas_category_count'] >= ms_table_pleio_cutoff]
+regions_pleio_ms_df['length'] = regions_pleio_ms_df['end'] - regions_pleio_ms_df['start'] + 1
+regions_pleio_ms_df.sort_values(by=regions_pleio_ms_df.columns.tolist(), inplace=True)
 
 # format output
 regions_pleio_ms_df.drop(['gwas_category_count'], inplace=True, axis=1)
 regions_pleio_ms_df['start'] = regions_pleio_ms_df['start'].apply(lambda x: '{0:,}'.format(x))
 regions_pleio_ms_df['end'] = regions_pleio_ms_df['end'].apply(lambda x: '{0:,}'.format(x))
+regions_pleio_ms_df['length'] = regions_pleio_ms_df['length'].apply(lambda x: '{0:,}'.format(x))
 regions_pleio_ms_df['gwas_category'] = regions_pleio_ms_df['gwas_category'].str.replace(';', '; ')
-regions_pleio_ms_df = regions_pleio_ms_df[['chrom', 'start', 'end', 'cytoband', 'region_marker_symbol', 'gwas_category']]
+regions_pleio_ms_df = regions_pleio_ms_df[['chrom', 'start', 'end', 'cytoband', 'region_marker_symbol', 'gwas_category', 'length', 'rsid_count']]
 tsv_path = os.path.join(outdir_path, "region_window_ms.tsv")
 regions_pleio_ms_df.to_csv(tsv_path, sep="\t", index=False)
 

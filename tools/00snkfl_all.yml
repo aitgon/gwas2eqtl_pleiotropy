@@ -1,5 +1,5 @@
 """
-snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas418.ods max_gwas_category_count=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public 
+snakemake -j all -s tools/00snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas418.ods pleio_high_cutoff=4 outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public 
 """
 
 david_email = config['david_email']
@@ -7,7 +7,7 @@ db_url = config['db_url']
 etissue_category_ods = config['etissue_category_ods']
 gwas_trait_ods = config['gwas_trait_ods']
 gwas_category_ods = config['gwas_category_ods']
-max_gwas_category_count = config['max_gwas_category_count']
+pleio_high_cutoff = config['pleio_high_cutoff']
 outdir = config['outdir']
 public_data_dir = config['public_data_dir']
 snp_pp_h4 = config['snp_pp_h4']
@@ -51,9 +51,9 @@ rule all:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
-        os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
-        os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
-        os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
+#        os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
+#        os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
+#        os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
         os.path.join(outdir, "plt_x_per_variant_y_egene_distance.py/hist.png"),
         os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/violin.png"),
         os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/violin.png"),

@@ -13,11 +13,12 @@ from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, seabor
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_category_count = int(sys.argv[2])
-    db_url = sys.argv[3]
-    count_per_rsid_gwas_egene_etissue_ods = sys.argv[4]
-    count_per_rsid_gwas_egene_etissue_corr_png = sys.argv[5]
-    if len(sys.argv) > 6:
+    pleio_high_cutoff = int(sys.argv[2])
+    ms_table_pleio_cutoff = int(sys.argv[3])
+    db_url = sys.argv[4]
+    count_per_rsid_gwas_egene_etissue_ods = sys.argv[5]
+    count_per_rsid_gwas_egene_etissue_corr_png = sys.argv[6]
+    if len(sys.argv) > 7:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -100,11 +101,12 @@ with pandas.ExcelWriter(count_per_rsid_gwas_egene_etissue_ods, engine="odf") as 
 #%% gwas variant pleiotropy for MS
 ms_df = m_df.copy()
 ms_df = ms_df.drop_duplicates('cytoband', keep='first')
-ms_df = ms_df.loc[ms_df['gwas_category_count'] >= max_gwas_category_count]
+ms_df = ms_df.loc[ms_df['gwas_category_count'] >= ms_table_pleio_cutoff]
 columns = ['chrom', 'pos38', 'cytoband', 'rsid', 'eqtl_gene_marker_symbol', 'gwas_category_lst']
 ms_df = ms_df[columns]
 # format output
 # ms_df['gwas_category_lst'] = ms_df['gwas_category_lst'].apply(lambda x: '; '.join(x))
+ms_df.sort_values(by=ms_df.columns.tolist(), inplace=True)
 ms_df['pos38'] = ms_df['pos38'].apply(lambda x : '{0:,}'.format(x))
 ms_df['rsid'] = 'rs' + ms_df['rsid'].astype(str)
 ms_df['gwas_category_lst'] = ms_df['gwas_category_lst'].str.replace(';', '; ')
@@ -129,9 +131,9 @@ plt.close()
 #%########################################### watanabe 2019 category count
 m2df = m_df[['rsid', 'ref', 'alt', 'gwas_category_count', 'domains_watanabe2019']].copy()
 
-m2df.loc[m2df['gwas_category_count'] >= max_gwas_category_count, 'gwas_category_count'] = '≥' + str(max_gwas_category_count)
+m2df.loc[m2df['gwas_category_count'] >= pleio_high_cutoff, 'gwas_category_count'] = '≥' + str(pleio_high_cutoff)
 
-order = [*range(1, max_gwas_category_count)] + ['≥' + str(max_gwas_category_count)]
+order = [*range(1, pleio_high_cutoff)] + ['≥' + str(pleio_high_cutoff)]
 ax = seaborn.boxplot(x='gwas_category_count', y='domains_watanabe2019', data=m2df, order=order, palette="rocket_r")
 
 plt.xlabel("trait category count", fontsize=label_fontsize)
@@ -152,7 +154,7 @@ m2df_watanabe2019_cat_count_df = m2df_watanabe2019_cat_count_df.merge(m2df_cat_c
 m2df_watanabe2019_cat_count_df.columns = ['watanabe_count', 'count']
 m2df_watanabe2019_cat_count_df['watanabe_perc'] = (m2df_watanabe2019_cat_count_df['watanabe_count'] / m2df_watanabe2019_cat_count_df['count'] * 100).astype(int)
 
-order = [*range(1, max_gwas_category_count)] + ['≥' + str(max_gwas_category_count)]
+order = [*range(1, pleio_high_cutoff)] + ['≥' + str(pleio_high_cutoff)]
 ax = seaborn.barplot(x=m2df_watanabe2019_cat_count_df.index, y='watanabe_perc', data=m2df_watanabe2019_cat_count_df, order=order, palette="rocket_r")
 
 plt.title("Known in Watanabe 2019", fontsize=label_fontsize)
@@ -179,13 +181,13 @@ bed_df = bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_category_count']]
 
 for gwas_category_count in sorted(bed_df['gwas_category_count'].unique()):
     pleio_bed_path = os.path.join(outdir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(gwas_category_count, flank))
-    if gwas_category_count == max_gwas_category_count:
-        bed_pleio_df = bed_df.loc[bed_df['gwas_category_count'] >= max_gwas_category_count, ]
+    if gwas_category_count == pleio_high_cutoff:
+        bed_pleio_df = bed_df.loc[bed_df['gwas_category_count'] >= pleio_high_cutoff,]
     else:
         bed_pleio_df = bed_df.loc[bed_df['gwas_category_count'] == gwas_category_count, ]
     bed_pleio_df = bed_pleio_df.sort_values(by=['chrom', 'start', 'end'])
     bed_pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
-    if gwas_category_count == max_gwas_category_count:
+    if gwas_category_count == pleio_high_cutoff:
         break
 
 #%########################################### bed files, flanking=0
@@ -200,11 +202,11 @@ bed_df = bed_df[['chrom', 'start', 'end', 'rsid', 'gwas_category_count']]
 
 for gwas_category_count in sorted(bed_df['gwas_category_count'].unique()):
     pleio_bed_path = os.path.join(outdir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(gwas_category_count, flank))
-    if gwas_category_count == max_gwas_category_count:
-        bed_pleio_df = bed_df.loc[bed_df['gwas_category_count'] >= max_gwas_category_count, ]
+    if gwas_category_count == pleio_high_cutoff:
+        bed_pleio_df = bed_df.loc[bed_df['gwas_category_count'] >= pleio_high_cutoff,]
     else:
         bed_pleio_df = bed_df.loc[bed_df['gwas_category_count'] == gwas_category_count, ]
     bed_pleio_df = bed_pleio_df.sort_values(by=['chrom', 'start', 'end'])
     bed_pleio_df.to_csv(pleio_bed_path, sep="\t", index=False, header=False)
-    if gwas_category_count == max_gwas_category_count:
+    if gwas_category_count == pleio_high_cutoff:
         break

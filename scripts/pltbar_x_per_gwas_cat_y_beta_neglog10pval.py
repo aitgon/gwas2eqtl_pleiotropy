@@ -22,7 +22,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_category_count = int(sys.argv[2])
+    pleio_high_cutoff = int(sys.argv[2])
     sa_url = sys.argv[3]
     count_per_rsid_gwas_ods_path = sys.argv[4]
     eqtl_beta_png_path = sys.argv[5]
@@ -68,19 +68,19 @@ m_gwas_df = m_gwas_df.loc[m_gwas_df['gwas_pval']!=0]  # remove pval with zeros
 m_gwas_df[['gwas_beta_abs']] = m_gwas_df[['gwas_beta']].abs()
 m_gwas_df[['gwas_neglog10pval']] = -numpy.log10(m_gwas_df[['gwas_pval']])
 m_gwas_df = m_gwas_df[['gwas_category_count', 'gwas_beta_abs', 'gwas_neglog10pval']]
-m_eqtl_df.loc[m_eqtl_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+m_eqtl_df.loc[m_eqtl_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
 
 m_eqtl_df[['eqtl_beta_abs']] = m_eqtl_df[['eqtl_beta']].abs()
 m_eqtl_df[['eqtl_neglog10pval']] = -numpy.log10(m_eqtl_df[['eqtl_pval']])
 m_eqtl_df = m_eqtl_df[['gwas_category_count', 'eqtl_beta_abs', 'eqtl_neglog10pval']]
-m_eqtl_df.loc[m_eqtl_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+m_eqtl_df.loc[m_eqtl_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
 
 
 #%%
-order = [str(x) for x in range(1, max_gwas_category_count+1)]
+order = [str(x) for x in range(1, pleio_high_cutoff + 1)]
 xticklabels = order.copy()
 # xticklabels[-1] = '≥{}'.format(order[-1])
-box_pairs = [(1, i) for i in range(1, max_gwas_category_count+1) ]
+box_pairs = [(1, i) for i in range(1, pleio_high_cutoff + 1)]
 x = 'gwas_category_count'
 xlabel = "Trait category count"
 
@@ -91,7 +91,7 @@ title = "GWAS significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%% barplot
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_category_count+1)]
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_gwas_df[x] = m_gwas_df[x].astype(str)
 ax = seaborn.barplot(x=x, y=y, data=m_gwas_df, order=order, estimator=numpy.mean, palette="rocket_r")
 
@@ -113,7 +113,7 @@ plt.savefig(gwas_neglogpval_png_path)
 plt.close()
 
 #%% boxenplot
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_category_count+1)]
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_gwas_df[x] = m_gwas_df[x].astype(str)
 ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=False)
 
@@ -129,7 +129,7 @@ title = "eQTL significance"
 ylabel = "Neg. log10 p-val mean"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_category_count+1)]
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_eqtl_df[x] = m_eqtl_df[x].astype(str)
 
 ax = seaborn.barplot(x=x, y=y, data=m_eqtl_df, order=order, estimator=numpy.mean, palette="rocket_r")
@@ -165,7 +165,7 @@ title = "eQTL effect"
 ylabel = "Absolute beta mean"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_category_count+1)]
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_eqtl_df[x] = m_eqtl_df[x].astype(str)
 
 ax = seaborn.barplot(x=x, y=y, data=m_eqtl_df, order=order, estimator=numpy.mean, palette="rocket_r")
@@ -202,7 +202,7 @@ title = "GWAS effect"
 ylabel = "Absolute beta mean"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_category_count+1)]
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_gwas_df[x] = m_gwas_df[x].astype(str)
 
 ax = seaborn.barplot(x=x, y=y, data=m_gwas_df, order=order, estimator=numpy.mean, palette="rocket_r")
@@ -238,7 +238,7 @@ title = "GWAS effect"
 ylabel = "Absolute beta"
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_category_count+1)]
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_gwas_df[x] = m_gwas_df[x].astype(str)
 
 ax = seaborn.violinplot(x=x, y=y, data=m_gwas_df, order=order, estimator=numpy.mean, palette="rocket_r")

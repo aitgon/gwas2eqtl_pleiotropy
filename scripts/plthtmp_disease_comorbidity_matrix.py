@@ -7,10 +7,10 @@ import seaborn
 import sqlalchemy
 
 from gwas2eqtl_pleiotropy.Logger import Logger
-from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, dpi
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 from matplotlib import pyplot as plt
 from matplotlib.pyplot import gcf
-from sqlalchemy import create_engine
+
 
 #%%
 seaborn.set_theme(**seaborn_theme_dic)

@@ -13,7 +13,6 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    # max_gwas_category_count = int(sys.argv[1])
     consequence_tsv_path = sys.argv[1]
     consequence_png_path = sys.argv[2]
     if len(sys.argv) > 3:

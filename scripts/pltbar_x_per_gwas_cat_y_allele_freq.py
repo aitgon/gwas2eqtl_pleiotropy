@@ -21,7 +21,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 help_cmd_str = "todo"
 try:
     snp_pp_h4 = float(sys.argv[1])
-    max_gwas_category_count = int(sys.argv[2])
+    pleio_high_cutoff = int(sys.argv[2])
     url = sys.argv[3]
     count_per_rsid_gwas_ods_path = sys.argv[4]
     eur_af_png_path = sys.argv[5]
@@ -55,12 +55,12 @@ count_per_rsid_gwas_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine=
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df[['chrom', 'pos38', 'rsid', 'alt', 'gwas_category_count']], on=['chrom', 'pos38', 'rsid', 'alt'])
 m_df = m_df[['chrom', 'pos38', 'rsid', 'ref', 'alt', 'afr_af', 'amr_af', 'eas_af', 'eur_af', 'sas_af', 'gwas_category_count']].drop_duplicates()
-m_df.loc[m_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+m_df.loc[m_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
 
 #%%
 order = [str(x) for x in range(1, max(m_df['gwas_category_count'].unique()) + 1)]
 xticklabels = order.copy()
-box_pairs = [(1, i) for i in range(1, max_gwas_category_count+1) ]
+box_pairs = [(1, i) for i in range(1, pleio_high_cutoff + 1)]
 x = 'gwas_category_count'
 xlabel = "Trait category count"
 
@@ -69,7 +69,7 @@ xlabel = "Trait category count"
 ylabel = "Alternative allele freq."
 
 #%%
-pairs = [(str(1), str(i)) for i in range(2, max_gwas_category_count+1)]
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_df[x] = m_df[x].astype(str)
 
 y_labels = ['afr_af', 'amr_af', 'eas_af', 'eur_af', 'sas_af']

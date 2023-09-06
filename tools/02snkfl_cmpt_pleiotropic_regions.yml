@@ -1,10 +1,12 @@
 """
-snakemake -j all -s tools/02snkfl_cmpt_pleiotropic_regions.yml --config etissue_category_ods=config/etissue_category.ods max_gwas_category_count=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50
+snakemake -j all -s tools/02snkfl_cmpt_pleiotropic_regions.yml --config etissue_category_ods=config/etissue_category.ods pleio_high_cutoff=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' outdir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50
 """
 
 etissue_category_ods = config['etissue_category_ods']
 outdir = config['outdir']
-max_gwas_category_count = config['max_gwas_category_count']
+pleio_high_cutoff = config['pleio_high_cutoff']
+ms_table_eqtl_pleio_cutoff = config['ms_table_eqtl_pleio_cutoff']
+ms_table_region_pleio_cutoff = config['ms_table_region_pleio_cutoff']
 db_url = config['db_url']
 snp_pp_h4 = config['snp_pp_h4']
 
@@ -29,9 +31,10 @@ rule cmpt_pleiotropic_regions_wlength:
         os.path.join(outdir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist_{wlength}.png"),
     params:
         wlength="{wlength}",
-        manuscript_pleio_cutoff=(int(max_gwas_category_count) + 2),
+        pleio_high_cutoff=pleio_high_cutoff,
+        ms_table_region_pleio_cutoff=ms_table_region_pleio_cutoff,
     shell:
-        "python scripts/cmpt_pleiotropic_regions.py {params.wlength} {params.manuscript_pleio_cutoff} {input[0]} {output[0]} {output[1]}"
+        "python scripts/cmpt_pleiotropic_regions.py {params.wlength} {params.pleio_high_cutoff} {params.ms_table_region_pleio_cutoff} {input[0]} {output[0]} {output[1]}"
 
 rule count_per_rsid:
     output:
@@ -42,10 +45,11 @@ rule count_per_rsid:
         os.path.join(outdir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
     params:
         snp_pp_h4=snp_pp_h4,
-        manuscript_pleio_cutoff=max_gwas_category_count,
+        pleio_high_cutoff=pleio_high_cutoff,
+        ms_table_eqtl_pleio_cutoff=ms_table_eqtl_pleio_cutoff,
         db_url=db_url,
     shell:
-        "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.manuscript_pleio_cutoff} {params.db_url} {output[0]} {output[1]}"
+        "python scripts/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.ms_table_eqtl_pleio_cutoff} {params.db_url} {output[0]} {output[1]}"
 
 rule plthst_perc_tophits_eqtl:
     input:

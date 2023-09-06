@@ -17,7 +17,6 @@ help_cmd_str = "todo"
 try:
     perc_tophits_eqtl_tsv = sys.argv[1]
     hist_perc_tophits_eqtl_png = sys.argv[2]
-    # hist_perc_tophits_nomhc_eqtl_png = sys.argv[3]
     if len(sys.argv) > 4:
         print("""Two many arguments!
         {}""".format(help_cmd_str))

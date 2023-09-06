@@ -16,7 +16,7 @@ from statsmodels.stats import multitest as multitest
 help_cmd_str = "todo"
 try:
     threads = int(sys.argv[1])
-    max_gwas_category_count = int(sys.argv[2])
+    pleio_high_cutoff = int(sys.argv[2])
     vep_input_path = sys.argv[3]
     vep_output_path = sys.argv[4]
     consequence_tsv_path = sys.argv[5]
@@ -35,7 +35,7 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 #%%
 vep_input_column_lst = ['chrom', 'start', 'end', 'alleles', 'strand', 'rsid', 'gwas_category_count']
 vep_input_df = pandas.read_csv(vep_input_path, sep="\t", header=None, names=vep_input_column_lst)
-vep_input_df.loc[vep_input_df['gwas_category_count'] >= max_gwas_category_count, "gwas_category_count"] = max_gwas_category_count
+vep_input_df.loc[vep_input_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
 
 columns = ['#Uploaded_variation', 'Location', 'Allele', 'Gene', 'Feature', 'Feature_type', 'Consequence', 'cDNA_position', 'CDS_position', 'Protein_position', 'Amino_acids', 'Codons', 'Existing_variation', 'Extra']
 vep_output_df = pandas.read_csv(vep_output_path, sep="\t", comment='#', header=None, names=columns)

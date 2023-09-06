@@ -16,7 +16,7 @@ seaborn.set_theme(**seaborn_theme_dic)
 #%%
 help_cmd_str = "todo"
 try:
-    max_gwas_category_count = int(sys.argv[1])
+    pleio_high_cutoff = int(sys.argv[1])
     region_window_100000_ods_path = sys.argv[2]
     count_per_rsid_gwas_ods_path = sys.argv[3]
     outdir_path = sys.argv[4]
@@ -56,7 +56,7 @@ ylabel = "eGene count"
 count_per_rsid_df['pos38'] = count_per_rsid_df['pos38'].astype('int')
 
 #%% Loop over regions
-pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= max_gwas_category_count, ['chrom', 'start', 'end', 'gwas_category_count']]
+pleiotropic_regions_df = region_window_100000_df.loc[region_window_100000_df['gwas_category_count'] >= pleio_high_cutoff, ['chrom', 'start', 'end', 'gwas_category_count']]
 for rowi, row in pleiotropic_regions_df.iterrows():
     chrom = row['chrom']
     start = row['start']
