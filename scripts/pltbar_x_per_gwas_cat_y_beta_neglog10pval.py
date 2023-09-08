@@ -68,7 +68,7 @@ m_gwas_df = m_gwas_df.loc[m_gwas_df['gwas_pval']!=0]  # remove pval with zeros
 m_gwas_df[['gwas_beta_abs']] = m_gwas_df[['gwas_beta']].abs()
 m_gwas_df[['gwas_neglog10pval']] = -numpy.log10(m_gwas_df[['gwas_pval']])
 m_gwas_df = m_gwas_df[['gwas_category_count', 'gwas_beta_abs', 'gwas_neglog10pval']]
-m_eqtl_df.loc[m_eqtl_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
+m_gwas_df.loc[m_gwas_df['gwas_category_count'] >= pleio_high_cutoff, "gwas_category_count"] = pleio_high_cutoff
 
 m_eqtl_df[['eqtl_beta_abs']] = m_eqtl_df[['eqtl_beta']].abs()
 m_eqtl_df[['eqtl_neglog10pval']] = -numpy.log10(m_eqtl_df[['eqtl_pval']])
@@ -115,7 +115,19 @@ plt.close()
 #%% boxenplot
 pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_gwas_df[x] = m_gwas_df[x].astype(str)
-ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=False)
+ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=True, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 png_path = os.path.join(outdir_path, "gwas_signif_boxenplot.png")
@@ -144,14 +156,25 @@ xticks_labels[-1] = '≥' + str(xticks_labels[-1])
 plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
-plt.ylim([8, 18])
 
 plt.tight_layout()
 plt.savefig(eqtl_neglogpval_png_path)
 plt.close()
 
 #%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, showfliers=False, palette="rocket_r")
+ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, showfliers=True, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_eqtl_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', loc='inside', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 png_path = os.path.join(outdir_path, "eqtl_signif_boxenplot.png")
@@ -188,7 +211,19 @@ plt.savefig(eqtl_beta_png_path)
 plt.close()
 
 #%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, showfliers=False, palette="rocket_r")
+ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, showfliers=True, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_eqtl_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 png_path = os.path.join(outdir_path, "eqtl_effect_boxenplot.png")
@@ -224,7 +259,19 @@ plt.savefig(gwas_beta_png_path)
 plt.close()
 
 #%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=False, palette="rocket_r")
+ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=True, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
 png_path = os.path.join(outdir_path, "gwas_effect_boxenplot.png")

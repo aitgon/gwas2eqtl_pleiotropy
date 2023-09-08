@@ -100,10 +100,22 @@ for y,ytitle in zip(y_labels, y_titles):
     plt.close()
 
     # %% boxenplot
-    ax = seaborn.boxenplot(x=x, y=y, data=m_df, order=order, showfliers=False, palette="rocket_r")
+    ax = seaborn.boxenplot(x=x, y=y, data=m_df, order=order, showfliers=True, palette="rocket_r")
+
+    annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
+    annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+    annotator.apply_and_annotate()
+
+    ax.set_xticklabels(xticklabels)
+    plt.title(ytitle, fontsize=label_fontsize)
+    plt.xlabel(xlabel, fontsize=label_fontsize)
+    xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+    xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+    plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+    plt.ylabel(ylabel, fontsize=label_fontsize)
+    plt.yticks(fontsize=tick_fontsize)
 
     plt.tight_layout()
     this_af_png_path = eur_af_png_path.replace('eur_af', y + "_boxenplot")
     plt.savefig(this_af_png_path)
     plt.close()
-

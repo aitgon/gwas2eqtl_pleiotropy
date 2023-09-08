@@ -23,7 +23,7 @@ try:
     pleio_high_cutoff = int(sys.argv[2])
     sa_url = sys.argv[3]
     count_per_rsid_gwas_ods_path = sys.argv[4]
-    hist_png_path = sys.argv[5]
+    png_path = sys.argv[5]
     if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -39,7 +39,7 @@ if not os.path.isfile(count_per_rsid_gwas_ods_path):
     print("input file does not exit")
     sys.exit(1)
 
-outdir_path = os.path.dirname(hist_png_path)
+outdir_path = os.path.dirname(png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
@@ -98,14 +98,14 @@ seaborn.histplot(data=m2_df, x=y, hue=x, stat='proportion', multiple="dodge", co
 # plt.yscale('log')
 
 plt.tight_layout()
-plt.savefig(hist_png_path)
+plt.savefig(png_path)
 plt.close()
 
 #%% Cumulative distribution
 seaborn.histplot(data=m2_df, x=y, hue=x, stat='percent', common_norm=False, element="step", fill=False, cumulative=True, palette="rocket_r")
 plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "cumulative.png")
-plt.savefig(hist_png_path)
+png_path = os.path.join(outdir_path, "cumulative.png")
+plt.savefig(png_path)
 plt.close()
 
 #%% Violin plot
@@ -126,8 +126,8 @@ plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "violin.png")
-plt.savefig(hist_png_path)
+png_path = os.path.join(outdir_path, "barplot.png")
+plt.savefig(png_path)
 plt.close()
 m2_df['eqtl_gene_distance'] = m2_df['eqtl_gene_distance']*1000
 
@@ -158,15 +158,15 @@ m2_df[x] = m2_df[x].astype(str)
 #%% Histogram
 seaborn.histplot(data=m2_df, x=y, hue=x, stat='percent', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=10, palette="rocket_r")
 plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "max_histogram.png")
-plt.savefig(hist_png_path)
+png_path = os.path.join(outdir_path, "max_histogram.png")
+plt.savefig(png_path)
 plt.close()
 
 #%% Cumulative distribution
 seaborn.histplot(data=m2_df, x=y, hue=x, stat='percent', common_norm=False, element="step", fill=False, cumulative=True, palette="rocket_r")
 plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "max_cumulative.png")
-plt.savefig(hist_png_path)
+png_path = os.path.join(outdir_path, "max_cumulative.png")
+plt.savefig(png_path)
 plt.close()
 
 #%% Violin plot
@@ -179,7 +179,26 @@ annotator.apply_and_annotate()
 plt.tight_layout()
 plt.xlabel("Trait category count")
 plt.ylabel("Maximal eQTL gene distance")
-hist_png_path = os.path.join(outdir_path, "max_violin.png")
-plt.savefig(hist_png_path)
+png_path = os.path.join(outdir_path, "violin.png")
+plt.savefig(png_path)
 plt.close()
 
+#%% boxenplot
+ax = seaborn.boxenplot(data=m2_df, x=x, y=y, palette="rocket_r", showfliers=True)
+
+annotator = Annotator(ax, pairs, data=m2_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title("Distance to closest gene", fontsize=label_fontsize)
+plt.xlabel("Trait category count", fontsize=label_fontsize)
+plt.ylabel("Distance [kbp]", fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.yticks(fontsize=tick_fontsize)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "boxenplot.png")
+plt.savefig(png_path)
+plt.close()
