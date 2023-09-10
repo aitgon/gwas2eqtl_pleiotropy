@@ -1,3 +1,5 @@
+import scipy
+
 from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, annotator_config_dic
 from statannotations.Annotator import Annotator
 
@@ -21,6 +23,10 @@ snp_pp_h4 = 0.5
 pleio_high_cutoff = 3
 sa_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
 count_per_rsid_gwas_ods_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"
+eqtl_beta_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_gwas_count_y_beta_neglog10pval.py/eqtl_beta.png"
+gwas_beta_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_gwas_count_y_beta_neglog10pval.py/gwas_beta.png"
+eqtl_neglogpval_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_gwas_count_y_beta_neglog10pval.py/eqtl_neglog10pval.png"
+gwas_neglogpval_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_gwas_count_y_beta_neglog10pval.py/gwas_neglog10pval.png"
 
 #%%
 help_cmd_str = "todo"
@@ -47,7 +53,7 @@ if not os.path.isfile(count_per_rsid_gwas_ods_path):
     print("input file does not exit")
     sys.exit(1)
 
-outdir_path = os.path.dirname(eqtl_beta_png_path)
+outdir_path = os.path.dirname(gwas_beta_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
@@ -118,11 +124,25 @@ plt.savefig(eqtl_beta_png_path)
 plt.close()
 
 #%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, showfliers=True, palette="rocket_r")
+ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, showfliers=False, palette="rocket_r")
 
-annotator = Annotator(ax, pairs, data=m_eqtl_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
+# annotator = Annotator(ax, pairs, data=m_eqtl_df, x=x, y=y, order=order)
+# annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+# annotator.apply_and_annotate()
+
+x1=0.1; x2=1.1; y=1.2; h=0.05; col='k'
+group1 = m_eqtl_df.where(m_eqtl_df.gwas_category_count=='1').dropna()['eqtl_beta_abs']
+group2 = m_eqtl_df.where(m_eqtl_df.gwas_category_count=='2').dropna()['eqtl_beta_abs']
+scipy.stats.mannwhitneyu(group1, group2)
+plt.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c=col)
+plt.text((x1+x2)*.5, y+h, "****", ha='center', va='bottom', color=col)
+
+x1=0.1; x2=2.1; y=1.3; h=0.1; col='k'
+group1 = m_eqtl_df.where(m_eqtl_df.gwas_category_count=='1').dropna()['eqtl_beta_abs']
+group2 = m_eqtl_df.where(m_eqtl_df.gwas_category_count=='3').dropna()['eqtl_beta_abs']
+scipy.stats.mannwhitneyu(group1, group2)
+plt.plot([x1, x1, x2, x2], [y, y+h, y+h, y], lw=1.5, c=col)
+plt.text((x1+x2)*.7, y+h, "****", ha='center', va='bottom', color=col)
 
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
@@ -131,11 +151,14 @@ xticks_labels[-1] = '≥' + str(xticks_labels[-1])
 plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
+plt.ylim([0, 1.5])
 
 plt.tight_layout()
 png_path = os.path.join(outdir_path, "eqtl_effect_boxenplot.png")
 plt.savefig(png_path)
 plt.close()
+
+# import pdb; pdb.set_trace()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # boxplot and mann-whitney
@@ -185,7 +208,7 @@ png_path = os.path.join(outdir_path, "gwas_effect_boxenplot.png")
 plt.savefig(png_path)
 plt.close()
 
-import pdb; pdb.set_trace()
+# import pdb; pdb.set_trace()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # violin and mann-whitney
