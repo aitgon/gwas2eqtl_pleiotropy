@@ -1,9 +1,7 @@
-import pdb
-import sys
-
 from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, annotator_config_dic
 from statannotations.Annotator import Annotator
 
+import sys
 import matplotlib.pyplot as plt
 import numpy
 import os
@@ -17,6 +15,12 @@ import sqlalchemy
 plt.rcParams["figure.figsize"] = (8, 6)
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 seaborn.set_theme(**seaborn_theme_dic)
+
+#%%
+snp_pp_h4 = 0.5
+pleio_high_cutoff = 3
+sa_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
+count_per_rsid_gwas_ods_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"
 
 #%%
 help_cmd_str = "todo"
@@ -83,103 +87,6 @@ xticklabels = order.copy()
 box_pairs = [(1, i) for i in range(1, pleio_high_cutoff + 1)]
 x = 'gwas_category_count'
 xlabel = "Trait category count"
-
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# boxplot and mann-whitney
-y = "gwas_neglog10pval"
-title = "GWAS significance"
-ylabel = "Neg. log10 p-val mean"
-
-#%% barplot
-pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
-m_gwas_df[x] = m_gwas_df[x].astype(str)
-ax = seaborn.barplot(x=x, y=y, data=m_gwas_df, order=order, estimator=numpy.mean, palette="rocket_r")
-
-annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
-xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-plt.ylim([8, 22])
-
-plt.tight_layout()
-plt.savefig(gwas_neglogpval_png_path)
-plt.close()
-
-#%% boxenplot
-pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
-m_gwas_df[x] = m_gwas_df[x].astype(str)
-ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=True, palette="rocket_r")
-
-annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
-xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-
-plt.tight_layout()
-png_path = os.path.join(outdir_path, "gwas_signif_boxenplot.png")
-plt.savefig(png_path)
-plt.close()
-
-#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-# boxplot and mann-whitney
-y = "eqtl_neglog10pval"
-title = "eQTL significance"
-ylabel = "Neg. log10 p-val mean"
-
-#%%
-pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
-m_eqtl_df[x] = m_eqtl_df[x].astype(str)
-
-ax = seaborn.barplot(x=x, y=y, data=m_eqtl_df, order=order, estimator=numpy.mean, palette="rocket_r")
-annotator = Annotator(ax, pairs, data=m_eqtl_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
-xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-
-plt.tight_layout()
-plt.savefig(eqtl_neglogpval_png_path)
-plt.close()
-
-#%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, showfliers=True, palette="rocket_r")
-
-annotator = Annotator(ax, pairs, data=m_eqtl_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', loc='inside', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
-xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-
-plt.tight_layout()
-png_path = os.path.join(outdir_path, "eqtl_signif_boxenplot.png")
-plt.savefig(png_path)
-plt.close()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # boxplot and mann-whitney
@@ -261,7 +168,7 @@ plt.close()
 #%% boxenplot
 ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=True, palette="rocket_r")
 
-annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
+annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order, loc='inside')
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
 
@@ -277,6 +184,8 @@ plt.tight_layout()
 png_path = os.path.join(outdir_path, "gwas_effect_boxenplot.png")
 plt.savefig(png_path)
 plt.close()
+
+import pdb; pdb.set_trace()
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # violin and mann-whitney
@@ -304,4 +213,102 @@ ax.set_xticklabels(xticklabels)
 plt.tight_layout()
 gwas_beta_png_path = os.path.join(outdir_path, "gwas_beta_violin.png")
 plt.savefig(gwas_beta_png_path)
+plt.close()
+
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# boxplot and mann-whitney
+y = "eqtl_neglog10pval"
+title = "eQTL significance"
+ylabel = "Neg. log10 p-val mean"
+
+#%%
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
+m_eqtl_df[x] = m_eqtl_df[x].astype(str)
+
+ax = seaborn.barplot(x=x, y=y, data=m_eqtl_df, order=order, estimator=numpy.mean, palette="rocket_r")
+annotator = Annotator(ax, pairs, data=m_eqtl_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+
+plt.tight_layout()
+plt.savefig(eqtl_neglogpval_png_path)
+plt.close()
+
+#%% boxenplot
+ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, showfliers=True, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_eqtl_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', loc='inside', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "eqtl_signif_boxenplot.png")
+plt.savefig(png_path)
+plt.close()
+
+#%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+# boxplot and mann-whitney
+y = "gwas_neglog10pval"
+title = "GWAS significance"
+ylabel = "Neg. log10 p-val mean"
+
+#%% barplot
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
+m_gwas_df[x] = m_gwas_df[x].astype(str)
+ax = seaborn.barplot(x=x, y=y, data=m_gwas_df, order=order, estimator=numpy.mean, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+plt.ylim([8, 22])
+
+plt.tight_layout()
+plt.savefig(gwas_neglogpval_png_path)
+plt.close()
+
+#%% boxenplot
+pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
+m_gwas_df[x] = m_gwas_df[x].astype(str)
+ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=True, palette="rocket_r")
+
+annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "gwas_signif_boxenplot.png")
+plt.savefig(png_path)
 plt.close()

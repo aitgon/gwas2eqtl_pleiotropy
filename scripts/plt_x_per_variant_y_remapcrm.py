@@ -130,27 +130,3 @@ plt.yticks(fontsize=tick_fontsize)
 plt.tight_layout()
 plt.savefig(barplot_remap_crm_png, dpi=dpi)
 plt.close()
-
-#%% barplot
-ax = seaborn.violinplot(x=x, y=y, data=out_df, order=order, palette="rocket_r")
-
-annotator = Annotator(ax, pairs, data=out_df, x=x, y=y, order=order, size=label_fontsize)
-annotator.set_custom_annotations(formatted_pvalues)
-annotator.configure(**annotator_config_dic)
-annotator.annotate()
-
-ax.set_xticklabels(xticklabels)
-# plt.grid(axis="y")
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-# plt.xticks(fontsize=tick_fontsize, rotation=0)
-xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
-xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-
-plt.tight_layout()
-png_path = os.path.join(outdir_path, "violin.png")
-plt.savefig(png_path, dpi=dpi)
-plt.close()

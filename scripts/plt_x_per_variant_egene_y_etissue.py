@@ -176,10 +176,10 @@ plt.savefig(png_path)
 plt.close()
 
 #%% boxenplot
-ax = seaborn.boxenplot(data=m_df, x=x, y=y, order=order, palette="rocket_r", showfliers = False, scale='area')
+ax = seaborn.boxenplot(data=m_df, x=x, y=y, order=order, palette="rocket_r", showfliers=True, scale='area')
 
 annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.configure(test='Mann-Whitney', text_format='star', loc='inside', **annotator_config_dic)
 annotator.apply_and_annotate()
 
 plt.title(title, fontsize=label_fontsize)
