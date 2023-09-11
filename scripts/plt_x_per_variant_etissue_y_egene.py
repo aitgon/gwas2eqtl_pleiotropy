@@ -1,4 +1,5 @@
 import sqlalchemy
+from gwas2eqtl_pleiotropy import boxenplot_with_mannwhitneyu
 from statannotations.Annotator import Annotator
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi, boxplot_kwargs, annotator_config_dic
@@ -178,6 +179,32 @@ ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
 hist_png_path = os.path.join(outdir_path, "boxplot.png")
+plt.savefig(hist_png_path)
+plt.close()
+
+#%% boxenplot ms
+ax = seaborn.boxenplot(data=m_df, x=x, y=y, order=order, palette="rocket_r", showfliers=False)
+
+group1 = m_df.where(m_df.gwas_category_count == '1').dropna()[y]
+group2 = m_df.where(m_df.gwas_category_count == '2').dropna()[y]
+x1 = 0.1; x2 = 1.1; annot_y = 3; h = 0.1;
+boxenplot_with_mannwhitneyu(group1, group2, x1, x2, annot_y, h)
+
+group1 = m_df.where(m_df.gwas_category_count == '1').dropna()[y]
+group2 = m_df.where(m_df.gwas_category_count == '≥3').dropna()[y]
+x1 = 0.1; x2 = 2.1; annot_y = 4; h = 0.1;
+boxenplot_with_mannwhitneyu(group1, group2, x1, x2, annot_y, h)
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel('Gene count', fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+plt.ylim([0, 5])
+ax.set_xticklabels(xticklabels)
+
+plt.tight_layout()
+hist_png_path = os.path.join(outdir_path, "boxenplot_ms.png")
 plt.savefig(hist_png_path)
 plt.close()
 

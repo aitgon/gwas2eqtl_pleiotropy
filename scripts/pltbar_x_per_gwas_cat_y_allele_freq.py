@@ -1,3 +1,4 @@
+import scipy
 import sqlalchemy
 
 from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, boxplot_kwargs, annotator_config_dic
@@ -101,7 +102,8 @@ for y,ytitle in zip(y_labels, y_titles):
 
     # %% boxenplot
     ax = seaborn.boxenplot(x=x, y=y, data=m_df, order=order, showfliers=True, palette="rocket_r")
-
+    import pdb; pdb.set_trace()
+    scipy.stats.shapiro(m_df[y])
     annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
     annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
     annotator.apply_and_annotate()

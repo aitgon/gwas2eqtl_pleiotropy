@@ -1,5 +1,4 @@
 import math
-
 import numpy
 import sqlalchemy
 import os
@@ -8,6 +7,8 @@ import pathlib
 import seaborn
 import sys
 import matplotlib.pyplot as plt
+from gwas2eqtl_pleiotropy import boxenplot_with_mannwhitneyu
+
 from statannotations.Annotator import Annotator
 
 
@@ -70,7 +71,7 @@ m_df.loc[m_df['eqtl_refseq_transcript_strand'] == '-', 'eqtl_gene_distance'] = (
 
 ########################################################################################################################
 #
-# Will select the MINIMAL distance per variant
+# Will select the CLOSEST distance per variant
 #
 ########################################################################################################################
 
@@ -95,8 +96,6 @@ m2_df[x] = m2_df[x].astype(str)
 #%% Histogram
 seaborn.histplot(data=m2_df, x=y, hue=x, stat='proportion', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=20, palette="rocket_r")
 
-# plt.yscale('log')
-
 plt.tight_layout()
 plt.savefig(png_path)
 plt.close()
@@ -104,11 +103,11 @@ plt.close()
 #%% Cumulative distribution
 seaborn.histplot(data=m2_df, x=y, hue=x, stat='percent', common_norm=False, element="step", fill=False, cumulative=True, palette="rocket_r")
 plt.tight_layout()
-png_path = os.path.join(outdir_path, "cumulative.png")
+png_path = os.path.join(outdir_path, "cumulative_closest_distance.png")
 plt.savefig(png_path)
 plt.close()
 
-#%% Violin plot
+#%% barplot
 m2_df['eqtl_gene_distance'] = m2_df['eqtl_gene_distance']/1000
 ax = seaborn.barplot(data=m2_df, x=x, y=y, estimator=numpy.mean, palette="rocket_r")
 
@@ -119,24 +118,70 @@ annotator.apply_and_annotate()
 plt.title("Distance to closest gene", fontsize=label_fontsize)
 plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.ylabel("Mean distance [kbp]", fontsize=label_fontsize)
-# plt.xticks(fontsize=tick_fontsize, rotation=0)
 xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
 xticks_labels[-1] = '≥' + str(xticks_labels[-1])
 plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-png_path = os.path.join(outdir_path, "barplot.png")
+png_path = os.path.join(outdir_path, "barplot_closest_distance.png")
 plt.savefig(png_path)
 plt.close()
+
+#%% boxenplot
+ax = seaborn.boxenplot(data=m2_df, x=x, y=y, palette="rocket_r", showfliers=False)
+
+annotator = Annotator(ax, pairs, data=m2_df, x=x, y=y, order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
+
+plt.title("Distance to closest gene", fontsize=label_fontsize)
+plt.xlabel("Trait category count", fontsize=label_fontsize)
+plt.ylabel("Distance [kbp]", fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.yticks(fontsize=tick_fontsize)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "boxenplot_closest_distance.png")
+plt.savefig(png_path)
+plt.close()
+
+#%% boxenplot ms
+ax = seaborn.boxenplot(data=m2_df, x=x, y=y, palette="rocket_r", showfliers=False)
+
+group1 = m2_df.where(m2_df.gwas_category_count == '1').dropna()[y]
+group2 = m2_df.where(m2_df.gwas_category_count == '2').dropna()[y]
+x1 = 0.1; x2 = 1.1; annot_y = 300; h = 5;
+boxenplot_with_mannwhitneyu(group1, group2, x1, x2, annot_y, h)
+
+group1 = m2_df.where(m2_df.gwas_category_count == '1').dropna()[y]
+group2 = m2_df.where(m2_df.gwas_category_count == '3').dropna()[y]
+x1 = 0.1; x2 = 2.1; annot_y = 330; h = 5;
+boxenplot_with_mannwhitneyu(group1, group2, x1, x2, annot_y, h)
+
+plt.title("Distance to closest gene", fontsize=label_fontsize)
+plt.xlabel("Trait category count", fontsize=label_fontsize)
+plt.ylabel("Distance [kbp]", fontsize=label_fontsize)
+xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
+xticks_labels[-1] = '≥' + str(xticks_labels[-1])
+plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
+plt.yticks(fontsize=tick_fontsize)
+plt.ylim([0, 400])
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, "boxenplot_ms_closest_distance.png")
+plt.savefig(png_path)
+plt.close()
+
+########################################################################################################################
+#
+# Will select the LARGEST distance per variant
+#
+########################################################################################################################
+
 m2_df['eqtl_gene_distance'] = m2_df['eqtl_gene_distance']*1000
-
-########################################################################################################################
-#
-# Will select the MAXIMAL distance per variant
-#
-########################################################################################################################
-
 m_df.sort_values(['chrom', 'pos38', 'rsid', 'eqtl_gene_distance'], ascending=False, inplace=True)
 sel_cols = ['rsid', 'gwas_category_count', 'eqtl_gene_distance']
 m2_df = m_df[sel_cols].drop_duplicates(subset=['rsid', 'gwas_category_count'])
@@ -158,14 +203,14 @@ m2_df[x] = m2_df[x].astype(str)
 #%% Histogram
 seaborn.histplot(data=m2_df, x=y, hue=x, stat='percent', multiple="dodge", common_norm=False, common_bins=True, shrink=.8, bins=10, palette="rocket_r")
 plt.tight_layout()
-png_path = os.path.join(outdir_path, "max_histogram.png")
+png_path = os.path.join(outdir_path, "histogram_largest_distance.png")
 plt.savefig(png_path)
 plt.close()
 
 #%% Cumulative distribution
 seaborn.histplot(data=m2_df, x=y, hue=x, stat='percent', common_norm=False, element="step", fill=False, cumulative=True, palette="rocket_r")
 plt.tight_layout()
-png_path = os.path.join(outdir_path, "max_cumulative.png")
+png_path = os.path.join(outdir_path, "cumulative_largest_distance.png")
 plt.savefig(png_path)
 plt.close()
 
@@ -190,7 +235,7 @@ annotator = Annotator(ax, pairs, data=m2_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
 
-plt.title("Distance to closest gene", fontsize=label_fontsize)
+plt.title("Distance to furthest gene", fontsize=label_fontsize)
 plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.ylabel("Distance [kbp]", fontsize=label_fontsize)
 xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
@@ -199,6 +244,6 @@ plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize
 plt.yticks(fontsize=tick_fontsize)
 
 plt.tight_layout()
-png_path = os.path.join(outdir_path, "boxenplot.png")
+png_path = os.path.join(outdir_path, "boxenplot_largest_distance.png")
 plt.savefig(png_path)
 plt.close()
