@@ -16,4 +16,4 @@ def boxenplot_with_mannwhitneyu(group1, group2, x1, x2, y, h):
         pvalue_asterisk = "*"
     else:
         pvalue_asterisk = "ns"
-    plt.text((x1 + x2) * .5, y + h, pvalue_asterisk, ha='center', va='bottom', color=col)
+    plt.text((x1 + x2) * .5, y + h, pvalue_asterisk, ha='center', va='bottom', color=col, fontsize=14)

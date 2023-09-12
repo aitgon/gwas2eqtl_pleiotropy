@@ -24,10 +24,10 @@ snp_pp_h4 = 0.5
 pleio_high_cutoff = 3
 sa_url = "postgresql://postgres:postgres@0.0.0.0:5435/postgres"
 count_per_rsid_gwas_ods_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"
-eqtl_beta_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_gwas_count_y_beta_neglog10pval.py/eqtl_beta.png"
-gwas_beta_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_gwas_count_y_beta_neglog10pval.py/gwas_beta.png"
-eqtl_neglogpval_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_gwas_count_y_beta_neglog10pval.py/eqtl_neglog10pval.png"
-gwas_neglogpval_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_gwas_count_y_beta_neglog10pval.py/gwas_neglog10pval.png"
+eqtl_beta_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_variant_y_beta_neglog10pval.py/eqtl_beta.png"
+gwas_beta_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_variant_y_beta_neglog10pval.py/gwas_beta.png"
+eqtl_neglogpval_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_variant_y_beta_neglog10pval.py/eqtl_neglog10pval.png"
+gwas_neglogpval_png_path = "out/v20230901/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plt_x_per_variant_y_beta_neglog10pval.py/gwas_neglog10pval.png"
 
 #%%
 help_cmd_str = "todo"

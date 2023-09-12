@@ -6,8 +6,9 @@ import sys
 
 import sqlalchemy
 from matplotlib import pyplot as plt
+from statannotations.Annotator import Annotator
 
-from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, seaborn_theme_dic, annotator_config_dic
 
 #%%
 help_cmd_str = "todo"
@@ -135,6 +136,11 @@ m2df.loc[m2df['gwas_category_count'] >= pleio_high_cutoff, 'gwas_category_count'
 
 order = [*range(1, pleio_high_cutoff)] + ['≥' + str(pleio_high_cutoff)]
 ax = seaborn.boxplot(x='gwas_category_count', y='domains_watanabe2019', data=m2df, order=order, palette="rocket_r")
+
+pairs = [(1, 2), (1, "≥3")]
+annotator = Annotator(ax, pairs, data=m2df, x='gwas_category_count', y='domains_watanabe2019', order=order)
+annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.apply_and_annotate()
 
 plt.xlabel("trait category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
