@@ -1,4 +1,4 @@
-from gwas2eqtl_pleiotropy.constants import tick_fontsize, dpi
+from gwas2eqtl_pleiotropy.constants import tick_fontsize, dpi, palette_r
 from matplotlib import pyplot as plt
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
 
@@ -41,14 +41,14 @@ cumsum_df['cumsum'] = cumsum_df['cumsum']/10e6
 
 #%%
 order = cumsum_df['gwas_category_count'].tolist()
-title = "Coverage of pleiotropic regions"
+title = "Covera. of pleiotrop. regions"
 xlabel = "Trait category count"
 ylabel = "Cumulative sum [Mbp]"
 y = "cumsum"
 x = "gwas_category_count"
 
 #%%
-ax = seaborn.barplot(x=x, y=y, data=cumsum_df, order=order, palette="rocket")
+ax = seaborn.barplot(x=x, y=y, data=cumsum_df, order=order, palette=palette_r)
 
 #%%
 label_fontsize = 26

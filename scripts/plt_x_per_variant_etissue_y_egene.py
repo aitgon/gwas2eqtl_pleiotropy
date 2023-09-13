@@ -1,7 +1,7 @@
 import sqlalchemy
 from gwas2eqtl_pleiotropy import boxenplot_with_mannwhitneyu
 from statannotations.Annotator import Annotator
-from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic, boxenplot_kws, boxenplot_line_kws
 from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, dpi, boxplot_kwargs, annotator_config_dic
 from matplotlib.ticker import MaxNLocator
 
@@ -26,7 +26,7 @@ try:
     pleio_high_cutoff = int(sys.argv[2])
     sa_url = sys.argv[3]
     count_per_rsid_gwas_ods_path = sys.argv[4]
-    vlnplt_png_path = sys.argv[5]
+    plt_png_path = sys.argv[5]
     if len(sys.argv) > 6:
         print("""Two many arguments!
         {}""".format(help_cmd_str))
@@ -41,7 +41,7 @@ if not os.path.isfile(count_per_rsid_gwas_ods_path):
     print("input file does not exit")
     sys.exit(1)
 
-outdir_path = os.path.dirname(vlnplt_png_path)
+outdir_path = os.path.dirname(plt_png_path)
 pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 
 #%%
@@ -103,87 +103,49 @@ x = "gwas_category_count"
 pairs = [(str(1), str(i)) for i in order[1:]]
 m_df[x] = m_df[x].astype(str)
 
-#%% histplot2
-binwidth=1
-ax = seaborn.histplot(data=m_df, hue=x, x=y, hue_order=order, stat="proportion", multiple='dodge', common_norm=False, palette="rocket_r", binwidth=binwidth, shrink=.8)
+#%% histplot
+ax = seaborn.histplot(data=m_df, hue=x, x=y, hue_order=order, stat="density", cumulative=True, common_norm=False, fill=False, element="step", palette="icefire", lw=3)
+
+# for legend text
+plt.setp(ax.get_legend().get_texts(), fontsize=tick_fontsize)
+# for legend title
+plt.setp(ax.get_legend().get_title(), fontsize=tick_fontsize)
+frame = ax.get_legend().get_frame()
+frame.set_facecolor('white')
 
 ax.xaxis.set_major_locator(MaxNLocator(integer=True))
 plt.title(title, fontsize=label_fontsize)
-plt.xlabel("Gene count", fontsize=label_fontsize)
-# plt.ylabel('Cumulative density', fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-# plt.xlim([1, m_df[y].max()])
-plt.xlim([0, 10])
-plt.yscale('log')
-
-xticks_loc_lst = (plt.xticks()[0])+binwidth/2
-xticks_label_lst = [int(x) for x in plt.xticks()[0]]
-plt.xticks(ticks=xticks_loc_lst, labels=xticks_label_lst, fontsize=tick_fontsize)
-
-plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "histplot2.png")
-plt.savefig(hist_png_path)
-plt.close()
-
-#%%
-ax = seaborn.barplot(x=x, y=y, data=m_df, order=order, estimator=numpy.mean, palette="rocket_r")
-
-annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-ax.set_xticklabels(xticklabels)
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
+plt.xlabel("Gene target count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.ylim([1, 2.25])
+plt.ylabel('Cumulative density', fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
+plt.xlim([1, 10])
 
 plt.tight_layout()
-plt.savefig(vlnplt_png_path, dpi=dpi)
+plt.savefig(plt_png_path)
 plt.close()
 
-#%% Violin plot
-ax = seaborn.violinplot(data=m_df, x=x, y=y, order=order, palette="rocket_r")
+#%% boxenplot
+ax = seaborn.boxenplot(data=m_df, x=x, y=y, **boxenplot_kws, line_kws=boxenplot_line_kws)
 
 annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
+annotator.configure(test='Mann-Whitney', text_format='star', loc='inside', **annotator_config_dic)
 annotator.apply_and_annotate()
 
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
+plt.ylabel('Gene count', fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "violin.png")
-plt.savefig(hist_png_path)
-plt.close()
-
-#%% boxplot
-ax = seaborn.boxplot(data=m_df, x=x, y=y, order=order, palette="rocket_r", showfliers = False)
-
-annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-ax.set_xticklabels(xticklabels)
-
-plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "boxplot.png")
+hist_png_path = os.path.join(outdir_path, "boxenplot.png")
 plt.savefig(hist_png_path)
 plt.close()
 
 #%% boxenplot ms
-ax = seaborn.boxenplot(data=m_df, x=x, y=y, order=order, palette="rocket_r", showfliers=False)
+ax = seaborn.boxenplot(data=m_df, x=x, y=y, **boxenplot_kws, line_kws=boxenplot_line_kws)
 
 group1 = m_df.where(m_df.gwas_category_count == '1').dropna()[y]
 group2 = m_df.where(m_df.gwas_category_count == '2').dropna()[y]
@@ -205,40 +167,5 @@ ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
 hist_png_path = os.path.join(outdir_path, "boxenplot_ms.png")
-plt.savefig(hist_png_path)
-plt.close()
-
-#%% boxenplot
-ax = seaborn.boxenplot(data=m_df, x=x, y=y, order=order, palette="rocket_r", showfliers=True, scale='area')
-
-annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', loc='inside', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel('Gene count', fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-ax.set_xticklabels(xticklabels)
-
-plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "boxenplot.png")
-plt.savefig(hist_png_path)
-plt.close()
-
-#%% histplot
-ax = seaborn.histplot(data=m_df, hue=x, x=y, hue_order=order, stat="density", cumulative=True, common_norm=False, fill=False, element="step", palette="rocket_r", lw=3)
-
-ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel("Gene target count", fontsize=label_fontsize)
-plt.xticks(fontsize=tick_fontsize, rotation=0)
-plt.ylabel('Cumulative density', fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-plt.xlim([1, 10])
-
-plt.tight_layout()
-hist_png_path = os.path.join(outdir_path, "histplot.png")
 plt.savefig(hist_png_path)
 plt.close()

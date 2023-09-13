@@ -2,7 +2,8 @@ import scipy
 import sqlalchemy
 
 from gwas2eqtl_pleiotropy import boxenplot_with_mannwhitneyu
-from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, boxplot_kwargs, annotator_config_dic
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, boxplot_kwargs, annotator_config_dic, \
+    boxenplot_kws
 from statannotations.Annotator import Annotator
 
 import matplotlib.pyplot as plt
@@ -77,9 +78,10 @@ m_df[x] = m_df[x].astype(str)
 y_labels = ['afr_af', 'amr_af', 'eas_af', 'eur_af', 'sas_af']
 y_titles = ['African population', 'American population', 'East Asian population', 'European population', 'South Asian population']
 
-for y,ytitle in zip(y_labels, y_titles):
-    print(y)
-    ax = seaborn.barplot(x=x, y=y, data=m_df, order=order, estimator=numpy.mean, palette="rocket_r")
+for y, ytitle in zip(y_labels, y_titles):
+
+    # %% boxenplot
+    ax = seaborn.boxenplot(x=x, y=y, data=m_df, order=order, **boxenplot_kws)
 
     annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
     annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
@@ -88,12 +90,10 @@ for y,ytitle in zip(y_labels, y_titles):
     ax.set_xticklabels(xticklabels)
     plt.title(ytitle, fontsize=label_fontsize)
     plt.xlabel(xlabel, fontsize=label_fontsize)
-    # plt.xticks(fontsize=tick_fontsize, rotation=0)
     xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
     xticks_labels[-1] = '≥' + str(xticks_labels[-1])
     plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
     plt.ylabel(ylabel, fontsize=label_fontsize)
-    plt.ylim([0.2, 0.7])
     plt.yticks(fontsize=tick_fontsize)
 
     plt.tight_layout()
@@ -101,39 +101,26 @@ for y,ytitle in zip(y_labels, y_titles):
     plt.savefig(this_af_png_path)
     plt.close()
 
-    # %% boxenplot
-    ax = seaborn.boxenplot(x=x, y=y, data=m_df, order=order, showfliers=True, palette="rocket_r")
-
-    annotator = Annotator(ax, pairs, data=m_df, x=x, y=y, order=order)
-    annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-    annotator.apply_and_annotate()
-
-    ax.set_xticklabels(xticklabels)
-    plt.title(ytitle, fontsize=label_fontsize)
-    plt.xlabel(xlabel, fontsize=label_fontsize)
-    xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
-    xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-    plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-    plt.ylabel(ylabel, fontsize=label_fontsize)
-    plt.yticks(fontsize=tick_fontsize)
-
-    plt.tight_layout()
-    this_af_png_path = eur_af_png_path.replace('eur_af', y + "_boxenplot")
-    plt.savefig(this_af_png_path)
-    plt.close()
-
     # %% boxenplot ms
-    ax = seaborn.boxenplot(x=x, y=y, data=m_df, order=order, showfliers=False, palette="rocket_r")
+    ax = seaborn.boxenplot(x=x, y=y, data=m_df, order=order, **boxenplot_kws)
 
-    group1 = m_df.where(m_df.gwas_category_count == '1').dropna()[y]
-    group2 = m_df.where(m_df.gwas_category_count == '2').dropna()[y]
-    x1 = 0; x2 = 1; annot_y = 1; h = 0.01;
-    boxenplot_with_mannwhitneyu(group1, group2, x1, x2, annot_y, h)
+    ylim = [0, 1.2]
+    x1_annot1 = 0.
+
+    delta_h = 0.03
+    y_annot1 = ylim[1] - 0.15 * ylim[1]
+    y_annot2 = y_annot1 - 0.15 * ylim[1]
+    h_annot = ylim[1] * delta_h
+    x2_annot1 = x1_annot1 + 1
+    x2_annot2 = x1_annot1 + 2
 
     group1 = m_df.where(m_df.gwas_category_count == '1').dropna()[y]
     group2 = m_df.where(m_df.gwas_category_count == '3').dropna()[y]
-    x1 = 0; x2 = 2; annot_y = 1.1; h = 0.01;
-    boxenplot_with_mannwhitneyu(group1, group2, x1, x2, annot_y, h)
+    boxenplot_with_mannwhitneyu(group1, group2, x1_annot1, x2_annot2, y_annot1, h_annot)
+
+    group1 = m_df.where(m_df.gwas_category_count == '1').dropna()[y]
+    group2 = m_df.where(m_df.gwas_category_count == '2').dropna()[y]
+    boxenplot_with_mannwhitneyu(group1, group2, x1_annot1, x2_annot1, y_annot2, h_annot)
 
     ax.set_xticklabels(xticklabels)
     plt.title(ytitle, fontsize=label_fontsize)
@@ -143,9 +130,9 @@ for y,ytitle in zip(y_labels, y_titles):
     plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
     plt.ylabel(ylabel, fontsize=label_fontsize)
     plt.yticks(fontsize=tick_fontsize)
-    plt.ylim([0, 1.2])
+    plt.ylim(ylim)
 
     plt.tight_layout()
-    this_af_png_path = eur_af_png_path.replace('eur_af', y + "_ms_boxenplot")
+    this_af_png_path = eur_af_png_path.replace('eur_af', y + "_custom")
     plt.savefig(this_af_png_path)
     plt.close()

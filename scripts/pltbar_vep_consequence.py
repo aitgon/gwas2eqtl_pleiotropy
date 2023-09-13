@@ -4,7 +4,7 @@ import sys
 import pandas
 import seaborn
 
-from gwas2eqtl_pleiotropy.constants import dpi, seaborn_theme_dic, label_fontsize, tick_fontsize
+from gwas2eqtl_pleiotropy.constants import dpi, seaborn_theme_dic, label_fontsize, tick_fontsize, palette
 from matplotlib import pyplot as plt
 
 seaborn.set_theme(**seaborn_theme_dic)
@@ -54,11 +54,11 @@ in_df.loc[in_df['gwas_category_count'] == max(in_df['gwas_category_count']), 'gw
 
 order = in_df['consequence'].unique()
 hue_order = in_df['gwas_category_count'].unique()
-g = seaborn.barplot(data=in_df, x="consequence", y="oddsr", hue="gwas_category_count", palette="rocket_r", orient='v', order=order, hue_order=hue_order)
+g = seaborn.barplot(data=in_df, x="consequence", y="oddsr", hue="gwas_category_count", palette=palette, orient='v', order=order, hue_order=hue_order)
 for c in g.containers:
     gwas_category_count = c.get_label()
     labels = in_df.loc[in_df['gwas_category_count'] == gwas_category_count, 'signif'].tolist()
-    g.bar_label(c, labels=labels, label_type='edge', padding=5)
+    g.bar_label(c, labels=labels, label_type='edge', padding=5, fontsize=label_fontsize)
 
 # legend_labels = hue_order
 # legend_labels[-1] = '≥' + hue_order[-1]

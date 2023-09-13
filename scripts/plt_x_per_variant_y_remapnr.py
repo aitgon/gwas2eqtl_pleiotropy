@@ -8,7 +8,8 @@ import sys
 
 from gwas2eqtl_pleiotropy import boxenplot_with_mannwhitneyu
 
-from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, boxplot_kwargs, annotator_config_dic
+from gwas2eqtl_pleiotropy.constants import label_fontsize, tick_fontsize, boxplot_kwargs, annotator_config_dic, \
+    boxenplot_kws, boxenplot_line_kws
 from matplotlib import pyplot as plt
 from statannotations.Annotator import Annotator
 from gwas2eqtl_pleiotropy.constants import seaborn_theme_dic
@@ -76,50 +77,8 @@ x = "gwas_category_count"
 pairs = [(str(1), str(int(i))) for i in sorted(cat_df['gwas_category_count'].unique())]
 cat_df[x] = cat_df[x].astype(int).astype(str)
 
-#%%
-ax = seaborn.barplot(x=x, y=y, data=cat_df, order=order, estimator=numpy.mean, palette="rocket_r")
-
-annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-# plt.xticks(fontsize=tick_fontsize, rotation=0)
-xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
-xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-
-plt.tight_layout()
-plt.savefig(tf_flank_10_png)
-plt.close()
-
-#%% violinplot
-ax = seaborn.violinplot(x=x, y=y, data=cat_df, order=order, **boxplot_kwargs)
-
-annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-# plt.xticks(fontsize=tick_fontsize, rotation=0)
-xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
-xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-ax.set_xticklabels(xticklabels)
-
-plt.tight_layout()
-tf_flank_10_png = os.path.join(outdir_path, "violin.png")
-plt.savefig(tf_flank_10_png)
-plt.close()
-
 #%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=cat_df, order=order, palette="rocket_r")
+ax = seaborn.boxenplot(x=x, y=y, data=cat_df, order=order, **boxenplot_kws, line_kws=boxenplot_line_kws)
 
 annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
@@ -136,35 +95,41 @@ plt.yticks(fontsize=tick_fontsize)
 ax.set_xticklabels(xticklabels)
 
 plt.tight_layout()
-tf_flank_10_png = os.path.join(outdir_path, "boxenplot.png")
 plt.savefig(tf_flank_10_png)
 plt.close()
 
 #%% boxenplot ms
-ax = seaborn.boxenplot(x=x, y=y, data=cat_df, order=order, palette="rocket_r", showfliers=False)
+ax = seaborn.boxenplot(x=x, y=y, data=cat_df, order=order, **boxenplot_kws, line_kws=boxenplot_line_kws)
 
-group1 = cat_df.where(cat_df.gwas_category_count == '1').dropna()[y]
-group2 = cat_df.where(cat_df.gwas_category_count == '2').dropna()[y]
-x1 = 0; x2 = 1; annot_y = 70; h = 5;
-boxenplot_with_mannwhitneyu(group1, group2, x1, x2, annot_y, h)
+ylim = [0, 100]
+x1_annot1 = 0.
+delta_h = 0.03
+
+y_annot1 = ylim[1] - 0.15 * ylim[1]
+y_annot2 = y_annot1 - 0.15 * ylim[1]
+h_annot = ylim[1] * delta_h
+x2_annot1 = x1_annot1 + 1
+x2_annot2 = x1_annot1 + 2
 
 group1 = cat_df.where(cat_df.gwas_category_count == '1').dropna()[y]
 group2 = cat_df.where(cat_df.gwas_category_count == '3').dropna()[y]
-x1 = 0; x2 = 2; annot_y = 90; h = 5;
-boxenplot_with_mannwhitneyu(group1, group2, x1, x2, annot_y, h)
+boxenplot_with_mannwhitneyu(group1, group2, x1_annot1, x2_annot2, y_annot1, h_annot)
+
+group1 = cat_df.where(cat_df.gwas_category_count == '1').dropna()[y]
+group2 = cat_df.where(cat_df.gwas_category_count == '2').dropna()[y]
+boxenplot_with_mannwhitneyu(group1, group2, x1_annot1, x2_annot1, y_annot2, h_annot)
 
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
-# plt.xticks(fontsize=tick_fontsize, rotation=0)
 xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
 xticks_labels[-1] = '≥' + str(xticks_labels[-1])
 plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
-plt.ylim([0, 150])
 ax.set_xticklabels(xticklabels)
+plt.ylim(ylim)
 
 plt.tight_layout()
-tf_flank_10_png = os.path.join(outdir_path, "boxenplot_ms.png")
+tf_flank_10_png = os.path.join(outdir_path, "boxenplot_custom.png")
 plt.savefig(tf_flank_10_png)
 plt.close()

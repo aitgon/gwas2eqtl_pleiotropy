@@ -2,7 +2,8 @@
 odds ratio and p-value of CRM vs. Non-CRM variants"""
 
 from gwas2eqtl_pleiotropy.Logger import Logger
-from gwas2eqtl_pleiotropy.constants import annotator_config_dic, label_fontsize, tick_fontsize, dpi, seaborn_theme_dic
+from gwas2eqtl_pleiotropy.constants import annotator_config_dic, label_fontsize, tick_fontsize, dpi, seaborn_theme_dic, \
+    palette
 from matplotlib import pyplot as plt
 from scipy.stats import fisher_exact
 from statannotations.Annotator import Annotator
@@ -93,9 +94,6 @@ out_df.loc[out_df['p'] <= 1.00e-04, 'signif'] = '****'
 out_df.rename({'pleio_count': 'gwas_category_count'}, axis=1, inplace=1)
 
 #%%
-# out_df = in_df.loc[in_df['consequence'] == consequence, ['gwas_category_count', 'oddsr', 'p', 'signif']]
-
-#%%
 out_df['gwas_category_count'] = [str(i) for i in out_df['gwas_category_count']]
 order = out_df['gwas_category_count'].tolist()
 xticklabels = order.copy()
@@ -110,7 +108,7 @@ pairs = [('1', x) for x in out_df['gwas_category_count'] if x != "1"]
 formatted_pvalues = out_df['signif'].tolist()[1:]
 
 #%% barplot
-ax = seaborn.barplot(x=x, y=y, data=out_df, order=order, palette="rocket_r")
+ax = seaborn.barplot(x=x, y=y, data=out_df, order=order, palette=palette)
 
 annotator = Annotator(ax, pairs, data=out_df, x=x, y=y, order=order, size=label_fontsize)
 annotator.set_custom_annotations(formatted_pvalues)

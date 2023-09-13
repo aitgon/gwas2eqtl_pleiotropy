@@ -1,5 +1,4 @@
 import os
-from gwas2eqtl_pleiotropy.PathManager import PathManager
 
 public_data_dir = os.path.join(os.environ['HOME'], "Software", "public")
 
@@ -19,10 +18,14 @@ dpi = 150  # for publication 600, for ongoing 150
 
 # Boxplot constants
 alpha = 0.5
-boxplot_kwargs = {'linewidth': 3, 'notch': True, 'palette': "rocket_r", 'showfliers': False, 'boxprops': dict(alpha=alpha)}
+palette = "vlag"
+palette_r = "vlag_r"
+boxplot_kwargs = {'linewidth': 3, 'notch': True, 'palette': palette, 'showfliers': False, 'boxprops': dict(alpha=alpha)}
+boxenplot_line_kws = dict(linewidth=2, color='k')
+boxenplot_kws = dict(palette=palette, showfliers=False, saturation=1)
 
 # statannotations
-annotator_config_dic = {'fontsize': 16}
+annotator_config_dic = {'fontsize': label_fontsize}
 
 # mhc locus, excluded in gwas2eqtl
 mhc_chrom = 6

@@ -1,6 +1,8 @@
 import scipy
 from matplotlib import pyplot as plt
 
+from gwas2eqtl_pleiotropy.constants import label_fontsize
+
 
 def boxenplot_with_mannwhitneyu(group1, group2, x1, x2, y, h):
     col = 'k'
@@ -16,4 +18,4 @@ def boxenplot_with_mannwhitneyu(group1, group2, x1, x2, y, h):
         pvalue_asterisk = "*"
     else:
         pvalue_asterisk = "ns"
-    plt.text((x1 + x2) * .5, y + h, pvalue_asterisk, ha='center', va='bottom', color=col, fontsize=14)
+    plt.text((x1 + x2) * .5, y + h, pvalue_asterisk, ha='center', va='bottom', color=col, fontsize=label_fontsize)
