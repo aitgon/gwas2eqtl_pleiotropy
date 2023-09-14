@@ -10,7 +10,7 @@ public_data_dir = config['public_data_dir']
 snp_pp_h4 = config['snp_pp_h4']
 
 
-rule all_plots:
+rule all_04asnkfl_plots:
     input:
         os.path.join(outdir, "cmpt_davidgo.py/david_pleio_3.tsv"),
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
@@ -28,8 +28,6 @@ rule all_plots:
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
         os.path.join(outdir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
-        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/violin.png"),
-        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/violin.png"),
 
 rule pltbar_pleiotropic_regions_cumsum:
     input:
@@ -38,18 +36,6 @@ rule pltbar_pleiotropic_regions_cumsum:
         os.path.join(outdir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
     shell:
         "python scripts/pltbar_pleiotropic_regions_cumsum.py {input[0]} {output[0]}"
-
-#rule pltbar_davidgo:
-#    input:
-#        os.path.join(outdir, "cmpt_davidgo.py/david_pleio_2.tsv"),
-#    output:
-#        os.path.join(outdir, "pltbar_davidgo.py/david_pleio_2.png"),
-#    params:
-#        pleio_high_cutoff,
-#        os.path.join(outdir, "cmpt_davidgo.py/david_pleio"),
-#        os.path.join(outdir, "pltbar_davidgo.py/david_pleio"),
-#    shell:
-#        "python scripts/pltbar_davidgo.py {params[1]} {params[0]} {params[2]}"
 
 rule cmpt_davidgo:
     input:
@@ -64,82 +50,6 @@ rule cmpt_davidgo:
     shell:
         """python scripts/cmpt_davidgo.py {input[0]} {params[0]} {params[2]}
         python scripts/pltbar_davidgo.py {input[0]} {params[2]} {params[3]}"""
-
-rule pltbar_x_per_variant_egene_y_etissue:
-    input:
-#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
-    output:
-        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
-        os.path.join(outdir, "plt_x_per_variant_egene_y_etissue.py/violin.png"),
-    params:
-        snp_pp_h4=snp_pp_h4,
-        pleio_high_cutoff=pleio_high_cutoff,
-        db_url=db_url,
-    shell:
-        "python scripts/plt_x_per_variant_egene_y_etissue.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]}"
-
-rule pltbar_x_per_variant_etissue_y_egene:
-    input:
-#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
-    output:
-        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
-        os.path.join(outdir, "plt_x_per_variant_etissue_y_egene.py/violin.png"),
-    params:
-        snp_pp_h4=snp_pp_h4,
-        pleio_high_cutoff=pleio_high_cutoff,
-        db_url=db_url,
-    shell:
-        "python scripts/plt_x_per_variant_etissue_y_egene.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]}"
-
-#rule plt_scttr_count_per_rsid_etissue:
-#    input:
-#        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
-##        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_etissue.tsv"),
-#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
-#    output:
-#        os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/touched.txt"),
-#    params:
-#        outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py"),
-#        pleio_high_cutoff=pleio_high_cutoff
-#    log: os.path.join(outdir, "pltsctr_x_per_rsid_y_etissue.py/log.txt"),
-#    shell:
-#        """python scripts/pltsctr_x_per_rsid_y_etissue.py {params.pleio_high_cutoff} {input[0]} {input[1]} {params.outdir} >{log}
-#        touch {output[0]}
-#        """
-
-#rule plt_scttr_count_per_rsid_egene:
-#    input:
-#        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
-##        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_egene.tsv"),
-#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
-#    output:
-#        os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/touched.txt"),
-#    params:
-#        outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py"),
-#        pleio_high_cutoff=pleio_high_cutoff
-#    log: os.path.join(outdir, "pltsctr_x_per_rsid_y_egene.py/log.txt"),
-#    shell:
-#        """python scripts/pltsctr_x_per_rsid_y_egene.py {params.pleio_high_cutoff} {input[0]} {input[1]} {params.outdir} >{log}
-#        touch {output[0]}
-#        """
-
-#rule plt_scttr_count_per_rsid_gwas:
-#    input:
-#        os.path.join(outdir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
-##        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
-#        os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
-#    output:
-#        os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/touched.txt"),
-#    params:
-#        outdir=os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py"),
-#        pleio_high_cutoff=pleio_high_cutoff
-#    log: os.path.join(outdir, "pltsctr_x_per_rsid_y_gwas.py/log.txt"),
-#    shell:
-#        """python scripts/pltsctr_x_per_rsid_y_gwas.py {params.pleio_high_cutoff} {input[0]} {input[1]} {params.outdir} >{log}
-#        touch {output[0]}
-#        """
 
 rule plt_hist_gwas_etissue_egene:
     input:

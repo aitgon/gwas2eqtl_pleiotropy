@@ -173,7 +173,7 @@ m3_df[x] = m3_df[x].astype(str)
 #%% boxenplot custom stats
 ax = seaborn.boxenplot(data=m3_df, x=x, y=y, **boxenplot_kws, line_kws=boxenplot_line_kws)
 
-ylim = [0, 300]
+ylim = [0, 600]
 x1_annot1 = 0.
 delta_h = 0.03
 

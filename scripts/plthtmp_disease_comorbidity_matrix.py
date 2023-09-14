@@ -109,13 +109,15 @@ clustermap_args_dic['cmap'] = 'mako'
 clustermap_args_dic['row_colors'] = network_node_colors
 clustermap_args_dic['col_colors'] = network_node_colors
 clustermap_args_dic['xticklabels'] = False
+clustermap_args_dic['cbar_pos'] =(0, .2, .03, .4)
+clustermap_args_dic['cbar_kws'] = {'label': 'Disease distance'}
 
 # import pdb; pdb.set_trace()
 clustermap_args_dic['yticklabels'] = [s[0:40] for s in annotation_df['trait'].tolist()]
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
 
 seaborn.set(font_scale=1)
-g.cax.set_visible(False)
+# g.cax.set_visible(True)
 # import pdb; pdb.set_trace()
 g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=12)
 g.ax_heatmap.set(ylabel='Trait')

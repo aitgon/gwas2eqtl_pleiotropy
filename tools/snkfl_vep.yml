@@ -5,11 +5,11 @@ snakemake -j all -s tools/snkfl_vep.yml --config pleio_high_cutoff=4 db_url='pos
 import multiprocessing
 
 db_url = config['db_url']
-pleio_high_cutoff = config['pleio_high_cutoff']
 outdir = config['outdir']
-snp_pp_h4 = config['snp_pp_h4']
-public_data_dir = config['public_data_dir']
+pleio_high_cutoff = config['pleio_high_cutoff']
 process_data_dir = config['process_data_dir']
+public_data_dir = config['public_data_dir']
+snp_pp_h4 = config['snp_pp_h4']
 
 rule all_03snkfl_analysis_vep:
     input:
@@ -20,15 +20,13 @@ rule plt_vep_consequence:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     output:
         os.path.join(outdir, "pltbar_vep_consequence.py/vep.png"),
-    params:
-#        pleio_high_cutoff=pleio_high_cutoff
     shell:
         "python scripts/pltbar_vep_consequence.py {input[0]} {output[0]}"
 
 rule cmpt_vep_consequence_fisher:
     input:
-        os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
-        os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
+        os.path.join(outdir, "cmpt_vep_input.py/vep_input.tsv"),
+        os.path.join(outdir, "cmpt_vep_input.py/vep_output.tsv"),
     output:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     params:
@@ -37,18 +35,27 @@ rule cmpt_vep_consequence_fisher:
     shell:
         "python scripts/cmpt_vep_consequence_fisher.py {threads} {params[0]} {input[0]} {input[1]} {output[0]}"
 
-rule cmpt_vep:
+rule run_vep:
+    input:
+        os.path.join(outdir, "cmpt_vep_input.py/vep_input.tsv"),
+    output:
+        os.path.join(outdir, "cmpt_vep_input.py/vep_output.tsv"),
+    params:
+    singularity: "out/vep.sif"
+    shell:
+        "vep --offline --dir_cache /opt/vep/vep-cache --cache_version 108 --plugin TSSDistance --force_overwrite -i {input[0]} --output_file {output[0]}"
+
+rule cmpt_vep_input:
     input:
         os.path.join(outdir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
         os.path.join("/home/gonzalez/Software/vep-cache/homo_sapiens/108_GRCh38/info.txt"),
     output:
-        os.path.join(outdir, "cmpt_vep.py/vep_input.tsv"),
-        os.path.join(outdir, "cmpt_vep.py/vep_output.tsv"),
+        os.path.join(outdir, "cmpt_vep_input.py/vep_input.tsv"),
     params:
         snp_pp_h4=snp_pp_h4,
         db_url=db_url,
     shell:
-        "python scripts/cmpt_vep.py {params.snp_pp_h4} {params.db_url} {input[0]} {input[1]} {output[0]} {output[1]}"
+        "python scripts/cmpt_vep_input.py {params.snp_pp_h4} {params.db_url} {input[0]} {input[1]} {output[0]}"
 
 #rule untar_vep_cache:
 #    input:
