@@ -99,7 +99,7 @@ xlabel = "Trait category count"
 # boxplot and mann-whitney
 y = "eqtl_beta_abs"
 title = "eQTL effect"
-ylabel = "Absolute beta mean"
+ylabel = "Absolute beta"
 
 #%%
 pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
@@ -126,9 +126,10 @@ plt.savefig(eqtl_beta_png_path)
 plt.close()
 
 #%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, **boxenplot_kws, line_kws=boxenplot_line_kws)
+# ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, **boxenplot_kws, line_kws=boxenplot_line_kws)
+ax = seaborn.boxplot(x=x, y=y, data=m_eqtl_df, **boxenplot_kws)
 
-ylim = [0, 1]
+ylim = [0, 1.6]
 x1_annot1 = 0.
 delta_h = 0.03
 
@@ -146,6 +147,7 @@ group1 = m_eqtl_df.where(m_eqtl_df.gwas_category_count == '1').dropna()[y]
 group2 = m_eqtl_df.where(m_eqtl_df.gwas_category_count == '2').dropna()[y]
 boxenplot_with_mannwhitneyu(group1, group2, x1_annot1, x2_annot1, y_annot2, h_annot)
 
+# plt.title(title, fontsize=label_fontsize, pad=100)
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
 xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
@@ -156,6 +158,7 @@ plt.yticks(fontsize=tick_fontsize)
 plt.ylim(ylim)
 
 plt.tight_layout()
+# plt.subplots_adjust(top=0.7)
 png_path = os.path.join(outdir_path, "eqtl_effect_custom.png")
 plt.savefig(png_path)
 plt.close()
@@ -164,7 +167,7 @@ plt.close()
 # boxplot and mann-whitney
 y = "gwas_beta_abs"
 title = "GWAS effect"
-ylabel = "Absolute beta mean"
+ylabel = "Absolute beta"
 pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_gwas_df[x] = m_gwas_df[x].astype(str)
 
@@ -188,9 +191,10 @@ plt.savefig(gwas_beta_png_path)
 plt.close()
 
 #%% boxenplot custom
-ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, **boxenplot_kws, line_kws=boxenplot_line_kws)
+# ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, **boxenplot_kws, line_kws=boxenplot_line_kws)
+ax = seaborn.boxplot(x=x, y=y, data=m_gwas_df, **boxenplot_kws)
 
-ylim = [0, 1]
+ylim = [-0.05, 0.45]
 x1_annot1 = 0.
 delta_h = 0.03
 
@@ -208,6 +212,7 @@ group1 = m_gwas_df.where(m_gwas_df.gwas_category_count == '1').dropna()[y]
 group2 = m_gwas_df.where(m_gwas_df.gwas_category_count == '2').dropna()[y]
 boxenplot_with_mannwhitneyu(group1, group2, x1_annot1, x2_annot1, y_annot2, h_annot)
 
+# plt.title(title, fontsize=label_fontsize, pad=100)
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
 xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
@@ -218,6 +223,7 @@ plt.yticks(fontsize=tick_fontsize)
 plt.ylim(ylim)
 
 plt.tight_layout()
+# plt.subplots_adjust(top=0.7)
 png_path = os.path.join(outdir_path, "gwas_effect_custom.png")
 plt.savefig(png_path)
 plt.close()
@@ -226,7 +232,7 @@ plt.close()
 # boxplot and mann-whitney
 y = "eqtl_neglog10pval"
 title = "eQTL significance"
-ylabel = "Neg. log10 p-val mean"
+ylabel = "Neg. log10 p-val"
 
 pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_eqtl_df[x] = m_eqtl_df[x].astype(str)
@@ -251,9 +257,10 @@ plt.savefig(eqtl_neglogpval_png_path)
 plt.close()
 
 #%% boxenplot ms
-ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, **boxenplot_kws, line_kws=boxenplot_line_kws)
+# ax = seaborn.boxenplot(x=x, y=y, data=m_eqtl_df, **boxenplot_kws, line_kws=boxenplot_line_kws)
+ax = seaborn.boxplot(x=x, y=y, data=m_eqtl_df, **boxenplot_kws)
 
-ylim = [0, 30]
+ylim = [0, 40]
 x1_annot1 = 0.
 delta_h = 0.03
 
@@ -271,6 +278,7 @@ group1 = m_eqtl_df.where(m_eqtl_df.gwas_category_count == '1').dropna()[y]
 group2 = m_eqtl_df.where(m_eqtl_df.gwas_category_count == '2').dropna()[y]
 boxenplot_with_mannwhitneyu(group1, group2, x1_annot1, x2_annot1, y_annot2, h_annot)
 
+# plt.title(title, fontsize=label_fontsize, pad=100)
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
 xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
@@ -281,6 +289,7 @@ plt.yticks(fontsize=tick_fontsize)
 plt.ylim(ylim)
 
 plt.tight_layout()
+# plt.subplots_adjust(top=0.7)
 png_path = os.path.join(outdir_path, "eqtl_signif_custom.png")
 plt.savefig(png_path)
 plt.close()
@@ -289,13 +298,13 @@ plt.close()
 # boxplot and mann-whitney
 y = "gwas_neglog10pval"
 title = "GWAS significance"
-ylabel = "Neg. log10 p-val mean"
+ylabel = "Neg. log10 p-val"
 
 pairs = [(str(1), str(i)) for i in range(2, pleio_high_cutoff + 1)]
 m_gwas_df[x] = m_gwas_df[x].astype(str)
 
 #%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=True, palette="rocket_r")
+ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, showfliers=True, palette="vlag")
 
 annotator = Annotator(ax, pairs, data=m_gwas_df, x=x, y=y, order=order)
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
@@ -314,9 +323,10 @@ plt.savefig(gwas_neglogpval_png_path)
 plt.close()
 
 #%% boxenplot ms
-ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, **boxenplot_kws, line_kws=boxenplot_line_kws)
+# ax = seaborn.boxenplot(x=x, y=y, data=m_gwas_df, **boxenplot_kws, line_kws=boxenplot_line_kws)
+ax = seaborn.boxplot(x=x, y=y, data=m_gwas_df, **boxenplot_kws)
 
-ylim = [0, 30]
+ylim = [5, 35]
 x1_annot1 = 0.
 delta_h = 0.03
 
@@ -334,6 +344,7 @@ group1 = m_gwas_df.where(m_gwas_df.gwas_category_count == '1').dropna()[y]
 group2 = m_gwas_df.where(m_gwas_df.gwas_category_count == '2').dropna()[y]
 boxenplot_with_mannwhitneyu(group1, group2, x1_annot1, x2_annot1, y_annot2, h_annot)
 
+# plt.title(title, fontsize=label_fontsize, pad=100)
 plt.title(title, fontsize=label_fontsize)
 plt.xlabel(xlabel, fontsize=label_fontsize)
 xticks_labels = [str(x) for x in (plt.xticks()[0] + 1)]
@@ -344,6 +355,7 @@ plt.yticks(fontsize=tick_fontsize)
 plt.ylim(ylim)
 
 plt.tight_layout()
+# plt.subplots_adjust(top=0.7)
 png_path = os.path.join(outdir_path, "gwas_signif_custom.png")
 plt.savefig(png_path)
 plt.close()

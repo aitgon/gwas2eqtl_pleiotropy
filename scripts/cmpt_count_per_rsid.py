@@ -3,8 +3,10 @@ import pandas
 import pathlib
 import seaborn
 import sys
-
+import numpy as np
 import sqlalchemy
+
+from scipy.stats import spearmanr
 from matplotlib import pyplot as plt
 from statannotations.Annotator import Annotator
 
@@ -119,21 +121,25 @@ m2df = m_df[['gwas_category_count', 'etissue_category_term_count', 'egene_count'
 m2df.rename({'gwas_category_count': 'Trait cat. cnt.', 'etissue_category_term_count': 'Tissue cnt.', 'egene_count': 'Gene cnt.', }, axis=1, inplace=True)
 
 #%%
-from scipy.stats import spearmanr
-import numpy as np
 corr = m2df.corr(method='spearman')
 
-pval = m2df.corr(method=lambda x, y: spearmanr(x, y)[1]) - np.eye(*corr.shape)
-p = pval.applymap(lambda x: ''.join(['*' for t in [.05, .01, .001] if x<=t]))
-corr_annot = corr.round(2).astype(str) + p
+# pval = m2df.corr(method=lambda x, y: spearmanr(x, y)[1]) - np.eye(*corr.shape)
+# p = pval.applymap(lambda x: ''.join(['*' for t in [.05, .01, .001] if x<=t]))
+# corr_annot = corr.round(2).astype(str)
 
 # corr = m2df.corr(method='spearman')
 # import pdb; pdb.set_trace()
 plt.subplots_adjust(left=0.2, right=0.8, top=0.9, bottom=0.)
+
+corr.iloc[0, 0]=None
+corr.iloc[1, 1]=None
+corr.iloc[2, 2] = None
+corr_annot = corr.round(2).astype(str)
+
 ax = seaborn.heatmap(corr, annot=corr_annot, xticklabels=False, cmap="vlag", annot_kws={"size": 20}, fmt = '')
 ax.set_yticklabels(ax.get_ymajorticklabels(), fontsize=20, rotation=45)
 plt.title("Spearman correlation", fontsize=label_fontsize)
-plt.subplots_adjust(left=0.4, right=1)
+plt.subplots_adjust(left=0.3, right=1)
 plt.savefig(count_per_rsid_gwas_egene_etissue_corr_png)
 
 plt.tight_layout()
@@ -152,11 +158,11 @@ annotator = Annotator(ax, pairs, data=m2df, x='gwas_category_count', y='domains_
 annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
 annotator.apply_and_annotate()
 
-plt.xlabel("trait category count", fontsize=label_fontsize)
+plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 plt.ylabel("Watanabe cat. cnt.", fontsize=label_fontsize)
-plt.title("Comparison Watanabe 2019", fontsize=28)
+plt.title("Found Watanabe 2019", fontsize=28)
 
 plt.tight_layout()
 png_path = os.path.join(outdir_path, 'watanabe_cat_count.png')
@@ -173,8 +179,8 @@ m2df_watanabe2019_cat_count_df['watanabe_perc'] = (m2df_watanabe2019_cat_count_d
 order = [*range(1, pleio_high_cutoff)] + ['≥' + str(pleio_high_cutoff)]
 ax = seaborn.barplot(x=m2df_watanabe2019_cat_count_df.index, y='watanabe_perc', data=m2df_watanabe2019_cat_count_df, order=order, palette="vlag")
 
-plt.title("Known in Watanabe 2019", fontsize=label_fontsize)
-plt.xlabel("trait category count", fontsize=label_fontsize)
+plt.title("Found Watanabe 2019", fontsize=label_fontsize)
+plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.yticks(fontsize=tick_fontsize)
 plt.ylabel("Percentage", fontsize=label_fontsize)

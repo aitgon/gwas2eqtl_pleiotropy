@@ -99,9 +99,10 @@ plt.savefig(tf_flank_10_png)
 plt.close()
 
 #%% boxenplot ms
-ax = seaborn.boxenplot(x=x, y=y, data=cat_df, order=order, **boxenplot_kws, line_kws=boxenplot_line_kws)
+# ax = seaborn.boxenplot(x=x, y=y, data=cat_df, order=order, **boxenplot_kws, line_kws=boxenplot_line_kws)
+ax = seaborn.boxplot(x=x, y=y, data=cat_df, order=order, **boxenplot_kws)
 
-ylim = [0, 100]
+ylim = [0, 130]
 x1_annot1 = 0.
 delta_h = 0.03
 

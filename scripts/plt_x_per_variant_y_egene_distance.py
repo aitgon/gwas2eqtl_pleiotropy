@@ -92,9 +92,10 @@ pairs = [(str(1), str(i)) for i in range(2, max(m3_df['gwas_category_count'].uni
 m3_df[x] = m3_df[x].astype(str)
 
 #%% boxenplot custom stats
-ax = seaborn.boxenplot(data=m3_df, x=x, y=y, palette=palette, showfliers=False, line_kws=boxenplot_line_kws, saturation=1)
+# ax = seaborn.boxenplot(data=m3_df, x=x, y=y, palette=palette, showfliers=False, line_kws=boxenplot_line_kws, saturation=1)
+ax = seaborn.boxplot(x=x, y=y, data=m3_df, **boxenplot_kws)
 
-ylim = [0, 300]
+ylim = [-25, 350]
 x1_annot1 = 0.
 delta_h = 0.03
 
@@ -171,9 +172,10 @@ pairs = [(str(1), str(i)) for i in range(2, max(m3_df['gwas_category_count'].uni
 m3_df[x] = m3_df[x].astype(str)
 
 #%% boxenplot custom stats
-ax = seaborn.boxenplot(data=m3_df, x=x, y=y, **boxenplot_kws, line_kws=boxenplot_line_kws)
+# ax = seaborn.boxenplot(data=m3_df, x=x, y=y, **boxenplot_kws, line_kws=boxenplot_line_kws)
+ax = seaborn.boxplot(x=x, y=y, data=m3_df, **boxenplot_kws)
 
-ylim = [0, 600]
+ylim = [-50, 1000]
 x1_annot1 = 0.
 delta_h = 0.03
 
