@@ -151,7 +151,7 @@ m2df = m_df[['rsid', 'ref', 'alt', 'gwas_category_count', 'domains_watanabe2019'
 m2df.loc[m2df['gwas_category_count'] >= pleio_high_cutoff, 'gwas_category_count'] = '≥' + str(pleio_high_cutoff)
 
 order = [*range(1, pleio_high_cutoff)] + ['≥' + str(pleio_high_cutoff)]
-ax = seaborn.boxplot(x='gwas_category_count', y='domains_watanabe2019', data=m2df, order=order, palette="vlag")
+ax = seaborn.boxplot(x='gwas_category_count', y='domains_watanabe2019', data=m2df, order=order, palette="vlag", showfliers=False)
 
 pairs = [(1, 2), (1, "≥3")]
 annotator = Annotator(ax, pairs, data=m2df, x='gwas_category_count', y='domains_watanabe2019', order=order)
