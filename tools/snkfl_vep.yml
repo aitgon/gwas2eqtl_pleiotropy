@@ -13,15 +13,17 @@ snp_pp_h4 = config['snp_pp_h4']
 
 rule all_03snkfl_analysis_vep:
     input:
-        os.path.join(outdir, "pltbar_vep_consequence.py/vep.png"),
+        os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
 
 rule plt_vep_consequence:
     input:
         os.path.join(outdir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
     output:
-        os.path.join(outdir, "pltbar_vep_consequence.py/vep.png"),
+        os.path.join(outdir, "pltbar_vep_consequence.py/missense_variant.png"),
+    params:
+        os.path.join(outdir, "pltbar_vep_consequence.py),
     shell:
-        "python scripts/pltbar_vep_consequence.py {input[0]} {output[0]}"
+        "python scripts/pltbar_vep_consequence.py {input[0]} {params[0]}"
 
 rule cmpt_vep_consequence_fisher:
     input:

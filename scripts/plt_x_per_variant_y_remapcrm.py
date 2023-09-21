@@ -107,6 +107,8 @@ x = "gwas_category_count"
 pairs = [('1', x) for x in out_df['gwas_category_count'] if x != "1"]
 formatted_pvalues = out_df['signif'].tolist()[1:]
 
+import pdb; pdb.set_trace()
+
 #%% barplot
 ax = seaborn.barplot(x=x, y=y, data=out_df, order=order, palette=palette)
 
