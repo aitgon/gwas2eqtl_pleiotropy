@@ -1,0 +1,28 @@
+\begin{abstract} % abstract
+
+    \parttitle{Background} %if any
+    %
+    Pleiotropic genetic variants affecting several traits are relatively common in the genome as shown by the increasing number of genome-wide association studies (GWAS).
+%
+    Complex disease variants are often located in non-coding regions and are likely gene regulatory variants.
+%
+    In this work, I investigate the link between frequent expression quantitative trait loci and pleiotropy.
+
+    \parttitle{Results} %if any
+% Verify numbers
+    First I have computed the colocalization probability of 417 GWAS and 127 eQTL studies and I have observed 10,334 GWAS/eQTL pairs with at least one colocalized variants with a probability above 0.8.
+%SELECT count(DISTINCT concat(`gwas_id`, `eqtl_id`)) FROM `gwas2eqtl_modelgwas2eqtl` where `PP_H4_abf`>=0.8; 10334
+%Pourcentage of GWAS
+%
+    I have categorized the GWAS traits into 96 traits and categories to define pleiotropic as belonging at least to two of these categories.
+%
+    Pleiotropic variants are associated to more eQTL genes (eGenes) and more eQTL tissues (etissues) but egenes do also correlate with more traits.
+%
+    These observations could be partially explained, because pleitropic variants are enriched in splicing and missense variants and bind more transcription factors.
+%
+    These variants with the GWAS traits, egenes and etissues can be explored in a public website.
+
+    \parttitle{Conclusions} %if any
+    In conclusion, our work suggest that pleiotropy of gene regulatory variants arise from an increase of bound transcription factors, target egenes and etissues and severity of molecular effect consequences.
+    %
+\end{abstract}

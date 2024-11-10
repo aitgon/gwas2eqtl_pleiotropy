@@ -1,0 +1,396 @@
+%  CONFIGURE NEWcitep SINGLE-PAGE FORMAT
+
+\onecolumn % go back to one column
+%\fancyhead{} % make sure we get no headers
+\renewcommand{\floatpagefraction}{0.1}
+%\lfoot[\bSupInf]{\dAuthor}
+%\rfoot[\dAuthor]{\cSupInf}
+\newpage
+
+%\captionsetup*{format=largeformat} % make figure legend slightly larger than in the paper
+\setcounter{figure}{0} % reset figure counter for Supp. Figures
+\setcounter{equation}{0} % reset equation counter for Supp. Equations
+%\setcounter{page}{1} % reset page count
+%\makeatletter
+%\renewcommand{\thefigure}{S\@arabic\c@figure} % make Figure legend start with Figure S
+%\makeatother
+%\def\theequation{S\arabic{equation}}
+\renewcommand{\figurename}{Supplementary Figure}
+
+%  MAIN TEXT
+
+\section*{Supplementary Information}
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Fig 1: ucsc screenshots
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{figure}[!ht]
+%    \centering
+\rotatebox{90}{
+    \begin{minipage}{1.6\textwidth}
+
+%    https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=hg38&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr5%3A132217324%2D132511091&hgsid=304633938_J4NJ6AxL9TTbYQJWKp7GHbB1fiia
+        \textbf{Supplementary Figure 1a}
+        \\
+        \includegraphics[width=\textwidth]{fig/ucsc_gwas2eqtl_bcell_chr5_132217324_132511091_help.drawio.png}
+
+%    \caption{}
+    \end{minipage}
+}
+
+%\end{figure}
+
+%\begin{figure}[!ht]
+%    \centering
+
+\centering
+\rotatebox{90}{
+    \begin{minipage}{1.4\textwidth}
+
+%    https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=hg38&lastVirtModeType=default&lastVirtModeExtraState=&virtModeType=default&virtMode=0&nonVirtPosition=&position=chr5%3A132102721%2D132543372&hgsid=304633938_J4NJ6AxL9TTbYQJWKp7GHbB1fiia
+        \textbf{Supplementary Figure 1b}
+        \\
+        \includegraphics[width=\textwidth]{fig/ucsc_gwas2eqtl_monocyte_chr5_132102721_132543372.png}
+
+%    \caption{}
+    \end{minipage}
+}
+
+\rotatebox{90}{
+    \begin{minipage}{1.6\textwidth}
+
+        \textbf{Supplementary Figure 1c}
+        \\
+        \includegraphics[width=\textwidth]{fig/ucsc_gwas2eqtl_frontalcortex_chr5_132115326_132695000.png}
+%    \end{subfigure}
+
+%    \caption{}
+    \end{minipage}
+}
+
+% To take into account the UCSC suppl fig, we set the count to 1 here
+\setcounter{figure}{1}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Suppl fig 2: Comparison with Watanabe 2019
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[!ht]
+    %
+    \centering
+    %
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{a}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/cmpt_count_per_rsid.py/watanabe_cat_count.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{b}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/cmpt_count_per_rsid.py/watanabe_proportion.png}
+    \end{subfigure}
+
+    \caption{}
+
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Suppl fig 3: Proportion pleiotropic eQTLs, blood and cardiovascular
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[!ht]
+    %
+    \centering
+    %
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{a}
+        \\
+        % blood
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbx_x_per_category_count_y_variant_count_z_trait_category.py/2.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{b}
+        \\
+        % cardiovascular
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbx_x_per_category_count_y_variant_count_z_trait_category.py/7.png}
+    \end{subfigure}
+
+    \caption{}
+
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Supp fig 4: allele frequencies population other than Eur
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\begin{figure}[!tbp]
+%
+%    \begin{subfigure}[]{.49\textwidth}
+%        \textbf{a}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_allele_freq.py/afr_af.png}
+%    \end{subfigure}
+%%
+%    \begin{subfigure}[]{.49\textwidth}
+%        \textbf{b}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_allele_freq.py/amr_af.png}
+%    \end{subfigure}
+%
+%    \begin{subfigure}[]{.49\textwidth}
+%        \textbf{c}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_allele_freq.py/eas_af.png}
+%    \end{subfigure}
+%%
+%    \centering
+%    \begin{subfigure}[]{.49\textwidth}
+%        \textbf{d}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_allele_freq.py/sas_af.png}
+%    \end{subfigure}
+%
+%    \caption{}
+%
+%\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Suppl Fig 5: eQTL (a, c) and GWAS (b,d) for fixed sample size and variant frequency
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{figure}[!ht]
+
+    \centering \Large Variant frequency: 0.45-0.55 \normalsize
+
+    \vspace{0.25cm}
+
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{a}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/eqtl_beta.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{b}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/gwas_beta.png}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    \centering \Large Sample size: 75,000-125,000 \normalsize
+
+    \vspace{0.25cm}
+
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{c}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/eqtl_beta.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{d}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/gwas_beta.png}
+    \end{subfigure}
+
+    \caption{}
+
+\end{figure}
+
+
+%% Suppl Fig 6   : eQTL gene distance furthest
+%\begin{figure}[!ht]
+%    \centering
+%    \begin{subfigure}[]{.49\textwidth}
+%        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_y_egene_distance.py/boxplot_furthest_distance.png}
+%    \end{subfigure}
+%
+%    \caption{}
+%
+%\end{figure}
+
+
+% Suppl Fig 6: tissue per eQTL-gene pair and the same with variant frequency 0.45-0.55
+\begin{figure}[!ht]
+
+    \centering \Large Variant frequency: 0-1 \normalsize
+
+    \vspace{0.25cm}
+
+    \centering
+
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{a}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_egene_y_etissue.py/plt.png}
+    \end{subfigure}
+
+    \vspace{0.5cm}
+
+    \centering \Large Variant frequency: 0.45-0.55 \normalsize
+
+    \vspace{0.25cm}
+
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{b}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_etissue_y_egene.py/eur_af_45_55/plt.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.49\textwidth}
+        \textbf{c}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/plt_x_per_variant_egene_y_etissue.py/eur_af_45_55/plt.png}
+    \end{subfigure}
+
+    \caption{}
+
+\end{figure}
+
+% Suppl Fig 7: ChIP-PET
+\begin{figure}[!ht]
+
+    \centering
+
+    % A549
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{a}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF684CEM/barplot_flank0.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{b}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF790WGN/barplot_flank0.png}
+    \end{subfigure}
+
+    % CD8
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{c}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF864JWJ/barplot_flank0.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{d}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF370MXO/barplot_flank0.png}
+    \end{subfigure}
+
+    % GM10248
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{e}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF804HNI/barplot_flank0.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{f}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF025PQZ/barplot_flank0.png} % GM12878
+    \end{subfigure}
+
+    % HUVEC
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{g}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF975WWK/barplot_flank0.png}
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{h}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF377RDA/barplot_flank0.png} % GM12878
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{i}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF562OTG/barplot_flank0.png} % GM12878
+    \end{subfigure}
+
+    % K562
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{j}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF607PZX/barplot_flank0.png} % HepG2
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{k}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF118PBQ/barplot_flank0.png} % K562
+    \end{subfigure}
+
+    % WTC11
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{l}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF551YHB/barplot_flank0.png} % HepG2
+    \end{subfigure}
+    %
+    \begin{subfigure}[]{.30\textwidth}
+        \textbf{m}
+        \\
+        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF903XMF/barplot_flank0.png} % K562
+    \end{subfigure}
+
+%    % CD4
+%    \begin{subfigure}[]{.30\textwidth}
+%        \textbf{b}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF736FMG/barplot_flank0.png}
+%    \end{subfigure}
+%    %
+%    \begin{subfigure}[]{.30\textwidth}
+%        \textbf{c}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF937PTH/barplot_flank0.png}
+%    \end{subfigure}
+
+%    % HepG2: NOT SIGNIF
+%    \begin{subfigure}[]{.30\textwidth}
+%        \textbf{b}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF743ZWY/barplot_flank0.png}
+%    \end{subfigure}
+%    %
+%    \begin{subfigure}[]{.30\textwidth}
+%        \textbf{c}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF299NHM/barplot_flank0.png} % GM12878
+%    \end{subfigure}
+%
+%    % MCF7: NOT SIGNIF
+%    \begin{subfigure}[]{.30\textwidth}
+%        \textbf{b}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF099WJR/barplot_flank0.png}
+%    \end{subfigure}
+%    %
+%    \begin{subfigure}[]{.30\textwidth}
+%        \textbf{c}
+%        \\
+%        \includegraphics[width=\textwidth]{\floatRelativePath/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/ENCFF633JWS/barplot_flank0.png} % GM12878
+%    \end{subfigure}
+
+    \caption{}
+
+\end{figure}
+

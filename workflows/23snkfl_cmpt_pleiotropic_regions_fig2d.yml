@@ -1,0 +1,48 @@
+"""
+snakemake -j all -s tools/23snkfl_cmpt_pleiotropic_regions_fig2d.yml --config etissue_category_ods=config/etissue_category.ods pleio_high_cutoff=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' result_dir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50
+"""
+
+etissue_category_ods = config['etissue_category_ods']
+result_dir = config['result_dir']
+pleio_high_cutoff = config['pleio_high_cutoff']
+ms_table_eqtl_pleio_cutoff = config['ms_table_eqtl_pleio_cutoff']
+ms_table_region_pleio_cutoff = config['ms_table_region_pleio_cutoff']
+db_url = config['db_url']
+snp_pp_h4 = config['snp_pp_h4']
+
+wlength = 100000    
+wlength_lst = [wlength]
+
+rule all_02snkfl_cmpt_pleiotropic_regions:
+    input:
+        # fig 2a
+        os.path.join(result_dir, "pltbx_x_per_category_count_y_variant_count_z_trait_category.py/00plt.png"),
+        # fig 2f
+        expand(os.path.join(result_dir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist_{wlength}.png"), wlength=wlength_lst),
+        # fig 2d
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
+        # suppl fig 2
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_percentage.png"),
+
+rule cmpt_pleiotropic_regions_wlength:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "cmpt_pleiotropic_regions.py/{wlength}/region_window_{wlength}.ods"),
+        # fig 2f
+        os.path.join(result_dir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist_{wlength}.png"),
+    params:
+        wlength="{wlength}",
+        pleio_high_cutoff=pleio_high_cutoff,
+        ms_table_region_pleio_cutoff=ms_table_region_pleio_cutoff,
+    shell:
+        "python src/cmpt_pleiotropic_regions.py {params.wlength} {params.pleio_high_cutoff} {params.ms_table_region_pleio_cutoff} {input[0]} {output[0]} {output[1]}"
+
+rule pltbx_x_per_category_count_y_variant_count_z_trait_category:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "pltbx_x_per_category_count_y_variant_count_z_trait_category.py/00plt.png"),
+    shell:
+        "python src/pltbx_x_per_category_count_y_variant_count_z_trait_category.py {input[0]} {output[0]}"

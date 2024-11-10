@@ -1,0 +1,45 @@
+db_url: postgresql://postgres:postgres@0.0.0.0:5435/postgres
+etissue_category_ods: data/etissue_category.ods
+gwas_category_ods: results/20241003/query_ontology.py/gwas_category_ontology.ods
+gwas_trait_ods: results/20241003/query_ontology.py/gwas_trait_ontology.ods
+ms_table_eqtl_pleio_cutoff: 4
+ms_table_region_pleio_cutoff: 6
+outdir: "${OUTDIR}"
+pet_count_cutoff: 10
+pleio_high_cutoff: 3
+process_data_dir: results/data/process
+public_data_dir: results/data/public
+result_dir: results/20241003/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50
+snp_pp_h4: 0.5
+vep_sif: results/containers/vep.sif
+wlength: 100000
+
+encode_chia_pet_ctcf_loop_dic: {
+    "ENCFF684CEM": 'A549 r1',
+    "ENCFF790WGN": 'A549 r2',
+    "ENCFF736FMG": 'CD4 r1',
+    "ENCFF937PTH": 'CD4 r2',
+    "ENCFF864JWJ": 'CD8 r1',
+    "ENCFF370MXO": 'CD8 r2',
+    "ENCFF804HNI": 'GM10248 r1',
+    "ENCFF025PQZ": 'GM10248 r2',
+#    "ENCFF877SAD": 'H1 r1',
+#    "ENCFF242BFB": 'H1 r2',
+    "ENCFF743ZWY": 'HepG2 r1',
+    "ENCFF299NHM": 'HepG2 r2',
+    "ENCFF975WWK": 'HUVEC r1',
+    "ENCFF377RDA": 'HUVEC r2',
+    "ENCFF562OTG": 'HUVEC r3',
+    "ENCFF607PZX": 'K562 r1',
+    "ENCFF118PBQ": 'K562 r2',
+#    "ENCFF151PYO": 'MCF10A r1',
+#    "ENCFF578RML": 'MCF10A r2',
+#    "ENCFF534IQT": 'HCT116 r1',
+#    "ENCFF843ALQ": 'HCT116 r2',
+    "ENCFF099WJR": 'MCF7 r1', # Pas significatif
+    "ENCFF633JWS": 'MCF7 r2',
+    "ENCFF432WRY": 'HEK293 r1',
+    "ENCFF701GLV": 'HEK293 r2',
+    "ENCFF551YHB": 'WTC11 r1',
+    "ENCFF903XMF": 'WTC11 r2',
+    }

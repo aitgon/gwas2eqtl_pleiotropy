@@ -1,0 +1,49 @@
+"""
+snakemake --cores all -p -d ${PWD} -s tools/26snkfl_remap_tf_count_fig4e.yml --config public_data_dir=/home/gonzalez/Software/public result_dir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 pleio_high_cutoff=4 db_url=postgresql://postgres:postgres@0.0.0.0:5436/postgres snp_pp_h4=0.50 -p --rerun-incomplete
+"""
+
+result_dir = config['result_dir']
+pleio_high_cutoff = config['pleio_high_cutoff']
+public_data_dir = config['public_data_dir']
+snp_pp_h4 = config['snp_pp_h4']
+db_url = config['db_url']
+pet_count_cutoff = config['pet_count_cutoff']
+encode_chia_pet_ctcf_loop_dic = config['encode_chia_pet_ctcf_loop_dic']
+
+
+rule all_28snkfl_encode_chiapet:
+    input:
+        expand(os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/{accession}/barplot_flank0.png"), accession=encode_chia_pet_ctcf_loop_dic),
+
+rule pltbar_oddsr_gwas_categories_accession:
+    input:
+        os.path.join(result_dir, "cmpt_loop_eqtl_etranscript.py/loop_eqtl_etranscript_pleio_1_hg38_bed"),
+        os.path.join(result_dir, "cmpt_loop_eqtl_etranscript.py/loop_eqtl_etranscript_pleio_2_hg38_bed"),
+        os.path.join(result_dir, "cmpt_loop_eqtl_etranscript.py/loop_eqtl_etranscript_pleio_3_hg38_bed"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/{accession}/www.encodeproject.org/files/{accession}/@@download/{accession}_sorted.bed.gz"),
+    output:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/{accession}/flank0_count.tsv"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/{accession}/barplot_flank0.png"),
+    params:
+        title=lambda wildcards: encode_chia_pet_ctcf_loop_dic[wildcards.accession] + " CTCF ChIA-PET",
+    shell:
+        """python src/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py --title '{params[0]}' --eqtl_bed {input[0]} {input[1]} {input[2]} --annot_bed {input[3]} --count_tsv {output[0]} --barplot_png {output[1]}"""
+
+rule bedtools_sort:
+    input:
+        os.path.join(public_data_dir, "www.encodeproject.org/files/{accession}/@@download/{accession}.bedpe.gz"),
+    output:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/{accession}/www.encodeproject.org/files/{accession}/@@download/{accession}_sorted.bed.gz"),
+    params:
+        pet_count_cutoff=10
+    shell:
+        """gunzip -c {input[0]} |awk '$7 > 10' |cut -f1,2,6,7 |sort -k 1,1 -k2,2n |gzip >{output[0]}"""
+
+rule wget_accession:
+    output:
+        os.path.join(public_data_dir, "www.encodeproject.org/files/{accession}/@@download/{accession}.bedpe.gz"),
+    params:
+        url="www.encodeproject.org/files/{accession}/@@download/{accession}.bedpe.gz",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}"""

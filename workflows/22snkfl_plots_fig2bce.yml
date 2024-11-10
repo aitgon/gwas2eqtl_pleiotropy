@@ -1,0 +1,84 @@
+"""
+snakemake -j 1 -s tools/22snkfl_plots_fig2bce.yml --config db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' david_email=${DAVID_EMAIL} pleio_high_cutoff=4 result_dir=out/7_7 public_data_dir=/home/gonzalez/Software/public/ -p
+"""
+
+db_url = config['db_url']
+ms_table_eqtl_pleio_cutoff = config['ms_table_eqtl_pleio_cutoff']
+result_dir = config['result_dir']
+pleio_high_cutoff = config['pleio_high_cutoff']
+result_dir
+snp_pp_h4 = config['snp_pp_h4']
+
+rule all_04asnkfl_plots:
+    input:
+#        #
+#        os.path.join(result_dir, "cmpt_davidgo.py/david_pleio_3.tsv"),
+        #
+        # fig 2b
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
+        # fig 2c
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
+        #
+        # fig 2e
+        os.path.join(result_dir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+        #
+        # fig 3f
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eur_af.png"),
+        # fig 4a-d
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/afr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/amr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eas_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/sas_af.png"),
+        #
+        # fig 3a-d
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
+        #
+        # fig 4b
+        os.path.join(result_dir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
+        # suppl fig 7
+        os.path.join(result_dir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
+        # Suppl fig 2
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_proportion.png"),
+
+# fig 2e
+rule pltbar_pleiotropic_regions_cumsum:
+    input:
+        os.path.join(result_dir, "cmpt_pleiotropic_regions.py/100000/region_window_100000.ods"),
+    output:
+        os.path.join(result_dir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+    shell:
+        "python src/pltbar_pleiotropic_regions_cumsum.py {input[0]} {output[0]}"
+
+rule plt_hist_gwas_etissue_egene:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
+    shell:
+        "python src/plthst_gwas_egene_etissue.py {input[0]} {output[0]} {output[1]} {output[2]}"
+
+rule count_per_rsid:
+    output:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+        # fig 2d
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_10_hg38.bed"),
+        # Suppl fig 2
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_proportion.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        ms_table_eqtl_pleio_cutoff=ms_table_eqtl_pleio_cutoff,
+        db_url=db_url,
+    shell:
+        "python src/cmpt_count_per_rsid.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.ms_table_eqtl_pleio_cutoff} {params.db_url} {output[0]} {output[1]}"

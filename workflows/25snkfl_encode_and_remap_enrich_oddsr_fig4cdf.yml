@@ -1,0 +1,168 @@
+"""
+snakemake -p --cores all -s workflows/25snkfl_encode_and_remap_enrich_oddsr_fig4cdf.yml --config  result_dir=${OUTDIR} public_data_dir=${HOME}/Software/public
+"""
+
+result_dir = config['result_dir']
+result_dir
+
+rule all_27snkfl_encode_and_remap_enrich_oddsr:
+    input:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_promoter/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_enhancer/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_ctcf/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_crm/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_nr/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_ctcf/barplot_flank10.png"),
+
+rule pltbar_oddsr_remap_ctcf_gwas_categories:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_10_hg38.bed"),
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/TF/CTCF/remap2022_CTCF_nr_macs2_hg38_v1_0.bed.gz"),
+    output:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_ctcf/flank10_count.tsv"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_ctcf/barplot_flank10.png"),
+    params:
+        title="ReMap CTCF enrich."
+    shell:
+        "python src/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py --title '{params[0]}' --eqtl_bed {input[0]} {input[1]} {input[2]} --annot_bed {input[3]} --count_tsv {output[0]} --barplot_png {output[1]}"
+
+rule dwnld_remap_ctcf:
+    output:
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/TF/CTCF/remap2022_CTCF_nr_macs2_hg38_v1_0.bed.gz"),
+    params:
+        url="remap.univ-amu.fr/storage/remap2022/hg38/MACS2/TF/CTCF/remap2022_CTCF_nr_macs2_hg38_v1_0.bed.gz",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}"""
+
+rule pltbar_oddsr_remap_nr_gwas_categories:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_10_hg38.bed"),
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
+    output:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_nr/flank10_count.tsv"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_nr/barplot_flank10.png"),
+    params:
+        title="ReMap TF enrich."
+    shell:
+        "python src/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py --title '{params[0]}' --eqtl_bed {input[0]} {input[1]} {input[2]} --annot_bed {input[3]} --count_tsv {output[0]} --barplot_png {output[1]}"
+
+rule pltbar_oddsr_remap_crm_gwas_categories:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_10_hg38.bed"),
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"),
+    output:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_crm/flank10_count.tsv"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_crm/barplot_flank10.png"),
+    params:
+        title="ReMap CRM enrich."
+    shell:
+        "python src/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py --title '{params[0]}' --eqtl_bed {input[0]} {input[1]} {input[2]} --annot_bed {input[3]} --count_tsv {output[0]} --barplot_png {output[1]}"
+
+rule dwnld_remap_crm:
+    output:
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz"),
+    params:
+        url="remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_crm_macs2_hg38_v1_0.bed.gz",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}"""
+
+rule pltbar_oodsr_encode_ctcf_gwas_categories:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_10_hg38.bed"),
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-CTCF_sorted.bed"),
+    output:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_ctcf/flank10_count.tsv"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_ctcf/barplot_flank10.png"),
+    params:
+        title="ENCODE CTCF enrich."
+    shell:
+        "python src/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py --title '{params[0]}' --eqtl_bed {input[0]} {input[1]} {input[2]} --annot_bed {input[3]} --count_tsv {output[0]} --barplot_png {output[1]}"
+
+rule sort_encode_ctcf:
+    input:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-CTCF.bed"),
+    output:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-CTCF_sorted.bed"),
+    shell:
+        """sort -k 1,1 -k2,2n {input[0]} >{output[0]}"""
+
+rule dwnld_encode_ctcf:
+    output:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-CTCF.bed"),
+    params:
+        url="downloads.wenglab.org/cCREs/GRCh38-CTCF.bed",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}"""
+
+rule pltbar_oddsr_encode_els_gwas_categories:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_10_hg38.bed"),
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-ELS_sorted.bed"),
+    output:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_enhancer/flank10_count.tsv"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_enhancer/barplot_flank10.png"),
+    params:
+        title="ENCODE enhanc. enrich."
+    shell:
+        "python src/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py --title '{params[0]}' --eqtl_bed {input[0]} {input[1]} {input[2]} --annot_bed {input[3]} --count_tsv {output[0]} --barplot_png {output[1]}"
+
+rule sort_encode_els:
+    input:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-ELS.bed"),
+    output:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-ELS_sorted.bed"),
+    shell:
+        """sort -k 1,1 -k2,2n {input[0]} >{output[0]}"""
+
+rule dwnld_encode_els:
+    output:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-ELS.bed"),
+    params:
+        url="downloads.wenglab.org/cCREs/GRCh38-ELS.bed",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}"""
+
+rule pltbar_oddsr_encode_pls_gwas_categories:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_10_hg38.bed"),
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-PLS_sorted.bed"),
+    output:
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_promoter/flank10_count.tsv"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_promoter/barplot_flank10.png"),
+    params:
+        title="ENCODE promoter enrich."
+    shell:
+        "python src/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py --title '{params[0]}' --eqtl_bed {input[0]} {input[1]} {input[2]} --annot_bed {input[3]} --count_tsv {output[0]} --barplot_png {output[1]}"
+
+rule sort_encode_pls:
+    input:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-PLS.bed"),
+    output:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-PLS_sorted.bed"),
+    shell:
+        """sort -k 1,1 -k2,2n {input[0]} >{output[0]}"""
+
+rule dwnld_encode_pls:
+    output:
+        os.path.join(public_data_dir, "downloads.wenglab.org/cCREs/GRCh38-PLS.bed"),
+    params:
+        url="downloads.wenglab.org/cCREs/GRCh38-PLS.bed",
+        public_data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.public_data_dir}"""
