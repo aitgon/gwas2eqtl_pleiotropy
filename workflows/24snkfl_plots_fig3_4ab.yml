@@ -1,0 +1,185 @@
+db_url = config['db_url']
+pleio_high_cutoff = config['pleio_high_cutoff']
+result_dir = config['result_dir']
+result_dir
+snp_pp_h4 = config['snp_pp_h4']
+
+
+rule all_04bsnkfl_plots_fig3_4ab:
+    input:
+        #os.path.join(result_dir, "cmpt_davidgo.py/david_pleio_3.tsv"),
+        os.path.join(result_dir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/afr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/amr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eas_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eur_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/sas_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
+        #
+        os.path.join(result_dir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
+        os.path.join(result_dir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
+        os.path.join(result_dir, "plt_x_per_variant_egene_y_etissue.py/eur_af_45_55/plt.png"),
+        os.path.join(result_dir, "plt_x_per_variant_etissue_y_egene.py/eur_af_45_55/plt.png"),
+        #
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_egene_distance.py/boxplot_closest_distance.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_egene_distance.py/boxplot_futhest_distance.png"),
+        #
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/gwas_neglog10pval.png"),
+        #
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/gwas_neglog10pval.png"),
+
+rule plt_x_per_variant_egene_y_etissue_eur_af_45_55:
+    input:
+#        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_egene_y_etissue.py/eur_af_45_55/plt.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+        eur_af_min=0.45,
+        eur_af_max=0.55,
+    shell:
+        "python src/plt_x_per_variant_egene_y_etissue.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]} {params.eur_af_min} {params.eur_af_max}"
+
+rule plt_x_per_variant_etissue_y_egene_eur_af_45_55:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_etissue_y_egene.py/eur_af_45_55/plt.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+        eur_af_min=0.45,
+        eur_af_max=0.55,
+    shell:
+        "python src/plt_x_per_variant_etissue_y_egene.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]} {params.eur_af_min} {params.eur_af_max}"
+
+rule plt_x_per_variant_egene_y_etissue:
+    input:
+#        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas.tsv"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+        eur_af_min=0,
+        eur_af_max=1,
+    shell:
+        "python src/plt_x_per_variant_egene_y_etissue.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]} {params.eur_af_min} {params.eur_af_max}"
+
+rule plt_x_per_variant_etissue_y_egene:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+        eur_af_min=0,
+        eur_af_max=1,
+    shell:
+        "python src/plt_x_per_variant_etissue_y_egene.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]} {params.eur_af_min} {params.eur_af_max}"
+
+rule plt_x_per_variant_y_egene_distance:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_y_egene_distance.py/boxplot_closest_distance.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_egene_distance.py/boxplot_furthest_distance.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+    shell:
+        "python src/plt_x_per_variant_y_egene_distance.py {params[0]} {params[1]} {params[2]} {input[0]} {output[0]}"
+
+rule plt_x_per_variant_y_allele_freq:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eur_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/afr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/amr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eas_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/sas_af.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+    shell:
+        "python src/plt_x_per_variant_y_allele_freq.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]}"
+
+rule plt_x_per_variant_y_beta_neglog10pval_105_106:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/gwas_neglog10pval.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+        sample_size_min=75000,
+        sample_size_max=125000,
+        eur_af_min=0,
+        eur_af_max=1,
+    shell:
+        "python src/plt_x_per_variant_y_beta_neglog10pval.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]} {output[1]} {output[2]} {output[3]} {params.sample_size_min} {params.sample_size_max} {params.eur_af_min} {params.eur_af_max}"
+
+rule plt_x_per_variant_y_beta_neglog10pval_eur_af_45_55:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/gwas_neglog10pval.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+        sample_size_min=0,
+        sample_size_max=100000000,
+        eur_af_min=0.45,
+        eur_af_max=0.55,
+    shell:
+        "python src/plt_x_per_variant_y_beta_neglog10pval.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]} {output[1]} {output[2]} {output[3]} {params.sample_size_min} {params.sample_size_max} {params.eur_af_min} {params.eur_af_max}"
+
+rule plt_x_per_variant_y_beta_neglog10pval_0_106:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+        sample_size_min=0,
+        sample_size_max=100000000,
+        eur_af_min=0,
+        eur_af_max=1,
+    shell:
+        "python src/plt_x_per_variant_y_beta_neglog10pval.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {input[0]} {output[0]} {output[1]} {output[2]} {output[3]} {params.sample_size_min} {params.sample_size_max} {params.eur_af_min} {params.eur_af_max}"
