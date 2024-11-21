@@ -1,4 +1,4 @@
-Updated Nov 9, 2024
+Updated Nov 21, 2024
 
 The GWAS/eQTL colocalization data is the result of the gwas2eqtl repository and can be downloaded from ...
 
@@ -24,7 +24,7 @@ mkdir -p results/containers
 sudo apptainer build results/containers/gwas2eqtl_pleiotropy.sif  containers/gwas2eqtl_pleiotropy.def
 ~~~
 
-This workflow is used to populate the database with the colocalization and annotation data.
+The workflow "workflows/11snkfl_insrt_postgres.yml" is used to populate the database with the colocalization and annotation data.
 
 The annotation data in tar.gz format is given as argument
 

@@ -105,7 +105,7 @@ rule vcf_to_tsv_eur:
     shell:
         """bcftools query -f '%CHROM\t%POS\t%ID\t%REF\t%ALT\t%INFO/EAS_AF\t%INFO/AMR_AF\t%INFO/AFR_AF\t%INFO/EUR_AF\t%INFO/SAS_AF\n' {input[0]} |gzip >{output[0]}"""
 
-rule dwnld_g1k:
+rule wget_g1k:
     output:
         os.path.join(public_data_dir, "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502/ALL.chr{CHR}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz"),
     params:
@@ -234,7 +234,7 @@ rule insrt_coloc:
 
 rule gunzip_untar_coloc:
     input:
-        gwas2eqtldirtargz,
+        os.path.join(public_data_dir, "zenodo.org/records/14064653/files/gwas2eqtl_colocalization_full.tar.gz"),
     output:
         os.path.join(resultdir, "gwas2eqtl_results_gwas417/gwas417/coloc/ukb-d-X_RESPIRATORY/pval_5e-08/r2_0.1/kb_1000/window_1000000/Young_2019_ge_microglia_naive.tsv"),
         os.path.join(resultdir, "gwas2eqtl_results_gwas417/gwas417/tophits/ukb-d-X_RESPIRATORY/pval_5e-08/r2_0.1/kb_1000/hg38.tsv"),
@@ -242,6 +242,15 @@ rule gunzip_untar_coloc:
         resultdir,
     shell:
         "tar -xzf {input[0]} -C {params[0]}"
+
+rule wget_gwas2eqtldirtargz:
+    output:
+        os.path.join(public_data_dir, "zenodo.org/records/14064653/files/gwas2eqtl_colocalization_full.tar.gz"),
+    params:
+        url="zenodo.org/records/14064653/files/gwas2eqtl_colocalization_full.tar.gz",
+        data_dir=public_data_dir,
+    shell:
+        """wget -c -q -r {params.url} -P {params.data_dir} && echo d8fc8f8b1b639cd8ab356ad71f2f28e2 {output[0]} |md5sum -c -"""
 
 rule gwas_category_ontology:
     input:
