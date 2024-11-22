@@ -31,7 +31,7 @@ The annotation data in tar.gz format is given as argument
 The result of this workflow is a "colocpleio" materialized view that is use to run all downstream analysis.
 
 ~~~
-apptainer exec --env PUBLIC_DATA_DIR=$HOME/Software/public results/containers/gwas2eqtl_pleiotropy.sif snakemake -p --cores all -s workflows/11snkfl_insrt_postgres.yml  --configfile config/11snkfl_insrt_postgres.yml
+apptainer exec --env PUBLIC_DATA_DIR=/path/to/local/data/public results/containers/gwas2eqtl_pleiotropy.sif snakemake -p --cores all -s workflows/11snkfl_insrt_postgres.yml  --configfile config/11snkfl_insrt_postgres.yml
 ~~~
 
 Based on the previous "colocpleio" materialized view, this workflow will run all the analysis and create figures.
@@ -39,7 +39,7 @@ Based on the previous "colocpleio" materialized view, this workflow will run all
 The main figures in the paper are computed with SNP_PP_H4=0.5, but some comparison in the supplementary are run with parameters "SNP_PP_H4=0.25" and "SNP_PP_H4=0.75".
 
 ~~~
-snakemake -p --cores all -s workflows/20snkfl_all.yml --configfile config/20snkfl_all_30snkfl_vep_fig3f.yml
+apptainer exec --bind /disk2 --env PUBLIC_DATA_DIR=/path/to/local/data/public results/containers/gwas2eqtl_pleiotropy.sif snakemake -p --cores all -s workflows/20snkfl_all.yml --configfile config/20snkfl_all_30snkfl_vep_fig3f.yml
 ~~~
 
 This extra step is required as dedicated container is used for VEP (Variant effect predictor).
@@ -47,7 +47,7 @@ This extra step is required as dedicated container is used for VEP (Variant effe
 ~~~
 apptainer pull --name results/containers/vep.sif docker://ensemblorg/ensembl-vep
 
-snakemake -p --cores all -s workflows/20snkfl_all.yml --configfile config/20snkfl_all_30snkfl_vep_fig3f.yml --use-singularity --singularity-args '-B results/data/vep-cache:/opt/vep/vep-cache'
+apptainer exec --bind /disk2 --env PUBLIC_DATA_DIR=/path/to/local/data/public results/containers/gwas2eqtl_pleiotropy.sif snakemake -p --cores all -s workflows/30snkfl_vep_fig3f.yml --configfile config/20snkfl_all_30snkfl_vep_fig3f.yml --use-singularity --singularity-args '-B /path/to/local/vep-cache:/opt/vep/vep-cache'
 ~~~
 
 First we need to modify this file: results/20241003/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50/plthtmp_disease_comorbidity_matrix.py/corr.svg
