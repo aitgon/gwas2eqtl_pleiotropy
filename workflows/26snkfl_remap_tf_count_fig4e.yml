@@ -1,0 +1,60 @@
+"""
+snakemake --cores all -p -d ${PWD} -s tools/26snkfl_remap_tf_count_fig4e.yml --config public_data_dir=/home/gonzalez/Software/public result_dir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/75_50 pleio_high_cutoff=4 db_url=postgresql://postgres:postgres@0.0.0.0:5436/postgres snp_pp_h4=0.50 -p --rerun-incomplete
+"""
+
+import multiprocessing
+
+result_dir = config['result_dir']
+pleio_high_cutoff = config['pleio_high_cutoff']
+result_dir
+
+rule all_23snkfl_remap_tf_count:
+    input:
+        os.path.join(result_dir, "plt_x_per_variant_y_remapnr.py/flank_10/bxplt_remaptf_per_rsid.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_remapnr.py/flank_5/bxplt_remaptf_per_rsid.png"),
+
+rule pltbox_remaptf_per_rsid_flank_5:
+    input:
+        os.path.join(result_dir, "intrsct_remapnr_gwas_categories.py/flank_5/remap_nr_variant_pleio_1_hg38.bed"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_y_remapnr.py/flank_5/bxplt_remaptf_per_rsid.png"),
+    params:
+        pleio_high_cutoff=pleio_high_cutoff
+    shell:
+        "python src/plt_x_per_variant_y_remapnr.py {params[0]} {input[0]} {output[0]}"
+
+rule intrsct_remap_nr_gwas_categories_flank_5:
+    input:
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_5_hg38.bed"),
+    output:
+        os.path.join(result_dir, "intrsct_remapnr_gwas_categories.py/flank_5/remap_nr_variant_pleio_1_hg38.bed"),
+    params:
+        pleio_high_cutoff=pleio_high_cutoff,
+        flank=10,
+    threads: multiprocessing.cpu_count()
+    shell:
+        "python src/intrsct_remapnr_gwas_categories.py {threads} {params[0]} {input[0]} {input[1]} {output[0]} {params.flank}"
+
+rule pltbox_remaptf_per_rsid_flank_10:
+    input:
+        os.path.join(result_dir, "intrsct_remapnr_gwas_categories.py/flank_10/remap_nr_variant_pleio_1_hg38.bed"),
+    output:
+        os.path.join(result_dir, "plt_x_per_variant_y_remapnr.py/flank_10/bxplt_remaptf_per_rsid.png"),
+    params:
+        pleio_high_cutoff=pleio_high_cutoff
+    shell:
+        "python src/plt_x_per_variant_y_remapnr.py {params[0]} {input[0]} {output[0]}"
+
+rule intrsct_remap_nr_gwas_categories_flank_10:
+    input:
+        os.path.join(public_data_dir, "remap.univ-amu.fr/storage/remap2022/hg38/MACS2/remap2022_nr_macs2_hg38_v1_0.bed.gz"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
+    output:
+        os.path.join(result_dir, "intrsct_remapnr_gwas_categories.py/flank_10/remap_nr_variant_pleio_1_hg38.bed"),
+    params:
+        pleio_high_cutoff=pleio_high_cutoff,
+        flank=10,
+    threads: multiprocessing.cpu_count()
+    shell:
+        "python src/intrsct_remapnr_gwas_categories.py {threads} {params[0]} {input[0]} {input[1]} {output[0]} {params.flank}"

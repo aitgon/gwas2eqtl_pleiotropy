@@ -1,0 +1,81 @@
+"""
+snakemake -j all -s tools/30snkfl_vep_fig3f.yml --config pleio_high_cutoff=4 db_url='postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl' result_dir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public
+"""
+
+import os  # Make sure to import os module
+import multiprocessing
+
+vep_sif = config['vep_sif']
+db_url = config['db_url']
+result_dir = config['result_dir']
+pleio_high_cutoff = config['pleio_high_cutoff']
+process_data_dir = config['process_data_dir']
+public_data_dir = config['public_data_dir']
+snp_pp_h4 = config['snp_pp_h4']
+
+rule all_03snkfl_analysis_vep:
+    input:
+        os.path.join(result_dir, "pltbar_vep_consequence.py/missense_variant.png"),
+
+rule plt_vep_consequence:
+    input:
+        os.path.join(result_dir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
+    output:
+        os.path.join(result_dir, "pltbar_vep_consequence.py/missense_variant.png"),
+#    params:
+#        script_path=os.path.join(result_dir, "pltbar_vep_consequence.py"),  # Fixed missing quote
+    shell:
+        "python src/pltbar_vep_consequence.py {input[0]} $(dirname {output[0]})"
+
+rule cmpt_vep_consequence_fisher:
+    input:
+        os.path.join(result_dir, "cmpt_vep_input.py/vep_input.tsv"),
+        os.path.join(result_dir, "cmpt_vep_input.py/vep_output.tsv"),
+    output:
+        os.path.join(result_dir, "cmpt_vep_consequence_fisher.py/cons_stat.tsv"),
+    params:
+        pleio_high_cutoff=pleio_high_cutoff
+    threads: multiprocessing.cpu_count()  # ~nb of vep consequences
+    shell:
+        "python src/cmpt_vep_consequence_fisher.py {threads} {params[0]} {input[0]} {input[1]} {output[0]}"
+
+rule run_vep:
+    input:
+        os.path.join(result_dir, "cmpt_vep_input.py/vep_input.tsv"),
+    output:
+        os.path.join(result_dir, "cmpt_vep_input.py/vep_output.tsv"),
+    params:
+    singularity: vep_sif,
+    shell:
+        "vep --offline --dir_cache /opt/vep/vep-cache --cache_version 108 --plugin TSSDistance --force_overwrite -i {input[0]} --output_file {output[0]}"
+
+rule cmpt_vep_input:
+    input:
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue.ods"),
+        os.path.join("/home/gonzalez/Software/vep-cache/homo_sapiens/108_GRCh38/info.txt"),
+    output:
+        os.path.join(result_dir, "cmpt_vep_input.py/vep_input.tsv"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        db_url=db_url,
+    shell:
+        "python src/cmpt_vep_input.py {params.snp_pp_h4} {params.db_url} {input[0]} {input[1]} {output[0]}"
+
+#rule untar_vep_cache:
+#    input:
+#        os.path.join(public_data_dir, "ftp.ensembl.org/pub/release-108/variation/indexed_vep_cache/homo_sapiens_vep_108_GRCh38.tar.gz"),
+#    output:
+#        os.path.join("/home/gonzalez/Software/vep-cache/homo_sapiens/107_GRCh38/info.txt"),
+#    params:
+#        os.path.join(process_data_dir, "ftp.ensembl.org/pub/release-108/variation/indexed_vep_cache"),
+#    shell:
+#        """tar -zxf {input[0]} -C {params[0]}"""
+#
+#rule dwnld_vep_cache:
+#    output:
+#        os.path.join(public_data_dir, "ftp.ensembl.org/pub/release-108/variation/indexed_vep_cache/homo_sapiens_vep_108_GRCh38.tar.gz"),
+#    params:
+#        url="ftp.ensembl.org/pub/release-108/variation/indexed_vep_cache/homo_sapiens_vep_108_GRCh38.tar.gz",
+#        public_data_dir=public_data_dir,
+#    shell:
+#        """wget -c -q -r {params.url} -P {params.public_data_dir}"""

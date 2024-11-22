@@ -1,0 +1,5 @@
+db_url: postgresql://postgres:postgres@0.0.0.0:5435/postgres
+gwas2eqtldirtargz: results/data/public/gwas2eqtl_results_gwas417.tar.gz
+public_data_dir: results/data/public
+resultdir: results/20241003
+

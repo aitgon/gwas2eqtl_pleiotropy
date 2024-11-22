@@ -1,0 +1,134 @@
+"""
+snakemake -j all -s tools/20snkfl_all.yml --config david_email=${DAVID_EMAIL} db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl etissue_category_ods=config/etissue_category.ods gwas_category_ods=config/gwas418.ods pleio_high_cutoff=4 result_dir=out/gwas418/pval_5e-08/r2_0.1/kb_1000/window_1000000/7_7 public_data_dir=/home/gonzalez/Software/public 
+"""
+
+#david_email = config['david_email']
+db_url = config['db_url']
+etissue_category_ods = config['etissue_category_ods']
+gwas_category_ods = config['gwas_category_ods']
+gwas_trait_ods = config['gwas_trait_ods']
+result_dir = config['result_dir']
+pleio_high_cutoff = config['pleio_high_cutoff']
+public_data_dir = config['public_data_dir']
+snp_pp_h4 = config['snp_pp_h4']
+encode_chia_pet_ctcf_loop_dic = config['encode_chia_pet_ctcf_loop_dic']
+wlength = config['wlength']
+
+rule all:
+    input:
+        #
+        #include: "21snkfl_trait_commorbidities_fig1b.yml"
+        #
+        os.path.join(result_dir, "plthtmp_disease_comorbidity_matrix.py/corr.svg"),
+        #
+        #include: "22snkfl_plots_fig2bce.yml"
+        #
+        # fig 2b
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
+        # fig 2c
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
+        #
+        # fig 2e
+        os.path.join(result_dir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+        #
+        # fig 3f
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eur_af.png"),
+        # fig 4a-d
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/afr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/amr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eas_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/sas_af.png"),
+        #
+        # fig 3a-d
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
+        #
+        # fig 4b
+        os.path.join(result_dir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
+        os.path.join(result_dir, "plt_x_per_variant_egene_y_etissue.py/eur_af_45_55/plt.png"),
+        # suppl fig 7
+        os.path.join(result_dir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
+        os.path.join(result_dir, "plt_x_per_variant_etissue_y_egene.py/eur_af_45_55/plt.png"),
+        #
+        #include: "23snkfl_cmpt_pleiotropic_regions_fig2d.yml"
+        # fig 1a
+        os.path.join(result_dir, "cmpt_proportion_tophits_eqtl.py/loci_explained_proportion.png"),
+        # fig 2a
+        os.path.join(result_dir, "pltbx_x_per_category_count_y_variant_count_z_trait_category.py/00plt.png"),
+        # fig 2f
+        expand(os.path.join(result_dir, "cmpt_pleiotropic_regions.py/{wlength}/region_hist_{wlength}.png"), wlength=[wlength]),
+        # fig 2d
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/count_per_rsid_gwas_egene_etissue_corr.png"),
+        # suppl fig 2
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_proportion.png"),
+        #
+        #include: "24snkfl_plots_fig3_4ab.yml"
+        #
+        #os.path.join(result_dir, "cmpt_davidgo.py/david_pleio_3.tsv"),
+        os.path.join(result_dir, "pltbar_pleiotropic_regions_cumsum.py/pltbar_regions_cumsum.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/afr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/amr_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eas_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/eur_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_allele_freq.py/sas_af.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/gwas_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_egene_y_etissue.py/plt.png"),
+        os.path.join(result_dir, "plt_x_per_variant_etissue_y_egene.py/plt.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_egene.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_etissue.png"),
+        os.path.join(result_dir, "plthst_gwas_egene_etissue.py/hist_gwas.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_egene_distance.py/boxplot_closest_distance.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_egene_distance.py/boxplot_furthest_distance.png"),
+        #
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/maf45_55/gwas_neglog10pval.png"),
+        #
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/eqtl_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/gwas_beta.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/eqtl_neglog10pval.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_beta_neglog10pval.py/ss75000_125000/gwas_neglog10pval.png"),
+        #
+        #include: "25snkfl_encode_and_remap_enrich_oddsr_fig4cdf.yml"
+        #
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_promoter/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_enhancer/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/encode_ctcf/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_crm/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_nr/barplot_flank10.png"),
+        os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/remap_ctcf/barplot_flank10.png"),
+        #
+        #include: "26snkfl_remap_tf_count_fig4e.yml"
+        #
+        os.path.join(result_dir, "plt_x_per_variant_y_remapnr.py/flank_5/bxplt_remaptf_per_rsid.png"),
+        os.path.join(result_dir, "plt_x_per_variant_y_remapnr.py/flank_10/bxplt_remaptf_per_rsid.png"),
+        #
+        #include: "27snkfl_encode_chiapet_ctcf_loops.yml"
+        #
+        expand(os.path.join(result_dir, "pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py/{accession}/barplot_flank0.png"), accession=encode_chia_pet_ctcf_loop_dic),
+        #
+        #include: "28snkfl_supplementary_and_web.yml"
+        #
+        os.path.join(result_dir, "ms_supp_tab/table_s1.xlsx"),
+        os.path.join(result_dir, "ms_supp_tab/table_s2.xlsx"),
+        os.path.join(result_dir, "ms_supp_tab/table_s3.xlsx"),
+        os.path.join(result_dir, "ms_supp_tab/table_s4.xlsx"),
+        os.path.join(result_dir, "ms_supp_tab/table_s5.xlsx"),
+
+
+include: "21snkfl_trait_commorbidities_fig1b.yml"
+include: "22snkfl_plots_fig2bce.yml"
+include: "23snkfl_cmpt_pleiotropic_regions_fig2d.yml"
+include: "24snkfl_plots_fig3_4ab.yml"
+include: "25snkfl_encode_and_remap_enrich_oddsr_fig4cdf.yml"
+include: "26snkfl_remap_tf_count_fig4e.yml"
+include: "27snkfl_encode_chiapet_ctcf_loops.yml"
+include: "28snkfl_supplementary_and_web.yml"

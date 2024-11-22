@@ -1,0 +1,272 @@
+"""
+snakemake -j all -s tools/21snkfl_trait_commorbidities_fig1b.yml --config db_url=postgresql://chiliconcarne101usr:chiliconcarne101pwd@0.0.0.0:5435/gwas2eqtl gwas_category_ods=data/gwas418.ods outdir=out/7_7
+"""
+
+db_url = config['db_url']
+gwas2eqtldirtargz = config['gwas2eqtldirtargz']
+public_data_dir = config['public_data_dir']
+resultdir = config['resultdir']
+    
+chr_lst = list(range(1, 23))
+
+rule all_db:
+    input:
+        os.path.join(resultdir, "query_ontology.py/gwas_category_ontology.ods"),
+        os.path.join(resultdir, "postgres/view_colocpleio"),
+        os.path.join(resultdir, "postgres/view_ensg2pubmed_count"),
+        os.path.join(resultdir, "query_ontology.py/gwas_trait_ontology.ods"),
+
+rule view_colocpleio:
+    input:
+        os.path.join(resultdir, "postgres/coloc"),
+        os.path.join(resultdir, "postgres/tophits"),
+        os.path.join(resultdir, "postgres/cytoband"),
+        os.path.join(resultdir, "postgres/geneid2symbol"),
+        # os.path.join(resultdir, "postgres/gwas_annot"),
+        os.path.join(resultdir, "postgres/pos19"),
+        os.path.join(resultdir, "postgres/etissue_category"),
+        os.path.join(resultdir, "postgres/entrezgene2ensg2symbol"),
+        os.path.join(resultdir, "postgres/entrezgene2pubmed_count"),
+        os.path.join(resultdir, "postgres/ncbirefseq"),
+        os.path.join(resultdir, "postgres/open_gwas"),
+        os.path.join(resultdir, "postgres/opengwas2category_ontology"),
+        os.path.join(resultdir, "postgres/opengwas2trait_ontology"),
+        os.path.join(resultdir, "postgres/1000genomes_af"),
+        os.path.join(resultdir, "query_ontology.py/gwas_trait_ontology.ods"),
+        os.path.join(resultdir, "postgres/watanabe_posthuma2019"),
+        os.path.join(resultdir, "postgres/view_ensg2pubmed_count"),
+    output:
+        os.path.join(resultdir, "postgres/view_colocpleio"),
+    params:
+        db_url,
+        public_data_dir,
+        "colocpleio",
+        'SELECT DISTINCT co.chrom, pos19.pos19, co.pos38, co.cytoband, co.rsid, co.ref, co.alt, gwtron.gwas_trait, gwtron.gwas_ontology_term AS gwas_trait_ontology_term, gwtron.gwas_ontology_id AS gwas_trait_ontology_id, gwcaon.gwas_ontology_term AS gwas_category_ontology_term, gwcaon.gwas_ontology_id AS gwas_category_ontology_id, op.batch, op.pmid, op.ncontrol, op.ncase, co.gwas_beta, refseq.symbol AS eqtl_gene_symbol, co.eqtl_beta, co.eqtl_id, co.eqtl_gene_id, co.gwas_id, co.gwas_pval, co.eqtl_pval, co.pp_h4_abf, co.snp_pp_h4, co.coloc_variant_id AS tophits_variant_id, co.nsnps, eqtl_annot.etissue_category_term, en2.pubmed_count, af.eas_af, af.amr_af, af.afr_af, af.eur_af, af.sas_af, refseq.refseq_transcript_id AS eqtl_refseq_transcript_id, refseq.refseq_transcript_start38 AS eqtl_refseq_transcript_start38, refseq.refseq_transcript_end38 AS eqtl_refseq_transcript_end38, refseq.refseq_transcript_strand AS eqtl_refseq_transcript_strand, wp.domains AS domains_watanabe2019 FROM (((((((((( SELECT DISTINCT co0.chrom, co0.pos AS pos38, concat(co0.chrom, cy.cytoband) AS cytoband, co0.rsid, co0.ref, co0.alt, co0.gwas_beta, co0.eqtl_beta, co0.eqtl_id, co0.eqtl_gene_id, co0.gwas_id, co0.gwas_pval, co0.eqtl_pval, co0.pp_h4_abf, co0.snp_pp_h4, co0.coloc_variant_id, co0.nsnps FROM coloc co0, cytoband cy WHERE ((co0.chrom = cy.chrom) AND (co0.pos <@ cy.start_end38))) co LEFT JOIN "genome-mysql.soe.ucsc.edu/hg38/ncbirefseq" refseq ON (((refseq.gene_id)::text = (co.eqtl_gene_id)::text))) LEFT JOIN opengwas2trait_ontology gwtron ON (((gwtron.gwas_id)::text = (co.gwas_id)::text))) LEFT JOIN opengwas2category_ontology gwcaon ON (((gwcaon.gwas_id)::text = (co.gwas_id)::text))) LEFT JOIN open_gwas_info op ON (((op.gwas_id)::text = (co.gwas_id)::text))) LEFT JOIN pos19 ON ((co.pos38 = pos19.pos))) LEFT JOIN eqtl_annot ON (((co.eqtl_id)::text = (eqtl_annot.eqtl_id)::text))) LEFT JOIN ensg2pubmed_count en2 ON (((co.eqtl_gene_id)::text = (en2.gene_id)::text))) LEFT JOIN "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502" af ON ((((co.rsid)::text = (af.rsid)::text) AND ((co.ref)::text = (af.ref)::text) AND ((co.alt)::text = (af.alt)::text)))) LEFT JOIN watanabe_posthuma2019 wp ON ((((co.rsid)::text = (wp.rsid)::text) AND ((co.ref)::text = (wp.ref)::text) AND ((co.alt)::text = (wp.alt)::text)))) ORDER BY co.chrom, pos19.pos19, co.pos38, co.alt, gwtron.gwas_trait, refseq.symbol, co.eqtl_id;',
+    shell:
+        """
+        PGPASSWORD="postgres"  psql -U postgres -d postgres -h 0.0.0.0 -p 5435 -c "DROP MATERIALIZED VIEW IF EXISTS {params[2]};"
+        PGPASSWORD='postgres'  psql -U postgres -d postgres -h 0.0.0.0 -p 5435 -c 'CREATE MATERIALIZED VIEW {params[2]} AS {params[3]};' && touch {output[0]}
+        """
+
+rule view_ensg2pubmed_count:
+    input:
+        os.path.join(resultdir, "postgres/entrezgene2ensg2symbol"),
+        os.path.join(resultdir, "postgres/entrezgene2pubmed_count"),
+    output:
+        os.path.join(resultdir, "postgres/view_ensg2pubmed_count"),
+    params:
+        db_url,
+        public_data_dir,
+        "ensg2pubmed_count",
+        "SELECT entrezgene2ensg2symbol.gene_id, entrezgene2pubmed_count.pubmed_count FROM entrezgene2ensg2symbol,  entrezgene2pubmed_count WHERE entrezgene2ensg2symbol.entrezgene = entrezgene2pubmed_count.entrezgene",
+    shell:
+        """
+        PGPASSWORD="postgres"  psql -U postgres -d postgres -h 0.0.0.0 -p 5435 -c "DROP MATERIALIZED VIEW IF EXISTS {params[2]};"
+        PGPASSWORD='postgres'  psql -U postgres -d postgres -h 0.0.0.0 -p 5435 -c 'CREATE MATERIALIZED VIEW {params[2]} AS {params[3]};' && touch {output[0]}
+        """
+
+rule insrt_watanabe_posthuma2019:
+    input:
+        os.path.join(public_data_dir, "static-content.springer.com/esm/art%3A10.1038%2Fs41588-019-0481-0/MediaObjects/41588_2019_481_MOESM3_ESM.xlsx"),
+    output:
+        os.path.join(resultdir, "postgres/watanabe_posthuma2019"),
+    params:
+        db_url,
+        public_data_dir,
+    shell:
+        "python src/insrt_watanabe_posthuma2019.py {params[0]} {input[0]} && touch {output[0]}"
+
+rule download_watanabe_posthuma2019:
+    output:
+        os.path.join(public_data_dir, "static-content.springer.com/esm/art%3A10.1038%2Fs41588-019-0481-0/MediaObjects/41588_2019_481_MOESM3_ESM.xlsx"),
+    params:
+        "static-content.springer.com/esm/art%3A10.1038%2Fs41588-019-0481-0/MediaObjects/41588_2019_481_MOESM3_ESM.xlsx",
+    shell:
+        """
+        wget -c -O {output[0]} {params[0]}
+        """
+
+rule insrt_1000genomes_af:
+    input:
+        expand(os.path.join(public_data_dir, "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502/ALL.chr{CHR}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.af.tsv.gz"), CHR=chr_lst),
+    output:
+        os.path.join(resultdir, "postgres/1000genomes_af"),
+    params:
+        db_url,
+        public_data_dir,
+    shell:
+        "python src/insrt_1000genomes_af.py {params[0]} {params[1]} && touch {output[0]}"
+
+rule vcf_to_tsv_eur:
+    input:
+        os.path.join(public_data_dir, "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502/ALL.chr{CHR}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz"),
+    output:
+        os.path.join(public_data_dir, "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502/ALL.chr{CHR}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.af.tsv.gz"),
+    shell:
+        """bcftools query -f '%CHROM\t%POS\t%ID\t%REF\t%ALT\t%INFO/EAS_AF\t%INFO/AMR_AF\t%INFO/AFR_AF\t%INFO/EUR_AF\t%INFO/SAS_AF\n' {input[0]} |gzip >{output[0]}"""
+
+rule dwnld_g1k:
+    output:
+        os.path.join(public_data_dir, "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502/ALL.chr{CHR}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz"),
+    params:
+        "ftp-trace.ncbi.nih.gov/1000genomes/ftp/release/20130502/ALL.chr{CHR}.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz",
+        public_data_dir,
+    shell:
+        """wget -c -q -r {params[0]} -P {params[1]}"""
+
+rule insrt_opengwas2trait_ontology:
+    input:
+        os.path.join(resultdir, "query_ontology.py/gwas_trait_ontology.ods"),
+    output:
+        os.path.join(resultdir, "postgres/opengwas2trait_ontology"),
+    params:
+        db_url,
+    shell:
+        "python src/insrt_opengwas2trait_ontology.py {params[0]} {input[0]} && touch {output[0]}"
+
+rule insrt_opengwas2category_ontology:
+    input:
+        os.path.join(resultdir, "query_ontology.py/gwas_category_ontology.ods"),
+    output:
+        os.path.join(resultdir, "postgres/opengwas2category_ontology"),
+    params:
+        db_url,
+    shell:
+        "python src/insrt_opengwas2category_ontology.py {params[0]} {input[0]} && touch {output[0]}"
+
+rule insrt_open_gwas:
+    input:
+        "data/gwasinfo.json",
+    output:
+        os.path.join(resultdir, "postgres/open_gwas"),
+    params:
+        db_url,
+    shell:
+        "python src/insrt_open_gwas.py {params[0]} {input[0]} && touch {output[0]}"
+
+rule insrt_ncbirefseq:
+    output:
+        os.path.join(resultdir, "postgres/ncbirefseq"),
+    params:
+        db_url,
+    shell:
+        "python src/insrt_ncbirefseq.py {params[0]} && touch {output[0]}"
+
+rule insrt_entrezgene2pubmed_count:
+    output:
+        os.path.join(resultdir, "postgres/entrezgene2pubmed_count"),
+    params:
+        db_url,
+        "ensg2pubmed_count",
+    shell:
+        """
+        PGPASSWORD="postgres"  psql -U postgres -d postgres -h 0.0.0.0 -p 5435 -c "DROP MATERIALIZED VIEW IF EXISTS {params[1]};"
+        python src/insrt_entrezgene2pubmed_count.py {params[0]} && touch {output[0]}
+        """
+
+rule insrt_entrezgene2ensg2symbol:
+    output:
+        os.path.join(resultdir, "postgres/entrezgene2ensg2symbol"),
+    params:
+        db_url,
+    shell:
+        """python src/insrt_entrezgene2ensg2symbol.py {params[0]} && touch {output[0]}"""
+
+rule insrt_etissue_category:
+    input:
+        "data/etissue_category.ods",
+    output:
+        os.path.join(resultdir, "postgres/etissue_category"),
+    params:
+        db_url,
+    shell:
+        """python src/insrt_etissue_category.py {params[0]} {input[0]} && touch {output[0]}"""
+
+#rule insrt_gwas_annot:
+#    input:
+#        "data/gwas417_query_precise.ods",
+#    output:
+#        os.path.join(resultdir, "postgres/gwas_annot"),
+#    params:
+#        db_url,
+#    shell:
+#        """python src/insrt_gwas_annot.py {params[0]} {input[0]} && touch {output[0]} && touch {output[0]}"""
+
+rule insrt_geneid2symbol:
+    output:
+        os.path.join(resultdir, "postgres/geneid2symbol"),
+    params:
+        db_url,
+    shell:
+        """python src/insrt_geneid2symbol.py {params[0]} && touch {output[0]} && touch {output[0]}"""
+
+rule insrt_cytoband:
+    output:
+        os.path.join(resultdir, "postgres/cytoband"),
+    params:
+        db_url,
+    shell:
+        """python src/insrt_cytoband.py {params[0]} && touch {output[0]} && touch {output[0]}"""
+
+rule insrt_tophits:
+    input:
+        os.path.join(resultdir, "gwas2eqtl_results_gwas417/gwas417/tophits/ukb-d-X_RESPIRATORY/pval_5e-08/r2_0.1/kb_1000/hg38.tsv"),
+    output:
+        os.path.join(resultdir, "postgres/tophits"),
+    params:
+        db_url,
+        os.path.join(resultdir, "gwas2eqtl_results_gwas417/gwas417/tophits/\{gwas_id\}/pval_5e-08/r2_0.1/kb_1000/hg38.tsv"),
+
+    shell:
+        """python src/insrt_tophits.py {params[0]} {params[1]} && touch {output[0]}"""
+
+rule insrt_coloc:
+    input:
+        os.path.join(resultdir, "gwas2eqtl_results_gwas417/gwas417/coloc/ukb-d-X_RESPIRATORY/pval_5e-08/r2_0.1/kb_1000/window_1000000/Young_2019_ge_microglia_naive.tsv"),
+    output:
+        os.path.join(resultdir, "postgres/coloc"),
+    params:
+        db_url,
+        "https://raw.githubusercontent.com/eQTL-Catalogue/eQTL-Catalogue-resources/00ea8a7abca895f26c3aee74ece1307dc5054ace/tabix/tabix_ftp_paths.tsv",
+        os.path.join(resultdir, "gwas2eqtl_results_gwas417/gwas417/coloc/\{gwas_id\}/pval_5e-08/r2_0.1/kb_1000/window_1000000/\{eqtl_id\}.tsv"),
+    shell:
+        """python src/insrt_coloc.py 0.75 0 {params[0]} {params[1]} {params[2]} && touch {output[0]}"""
+
+rule gunzip_untar_coloc:
+    input:
+        gwas2eqtldirtargz,
+    output:
+        os.path.join(resultdir, "gwas2eqtl_results_gwas417/gwas417/coloc/ukb-d-X_RESPIRATORY/pval_5e-08/r2_0.1/kb_1000/window_1000000/Young_2019_ge_microglia_naive.tsv"),
+        os.path.join(resultdir, "gwas2eqtl_results_gwas417/gwas417/tophits/ukb-d-X_RESPIRATORY/pval_5e-08/r2_0.1/kb_1000/hg38.tsv"),
+    params:
+        resultdir,
+    shell:
+        "tar -xzf {input[0]} -C {params[0]}"
+
+rule gwas_category_ontology:
+    input:
+        "data/gwas417_category_query.ods",
+    output:
+        os.path.join(resultdir, "query_ontology.py/gwas_category_ontology.ods"),
+    shell:
+        "python src/query_ontology_ols.py {input[0]} {output[0]}"
+
+rule insrt_pos19:
+    input:
+        os.path.join(resultdir, "postgres/coloc"),
+    output:
+        os.path.join(resultdir, "postgres/pos19"),
+    params:
+        db_url,
+    shell:
+        """python src/insrt_pos19.py {params[0]} && touch {output[0]}"""
+
+rule gwas_trait_ontology:
+    input:
+        "data/gwas417_trait_query.ods",
+    output:
+        os.path.join(resultdir, "query_ontology.py/gwas_trait_ontology.ods"),
+    shell:
+        """
+        python src/query_ontology_ols.py {input[0]} {output[0]}
+        """

@@ -1,0 +1,59 @@
+BootStrap: docker
+From: debian:bookworm-20240926-slim
+
+%labels
+Maintainer "aitor.gonzalez@univ-amu.fr"
+
+%post
+# Update package manager and install necessary dependencies
+export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
+sed -i /etc/apt/sources.list.d/debian.sources -e 's|^URIs: http://deb.debian.org/debian$|URIs: http://snapshot.debian.org/archive/debian/20240926T000000Z|'
+sed -i /etc/apt/sources.list.d/debian.sources -e 's|^URIs: http://deb.debian.org/debian-security$|URIs: http://snapshot.debian.org/archive/debian-security/20240926T000000Z|'
+apt update -o Acquire::Check-Valid-Until=false
+
+apt-get install -y \
+    wget \
+    bzip2 \
+    ca-certificates \
+    bash \
+    coreutils \
+    && apt-get clean
+
+apt install libmariadb-dev -y
+#apt install snakemake=7.21.0-1 -y
+apt install postgresql-client=15+248 -y
+apt install -y libpq-dev
+apt install -y pkg-config libmariadb-dev libmariadb-dev-compat
+apt install -y gcc
+apt install -y g++
+apt install -y git
+apt install -y bcftools
+apt install -y bedtools
+
+# Install micromamba
+MICROMAMBA_VERSION="0.25.1"
+wget -qO- https://micromamba.snakepit.net/api/micromamba/linux-64/$MICROMAMBA_VERSION | tar -xvj -C /usr/local/bin --strip-components=1 bin/micromamba
+
+# Create a micromamba environment
+micromamba create --name myenv python=3.13.0 --yes -c conda-forge
+micromamba install --name myenv -c conda-forge -y apptainer==1.3.2
+
+#micromamba install --name myenv -c conda-forge -c bioconda bedtools=2.30.0 -y
+#micromamba install --name myenv -c conda-forge -c bioconda bcftools=1.21
+/root/micromamba/envs/myenv/bin/pip install liftover==1.3.1
+/root/micromamba/envs/myenv/bin/pip install snakemake==8.20.6
+
+micromamba install --name myenv -c conda-forge -c bioconda -y termcolor=2.5.0 odfpy=1.4.1 sqlalchemy=2.0.34
+micromamba install --name myenv -c conda-forge -c bioconda -y psycopg2-binary=2.9.9 mariadb=1.1.10
+micromamba install --name myenv -c conda-forge -c bioconda -y requests=2.32.3 pooch=1.8.2 mysqlclient=2.2.4
+micromamba install --name myenv -c conda-forge -c bioconda -y openpyxl=3.1.5 matplotlib=3.9.2
+micromamba install --name myenv -c conda-forge -c bioconda -y suds=1.1.2 fastcluster=1.2.6 seaborn=0.13.2
+micromamba install --name myenv conda-forge::sqlalchemy-utils=0.41.2
+
+/root/micromamba/envs/myenv/bin/pip install git+https://github.com/getzze/statannotations.git@0a40136c1bfe32c9eb7b4b0a85d28f03e2cc88af
+
+%environment
+export LC_ALL=C
+# Set up environment variables for micromamba
+export MAMBA_ROOT_PREFIX=/root/micromamba
+export PATH="/root/micromamba/envs/myenv/bin:$PATH"
