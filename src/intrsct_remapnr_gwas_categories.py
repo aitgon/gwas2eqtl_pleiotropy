@@ -15,7 +15,12 @@ try:
     remap_nr_path = sys.argv[3]
     eqtl_pleio_1_flank_10_hg38_bed = sys.argv[4]
     remap_nr_pleio_1_flank_10_hg38_bed = sys.argv[5]
+<<<<<<< HEAD
     if len(sys.argv) > 6:
+=======
+    flank = int(sys.argv[6])
+    if len(sys.argv) > 7:
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -31,7 +36,10 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 indir_path = os.path.dirname(eqtl_pleio_1_flank_10_hg38_bed)
 
 #%% bedtools intersect
+<<<<<<< HEAD
 flank = 10
+=======
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 
 for gwas_category_count_i in range(max_gwas_category_count + 1):
     bed_path = os.path.join(indir_path, "eqtl_pleio_{}_flank_{}_hg38.bed".format(gwas_category_count_i, flank))

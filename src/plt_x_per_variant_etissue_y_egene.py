@@ -26,7 +26,13 @@ try:
     sa_url = sys.argv[3]
     count_per_rsid_gwas_ods_path = sys.argv[4]
     plt_png_path = sys.argv[5]
+<<<<<<< HEAD
     if len(sys.argv) > 6:
+=======
+    eur_af_min = float(sys.argv[6])
+    eur_af_max = float(sys.argv[7])
+    if len(sys.argv) > 8:
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
         print("""Two many arguments!
         {}""".format(help_cmd_str))
         sys.exit(1)
@@ -58,11 +64,24 @@ gwas_category_count_max_int = count_per_rsid_gwas_df['gwas_category_count'].max(
 #%%
 m_df = h4_df.merge(count_per_rsid_gwas_df, on=['chrom', 'pos38', 'rsid'])
 
+<<<<<<< HEAD
+=======
+#%%
+if eur_af_min > 0:
+    m_df = m_df.query("eur_af > {}".format(eur_af_min))
+if eur_af_max < 1:
+    m_df = m_df.query("eur_af < {}".format(eur_af_max))
+
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 # %%
 sel_cols = ['rsid', 'eqtl_gene_id', 'etissue_category_term']  # eqtl_gene_id per variant-etissuecategory
 
 #%%
 m2_df = m_df[['chrom', 'pos38'] + sel_cols + ['eqtl_gene_symbol', 'gwas_category_count']].drop_duplicates()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 m2_df.sort_values(['gwas_category_count', 'chrom', 'pos38'], inplace=True, ascending=[False, True, True])
 tsv_path = os.path.join(outdir_path, 'variants2egenes.tsv')
 m2_df.to_csv(tsv_path, header=True, index=False, sep='\t')
@@ -103,11 +122,29 @@ pairs = [(str(1), str(i)) for i in order[1:]]
 m_df[x] = m_df[x].astype(str)
 
 #%% histplot
+<<<<<<< HEAD
 ax = seaborn.histplot(data=m_df, hue=x, x=y, hue_order=order, stat="density", cumulative=True, common_norm=False, fill=False, element="step", palette="icefire", lw=3)
+=======
+# Dictionary specifying line types
+linetype_dict = {'1': 'solid', '2': 'dashed', '≥3': 'dotted'}
+ax = seaborn.histplot(data=m_df, hue=x, x=y, hue_order=order, stat="density",
+                      cumulative=True, common_norm=False, fill=False, element="step",
+                      palette="rocket", lw=5)
+
+ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+
+plt.title(title, fontsize=label_fontsize)
+plt.xlabel("Gene target count", fontsize=label_fontsize)
+plt.xlim([1, 10])
+plt.xticks(fontsize=tick_fontsize, rotation=0)
+plt.ylabel('Cumulative density', fontsize=label_fontsize)
+plt.yticks(fontsize=tick_fontsize)
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 
 # for legend text
 plt.setp(ax.get_legend().get_texts(), fontsize=tick_fontsize)
 # for legend title
+<<<<<<< HEAD
 plt.setp(ax.get_legend().get_title(), fontsize=tick_fontsize)
 frame = ax.get_legend().get_frame()
 frame.set_facecolor('white')
@@ -168,3 +205,14 @@ plt.tight_layout()
 hist_png_path = os.path.join(outdir_path, "boxenplot_ms.png")
 plt.savefig(hist_png_path)
 plt.close()
+=======
+ax.get_legend().get_title().set_text(xlabel)
+plt.setp(ax.get_legend().get_title(), fontsize=tick_fontsize)
+
+frame = ax.get_legend().get_frame()
+frame.set_facecolor('white')
+
+plt.tight_layout()
+plt.savefig(plt_png_path)
+plt.close()
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736

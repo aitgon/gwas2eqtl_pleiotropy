@@ -72,6 +72,9 @@ rule count_per_rsid:
         os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_10_hg38.bed"),
         os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_10_hg38.bed"),
         os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_10_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_1_flank_5_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_2_flank_5_hg38.bed"),
+        os.path.join(result_dir, "cmpt_count_per_rsid.py/eqtl_pleio_3_flank_5_hg38.bed"),
         # Suppl fig 2
         os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_cat_count.png"),
         os.path.join(result_dir, "cmpt_count_per_rsid.py/watanabe_proportion.png"),

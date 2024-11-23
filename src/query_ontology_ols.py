@@ -67,8 +67,17 @@ for query_term in sorted(mygwas_df['query_term'].unique()):
                 obo_iri = doc['iri']
                 break
     # import pdb; pdb.set_trace()
+<<<<<<< HEAD
     if obo_id.startswith("snomed:class"):
         obo_id = obo_id.split('/')[-1]
+=======
+    try:
+        if obo_id.startswith("snomed:class"):
+            obo_id = obo_id.split('/')[-1]
+    except:
+        import pdb; pdb.set_trace()
+
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
     mygwas_df.loc[query_mask, 'ontology_id'] = obo_id
     mygwas_df.loc[query_mask, 'ontology_term'] = obo_label.lower()
     mygwas_df.loc[query_mask, 'ontology_iri'] = obo_iri

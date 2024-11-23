@@ -32,9 +32,17 @@ pathlib.Path(outdir_path).mkdir(parents=True, exist_ok=True)
 regions_df = pandas.read_excel(count_per_rsid_gwas_ods_path, engine='odf')
 
 #%% barplot cumulated covering region
+<<<<<<< HEAD
 cumsum_df = regions_df.copy()
 cumsum_df['cumsum'] = cumsum_df['end'] - cumsum_df['start']
 cumsum_df = cumsum_df[['gwas_category_count', 'cumsum']].groupby('gwas_category_count').sum().reset_index()
+=======
+# cumsum_df = regions_df.copy()
+cumsum_df = regions_df[['chrom', 'start', 'end', 'gwas_category_count', 'rsid_count']].copy()
+cumsum_df['cumsum'] = cumsum_df['end'] - cumsum_df['start']
+# cumsum_df = cumsum_df[['gwas_category_count', 'cumsum']].groupby('gwas_category_count').sum().reset_index()
+cumsum_df = cumsum_df[['gwas_category_count', 'cumsum', 'rsid_count']].groupby('gwas_category_count')[['cumsum', 'rsid_count']].sum().reset_index()
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 cumsum_df.sort_values('gwas_category_count', ascending=False, inplace=True)
 cumsum_df['cumsum'] = cumsum_df['cumsum'].cumsum()
 cumsum_df['cumsum'] = cumsum_df['cumsum']/10e6
@@ -50,6 +58,24 @@ x = "gwas_category_count"
 #%%
 ax = seaborn.barplot(x=x, y=y, data=cumsum_df, order=order, palette=palette_r)
 
+<<<<<<< HEAD
+=======
+# # Add the counts (n) above the bars
+# for index, row in cumsum_df.iterrows():
+#     import pdb; pdb.set_trace()
+#     n = row[x]
+#     ax.text(row[x], row[y] + 0.05, f"{n:1.2f}", color='black', ha="center")
+
+# Add the rsid counts above the bars
+i = 0
+for bar, label in zip(ax.patches, cumsum_df[x]):
+    # import pdb; pdb.set_trace()
+    n = int(cumsum_df['rsid_count'].tolist()[i])
+    ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 0.05,
+            f"n={n}", color='black', ha="center", va="bottom")
+    i = i + 1
+
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 #%%
 label_fontsize = 26
 plt.title(title, fontsize=label_fontsize)

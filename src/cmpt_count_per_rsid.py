@@ -121,12 +121,15 @@ m2df.rename({'gwas_category_count': 'Trait cat. cnt.', 'etissue_category_term_co
 #%%
 corr = m2df.corr(method='spearman')
 
+<<<<<<< HEAD
 # pval = m2df.corr(method=lambda x, y: spearmanr(x, y)[1]) - np.eye(*corr.shape)
 # p = pval.applymap(lambda x: ''.join(['*' for t in [.05, .01, .001] if x<=t]))
 # corr_annot = corr.round(2).astype(str)
 
 # corr = m2df.corr(method='spearman')
 # import pdb; pdb.set_trace()
+=======
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 plt.subplots_adjust(left=0.2, right=0.8, top=0.9, bottom=0.)
 
 corr.iloc[0, 0]=None
@@ -134,10 +137,18 @@ corr.iloc[1, 1]=None
 corr.iloc[2, 2] = None
 corr_annot = corr.round(2).astype(str)
 
+<<<<<<< HEAD
 ax = seaborn.heatmap(corr, annot=corr_annot, xticklabels=False, cmap="vlag", annot_kws={"size": 20}, fmt = '')
 ax.set_yticklabels(ax.get_ymajorticklabels(), fontsize=20, rotation=45)
 plt.title("Spearman correlation", fontsize=label_fontsize)
 plt.subplots_adjust(left=0.3, right=1)
+=======
+ax = seaborn.heatmap(corr, annot=corr_annot, cmap="vlag", annot_kws={"size": 20}, fmt='')
+ax.set_xticklabels(ax.get_xmajorticklabels(), fontsize=15, rotation=22)
+ax.set_yticklabels(ax.get_ymajorticklabels(), fontsize=20, rotation=45)
+plt.title("Spearman correlation", fontsize=label_fontsize)
+plt.subplots_adjust(left=0.3, right=1, bottom=0.2)
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 plt.savefig(count_per_rsid_gwas_egene_etissue_corr_png)
 
 plt.tight_layout()
@@ -172,7 +183,11 @@ m2df_cat_count_df = m2df.groupby('gwas_category_count').agg({'domains_watanabe20
 m2df_watanabe2019_cat_count_df = m2df.loc[~m2df['domains_watanabe2019'].isna()].groupby('gwas_category_count').agg({'domains_watanabe2019': len})
 m2df_watanabe2019_cat_count_df = m2df_watanabe2019_cat_count_df.merge(m2df_cat_count_df, left_index=True, right_index=True)
 m2df_watanabe2019_cat_count_df.columns = ['watanabe_count', 'count']
+<<<<<<< HEAD
 m2df_watanabe2019_cat_count_df['watanabe_perc'] = (m2df_watanabe2019_cat_count_df['watanabe_count'] / m2df_watanabe2019_cat_count_df['count'] * 100).astype(int)
+=======
+m2df_watanabe2019_cat_count_df['watanabe_perc'] = (m2df_watanabe2019_cat_count_df['watanabe_count'] / m2df_watanabe2019_cat_count_df['count']).astype(float)
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 
 order = [*range(1, pleio_high_cutoff)] + ['≥' + str(pleio_high_cutoff)]
 ax = seaborn.barplot(x=m2df_watanabe2019_cat_count_df.index, y='watanabe_perc', data=m2df_watanabe2019_cat_count_df, order=order, palette="vlag")
@@ -181,6 +196,7 @@ plt.title("Found Watanabe 2019", fontsize=label_fontsize)
 plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.yticks(fontsize=tick_fontsize)
+<<<<<<< HEAD
 plt.ylabel("Percentage", fontsize=label_fontsize)
 
 plt.tight_layout()
@@ -189,6 +205,15 @@ plt.savefig(png_path)
 plt.close()
 
 
+=======
+plt.ylabel("Proportion of eQTLs", fontsize=label_fontsize)
+
+plt.tight_layout()
+png_path = os.path.join(outdir_path, 'watanabe_proportion.png')
+plt.savefig(png_path)
+plt.close()
+
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 #%########################################### bed files, flanking=0
 # bed files of variants splitted by gwas categories
 flank = 10
@@ -212,7 +237,11 @@ for gwas_category_count in sorted(bed_df['gwas_category_count'].unique()):
 
 #%########################################### bed files, flanking=0
 # bed files of variants splitted by gwas categories
+<<<<<<< HEAD
 flank = 0
+=======
+flank = 5
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 bed_df = gwas_df.copy()
 bed_df['chrom'] = 'chr' + bed_df['chrom'].astype(str)
 bed_df['start'] = bed_df['pos38'] - 1 - flank

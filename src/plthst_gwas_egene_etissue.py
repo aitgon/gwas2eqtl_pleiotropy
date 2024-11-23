@@ -35,8 +35,13 @@ pathlib.Path(os.path.dirname(hist_rsid_etissue_path)).mkdir(parents=True, exist_
 count_df = pandas.read_excel(count_per_rsid_gwas_egene_etissue_ods, engine='odf')
 
 #%%
+<<<<<<< HEAD
 ylabel = "Proportion"
 ylim = [0.0001, 1]
+=======
+ylabel = "Proportion of eQTLs"
+ylim = [0.0001, 0.6]
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 edgecolor = 'k'
 linewidth = 2
 grid_axis = 'y'
@@ -56,9 +61,30 @@ plt.xlabel("Trait category count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
+<<<<<<< HEAD
 plt.yscale('log')
 plt.ylim(ylim)
 
+=======
+# plt.yscale('log')
+plt.ylim(ylim)
+
+# Access the container with the bars
+bars = ax.containers[0]
+# Add counts (n) on top of each bar
+for bari, bar in enumerate(bars):
+    height = bar.get_height()
+    n = int(data_ser.value_counts()[bari+1])
+    if height > 0:  # Only label bars with height > 0
+        ax.text(
+            bar.get_x() + bar.get_width() / 2,  # X position
+            height,                             # Y position
+            f'{n}',                   # The count text
+            ha='center',                        # Horizontal alignment
+            va='bottom'                         # Vertical alignment
+        )
+
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 plt.tight_layout()
 plt.savefig(hist_rsid_gwas_path, dpi=dpi)
 plt.close()
@@ -78,7 +104,11 @@ plt.xlabel("eQTL gene count", fontsize=label_fontsize)
 plt.xticks(fontsize=tick_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
+<<<<<<< HEAD
 plt.yscale('log')
+=======
+# plt.yscale('log')
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 plt.ylim(ylim)
 
 plt.tight_layout()
@@ -101,7 +131,11 @@ plt.xticks(fontsize=tick_fontsize)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.ylim(ylim)
 plt.yticks(fontsize=tick_fontsize)
+<<<<<<< HEAD
 plt.yscale('log')
+=======
+# plt.yscale('log')
+>>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 
 plt.tight_layout()
 plt.savefig(hist_rsid_etissue_path, dpi=dpi)

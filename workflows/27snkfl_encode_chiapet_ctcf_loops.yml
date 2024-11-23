@@ -29,6 +29,18 @@ rule pltbar_oddsr_gwas_categories_accession:
     shell:
         """python src/pltbar_x_gwas_category_count_y_odds_ratio_intersect_count.py --title '{params[0]}' --eqtl_bed {input[0]} {input[1]} {input[2]} --annot_bed {input[3]} --count_tsv {output[0]} --barplot_png {output[1]}"""
 
+rule cmpt_loop_eqtl_etranscript:
+    output:
+        os.path.join(result_dir, "cmpt_loop_eqtl_etranscript.py/loop_eqtl_etranscript_pleio_1_hg38_bed"),
+        os.path.join(result_dir, "cmpt_loop_eqtl_etranscript.py/loop_eqtl_etranscript_pleio_2_hg38_bed"),
+        os.path.join(result_dir, "cmpt_loop_eqtl_etranscript.py/loop_eqtl_etranscript_pleio_3_hg38_bed"),
+    params:
+        snp_pp_h4=snp_pp_h4,
+        pleio_high_cutoff=pleio_high_cutoff,
+        db_url=db_url,
+    shell:
+        """python src/cmpt_loop_eqtl_etranscript.py {params.snp_pp_h4} {params.pleio_high_cutoff} {params.db_url} {output[0]}"""
+
 rule bedtools_sort:
     input:
         os.path.join(public_data_dir, "www.encodeproject.org/files/{accession}/@@download/{accession}.bedpe.gz"),
