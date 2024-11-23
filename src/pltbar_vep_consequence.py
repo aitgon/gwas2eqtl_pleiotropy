@@ -9,6 +9,9 @@ from constants import dpi, seaborn_theme_dic, label_fontsize, tick_fontsize, pal
     annotator_config_dic
 from matplotlib import pyplot as plt
 
+# Plot parameters
+plt.rcParams["figure.figsize"] = (8, 6)
+
 seaborn.set_theme(**seaborn_theme_dic)
 
 
@@ -88,5 +91,5 @@ for consequence in consequence_signif_lst:
 
     plt.tight_layout()
     png_path =os.path.join(outdir_path, "{}.png".format(consequence))
-    plt.savefig(png_path, dpi=dpi)
+    plt.savefig(png_path, dpi=100)
     plt.close()
