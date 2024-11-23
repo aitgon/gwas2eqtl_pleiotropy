@@ -58,22 +58,10 @@ engine = sqlalchemy.create_engine(db_url)
 with engine.begin() as conn:
     gwas_metadata_df = pandas.read_sql(sqlalchemy.text(sql), con=conn).drop_duplicates()
 
-#%%
-# gwas_metadata_df = pandas.read_excel(gwas_metadata_ods_path, engine="odf", usecols=['gwas_id', 'trait', 'gwas_category'])
-
-#%%
-# import pdb; pdb.set_trace()
-
-#%%
-# import pdb; pdb.set_trace()
 gwas_metadata_df.set_index('gwas_id', inplace=True, verify_integrity=True)
-# annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['trait', 'gwas_category']]
+
 annotation_df = dis_df.merge(gwas_metadata_df, left_index=True, right_index=True, how='left')[['batch', 'pmid', 'gwas_trait_ontology_term', 'gwas_category_ontology_term']]
 
-# pmid_df = pandas.read_sql('select distinct gwas_id, pmid from colocpleio', con=create_engine(sa_url), index_col='gwas_id')
-# pmid_df = pmid_df.loc[annotation_df.index.tolist(), ]
-# import pdb; pdb.set_trace()
-# annotation_df = annotation_df.merge(pmid_df, left_index=True, right_index=True)
 annotation_df['pmid'] = annotation_df['pmid'].replace(math.nan, 0)
 annotation_df['pmid'] = annotation_df['pmid'].astype(int)
 
@@ -83,27 +71,14 @@ dis_df = dis_df.loc[annotation_df.index]
 dis_df = dis_df[annotation_df.index]
 
 #%%
-<<<<<<< HEAD
-=======
 annotation_df['gwas_trait_ontology_term'] = (annotation_df['gwas_trait_ontology_term']
                                              .str.replace('disease', 'dis.')
                                              .str.replace('estrogen-receptor positive', 'ER-pos.')
                                              .str.replace('atherosclerotic', 'athero.')
                                              .str.replace(' (disorder)', '')
                                              .str.replace('inflammatory', 'inflamm.'))
->>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 annotation_df['trait'] = annotation_df['batch'] + '_' + annotation_df['pmid'].astype(str) + '_' + annotation_df['gwas_trait_ontology_term']
 
-# pmid_trait_dupli_mask = annotation_df['trait'].duplicated(keep='first')
-# pmid_trait_uniq_mask = ~annotation_df['trait'].duplicated(keep=False)
-# pmid_trait_mask = pmid_trait_dupli_mask + pmid_trait_uniq_mask
-# dis_df = dis_df.loc[pmid_trait_mask, pmid_trait_mask]
-# annotation_df = annotation_df.loc[pmid_trait_mask, ]
-
-# dataset_a = (annotation_df.index).to_series().str.split('-', expand=True)[0]
-# dataset_b = (annotation_df.index).to_series().str.split('-', expand=True)[1]
-# annotation_df['trait'] = dataset_a + '_' + dataset_b + '_' + annotation_df['trait']
-# import pdb; pdb.set_trace()
 # Label 1
 category_labels = annotation_df["gwas_category_ontology_term"]
 category_pal = seaborn.color_palette(palette='bright', n_colors=category_labels.unique().size)
@@ -122,31 +97,16 @@ clustermap_args_dic['xticklabels'] = False
 clustermap_args_dic['cbar_pos'] =(0, .2, .03, .4)
 clustermap_args_dic['cbar_kws'] = {'label': 'Disease distance'}
 
-<<<<<<< HEAD
-# import pdb; pdb.set_trace()
-clustermap_args_dic['yticklabels'] = [s[0:40] for s in annotation_df['trait'].tolist()]
-# import pdb; pdb.set_trace()
-g = seaborn.clustermap(dis_df, **clustermap_args_dic)
-
-seaborn.set(font_scale=1)
-# g.cax.set_visible(True)
-# import pdb; pdb.set_trace()
-=======
 clustermap_args_dic['yticklabels'] = [s[0:40] for s in annotation_df['trait'].tolist()]
 g = seaborn.clustermap(dis_df, **clustermap_args_dic)
 
 seaborn.set(font_scale=1)
->>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 g.ax_heatmap.set_yticklabels(g.ax_heatmap.get_ymajorticklabels(), fontsize=12)
 g.ax_heatmap.set(ylabel='Trait')
 #
 for label in category_labels.unique():
     g.ax_col_dendrogram.bar(0, 0, color=subset1_lut[label], label=label, linewidth=0);
-<<<<<<< HEAD
-l1 = g.ax_col_dendrogram.legend(title='Category', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=3, bbox_transform=gcf().transFigure)
-=======
 l1 = g.ax_col_dendrogram.legend(title='Trait category', loc="upper left", bbox_to_anchor=(0.05, 0.95), ncol=3, bbox_transform=gcf().transFigure)
->>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 
 plt.subplots_adjust(top=1., right=0.6, bottom=0.05, left=0.)
 plt.savefig(htmp_disease_corr_png_path, dpi=600)

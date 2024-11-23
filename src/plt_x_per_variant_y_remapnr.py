@@ -39,10 +39,6 @@ outdir_path = os.path.dirname(tf_flank_10_png)
 pathlib.Path(outdir_path).mkdir(exist_ok=True, parents=True)
 
 ########################################################################################################################
-<<<<<<< HEAD
-flank = 10
-=======
->>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 
 cat_df = pandas.DataFrame({'gwas_category_count': [], 'rsid': [], 'tf': []})
 # for pleio in range(1, max_gwas_category_count+1):
@@ -79,32 +75,7 @@ x = "gwas_category_count"
 pairs = [(str(1), str(int(i))) for i in sorted(cat_df['gwas_category_count'].unique())]
 cat_df[x] = cat_df[x].astype(int).astype(str)
 
-<<<<<<< HEAD
-#%% boxenplot
-ax = seaborn.boxenplot(x=x, y=y, data=cat_df, order=order, **boxenplot_kws, line_kws=boxenplot_line_kws)
-
-annotator = Annotator(ax, pairs, data=cat_df, x=x, y=y, order=order)
-annotator.configure(test='Mann-Whitney', text_format='star', **annotator_config_dic)
-annotator.apply_and_annotate()
-
-plt.title(title, fontsize=label_fontsize)
-plt.xlabel(xlabel, fontsize=label_fontsize)
-# plt.xticks(fontsize=tick_fontsize, rotation=0)
-xticks_labels = [str(x+1) for x in plt.xticks()[0]]
-xticks_labels[-1] = '≥' + str(xticks_labels[-1])
-plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
-plt.ylabel(ylabel, fontsize=label_fontsize)
-plt.yticks(fontsize=tick_fontsize)
-# ax.set_xticklabels(xticklabels)
-
-plt.tight_layout()
-plt.savefig(tf_flank_10_png)
-plt.close()
-
-=======
->>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
-#%% boxenplot ms
-# ax = seaborn.boxenplot(x=x, y=y, data=cat_df, order=order, **boxenplot_kws, line_kws=boxenplot_line_kws)
+#%% boxplot ms
 ax = seaborn.boxplot(x=x, y=y, data=cat_df, order=order, **boxenplot_kws)
 
 ylim = [0, 130]
@@ -132,25 +103,20 @@ xticks_labels[-1] = '≥' + str(xticks_labels[-1])
 plt.xticks(ticks=(plt.xticks()[0]), labels=xticks_labels, fontsize=tick_fontsize, rotation=0)
 plt.ylabel(ylabel, fontsize=label_fontsize)
 plt.yticks(fontsize=tick_fontsize)
-<<<<<<< HEAD
-# ax.set_xticklabels(xticklabels)
-plt.ylim(ylim)
-
-plt.tight_layout()
-tf_flank_10_png = os.path.join(outdir_path, "boxenplot_custom.png")
-=======
 plt.ylim(ylim)
 
 # Calculate the medians directly from the data
 medians = cat_df.groupby(x)[y].median()
 # Annotate each median on the boxplot
+# import pdb; pdb.set_trace()
+label_position = {0: 7, 1: 10, 2: 32}
 for pos, median in enumerate(medians):
     x_loc = pos  # x location corresponds to the position of the box
-    ax.annotate(f'{median}', xy=(x_loc, median), xytext=(0, 5),
+    y_loc = label_position[pos]  # x location corresponds to the position of the box
+    ax.annotate(f'{median}', xy=(x_loc, y_loc), xytext=(0, 5),
                 textcoords="offset points", ha='center', va='bottom', color='black', fontsize=tick_fontsize)
 
 plt.tight_layout()
 tf_flank_10_png = os.path.join(tf_flank_10_png)
->>>>>>> 7780b854f4c03d61cfedb2434aa1fd98189fe736
 plt.savefig(tf_flank_10_png)
 plt.close()

@@ -125,9 +125,11 @@ plt.ylim(ylim)
 medians = m3_df.groupby(x)[y].median()
 
 # Annotate each median on the boxplot
+label_position = {0: 55, 1: 25, 2: 90}
 for pos, median in enumerate(medians):
     x_loc = pos  # x location corresponds to the position of the box
-    ax.annotate(f'{median:.2f}', xy=(x_loc, median), xytext=(0, 5),
+    y_loc = label_position[pos]  # x location corresponds to the position of the box
+    ax.annotate(f'{median:.2f}', xy=(x_loc, y_loc), xytext=(0, 5),
                 textcoords="offset points", ha='center', va='bottom', color='black', fontsize=tick_fontsize)
 
 
